@@ -1,9 +1,0 @@
-[build]
-builder = "NIXPACKS"
-buildCommand = "bundle install --clean --force"
-
-[deploy]
-startCommand = "RAILS_ENV=production bundle exec rake db:drop db:create db:migrate db:seed && RAILS_ENV=production bundle exec puma -C config/puma.rb"
-restartPolicyType = "ON_FAILURE"
-restartPolicyMaxRetries = 10
-
