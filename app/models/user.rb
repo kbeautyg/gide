@@ -1,7 +1,30 @@
 class User < ApplicationRecord
-  # Devise modules
+  # Devise modules (без email validation)
   devise :database_authenticatable, :registerable,
-         :recoverable, :rememberable, :validatable
+         :recoverable, :rememberable
+  
+  # Валидация телефона вместо email
+  validates :phone, presence: true, uniqueness: true
+  validates :password, presence: true, length: { minimum: 6 }, if: :password_required?
+  
+  # Переопределяем методы Devise для использования phone
+  def email_required?
+    false
+  end
+  
+  def email_changed?
+    false
+  end
+  
+  def will_save_change_to_email?
+    false
+  end
+  
+  private
+  
+  def password_required?
+    !persisted? || !password.nil? || !password_confirmation.nil?
+  end
 
   # Роли (enum)
   enum role: {
