@@ -1,18 +1,31 @@
 class CreateSimpleMvpSchema < ActiveRecord::Migration[7.1]
   def change
-    # Удаляем старые таблицы если есть
-    drop_table :cashbook_transactions, if_exists: true
-    drop_table :cashbook_cards, if_exists: true
-    drop_table :reviews, if_exists: true
-    drop_table :bookings, if_exists: true
-    drop_table :tour_availabilities, if_exists: true
-    drop_table :tours, if_exists: true
-    drop_table :wallet_histories, if_exists: true
-    drop_table :wallets, if_exists: true
-    drop_table :exchanger_requests, if_exists: true
-    drop_table :withdrawal_requests, if_exists: true
-    drop_table :payment_forms, if_exists: true
-    drop_table :volume_rates, if_exists: true
+    # Создаем пользователей
+    create_table :users do |t|
+      # Devise fields
+      t.string :email, null: false, default: ""
+      t.string :encrypted_password, null: false, default: ""
+      t.string :reset_password_token
+      t.datetime :reset_password_sent_at
+      t.datetime :remember_created_at
+
+      # Custom fields
+      t.string :phone, null: false
+      t.string :full_name
+      t.integer :role, default: 2, null: false # 0=admin, 1=manager, 2=client
+      
+      # Иерархия пользователей (self-referencing)
+      t.references :parent, foreign_key: { to_table: :users }, null: true, index: true
+      
+      # Статус
+      t.boolean :active, default: true, null: false
+      
+      t.timestamps
+    end
+
+    add_index :users, :email, unique: true
+    add_index :users, :phone, unique: true
+    add_index :users, :reset_password_token, unique: true
     
     # Простая таблица платежных ссылок
     create_table :payment_links do |t|
