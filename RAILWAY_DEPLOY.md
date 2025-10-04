@@ -6,23 +6,30 @@
 
 ## 🎯 Три способа деплоя
 
-### ⚡ Способ 1: Простой (РЕКОМЕНДУЕТСЯ ДЛЯ НОВИЧКОВ)
+### ⚡ Способ 1: Простой (РЕКОМЕНДУЕТСЯ ДЛЯ НОВИЧКОВ) ✅
 
-1. **В Railway Settings установите Root Directory: `backend`**
+**КРИТИЧНО**: Установите Root Directory = `backend` чтобы избежать ошибки "Is a directory"!
 
+1. **В Railway Settings установите:**
+   - **Root Directory**: `backend` ⚠️ ОБЯЗАТЕЛЬНО!
+   
 2. **Railway автоматически обнаружит Python**
    - Файл `requirements.txt` будет найден
    - Python 3.11 установится автоматически
    - Файл `.python-version` указывает версию
 
-3. **В Settings → Deploy добавьте Start Command:**
+3. **В Settings → Deploy установите Start Command:**
    ```
    python3 -m uvicorn app.main:app --host 0.0.0.0 --port $PORT
    ```
 
-4. **Добавьте переменные окружения** (см. ниже)
+4. **Очистите Build Command** (оставьте пустым, Railway сам всё сделает)
 
-5. **Deploy!**
+5. **Добавьте переменные окружения** (см. ниже)
+
+6. **Deploy!**
+
+> 💡 **Почему нужен Root Directory?** Это избежит конфликта с папкой `app/` и упростит конфигурацию.
 
 ---
 
@@ -117,6 +124,19 @@
 ---
 
 ## 🔧 Решение проблем
+
+### ⚠️ Проблема: "Is a directory (os error 21)"
+
+**Решение**: ✅ КРИТИЧНО - Установите Root Directory!
+1. Зайдите в Railway Settings
+2. Установите **Root Directory**: `backend`
+3. Очистите Build Command (оставьте пустым)
+4. Установите Start Command: `python3 -m uvicorn app.main:app --host 0.0.0.0 --port $PORT`
+5. Redeploy
+
+**Причина**: Nixpacks конфликтует с папкой `backend/app/`. Root Directory решает проблему.
+
+> 📖 См. подробную инструкцию в файле `RAILWAY_FIX.md`
 
 ### ⚠️ Проблема: "pip: command not found"
 

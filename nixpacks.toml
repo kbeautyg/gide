@@ -1,16 +1,11 @@
 # Nixpacks конфигурация для Railway
+# ВАЖНО: Установите Root Directory = backend в Railway Settings!
+
 [phases.setup]
-nixPkgs = ["python311", "python311Packages.pip", "python311Packages.virtualenv", "postgresql"]
+nixPkgs = ["python311", "python311Packages.pip"]
 
 [phases.install]
-cmds = [
-    "cd backend",
-    "python3.11 -m pip install --upgrade pip",
-    "python3.11 -m pip install -r requirements.txt"
-]
-
-[phases.build]
-cmds = ["echo 'Backend build complete'"]
+cmds = ["python3.11 -m pip install -r backend/requirements.txt"]
 
 [start]
 cmd = "cd backend && python3.11 -m uvicorn app.main:app --host 0.0.0.0 --port $PORT"
