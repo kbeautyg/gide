@@ -4,16 +4,17 @@ class Booking < ApplicationRecord
   belongs_to :payment_transaction, class_name: 'Transaction', foreign_key: 'transaction_id', optional: true
   has_many :reviews, dependent: :nullify
 
-  # Статусы
+  # Статусы бронирования
   enum status: {
     pending: 0,
     confirmed: 1,
     cancelled: 2,
     completed: 3
-  }
+  }, _prefix: true
 
+  # Статусы оплаты
   enum payment_status: {
-    pending: 0,
+    payment_pending: 0,
     paid: 1,
     refunded: 2
   }
@@ -39,7 +40,7 @@ class Booking < ApplicationRecord
 
   # Подтвердить бронирование
   def confirm!(manager)
-    return false unless pending?
+    return false unless status_pending?
     
     update!(
       status: :confirmed,
@@ -49,7 +50,7 @@ class Booking < ApplicationRecord
 
   # Отменить бронирование
   def cancel!(reason)
-    return false if cancelled? || completed?
+    return false if status_cancelled? || status_completed?
     
     transaction do
       update!(
@@ -65,7 +66,7 @@ class Booking < ApplicationRecord
 
   # Отметить как завершенное
   def mark_completed!
-    return false unless confirmed?
+    return false unless status_confirmed?
     return false if tour_date > Date.today
     
     update!(status: :completed)
@@ -81,7 +82,7 @@ class Booking < ApplicationRecord
 
   # Можно ли оставить отзыв?
   def can_review?
-    completed? && paid? && reviews.none?
+    status_completed? && paid? && reviews.none?
   end
 
   private
