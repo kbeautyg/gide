@@ -3,8 +3,9 @@
 """
 from fastapi import APIRouter
 from pydantic import BaseModel, Field
-from datetime import datetime, date
+from datetime import datetime
 from typing import Optional
+import datetime as dt
 
 router = APIRouter()
 
@@ -12,7 +13,7 @@ router = APIRouter()
 class BookingCreate(BaseModel):
     """Создание бронирования"""
     tour_id: str = Field(..., description="ID экскурсии")
-    date: date = Field(..., description="Дата экскурсии")
+    date: dt.date = Field(..., description="Дата экскурсии")
     participants_count: int = Field(..., ge=1, description="Количество участников")
     client_name: str = Field(..., description="Имя клиента")
     client_phone: str = Field(..., description="Телефон клиента")
@@ -26,7 +27,7 @@ class Booking(BaseModel):
     tour_title: str
     client_name: str
     client_phone: str
-    date: date
+    date: dt.date
     participants_count: int
     total_price: float
     status: str = Field(..., description="в ожидании, подтверждено, отменено")
@@ -74,7 +75,7 @@ async def get_booking(booking_id: str):
         tour_title="Обзорная экскурсия по Пхукету",
         client_name="Иван Иванов",
         client_phone="+79999999999",
-        date=date.today(),
+        date=dt.date.today(),
         participants_count=2,
         total_price=5000.0,
         status="подтверждено",
