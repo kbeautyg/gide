@@ -21,7 +21,7 @@ pydantic[email]==2.5.3
 pydantic-settings==2.1.0
 
 # HTTP клиенты
-httpx==0.26.0
+httpx==0.25.2
 aiohttp==3.9.1
 
 # Celery и очереди
