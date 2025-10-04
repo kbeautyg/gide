@@ -7,8 +7,12 @@ Rails.application.configure do
   config.action_controller.perform_caching = true
 
   config.public_file_server.enabled = true  # Serve static files in Railway
+  config.public_file_server.headers = {
+    'Cache-Control' => 'public, max-age=31536000'
+  }
   config.assets.compile = true  # Enable on-demand compilation for Railway
   config.assets.digest = true
+  config.assets.debug = false
   config.active_storage.service = :local
   
   config.log_level = :info
