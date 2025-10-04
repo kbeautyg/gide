@@ -7,7 +7,7 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { toursApi } from '@/lib/api'
-import { formatRUB, formatMoscowDate } from '@/lib/utils'
+import { formatRUB } from '@/lib/utils'
 
 export default function TourDetailPage() {
   const { id } = useParams<{ id: string }>()

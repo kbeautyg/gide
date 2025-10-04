@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom'
 import { Search, MapPin, Star, Users, TrendingUp } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
 import { formatRUB } from '@/lib/utils'
 
 export default function HomePage() {
