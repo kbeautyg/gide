@@ -1,31 +1,120 @@
+"""
+Безопасность и аутентификация
+"""
 from datetime import datetime, timedelta
 from typing import Optional
 from jose import JWTError, jwt
 from passlib.context import CryptContext
+from fastapi import Depends, HTTPException, status
+from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
+import pytz
+
 from app.core.config import settings
 
+# Контекст для хеширования паролей
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
+# HTTP Bearer для JWT токенов
+security = HTTPBearer()
+
+# Московская временная зона
+MOSCOW_TZ = pytz.timezone('Europe/Moscow')
+
+
 def verify_password(plain_password: str, hashed_password: str) -> bool:
+    """Проверка пароля"""
     return pwd_context.verify(plain_password, hashed_password)
 
+
 def get_password_hash(password: str) -> str:
+    """Хеширование пароля"""
     return pwd_context.hash(password)
 
-def create_access_token(data: dict, expires_delta: Optional[timedelta] = None):
+
+def create_access_token(data: dict, expires_delta: Optional[timedelta] = None) -> str:
+    """
+    Создание JWT токена
+    
+    Args:
+        data: Данные для токена
+        expires_delta: Время жизни токена
+    
+    Returns:
+        JWT токен
+    """
     to_encode = data.copy()
+    
     if expires_delta:
-        expire = datetime.utcnow() + expires_delta
+        expire = datetime.now(MOSCOW_TZ) + expires_delta
     else:
-        expire = datetime.utcnow() + timedelta(minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES)
+        expire = datetime.now(MOSCOW_TZ) + timedelta(days=settings.JWT_ACCESS_TOKEN_EXPIRE_DAYS)
     
     to_encode.update({"exp": expire})
-    encoded_jwt = jwt.encode(to_encode, settings.SECRET_KEY, algorithm=settings.ALGORITHM)
+    
+    encoded_jwt = jwt.encode(
+        to_encode,
+        settings.JWT_SECRET_KEY,
+        algorithm=settings.JWT_ALGORITHM
+    )
+    
     return encoded_jwt
 
-def decode_token(token: str):
+
+def decode_access_token(token: str) -> dict:
+    """
+    Декодирование JWT токена
+    
+    Args:
+        token: JWT токен
+    
+    Returns:
+        Данные из токена
+    
+    Raises:
+        HTTPException: Если токен невалиден
+    """
     try:
-        payload = jwt.decode(token, settings.SECRET_KEY, algorithms=[settings.ALGORITHM])
+        payload = jwt.decode(
+            token,
+            settings.JWT_SECRET_KEY,
+            algorithms=[settings.JWT_ALGORITHM]
+        )
         return payload
     except JWTError:
-        return None
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Невалидный токен аутентификации",
+            headers={"WWW-Authenticate": "Bearer"},
+        )
+
+
+def get_current_user_id(credentials: HTTPAuthorizationCredentials = Depends(security)) -> str:
+    """
+    Получение ID текущего пользователя из токена
+    
+    Args:
+        credentials: HTTP авторизационные данные
+    
+    Returns:
+        ID пользователя
+    
+    Raises:
+        HTTPException: Если токен невалиден
+    """
+    token = credentials.credentials
+    payload = decode_access_token(token)
+    
+    user_id: str = payload.get("sub")
+    if user_id is None:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Не удалось получить данные пользователя",
+            headers={"WWW-Authenticate": "Bearer"},
+        )
+    
+    return user_id
+
+
+def get_moscow_time() -> datetime:
+    """Получение текущего времени в московской временной зоне"""
+    return datetime.now(MOSCOW_TZ)

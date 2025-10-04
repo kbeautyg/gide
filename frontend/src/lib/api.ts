@@ -1,48 +1,150 @@
+/**
+ * API клиент для взаимодействия с backend
+ */
 import axios from 'axios'
-import { useAuthStore } from './store'
 
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000'
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8081/api/v1'
 
+// Создаем axios instance
 export const api = axios.create({
-  baseURL: API_URL,
+  baseURL: API_BASE_URL,
   headers: {
     'Content-Type': 'application/json',
   },
 })
 
-// Interceptor для добавления токена
-api.interceptors.request.use((config) => {
-  const token = useAuthStore.getState().token
-  if (token) {
-    config.headers.Authorization = `Bearer ${token}`
+// Добавляем interceptor для JWT токена
+api.interceptors.request.use(
+  (config) => {
+    const token = localStorage.getItem('access_token')
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`
+    }
+    return config
+  },
+  (error) => {
+    return Promise.reject(error)
   }
-  return config
-})
+)
 
-// Interceptor для обработки ошибок
+// Добавляем interceptor для обработки ошибок
 api.interceptors.response.use(
   (response) => response,
   (error) => {
     if (error.response?.status === 401) {
-      useAuthStore.getState().logout()
+      // Разлогиниваем пользователя при 401
+      localStorage.removeItem('access_token')
       window.location.href = '/login'
     }
     return Promise.reject(error)
   }
 )
 
-// API методы
-export const authAPI = {
-  login: (phone: string, password: string) =>
-    api.post('/api/auth/login', { phone, password }),
-  
-  register: (data: { phone: string; password: string; full_name: string }) =>
-    api.post('/api/auth/register', data),
-  
-  me: () => api.get('/api/auth/me'),
+// === ТИПЫ ===
+
+export interface Tour {
+  id: string
+  title: string
+  description: string
+  price: number
+  duration: number
+  location: string
+  category: string
+  photos: string[]
+  rating: number
+  reviews_count: number
+  guide_name: string
+  guide_id: string
+  active: boolean
+  created_at: string
 }
 
-export const usersAPI = {
-  getAll: () => api.get('/api/users'),
-  getById: (id: string) => api.get(`/api/users/${id}`),
+export interface TourListResponse {
+  tours: Tour[]
+  total: number
+  page: number
+  page_size: number
 }
+
+export interface Booking {
+  id: string
+  tour_id: string
+  tour_title: string
+  client_name: string
+  client_phone: string
+  date: string
+  participants_count: number
+  total_price: number
+  status: string
+  payment_status: string
+  created_at: string
+}
+
+export interface User {
+  id: string
+  phone: string
+  email?: string
+  name?: string
+  role: string
+  balance_rub: number
+  balance_usd: number
+  balance_thb: number
+}
+
+// === API ФУНКЦИИ ===
+
+// Аутентификация
+export const authApi = {
+  login: (phone: string, password: string) =>
+    api.post('/auth/login', { phone, password }),
+  
+  register: (phone: string, email: string | null, password: string, name: string | null) =>
+    api.post('/auth/register', { phone, email, password, name }),
+  
+  logout: () => api.post('/auth/logout'),
+}
+
+// Пользователи
+export const usersApi = {
+  getMe: () => api.get<User>('/users/me'),
+}
+
+// Экскурсии
+export const toursApi = {
+  getList: (params?: {
+    location?: string
+    category?: string
+    min_price?: number
+    max_price?: number
+    page?: number
+    page_size?: number
+  }) => api.get<TourListResponse>('/tours/', { params }),
+  
+  getById: (id: string) => api.get<Tour>(`/tours/${id}`),
+  
+  create: (tour: {
+    title: string
+    description: string
+    price: number
+    duration: number
+    location: string
+    category: string
+    photos?: string[]
+  }) => api.post<Tour>('/tours/', tour),
+}
+
+// Бронирования
+export const bookingsApi = {
+  create: (booking: {
+    tour_id: string
+    date: string
+    participants_count: number
+    client_name: string
+    client_phone: string
+    client_email?: string
+  }) => api.post<Booking>('/bookings/', booking),
+  
+  getById: (id: string) => api.get<Booking>(`/bookings/${id}`),
+}
+
+export default api

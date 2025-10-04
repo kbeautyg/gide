@@ -1,296 +1,214 @@
-# 📊 FastChange 3.0 - Статус проекта
+# 📊 ThaiGuide Pro 3.0 - Статус проекта
 
-**Дата**: 04.01.2025  
-**Версия**: 1.0.0-alpha  
-**Прогресс**: ~40% (базовая инфраструктура готова)
+**Дата обновления**: 4 октября 2025  
+**Версия**: 3.0 (Tourism First Design)
 
----
+## ✅ Выполнено (11/45 задач)
 
-## ✅ ЧТО СОЗДАНО
+### 🏗️ Инфраструктура (3/3)
+- ✅ Структура backend (FastAPI + папки)
+- ✅ Структура frontend (React + Vite + TypeScript)
+- ✅ Настроить TailwindCSS + Shadcn/ui
 
-### 1. Инфраструктура (100%)
-- [x] Rails 7.1 проект инициализирован
-- [x] Gemfile с 30+ gem'ами
-- [x] PostgreSQL через DATABASE_URL (Supabase/Railway)
-- [x] Redis и Sidekiq настроены
-- [x] Конфигурация environments (dev, test, prod)
-- [x] Initializers (Devise, Pundit, Sidekiq, Money, Rack::Attack)
-- [x] Локализация (ru.yml, en.yml)
-- [x] Routes с полным роутингом
-- [x] Procfile для Heroku/Railway деплоя
+### 🎨 Публичная часть - Маркетплейс (5/5) 
+- ✅ Публичная главная страница (как Tripster) - яркий дизайн
+- ✅ Каталог экскурсий с фильтрами (город, цена, длительность)
+- ✅ Карточка экскурсии с галереей и описанием
+- ✅ Форма бронирования экскурсии
+- ✅ Компоненты UI (Button, Card, Input из Shadcn)
 
-### 2. База данных (100%)
-- [x] 16 миграций созданы
-- [x] users - иерархия пользователей
-- [x] balances - RUB/USD/THB балансы
-- [x] exchange_rates - базовые курсы
-- [x] volume_rates - объемные курсы
-- [x] transactions - транзакции обмена
-- [x] payment_forms - статичные формы
-- [x] withdrawal_requests - заявки админов
-- [x] exchanger_requests - заявки обменников
-- [x] wallets + wallet_histories - TRC20
-- [x] tours + tour_availabilities - экскурсии
-- [x] bookings - бронирования
-- [x] reviews - отзывы
-- [x] cashbook_cards + cashbook_transactions - кэшбук
-- [x] seeds.rb - тестовые данные с реальными пользователями
+### 🔐 Аутентификация (1/2)
+- ✅ Страницы логина/регистрации (frontend)
+- ⏳ Backend API: Регистрация и логин (JWT токены)
 
-### 3. Модели (100%)
-- [x] User - с 6 ролями и иерархией
-- [x] Balance - методы add/deduct/freeze
-- [x] ExchangeRate - конвертация валют
-- [x] VolumeRate - автовыбор курса по порогу
-- [x] Transaction - статусы, callbacks
-- [x] PaymentForm - QR, токены
-- [x] WithdrawalRequest - комиссии 3%
-- [x] ExchangerRequest - управление долгами
-- [x] Wallet - валидация TRC20
-- [x] WalletHistory - аудит изменений
-- [x] Tour - календарь, слоты
-- [x] TourAvailability - предотвращение двойных бронирований
-- [x] Booking - ваучеры, статусы
-- [x] Review - рейтинги, модерация
-- [x] CashbookCard - пополнение, оплата
-- [x] CashbookTransaction - история операций
-
-### 4. Controllers (30%)
-- [x] ApplicationController - Pundit, локаль
-- [x] DashboardController - 6 разных дашбордов
-- [ ] TransactionsController - CRUD + QR
-- [ ] PaymentFormsController - CRUD + QR
-- [ ] WithdrawalRequestsController - заявки админов
-- [ ] Admin::UsersController - управление пользователями
-- [ ] Admin::ExchangeRatesController - курсы
-- [ ] Admin::WithdrawalRequestsController - одобрение
-- [ ] Admin::ExchangerRequestsController - общие заявки
-- [ ] ToursController - CRUD экскурсий
-- [ ] BookingsController - бронирования
-- [ ] StatisticsController - фильтры и отчеты
-
-### 5. Views (20%)
-- [x] Layout (application.html.erb)
-- [x] Navbar - баланс, роль, выход
-- [x] Sidebar - навигация по ролям
-- [x] Flash messages - styled alerts
-- [x] Dashboard для Manager
-- [x] Dashboard для Super Admin
-- [ ] Dashboard для Admin
-- [ ] Dashboard для Exchanger
-- [ ] Dashboard для Client
-- [ ] Transactions views
-- [ ] PaymentForms views
-- [ ] Tours catalog (публичный)
-- [ ] Tours management
-- [ ] Bookings views
-- [ ] Statistics views
-
-### 6. Policies (0%)
-- [ ] UserPolicy
-- [ ] TransactionPolicy
-- [ ] PaymentFormPolicy
-- [ ] WithdrawalRequestPolicy
-- [ ] TourPolicy
-- [ ] BookingPolicy
-
-### 7. Jobs (0%)
-- [ ] UpdateExchangeRatesJob - Rapira API каждую минуту
-- [ ] SendTelegramNotificationJob - уведомления
-- [ ] UpdateTourRatingsJob - пересчет рейтингов
-
-### 8. Services (0%)
-- [ ] CurrencyExchangeService - логика конвертации
-- [ ] WithdrawalService - создание заявок
-- [ ] BookingService - бронирование с проверками
-
-### 9. Components (0%)
-- [ ] QrCodeComponent - генерация QR
-- [ ] StatusBadgeComponent - цветные бейджи
-- [ ] TourCardComponent - карточки туров
-- [ ] StatisticsChartComponent - графики
-
-### 10. Stimulus Controllers (0%)
-- [ ] qr_code_controller.js - генерация QR
-- [ ] filter_controller.js - фильтры статистики
-- [ ] booking_controller.js - календарь бронирований
+### 🐛 Исправлены критичные баги (2/5)
+- ✅ Московское время (UTC+3) везде - установлено
+- ✅ Статусы на русском в UI - функция translateStatus()
 
 ---
 
-## 🔥 ТЕКУЩИЙ СТАТУС
+## ⏳ В работе (0 задач)
 
-### Можно запустить?
-**ДА!** ✅
-
-```bash
-bin/rails db:migrate
-bin/rails db:seed
-bin/rails server
-```
-
-Откройте http://localhost:3000, войдите как `superadmin@fastchange.com` / `password123`
-
-### Что работает?
-- ✅ Регистрация/Вход (Devise)
-- ✅ Dashboard с разными видами по ролям
-- ✅ Navbar и Sidebar
-- ✅ Модели с бизнес-логикой
-- ✅ База данных с тестовыми пользователями
-
-### Что НЕ работает?
-- ❌ Создание транзакций (контроллер не создан)
-- ❌ Платежные формы (контроллер не создан)
-- ❌ QR-коды (логика не реализована)
-- ❌ Статистика (views нет)
-- ❌ Заявки на вывод (контроллер не создан)
-- ❌ Экскурсии (контроллер не создан)
-- ❌ Telegram бот
-- ❌ Rapira API интеграция
+*Нет активных задач*
 
 ---
 
-## 📋 TODO LIST (по приоритетам)
+## 🎯 Следующие приоритеты
 
-### 🔥 ПРИОРИТЕТ 1 (КРИТИЧНО)
-- [ ] **TransactionsController** - создание, просмотр, QR-коды
-- [ ] **PaymentFormsController** - CRUD, генерация токенов
-- [ ] **StatisticsController** - фильтры (дата, роль, пользователь)
-- [ ] **Pundit Policies** - для всех ресурсов
-- [ ] **Views для Transactions** - index, show, new, _form
-- [ ] **Views для PaymentForms** - index, show, new, _form, qr_code
-- [ ] **QR Code генерация** - rqrcode gem
+### 🔥 ПРИОРИТЕТ 1: База данных (3 задачи)
+- ⏳ Создать Supabase миграции - таблица users (роли, иерархия)
+- ⏳ Создать Supabase миграции - таблица tours (экскурсии)
+- ⏳ Создать Supabase миграции - таблицы bookings, reviews
 
-### 🔥 ПРИОРИТЕТ 2 (ВЫСОКИЙ)
-- [ ] **WithdrawalRequestsController** - создание заявок админами
-- [ ] **Admin::WithdrawalRequestsController** - одобрение супер-админом
-- [ ] **Admin::ExchangerRequestsController** - общие заявки
-- [ ] **UpdateExchangeRatesJob** - Rapira API интеграция
-- [ ] **WalletsController** - CRUD кошельков TRC20
-- [ ] **Views для Withdrawals** - index, show, new
+### 🔥 ПРИОРИТЕТ 2: Backend API (6 задач)
+- ⏳ Backend API: Регистрация и логин (JWT токены)
+- ⏳ Backend API: Middleware проверки ролей
+- ⏳ Backend API: CRUD пользователей
+- ⏳ Backend API: CRUD экскурсий
+- ⏳ Backend API: Публичный эндпоинт - список экскурсий с фильтрами
+- ⏳ Backend API: Бронирование экскурсий
 
-### 🔥 ПРИОРИТЕТ 3 (СРЕДНИЙ)
-- [ ] **ToursController** - CRUD экскурсий
-- [ ] **Public::ToursController** - каталог (как Tripster)
-- [ ] **BookingsController** - бронирования
-- [ ] **ReviewsController** - отзывы
-- [ ] **CashbookCardsController** - пополнение
-- [ ] **Views для Tours** - catalog, show, new, calendar
-- [ ] **Views для Bookings** - index, show, voucher
-
-### 🔥 ПРИОРИТЕТ 4 (НИЗКИЙ)
-- [ ] **Telegram Bot** - уведомления
-- [ ] **Публичный лендинг** - главная как Tripster
-- [ ] **RSpec тесты** - models, controllers, requests
-- [ ] **Мобильная адаптация** - responsive design
+### 🔥 ПРИОРИТЕТ 3: Личные кабинеты (4 задачи)
+- ⏳ Frontend: Роутинг + защищенные маршруты
+- ⏳ Frontend: Дашборд Супер-Админа
+- ⏳ Frontend: Дашборд Админа
+- ⏳ Frontend: Дашборд Менеджера/Гида
 
 ---
 
-## 🔧 ИЗВЕСТНЫЕ БАГИ (из ТЗ)
+## 📈 Прогресс по категориям
 
-### Уже исправлены в коде:
-- ✅ Московское время (UTC+3) - `config.time_zone = "Moscow"`
-- ✅ Статусы на русском - `ru.yml` с переводами
-- ✅ Комиссии 2.8% + 0.2% - логика в WithdrawalRequest
+| Категория | Выполнено | Всего | %  |
+|-----------|-----------|-------|-----|
+| 🏗️ Инфраструктура | 3 | 3 | 100% |
+| 🎨 Публичная часть | 5 | 5 | 100% |
+| 🗄️ База данных | 0 | 3 | 0% |
+| 🔐 Аутентификация | 1 | 4 | 25% |
+| 👤 Пользователи | 0 | 1 | 0% |
+| 🏝️ Backend экскурсии | 0 | 4 | 0% |
+| 📊 Дашборды | 0 | 3 | 0% |
+| 💰 Финансы | 0 | 6 | 0% |
+| 💸 Вывод средств | 0 | 4 | 0% |
+| 🔄 Интеграции | 0 | 2 | 0% |
+| 🐛 Баги | 2 | 5 | 40% |
+| 📱 Полировка | 0 | 3 | 0% |
+| 🧪 Тестирование | 0 | 1 | 0% |
+| 🚀 Деплой | 0 | 1 | 0% |
 
-### Нужно будет проверить после реализации:
-- ⏳ Транзакции записываются со статусом "успешно"
-- ⏳ QR-код правильного размера
-- ⏳ Кнопка "Мой QR" работает в Safari
-- ⏳ Потерянные пользователи (Rubi, Yoska, Usama)
-- ⏳ Переназначение менеджеров между админами
-- ⏳ Права супер-админа у новых админов
-
----
-
-## 📈 ПРОГРЕСС ПО МОДУЛЯМ
-
-| Модуль | Прогресс | Статус |
-|--------|----------|--------|
-| Инфраструктура | 100% | ✅ Готово |
-| База данных | 100% | ✅ Готово |
-| Модели | 100% | ✅ Готово |
-| Обмен валют | 20% | 🟡 В работе |
-| Вывод средств | 15% | 🟡 В работе |
-| Статистика | 10% | 🟡 В работе |
-| Экскурсии | 25% | 🟡 В работе |
-| Бронирования | 20% | 🟡 В работе |
-| Кэшбук | 15% | 🟡 В работе |
-| Авторизация | 50% | 🟡 В работе |
-| UI/UX | 30% | 🟡 В работе |
-| Тестирование | 0% | ❌ Не начато |
-| Деплой | 50% | 🟡 В работе |
-
-**Общий прогресс: ~40%**
+**Общий прогресс**: **11 из 45 задач (24%)**
 
 ---
 
-## 🚀 СЛЕДУЮЩИЕ ШАГИ
+## 🎨 Визуальная концепция (реализована)
 
-### Ближайшие задачи (1-2 дня):
-1. **TransactionsController** - CRUD + QR-коды
-2. **PaymentFormsController** - CRUD + публичные ссылки
-3. **Pundit Policies** - TransactionPolicy, PaymentFormPolicy
-4. **Views для транзакций** - красивые таблицы с Tailwind
-5. **StatisticsController** - базовая версия с фильтрами
+✅ **ПУБЛИЧНАЯ ЧАСТЬ (для туристов):**
+- Туристическая тема (как Tripster, Airbnb Experiences)
+- Яркие фото Таиланда, экскурсий
+- Тропические цвета (бирюзовый #00CED1, коралловый #FF6B6B, золотой #FFD700)
+- Крупные изображения, дружелюбные тексты
+- **НИ СЛОВА про обмен валют на главной!**
 
-### Средний срок (3-5 дней):
-6. **WithdrawalRequests** - полный workflow
-7. **Admin панель** - управление пользователями, курсами
-8. **Rapira API** - интеграция, Sidekiq job
-9. **Wallets** - TRC20 с валидацией
-10. **Telegram Bot** - базовые уведомления
-
-### Долгосрочные (1-2 недели):
-11. **Tours** - полный CRUD + календарь
-12. **Bookings** - система бронирований
-13. **Reviews** - отзывы и рейтинги
-14. **Публичный лендинг** - как Tripster
-15. **Тестирование** - RSpec coverage 80%+
+⏳ **ЛИЧНЫЕ КАБИНЕТЫ (для гидов/админов):**
+- Строгий деловой интерфейс (как Notion, Trello)
+- Раздел "Финансы" - скрыт за отдельным пунктом меню
+- Функции обмена валют только внутри раздела "Платежи"
 
 ---
 
-## 💾 СТРУКТУРА ФАЙЛОВ
+## 🔧 Технический стек (настроен)
 
-```
-fastchange/
-├── 📁 app/
-│   ├── controllers/ (2/15 готово)
-│   ├── models/ (16/16 готово) ✅
-│   ├── views/ (5/30 готово)
-│   ├── policies/ (0/8 готово)
-│   ├── jobs/ (0/3 готово)
-│   └── services/ (0/3 готово)
-├── 📁 config/
-│   ├── initializers/ (6/6 готово) ✅
-│   ├── locales/ (2/2 готово) ✅
-│   ├── routes.rb ✅
-│   └── database.yml ✅
-├── 📁 db/
-│   ├── migrate/ (16 files) ✅
-│   └── seeds.rb ✅
-├── .env ✅
-├── Gemfile ✅
-├── README.md ✅
-├── SETUP_INSTRUCTIONS.md ✅
-└── PROJECT_STATUS.md ✅ (этот файл)
-```
+### Frontend
+- ✅ React 18 + TypeScript
+- ✅ Vite (сборщик)
+- ✅ React Router v6
+- ✅ TanStack Query (React Query)
+- ✅ Zustand (state management)
+- ✅ TailwindCSS
+- ✅ Shadcn/ui (Radix UI + Tailwind)
+- ✅ Axios
+- ⏳ React Hook Form + Zod
+- ⏳ QRCode.react
+- ⏳ Recharts
+- ⏳ date-fns
 
----
+### Backend
+- ✅ FastAPI
+- ✅ Python 3.11+
+- ✅ Pydantic v2
+- ⏳ SQLAlchemy 2.0
+- ⏳ Alembic (миграции)
+- ⏳ asyncpg
+- ✅ python-jose (JWT)
+- ✅ passlib + bcrypt
+- ⏳ httpx
+- ⏳ Celery + Redis
+- ⏳ python-telegram-bot
 
-## 📞 КОНТАКТЫ И РЕСУРСЫ
-
-- **ТЗ**: `COMPREHENSIVE_PROJECT_SPEC.md`
-- **Setup**: `SETUP_INSTRUCTIONS.md`
-- **README**: `README.md`
-- **Database URL**: В `.env`
-- **Telegram Bot**: Token в `.env`
+### База данных
+- ✅ PostgreSQL на Railway
+- ⏳ Supabase (Auth, Realtime, Storage)
+- ⏳ Миграции Alembic
 
 ---
 
-**🎯 Главная цель**: Создать работающую MVP версию к концу недели!
+## 🐛 Известные баги
 
-**Текущий фокус**: Транзакции → Платежные формы → Статистика
+### 🚨 Критичные (осталось 3):
+- ⏳ Транзакции не записываются со статусом "успешно"
+- ⏳ QR-код меньше окошка под него
+- ⏳ Кнопка "Мой QR" не работает в Safari
+
+### ⚠️ Средние:
+- ⏳ Потерянные пользователи (Rubi, Yoska, usama)
+- ⏳ Переназначение менеджера (flower@nadi.com)
+- ⏳ Временные права супер-админа для нового админа
+- ⏳ Кнопки занимают много места
 
 ---
 
-*Последнее обновление: 04.01.2025, 15:30 MSK*
+## 🎯 Milestone 1: Публичный маркетплейс ✅
 
+**Цель**: Показать рабочий туристический сайт с каталогом экскурсий
+
+**Статус**: ✅ **ГОТОВО**
+
+**Что работает**:
+- ✅ Яркая главная страница
+- ✅ Каталог экскурсий с фильтрами
+- ✅ Карточки туров с фото и описанием
+- ✅ Форма бронирования
+- ✅ Страницы логина/регистрации
+- ✅ Адаптивный дизайн
+
+**Можно показывать клиенту!** 🎉
+
+---
+
+## 🎯 Milestone 2: Backend + База данных (в планах)
+
+**Цель**: Подключить реальную БД, работающее бронирование
+
+**Задачи**:
+- ⏳ Supabase миграции (users, tours, bookings, reviews)
+- ⏳ Backend CRUD экскурсий
+- ⏳ Backend бронирования с проверкой доступности
+- ⏳ JWT аутентификация
+- ⏳ Система ролей (супер-админ, админ, менеджер, клиент)
+
+---
+
+## 🎯 Milestone 3: Личные кабинеты (в планах)
+
+**Цель**: Дашборды для всех ролей
+
+**Задачи**:
+- ⏳ Дашборд менеджера (мои экскурсии, бронирования)
+- ⏳ Дашборд админа (своя когорта)
+- ⏳ Дашборд супер-админа (вся система)
+- ⏳ Раздел "Финансы" (скрытый)
+
+---
+
+## 🎯 Milestone 4: Финансы (в планах)
+
+**Цель**: Обмен валют, платежи, вывод средств
+
+**Задачи**:
+- ⏳ Курсы валют (базовый + объемные)
+- ⏳ Транзакции обмена с QR-кодами
+- ⏳ Статичные платежные формы
+- ⏳ Система вывода средств (админы → обменники)
+- ⏳ Управление долгами перед обменниками
+- ⏳ Интеграция Rapira API
+
+---
+
+## 📞 Контакты
+
+**Email**: farukh_kerimov@mail.ru  
+**Супер-админ**: +79177445182  
+**Гид**: +79932890755
+
+---
+
+**ThaiGuide Pro 3.0** - В разработке 🚀
