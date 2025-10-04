@@ -1,9 +1,6 @@
 Rails.application.routes.draw do
-  # Devise для аутентификации
-  devise_for :users, controllers: {
-    sessions: 'users/sessions',
-    registrations: 'users/registrations'
-  }
+  # Devise для аутентификации (используем дефолтные контроллеры)
+  devise_for :users
 
   # Главная страница
   root "dashboard#index"
