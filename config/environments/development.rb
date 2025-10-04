@@ -29,5 +29,9 @@ Rails.application.configure do
   config.active_record.migration_error = :page_load
   config.active_record.verbose_query_logs = true
   config.assets.quiet = true
+  
+  # Allow Railway hosts in development mode too
+  config.hosts << "gide-production.up.railway.app"
+  config.hosts << ".railway.app"
 end
 
