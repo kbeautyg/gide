@@ -33,5 +33,8 @@ Rails.application.configure do
   # Allow Railway hosts in development mode too
   config.hosts << "gide-production.up.railway.app"
   config.hosts << ".railway.app"
+  
+  # Disable migration check in Railway deployment
+  config.active_record.migration_error = false
 end
 
