@@ -1,7 +1,7 @@
 class Booking < ApplicationRecord
   belongs_to :tour
   belongs_to :client, class_name: 'User'
-  belongs_to :transaction, optional: true
+  belongs_to :payment_transaction, class_name: 'Transaction', foreign_key: 'transaction_id', optional: true
   has_many :reviews, dependent: :nullify
 
   # Статусы
@@ -72,10 +72,10 @@ class Booking < ApplicationRecord
   end
 
   # Оплатить бронирование
-  def mark_paid!(transaction = nil)
+  def mark_paid!(txn = nil)
     update!(
       payment_status: :paid,
-      transaction: transaction
+      payment_transaction: txn
     )
   end
 
