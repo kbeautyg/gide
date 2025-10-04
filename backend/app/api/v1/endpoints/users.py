@@ -3,6 +3,7 @@
 """
 from fastapi import APIRouter, Depends
 from pydantic import BaseModel
+from typing import Optional
 
 from app.core.security import get_current_user_id
 
@@ -13,8 +14,8 @@ class UserProfile(BaseModel):
     """Профиль пользователя"""
     id: str
     phone: str
-    email: str | None = None
-    name: str | None = None
+    email: Optional[str] = None
+    name: Optional[str] = None
     role: str
     balance_rub: float = 0.0
     balance_usd: float = 0.0

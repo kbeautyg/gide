@@ -4,6 +4,7 @@
 from fastapi import APIRouter
 from pydantic import BaseModel, Field
 from datetime import datetime, date
+from typing import Optional
 
 router = APIRouter()
 
@@ -15,7 +16,7 @@ class BookingCreate(BaseModel):
     participants_count: int = Field(..., ge=1, description="Количество участников")
     client_name: str = Field(..., description="Имя клиента")
     client_phone: str = Field(..., description="Телефон клиента")
-    client_email: str | None = Field(None, description="Email клиента")
+    client_email: Optional[str] = Field(None, description="Email клиента")
 
 
 class Booking(BaseModel):

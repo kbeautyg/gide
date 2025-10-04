@@ -3,6 +3,7 @@
 """
 from fastapi import APIRouter, HTTPException, status
 from pydantic import BaseModel, Field
+from typing import Optional
 
 from app.core.security import create_access_token, get_password_hash, verify_password
 
@@ -18,9 +19,9 @@ class LoginRequest(BaseModel):
 class RegisterRequest(BaseModel):
     """Запрос на регистрацию"""
     phone: str = Field(..., description="Номер телефона")
-    email: str | None = Field(None, description="Email")
+    email: Optional[str] = Field(None, description="Email")
     password: str = Field(..., description="Пароль")
-    name: str | None = Field(None, description="Имя")
+    name: Optional[str] = Field(None, description="Имя")
 
 
 class TokenResponse(BaseModel):

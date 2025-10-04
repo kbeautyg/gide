@@ -3,7 +3,7 @@
 """
 from fastapi import APIRouter, Query
 from pydantic import BaseModel, Field
-from typing import List
+from typing import List, Optional
 from datetime import datetime
 
 router = APIRouter()
@@ -48,10 +48,10 @@ class TourList(BaseModel):
 
 @router.get("/", response_model=TourList)
 async def get_tours(
-    location: str | None = Query(None, description="Фильтр по локации"),
-    category: str | None = Query(None, description="Фильтр по категории"),
-    min_price: float | None = Query(None, description="Минимальная цена"),
-    max_price: float | None = Query(None, description="Максимальная цена"),
+    location: Optional[str] = Query(None, description="Фильтр по локации"),
+    category: Optional[str] = Query(None, description="Фильтр по категории"),
+    min_price: Optional[float] = Query(None, description="Минимальная цена"),
+    max_price: Optional[float] = Query(None, description="Максимальная цена"),
     page: int = Query(1, ge=1, description="Номер страницы"),
     page_size: int = Query(12, ge=1, le=100, description="Размер страницы"),
 ):
