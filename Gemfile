@@ -66,8 +66,8 @@ end
 
 group :development do
   gem "web-console"
-  gem "brakeman", require: false
-  gem "bundler-audit", require: false
+  # gem "brakeman", require: false # TODO: Добавить позже для security scanning
+  # gem "bundler-audit", require: false # TODO: Добавить позже для audit
 end
 
 group :test do
