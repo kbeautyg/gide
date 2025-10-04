@@ -46,7 +46,7 @@ module Fastchange
     config.active_job.queue_adapter = :async # Временно используем async
 
     # Middleware configuration
-    config.middleware.use Rack::Attack
+    # config.middleware.use Rack::Attack # TODO: Добавить rack-attack gem позже для rate limiting
 
     # Don't generate system test files.
     config.generators.system_tests = nil
