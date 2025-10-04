@@ -41,6 +41,9 @@ class User < ApplicationRecord
   has_one :balance, dependent: :destroy
   after_create :create_balance!
 
+  # Платежные ссылки (для менеджеров)
+  has_many :payment_links, foreign_key: 'manager_id', dependent: :destroy
+  
   # Транзакции (как менеджер)
   has_many :managed_transactions, class_name: 'Transaction', foreign_key: 'manager_id', dependent: :destroy
   
