@@ -1,0 +1,5 @@
+# Railway ignore - оставляем только backend
+frontend/
+*.md
+.git/
+.gitignore

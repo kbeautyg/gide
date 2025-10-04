@@ -27,24 +27,36 @@
 
 ## 🚀 Быстрый старт
 
-### Backend
+### Локальная разработка
 
+**Backend:**
 ```bash
 cd backend
 python -m venv venv
 source venv/bin/activate  # Windows: venv\Scripts\activate
 pip install -r requirements.txt
-alembic upgrade head
 uvicorn app.main:app --reload --port 8081
 ```
 
-### Frontend
-
+**Frontend:**
 ```bash
 cd frontend
 npm install
 npm run dev
 ```
+
+### Деплой на Railway
+
+**Важно!** Перед деплоем:
+1. В Railway Settings установите **Root Directory**: `backend`
+2. Переменные окружения из `.env.example`
+3. Push код в GitHub
+4. Railway автоматически задеплоит
+
+📖 **Подробная инструкция**: см. файлы:
+- `RAILWAY_FIX.md` - решение проблем
+- `RAILWAY_FINAL_FIX.md` - финальное решение pip
+- `RAILWAY_SCREENSHOT_GUIDE.md` - визуальная инструкция
 
 ## 📦 Структура проекта
 

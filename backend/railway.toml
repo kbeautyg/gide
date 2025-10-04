@@ -1,10 +1,9 @@
 # Railway конфигурация для Backend (если деплоить из папки backend)
 [build]
 builder = "NIXPACKS"
-buildCommand = "python3 -m pip install --upgrade pip && python3 -m pip install -r requirements.txt"
 
 [deploy]
-startCommand = "python3 -m uvicorn app.main:app --host 0.0.0.0 --port $PORT"
+startCommand = "uvicorn app.main:app --host 0.0.0.0 --port $PORT"
 healthcheckPath = "/health"
 healthcheckTimeout = 100
 restartPolicyType = "ON_FAILURE"
