@@ -29,9 +29,9 @@ gem "bootsnap", require: false
 gem "devise", "~> 4.9"
 gem "pundit", "~> 2.3"
 
-# Background Jobs
-gem "sidekiq", "~> 7.2"
-gem "redis", "~> 5.0"
+# Background Jobs (TODO: Добавить позже - ПРИОРИТЕТ 2)
+# gem "sidekiq", "~> 7.2"
+gem "redis", "~> 5.0" # Оставляем Redis для кэширования
 
 # API & HTTP
 gem "httparty", "~> 0.21"

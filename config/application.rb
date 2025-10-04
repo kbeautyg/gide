@@ -42,7 +42,8 @@ module Fastchange
     end
 
     # Active Job configuration
-    config.active_job.queue_adapter = :sidekiq
+    # config.active_job.queue_adapter = :sidekiq # TODO: Раскомментировать с Sidekiq
+    config.active_job.queue_adapter = :async # Временно используем async
 
     # Middleware configuration
     config.middleware.use Rack::Attack

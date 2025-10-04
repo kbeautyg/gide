@@ -128,10 +128,11 @@ Rails.application.routes.draw do
   end
 
   # Sidekiq Web UI (только для супер-админа)
-  require 'sidekiq/web'
-  authenticate :user, ->(user) { user.super_admin? } do
-    mount Sidekiq::Web => '/sidekiq'
-  end
+  # TODO: Раскомментировать когда добавим Sidekiq обратно
+  # require 'sidekiq/web'
+  # authenticate :user, ->(user) { user.super_admin? } do
+  #   mount Sidekiq::Web => '/sidekiq'
+  # end
 
   # Health check
   get "up" => "rails/health#show", as: :rails_health_check
