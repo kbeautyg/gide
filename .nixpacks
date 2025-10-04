@@ -1,0 +1,2 @@
+# Указываем Railway использовать Python provider
+providers = ["python"]

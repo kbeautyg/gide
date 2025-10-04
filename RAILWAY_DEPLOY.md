@@ -1,8 +1,32 @@
 # 🚂 Деплой на Railway - ThaiGuide Pro 3.0
 
-## 🎯 Два способа деплоя
+## 🚨 ИСПРАВЛЕНА ОШИБКА "pip: command not found"
 
-### Способ 1: Деплой Backend из корня репозитория (РЕКОМЕНДУЕТСЯ)
+Все конфигурационные файлы обновлены для использования `python3 -m pip` вместо просто `pip`.
+
+## 🎯 Три способа деплоя
+
+### ⚡ Способ 1: Простой (РЕКОМЕНДУЕТСЯ ДЛЯ НОВИЧКОВ)
+
+1. **В Railway Settings установите Root Directory: `backend`**
+
+2. **Railway автоматически обнаружит Python**
+   - Файл `requirements.txt` будет найден
+   - Python 3.11 установится автоматически
+   - Файл `.python-version` указывает версию
+
+3. **В Settings → Deploy добавьте Start Command:**
+   ```
+   python3 -m uvicorn app.main:app --host 0.0.0.0 --port $PORT
+   ```
+
+4. **Добавьте переменные окружения** (см. ниже)
+
+5. **Deploy!**
+
+---
+
+### 🔧 Способ 2: Деплой Backend из корня репозитория (с конфигурацией)
 
 1. **Создайте новый проект на Railway**
    - Зайдите на https://railway.app
@@ -33,16 +57,18 @@
 
 ---
 
-### Способ 2: Деплой из папки backend (альтернативный)
+### 🐛 Способ 3: Ручная настройка (если автоматика не работает)
 
 1. **Создайте проект на Railway**
 
-2. **В настройках проекта установите Root Directory**
-   - Settings → Root Directory → `backend`
+2. **В Settings установите:**
+   - Root Directory: `backend`
+   - Build Command: `python3 -m pip install --upgrade pip && python3 -m pip install -r requirements.txt`
+   - Start Command: `python3 -m uvicorn app.main:app --host 0.0.0.0 --port $PORT`
 
-3. **Railway использует файл `backend/railway.toml`**
+3. **Установите переменные окружения**
 
-4. **Установите те же переменные окружения**
+4. **Redeploy**
 
 ---
 
@@ -92,17 +118,26 @@
 
 ## 🔧 Решение проблем
 
+### ⚠️ Проблема: "pip: command not found"
+
+**Решение**: ✅ УЖЕ ИСПРАВЛЕНО
+- Все файлы обновлены для использования `python3 -m pip`
+- Или установите Root Directory: `backend` - Railway автоматически установит pip
+
 ### Проблема: "Script start.sh not found"
 
 **Решение**: Используйте файлы конфигурации:
 - ✅ Создан `railway.toml` в корне
 - ✅ Создан `nixpacks.toml` в корне
 - ✅ Создан `backend/Procfile`
+- ✅ Создан `backend/.python-version`
+
+**ИЛИ** установите Root Directory: `backend` в настройках Railway
 
 ### Проблема: "Cannot find module 'app.main'"
 
 **Решение**: Убедитесь что:
-- Railway работает из правильной директории
+- Railway работает из правильной директории (`backend`)
 - В `startCommand` указан `cd backend &&` если деплоите из корня
 
 ### Проблема: "Port already in use"
