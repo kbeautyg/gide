@@ -26,14 +26,11 @@ class User < ApplicationRecord
     !persisted? || !password.nil? || !password_confirmation.nil?
   end
 
-  # Роли (enum)
+  # Роли (только 3 роли для MVP)
   enum role: {
-    super_admin: 0,
-    admin: 1,
-    super_manager: 2,
-    manager: 3,
-    exchanger: 4,
-    client: 5
+    admin: 0,
+    manager: 1,
+    client: 2
   }
 
   # Иерархия (self-referencing association)
