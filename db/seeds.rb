@@ -2,6 +2,11 @@
 
 puts "🌱 Начинаем заполнение базы данных..."
 
+# Хелпер для генерации фейкового email из телефона
+def generate_email(phone)
+  "#{phone.gsub(/\D/, '')}@fastchange.local"
+end
+
 # Очистка (только для development!)
 if Rails.env.development?
   puts "🧹 Очистка существующих данных..."
@@ -12,9 +17,10 @@ end
 
 # 1. Создаем Супер-Админа
 puts "👑 Создаем Супер-Админа..."
+super_admin_phone = ENV['SUPER_ADMIN_PHONE'] || '+79177445182'
 super_admin = User.create!(
-  email: 'superadmin@fastchange.com',
-  phone: ENV['SUPER_ADMIN_PHONE'] || '+79177445182',
+  email: "#{super_admin_phone.gsub(/\D/, '')}@fastchange.local",  # Генерим фейковый email
+  phone: super_admin_phone,
   full_name: 'Супер Админ',
   password: 'password123',
   password_confirmation: 'password123',
@@ -22,7 +28,7 @@ super_admin = User.create!(
   active: true
 )
 Balance.create!(user: super_admin)
-puts "✅ Супер-Админ создан: #{super_admin.email}"
+puts "✅ Супер-Админ создан: #{super_admin.phone}"
 
 # 2. Создаем базовые курсы
 puts "💱 Устанавливаем базовые курсы..."
@@ -54,9 +60,10 @@ end
 
 # 4. Создаем Админов
 puts "👨‍💼 Создаем Админов..."
+admin_farukh_phone = '+79111111111'
 admin_farukh = User.create!(
-  email: 'farukh_kerimov@mail.ru',
-  phone: '+79111111111',
+  email: generate_email(admin_farukh_phone),
+  phone: admin_farukh_phone,
   full_name: 'Farukh Kerimov',
   password: 'password123',
   password_confirmation: 'password123',
@@ -66,9 +73,10 @@ admin_farukh = User.create!(
 )
 Balance.create!(user: admin_farukh)
 
+admin_kiril_phone = '+79222222222'
 admin_kiril = User.create!(
-  email: 'kiril@kiril.com',
-  phone: '+79222222222',
+  email: generate_email(admin_kiril_phone),
+  phone: admin_kiril_phone,
   full_name: 'Kiril',
   password: 'password123',
   password_confirmation: 'password123',
@@ -82,9 +90,10 @@ puts "✅ Создано #{User.where(role: :admin).count} админов"
 
 # 5. Создаем Супер-Менеджеров
 puts "👔 Создаем Супер-Менеджеров..."
+super_manager_phone = '+79333333333'
 super_manager = User.create!(
-  email: 'supermanager@fastchange.com',
-  phone: '+79333333333',
+  email: generate_email(super_manager_phone),
+  phone: super_manager_phone,
   full_name: 'Супер Менеджер',
   password: 'password123',
   password_confirmation: 'password123',
@@ -105,7 +114,7 @@ managers_data = [
 
 managers_data.each do |data|
   manager = User.create!(
-    email: data[:email],
+    email: generate_email(data[:phone]),
     phone: data[:phone],
     full_name: data[:name],
     password: 'password123',
@@ -121,9 +130,10 @@ puts "✅ Создано #{User.where(role: :manager).count} менеджеро�
 
 # 7. Создаем Обменников
 puts "💵 Создаем Обменников..."
+exchanger_phone = '+79888888888'
 exchanger = User.create!(
-  email: 'exchanger@fastchange.com',
-  phone: '+79888888888',
+  email: generate_email(exchanger_phone),
+  phone: exchanger_phone,
   full_name: 'Обменник 1',
   password: 'password123',
   password_confirmation: 'password123',
@@ -135,9 +145,10 @@ Balance.create!(user: exchanger)
 # 8. Создаем тестовых Клиентов
 puts "👥 Создаем тестовых клиентов..."
 3.times do |i|
+  client_phone = "+7999999#{1000 + i}"
   client = User.create!(
-    email: "client#{i+1}@example.com",
-    phone: "+7999999#{1000 + i}",
+    email: generate_email(client_phone),
+    phone: client_phone,
     full_name: "Клиент #{i+1}",
     password: 'password123',
     password_confirmation: 'password123',
