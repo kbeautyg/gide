@@ -10,10 +10,8 @@ port ENV.fetch("PORT") { 3000 }
 
 environment ENV.fetch("RAILS_ENV") { "development" }
 
-# Disable PID file in production (Railway doesn't need it)
-unless ENV['RAILWAY_ENVIRONMENT']
-  pidfile ENV.fetch("PIDFILE") { "tmp/pids/server.pid" }
-end
+# Disable pidfile in production/container environments
+# pidfile ENV.fetch("PIDFILE") { "tmp/pids/server.pid" }
 
 workers ENV.fetch("WEB_CONCURRENCY") { 2 }
 
