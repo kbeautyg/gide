@@ -3,7 +3,7 @@ builder = "NIXPACKS"
 buildCommand = "bundle install --clean --force"
 
 [deploy]
-startCommand = "bundle exec rake db:migrate && bundle exec puma -C config/puma.rb"
+startCommand = "bundle exec rake db:reset && bundle exec puma -C config/puma.rb"
 restartPolicyType = "ON_FAILURE"
 restartPolicyMaxRetries = 10
 
