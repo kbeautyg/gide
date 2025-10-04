@@ -35,7 +35,7 @@ gem "redis", "~> 5.0"
 
 # API & HTTP
 gem "httparty", "~> 0.21"
-gem "telegram-bot-ruby", "~> 1.0"
+# gem "telegram-bot-ruby", "~> 1.0" # TODO: Добавить позже (ПРИОРИТЕТ 4)
 
 # QR Codes
 gem "rqrcode", "~> 2.2"
