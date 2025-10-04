@@ -20,5 +20,8 @@ Rails.application.configure do
 
   # Force SSL in production
   # config.force_ssl = true
+  
+  # Disable credentials requirement in production
+  config.require_master_key = false
 end
 
