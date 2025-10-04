@@ -1,0 +1,17 @@
+:concurrency: 5
+
+:queues:
+  - default
+  - mailers
+  - high_priority
+  - low_priority
+
+production:
+  :concurrency: 10
+
+staging:
+  :concurrency: 5
+
+development:
+  :concurrency: 2
+

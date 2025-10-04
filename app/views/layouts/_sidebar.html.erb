@@ -1,0 +1,59 @@
+<aside class="w-64 bg-white shadow-sm border-r border-gray-200 min-h-screen">
+  <nav class="mt-5 px-4 space-y-1">
+    <%= link_to dashboard_path, class: "flex items-center px-4 py-3 text-sm font-medium rounded-lg #{current_page?(dashboard_path) ? 'bg-indigo-50 text-indigo-600' : 'text-gray-700 hover:bg-gray-50'}" do %>
+      <svg class="mr-3 h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path>
+      </svg>
+      <%= t('nav.dashboard') %>
+    <% end %>
+
+    <%= link_to transactions_path, class: "flex items-center px-4 py-3 text-sm font-medium rounded-lg #{current_page?(transactions_path) ? 'bg-indigo-50 text-indigo-600' : 'text-gray-700 hover:bg-gray-50'}" do %>
+      <svg class="mr-3 h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
+      </svg>
+      <%= t('nav.transactions') %>
+    <% end %>
+
+    <% if current_user.manager? || current_user.super_manager? %>
+      <%= link_to payment_forms_path, class: "flex items-center px-4 py-3 text-sm font-medium rounded-lg text-gray-700 hover:bg-gray-50" do %>
+        <svg class="mr-3 h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"></path>
+        </svg>
+        <%= t('nav.payment_forms') %>
+      <% end %>
+
+      <%= link_to tours_path, class: "flex items-center px-4 py-3 text-sm font-medium rounded-lg text-gray-700 hover:bg-gray-50" do %>
+        <svg class="mr-3 h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"></path>
+        </svg>
+        <%= t('nav.tours') %>
+      <% end %>
+    <% end %>
+
+    <% if current_user.admin? %>
+      <%= link_to withdrawal_requests_path, class: "flex items-center px-4 py-3 text-sm font-medium rounded-lg text-gray-700 hover:bg-gray-50" do %>
+        <svg class="mr-3 h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"></path>
+        </svg>
+        <%= t('nav.withdrawal_requests') %>
+      <% end %>
+    <% end %>
+
+    <% if current_user.super_admin? %>
+      <%= link_to admin_users_path, class: "flex items-center px-4 py-3 text-sm font-medium rounded-lg text-gray-700 hover:bg-gray-50" do %>
+        <svg class="mr-3 h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path>
+        </svg>
+        <%= t('nav.users') %>
+      <% end %>
+    <% end %>
+
+    <%= link_to statistics_path, class: "flex items-center px-4 py-3 text-sm font-medium rounded-lg text-gray-700 hover:bg-gray-50" do %>
+      <svg class="mr-3 h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+      </svg>
+      <%= t('nav.statistics') %>
+    <% end %>
+  </nav>
+</aside>
+

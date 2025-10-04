@@ -1,0 +1,141 @@
+ru:
+  app_name: "FastChange 3.0"
+  
+  # Навигация
+  nav:
+    dashboard: "Главная"
+    transactions: "Транзакции"
+    payment_forms: "Платежные формы"
+    tours: "Экскурсии"
+    bookings: "Бронирования"
+    statistics: "Статистика"
+    users: "Пользователи"
+    withdrawal_requests: "Заявки на вывод"
+    wallets: "Кошельки"
+    settings: "Настройки"
+    logout: "Выход"
+
+  # Роли пользователей
+  roles:
+    super_admin: "Супер-Админ"
+    admin: "Админ"
+    super_manager: "Супер-Менеджер"
+    manager: "Менеджер"
+    exchanger: "Обменник"
+    client: "Клиент"
+
+  # Статусы транзакций (🔧 ИСПРАВЛЕНИЕ БАГА)
+  transaction:
+    status:
+      pending: "В ожидании"
+      completed: "Выполнено"
+      declined: "Отклонено"
+      processing: "В обработке"
+      failed: "Ошибка"
+
+  # Статусы заявок на вывод
+  withdrawal:
+    status:
+      pending: "Ожидает подтверждения"
+      approved: "Одобрено"
+      in_progress: "В обработке"
+      completed: "Выполнено"
+      rejected: "Отклонено"
+
+  # Статусы бронирований
+  booking:
+    status:
+      pending: "Ожидает подтверждения"
+      confirmed: "Подтверждено"
+      cancelled: "Отменено"
+      completed: "Завершено"
+    payment_status:
+      pending: "Ожидает оплаты"
+      paid: "Оплачено"
+      refunded: "Возвращено"
+
+  # Валюты
+  currencies:
+    rub: "₽"
+    usd: "$"
+    thb: "฿"
+    usdt: "USDT"
+
+  # Кнопки
+  buttons:
+    create: "Создать"
+    edit: "Редактировать"
+    delete: "Удалить"
+    save: "Сохранить"
+    cancel: "Отмена"
+    back: "Назад"
+    confirm: "Подтвердить"
+    reject: "Отклонить"
+    approve: "Одобрить"
+    download: "Скачать"
+    generate_qr: "Создать QR-код"
+    view: "Просмотр"
+    filter: "Фильтр"
+
+  # Сообщения
+  messages:
+    success:
+      created: "Успешно создано"
+      updated: "Успешно обновлено"
+      deleted: "Успешно удалено"
+      approved: "Успешно одобрено"
+      rejected: "Успешно отклонено"
+    error:
+      generic: "Произошла ошибка"
+      unauthorized: "У вас нет прав для выполнения этого действия"
+      not_found: "Запись не найдена"
+      validation: "Проверьте правильность заполнения полей"
+
+  # Dashboard
+  dashboard:
+    welcome: "Добро пожаловать в FastChange"
+    total_balance: "Общий баланс"
+    today_transactions: "Сегодняшние транзакции"
+    pending_withdrawals: "Ожидающие заявки"
+    total_commission: "Общая комиссия"
+
+  # Формы
+  forms:
+    labels:
+      email: "Email"
+      phone: "Телефон"
+      password: "Пароль"
+      password_confirmation: "Подтверждение пароля"
+      amount: "Сумма"
+      currency: "Валюта"
+      rate: "Курс"
+      wallet_address: "Адрес кошелька TRC20"
+      description: "Описание"
+      title: "Название"
+      price: "Цена"
+      duration: "Длительность"
+      location: "Локация"
+
+  # Ошибки
+  errors:
+    messages:
+      blank: "не может быть пустым"
+      invalid: "имеет неверное значение"
+      taken: "уже занято"
+      too_short: "слишком короткое"
+      too_long: "слишком длинное"
+      confirmation: "не совпадает"
+
+  # Время (🔧 ИСПРАВЛЕНИЕ БАГА - Московское время)
+  time:
+    formats:
+      default: "%d.%m.%Y %H:%M"
+      short: "%d.%m %H:%M"
+      long: "%d %B %Y, %H:%M"
+
+  date:
+    formats:
+      default: "%d.%m.%Y"
+      short: "%d.%m"
+      long: "%d %B %Y"
+

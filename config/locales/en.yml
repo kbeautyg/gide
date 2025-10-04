@@ -1,0 +1,19 @@
+en:
+  app_name: "FastChange 3.0"
+  
+  roles:
+    super_admin: "Super Admin"
+    admin: "Admin"
+    super_manager: "Super Manager"
+    manager: "Manager"
+    exchanger: "Exchanger"
+    client: "Client"
+
+  transaction:
+    status:
+      pending: "Pending"
+      completed: "Completed"
+      declined: "Declined"
+      processing: "Processing"
+      failed: "Failed"
+
