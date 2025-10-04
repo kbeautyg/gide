@@ -3,7 +3,7 @@
  */
 import axios from 'axios'
 
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8081/api/v1'
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'https://gide-production.up.railway.app/api/v1'
 
 // Создаем axios instance
 export const api = axios.create({
