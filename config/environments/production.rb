@@ -23,5 +23,9 @@ Rails.application.configure do
   
   # Disable credentials requirement in production
   config.require_master_key = false
+  
+  # Allow Railway hosts
+  config.hosts << "gide-production.up.railway.app"
+  config.hosts << ".railway.app" # Allow all Railway subdomains
 end
 
