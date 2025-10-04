@@ -11,7 +11,7 @@ psycopg2-binary==2.9.9
 
 # Supabase
 supabase==2.3.4
-postgrest==0.16.0
+postgrest==0.15.0
 
 # Аутентификация и безопасность
 python-jose[cryptography]==3.3.0
