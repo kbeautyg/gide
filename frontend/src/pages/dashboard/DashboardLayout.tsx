@@ -10,12 +10,16 @@ import {
   Settings, 
   LogOut,
   Home,
-  Calendar
+  Calendar,
+  ChevronDown,
+  ChevronUp
 } from 'lucide-react'
+import { useState } from 'react'
 
 export default function DashboardLayout() {
   const { user } = useAuthStore()
   const { logout } = useAuth()
+  const [dashboardsOpen, setDashboardsOpen] = useState(true)
 
   // Цвета для каждой роли
   const roleColors = {
@@ -26,36 +30,89 @@ export default function DashboardLayout() {
     guide: 'text-orange-600 bg-orange-50',
   }
 
-  // Определяем меню в зависимости от роли
-  const getMenuItems = () => {
+  // Определяем доступные дашборды в зависимости от роли
+  const getDashboards = () => {
     const role = user?.role
 
     if (role === 'super_admin') {
       return [
         { 
-          icon: LayoutDashboard, 
           label: 'Дашборд Супер-Админа', 
           path: '/dashboard/superadmin',
           color: roleColors.super_admin
         },
         { 
-          icon: LayoutDashboard, 
           label: 'Дашборд Админа', 
           path: '/dashboard/admin',
           color: roleColors.admin
         },
         { 
-          icon: LayoutDashboard, 
           label: 'Дашборд Супер-Менеджера', 
           path: '/dashboard/supermanager',
           color: roleColors.super_manager
         },
         { 
-          icon: LayoutDashboard, 
           label: 'Дашборд Менеджера', 
           path: '/dashboard/manager',
           color: roleColors.manager
         },
+      ]
+    }
+
+    if (role === 'admin') {
+      return [
+        { 
+          label: 'Дашборд Админа', 
+          path: '/dashboard/admin',
+          color: roleColors.admin
+        },
+        { 
+          label: 'Дашборд Супер-Менеджера', 
+          path: '/dashboard/supermanager',
+          color: roleColors.super_manager
+        },
+        { 
+          label: 'Дашборд Менеджера', 
+          path: '/dashboard/manager',
+          color: roleColors.manager
+        },
+      ]
+    }
+
+    if (role === 'super_manager') {
+      return [
+        { 
+          label: 'Дашборд Супер-Менеджера', 
+          path: '/dashboard/supermanager',
+          color: roleColors.super_manager
+        },
+        { 
+          label: 'Дашборд Менеджера', 
+          path: '/dashboard/manager',
+          color: roleColors.manager
+        },
+      ]
+    }
+
+    if (role === 'manager' || role === 'guide') {
+      return [
+        { 
+          label: 'Дашборд Менеджера', 
+          path: '/dashboard/manager',
+          color: roleColors.manager
+        },
+      ]
+    }
+
+    return []
+  }
+
+  // Определяем остальные пункты меню в зависимости от роли
+  const getMenuItems = () => {
+    const role = user?.role
+
+    if (role === 'super_admin') {
+      return [
         { icon: Users, label: 'Пользователи', path: '/dashboard/users' },
         { icon: MapPin, label: 'Все экскурсии', path: '/dashboard/all-tours' },
         { icon: Wallet, label: 'Финансы', path: '/dashboard/finances' },
@@ -65,24 +122,6 @@ export default function DashboardLayout() {
 
     if (role === 'admin') {
       return [
-        { 
-          icon: LayoutDashboard, 
-          label: 'Дашборд Админа', 
-          path: '/dashboard/admin',
-          color: roleColors.admin
-        },
-        { 
-          icon: LayoutDashboard, 
-          label: 'Дашборд Супер-Менеджера', 
-          path: '/dashboard/supermanager',
-          color: roleColors.super_manager
-        },
-        { 
-          icon: LayoutDashboard, 
-          label: 'Дашборд Менеджера', 
-          path: '/dashboard/manager',
-          color: roleColors.manager
-        },
         { icon: Users, label: 'Моя команда', path: '/dashboard/users' },
         { icon: MapPin, label: 'Все экскурсии', path: '/dashboard/all-tours' },
         { icon: Wallet, label: 'Финансы', path: '/dashboard/finances' },
@@ -92,18 +131,6 @@ export default function DashboardLayout() {
 
     if (role === 'super_manager') {
       return [
-        { 
-          icon: LayoutDashboard, 
-          label: 'Дашборд Супер-Менеджера', 
-          path: '/dashboard/supermanager',
-          color: roleColors.super_manager
-        },
-        { 
-          icon: LayoutDashboard, 
-          label: 'Дашборд Менеджера', 
-          path: '/dashboard/manager',
-          color: roleColors.manager
-        },
         { icon: Users, label: 'Моя команда', path: '/dashboard/users' },
         { icon: MapPin, label: 'Экскурсии', path: '/dashboard/all-tours' },
         { icon: Wallet, label: 'Финансы', path: '/dashboard/finances' },
@@ -112,23 +139,16 @@ export default function DashboardLayout() {
 
     if (role === 'manager' || role === 'guide') {
       return [
-        { 
-          icon: LayoutDashboard, 
-          label: 'Дашборд Менеджера', 
-          path: '/dashboard/manager',
-          color: roleColors.manager
-        },
         { icon: MapPin, label: 'Мои экскурсии', path: '/dashboard/my-tours' },
         { icon: Calendar, label: 'Бронирования', path: '/dashboard/bookings' },
         { icon: Wallet, label: 'Финансы', path: '/dashboard/finances' },
       ]
     }
 
-    return [
-      { icon: LayoutDashboard, label: 'Главная', path: '/dashboard' },
-    ]
+    return []
   }
 
+  const dashboards = getDashboards()
   const menuItems = getMenuItems()
 
   return (
@@ -145,6 +165,7 @@ export default function DashboardLayout() {
               <p className="text-sm text-gray-600">
                 {user?.role === 'super_admin' && 'Супер-админ'}
                 {user?.role === 'admin' && 'Админ'}
+                {user?.role === 'super_manager' && 'Супер-менеджер'}
                 {user?.role === 'manager' && 'Менеджер'}
                 {user?.role === 'guide' && 'Гид'}
                 {user?.role === 'client' && 'Клиент'}
@@ -168,6 +189,40 @@ export default function DashboardLayout() {
         {/* Sidebar */}
         <aside className="w-64 bg-white rounded-lg border p-4 h-fit sticky top-24">
           <nav className="space-y-2">
+            {/* Дашборды - выпадающее меню */}
+            {dashboards.length > 0 && (
+              <div className="space-y-1">
+                <Button 
+                  variant="ghost" 
+                  className="w-full justify-between gap-2"
+                  onClick={() => setDashboardsOpen(!dashboardsOpen)}
+                >
+                  <div className="flex items-center gap-2">
+                    <LayoutDashboard size={18} />
+                    <span>Дашборды</span>
+                  </div>
+                  {dashboardsOpen ? <ChevronUp size={18} /> : <ChevronDown size={18} />}
+                </Button>
+                
+                {/* Подменю с дашбордами */}
+                {dashboardsOpen && (
+                  <div className="pl-4 space-y-1 border-l-2 border-gray-200 ml-2">
+                    {dashboards.map((dashboard, index) => (
+                      <Link key={`${dashboard.path}-${index}`} to={dashboard.path}>
+                        <Button 
+                          variant="ghost" 
+                          className={`w-full justify-start gap-2 text-sm ${dashboard.color || ''}`}
+                        >
+                          {dashboard.label}
+                        </Button>
+                      </Link>
+                    ))}
+                  </div>
+                )}
+              </div>
+            )}
+
+            {/* Остальные пункты меню */}
             {menuItems.map((item, index) => (
               <Link key={`${item.path}-${index}`} to={item.path}>
                 <Button 
