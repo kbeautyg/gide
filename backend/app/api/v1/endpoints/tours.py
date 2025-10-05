@@ -242,9 +242,9 @@ async def create_tour(
     Доступно: Менеджеры (гиды)
     TODO: Добавить проверку прав
     """
-    # Временно используем фейковый guide_id
+    # Временно используем ID супер-админа (1)
     # В реальности: guide_id = current_user_id
-    guide_id = "temp_guide_id"
+    guide_id = 1
     
     new_tour_db = await TourService.create_tour(
         db=db,
