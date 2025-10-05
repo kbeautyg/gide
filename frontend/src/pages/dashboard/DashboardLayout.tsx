@@ -227,7 +227,7 @@ export default function DashboardLayout() {
               <Link key={`${item.path}-${index}`} to={item.path}>
                 <Button 
                   variant="ghost" 
-                  className={`w-full justify-start gap-2 ${item.color || ''}`}
+                  className="w-full justify-start gap-2"
                 >
                   <item.icon size={18} />
                   {item.label}
