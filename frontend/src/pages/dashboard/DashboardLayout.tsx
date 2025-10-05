@@ -17,56 +17,51 @@ export default function DashboardLayout() {
   const { user } = useAuthStore()
   const { logout } = useAuth()
 
-  // Определяем меню в зависимости от роли (иерархия дашбордов)
+  // Определяем меню в зависимости от роли
   const getMenuItems = () => {
     const role = user?.role
-    const menuItems = []
 
-    // Супер-админ видит все 4 дашборда
     if (role === 'super_admin') {
-      menuItems.push(
-        { icon: LayoutDashboard, label: 'Дашборд Супер-Админа', path: '/dashboard/superadmin' },
-        { icon: LayoutDashboard, label: 'Дашборд Админа', path: '/dashboard' },
-        { icon: LayoutDashboard, label: 'Дашборд Супер-Менеджера', path: '/dashboard' },
-        { icon: LayoutDashboard, label: 'Дашборд Менеджера', path: '/dashboard' },
+      return [
+        { icon: LayoutDashboard, label: 'Главная', path: '/dashboard/superadmin' },
         { icon: Users, label: 'Пользователи', path: '/dashboard/users' },
         { icon: MapPin, label: 'Все экскурсии', path: '/dashboard/all-tours' },
         { icon: Wallet, label: 'Финансы', path: '/dashboard/finances' },
         { icon: Settings, label: 'Настройки', path: '/dashboard/settings' },
-      )
+      ]
     }
-    // Админ видит 3 дашборда (без супер-админского)
-    else if (role === 'admin') {
-      menuItems.push(
-        { icon: LayoutDashboard, label: 'Дашборд Админа', path: '/dashboard' },
-        { icon: LayoutDashboard, label: 'Дашборд Супер-Менеджера', path: '/dashboard' },
-        { icon: LayoutDashboard, label: 'Дашборд Менеджера', path: '/dashboard' },
-        { icon: Users, label: 'Моя команда', path: '/dashboard/team' },
-        { icon: MapPin, label: 'Экскурсии', path: '/dashboard/tours' },
+
+    if (role === 'admin') {
+      return [
+        { icon: LayoutDashboard, label: 'Главная', path: '/dashboard' },
+        { icon: Users, label: 'Моя команда', path: '/dashboard/users' },
+        { icon: MapPin, label: 'Все экскурсии', path: '/dashboard/all-tours' },
         { icon: Wallet, label: 'Финансы', path: '/dashboard/finances' },
-      )
+        { icon: Settings, label: 'Настройки', path: '/dashboard/settings' },
+      ]
     }
-    // Супер-менеджер видит 2 дашборда
-    else if (role === 'super_manager') {
-      menuItems.push(
-        { icon: LayoutDashboard, label: 'Дашборд Супер-Менеджера', path: '/dashboard' },
-        { icon: LayoutDashboard, label: 'Дашборд Менеджера', path: '/dashboard' },
-        { icon: Users, label: 'Моя команда', path: '/dashboard/team' },
-        { icon: MapPin, label: 'Экскурсии', path: '/dashboard/tours' },
+
+    if (role === 'super_manager') {
+      return [
+        { icon: LayoutDashboard, label: 'Главная', path: '/dashboard' },
+        { icon: Users, label: 'Моя команда', path: '/dashboard/users' },
+        { icon: MapPin, label: 'Экскурсии', path: '/dashboard/all-tours' },
         { icon: Wallet, label: 'Финансы', path: '/dashboard/finances' },
-      )
+      ]
     }
-    // Менеджер/Гид видит только свой дашборд
-    else if (role === 'manager' || role === 'guide') {
-      menuItems.push(
-        { icon: LayoutDashboard, label: 'Дашборд Менеджера', path: '/dashboard' },
+
+    if (role === 'manager' || role === 'guide') {
+      return [
+        { icon: LayoutDashboard, label: 'Главная', path: '/dashboard' },
         { icon: MapPin, label: 'Мои экскурсии', path: '/dashboard/my-tours' },
         { icon: Calendar, label: 'Бронирования', path: '/dashboard/bookings' },
         { icon: Wallet, label: 'Финансы', path: '/dashboard/finances' },
-      )
+      ]
     }
 
-    return menuItems
+    return [
+      { icon: LayoutDashboard, label: 'Главная', path: '/dashboard' },
+    ]
   }
 
   const menuItems = getMenuItems()
