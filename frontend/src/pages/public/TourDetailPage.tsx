@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Link, useParams, useNavigate } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
 import { useQuery, useMutation } from '@tanstack/react-query'
 import { MapPin, Clock, Star, Calendar, Users, ArrowLeft, UserCircle, CheckCircle } from 'lucide-react'
 import { Button } from '@/components/ui/button'
@@ -12,7 +12,6 @@ import { useAuthStore } from '@/lib/store'
 
 export default function TourDetailPage() {
   const { isAuthenticated, user } = useAuthStore()
-  const navigate = useNavigate()
   const { id } = useParams<{ id: string }>()
   const [bookingData, setBookingData] = useState({
     date: '',
