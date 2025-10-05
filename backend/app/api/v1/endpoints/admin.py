@@ -25,12 +25,12 @@ class CreateUserRequest(BaseModel):
 
 class UserResponse(BaseModel):
     """Ответ с данными пользователя"""
-    id: str
+    id: int
     phone: str
     email: Optional[str]
     name: Optional[str]
     role: str
-    parent_id: Optional[str]
+    parent_id: Optional[int]
     balance_rub: float
     balance_usd: float
     balance_thb: float

@@ -1,17 +1,18 @@
 import { useState } from 'react'
-import { Link, useParams } from 'react-router-dom'
-import { useQuery } from '@tanstack/react-query'
-import { MapPin, Clock, Star, Calendar, Users, ArrowLeft, UserCircle } from 'lucide-react'
+import { Link, useParams, useNavigate } from 'react-router-dom'
+import { useQuery, useMutation } from '@tanstack/react-query'
+import { MapPin, Clock, Star, Calendar, Users, ArrowLeft, UserCircle, CheckCircle } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import { toursApi } from '@/lib/api'
+import { toursApi, bookingsApi } from '@/lib/api'
 import { formatRUB } from '@/lib/utils'
 import { useAuthStore } from '@/lib/store'
 
 export default function TourDetailPage() {
   const { isAuthenticated, user } = useAuthStore()
+  const navigate = useNavigate()
   const { id } = useParams<{ id: string }>()
   const [bookingData, setBookingData] = useState({
     date: '',
@@ -20,6 +21,7 @@ export default function TourDetailPage() {
     clientPhone: '',
     clientEmail: '',
   })
+  const [showSuccess, setShowSuccess] = useState(false)
 
   // Загрузка экскурсии
   const { data: tourData, isLoading } = useQuery({
@@ -29,6 +31,38 @@ export default function TourDetailPage() {
   })
 
   const tour = tourData?.data
+
+  // Создание бронирования
+  const bookingMutation = useMutation({
+    mutationFn: () => bookingsApi.create({
+      tour_id: Number(id),
+      date: bookingData.date,
+      participants_count: bookingData.participants,
+      client_name: bookingData.clientName,
+      client_phone: bookingData.clientPhone,
+      client_email: bookingData.clientEmail || undefined,
+    }),
+    onSuccess: () => {
+      setShowSuccess(true)
+      // Сброс формы
+      setBookingData({
+        date: '',
+        participants: 1,
+        clientName: '',
+        clientPhone: '',
+        clientEmail: '',
+      })
+      // Скрыть сообщение через 5 секунд
+      setTimeout(() => setShowSuccess(false), 5000)
+    },
+  })
+
+  const handleBooking = () => {
+    if (!bookingData.date || !bookingData.clientName || !bookingData.clientPhone) {
+      return
+    }
+    bookingMutation.mutate()
+  }
 
   if (isLoading) {
     return (
@@ -206,21 +240,31 @@ export default function TourDetailPage() {
                   />
                 </div>
               </CardContent>
-              <CardFooter>
+              <CardFooter className="flex-col gap-3">
+                {showSuccess && (
+                  <div className="w-full bg-green-50 border border-green-200 text-green-800 px-4 py-3 rounded-md text-sm flex items-center gap-2">
+                    <CheckCircle size={18} />
+                    <span><strong>Успешно!</strong> Бронирование создано</span>
+                  </div>
+                )}
                 <Button
                   variant="tropical"
                   size="lg"
                   className="w-full"
-                  disabled={!bookingData.date || !bookingData.clientName || !bookingData.clientPhone}
+                  disabled={!bookingData.date || !bookingData.clientName || !bookingData.clientPhone || bookingMutation.isPending}
+                  onClick={handleBooking}
                 >
-                  Забронировать сейчас
+                  {bookingMutation.isPending ? 'Обработка...' : 'Забронировать сейчас'}
                 </Button>
-              </CardFooter>
-              <div className="px-6 pb-6">
-                <p className="text-xs text-gray-600 text-center">
+                {bookingMutation.error && (
+                  <div className="w-full bg-red-50 border border-red-200 text-red-800 px-4 py-3 rounded-md text-sm">
+                    <strong>Ошибка:</strong> Не удалось создать бронирование
+                  </div>
+                )}
+                <p className="text-xs text-gray-600 text-center w-full">
                   Нажимая кнопку, вы соглашаетесь с условиями бронирования
                 </p>
-              </div>
+              </CardFooter>
             </Card>
           </div>
         </div>

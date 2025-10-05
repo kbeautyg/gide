@@ -1,46 +1,23 @@
 import { Link } from 'react-router-dom'
-import { Search, MapPin, Star, Users, TrendingUp, UserCircle } from 'lucide-react'
+import { Search, MapPin, Star, Users, TrendingUp, UserCircle, Clock } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Card, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
 import { formatRUB } from '@/lib/utils'
 import { useAuthStore } from '@/lib/store'
+import { useQuery } from '@tanstack/react-query'
+import { toursApi } from '@/lib/api'
 
 export default function HomePage() {
   const { isAuthenticated, user } = useAuthStore()
-  // Популярные экскурсии (временные данные)
-  const popularTours = [
-    {
-      id: '1',
-      title: 'Обзорная экскурсия по Пхукету',
-      location: 'Пхукет',
-      price: 2500,
-      duration: 6,
-      rating: 4.8,
-      reviews: 127,
-      image: 'https://images.unsplash.com/photo-1589394815804-964ed0be2eb5?w=800&h=600&fit=crop',
-    },
-    {
-      id: '2',
-      title: 'Острова Пхи-Пхи на скоростной лодке',
-      location: 'Пхукет',
-      price: 3200,
-      duration: 8,
-      rating: 4.9,
-      reviews: 203,
-      image: 'https://images.unsplash.com/photo-1583417319070-4a69db38a482?w=800&h=600&fit=crop',
-    },
-    {
-      id: '3',
-      title: 'Джунгли и водопады Краби',
-      location: 'Краби',
-      price: 2800,
-      duration: 7,
-      rating: 4.7,
-      reviews: 89,
-      image: 'https://images.unsplash.com/photo-1552465011-b4e21bf6e79a?w=800&h=600&fit=crop',
-    },
-  ]
+  
+  // Загрузка популярных экскурсий из API
+  const { data: toursData } = useQuery({
+    queryKey: ['tours', 'popular'],
+    queryFn: () => toursApi.getList({ page: 1, page_size: 6 }),
+  })
+
+  const popularTours = toursData?.data?.tours || []
 
   return (
     <div className="min-h-screen bg-white">
@@ -167,40 +144,48 @@ export default function HomePage() {
           </div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {popularTours.map((tour) => (
-              <Link to={`/tours/${tour.id}`} key={tour.id}>
-                <Card className="hover:shadow-lg transition-shadow cursor-pointer h-full">
-                  <div className="relative">
-                    <img 
-                      src={tour.image} 
-                      alt={tour.title}
-                      className="w-full h-48 object-cover rounded-t-lg"
-                    />
-                    <div className="absolute top-3 right-3 bg-white px-3 py-1 rounded-full text-sm font-semibold">
-                      {formatRUB(tour.price)}
+            {popularTours.length > 0 ? (
+              popularTours.map((tour) => (
+                <Link to={`/tours/${tour.id}`} key={tour.id}>
+                  <Card className="hover:shadow-lg transition-shadow cursor-pointer h-full">
+                    <div className="relative">
+                      <img 
+                        src={tour.photos && tour.photos.length > 0 ? tour.photos[0] : 'https://images.unsplash.com/photo-1589394815804-964ed0be2eb5?w=800&h=600&fit=crop'} 
+                        alt={tour.title}
+                        className="w-full h-48 object-cover rounded-t-lg"
+                      />
+                      <div className="absolute top-3 right-3 bg-white px-3 py-1 rounded-full text-sm font-semibold">
+                        {formatRUB(tour.price)}
+                      </div>
                     </div>
-                  </div>
-                  
-                  <CardHeader>
-                    <div className="flex items-center gap-2 text-sm text-gray-600 mb-2">
-                      <MapPin size={16} />
-                      <span>{tour.location}</span>
-                      <span className="ml-auto">{tour.duration} часов</span>
-                    </div>
-                    <CardTitle className="text-xl">{tour.title}</CardTitle>
-                  </CardHeader>
-                  
-                  <CardFooter className="flex items-center justify-between">
-                    <div className="flex items-center gap-1">
-                      <Star className="fill-yellow-400 text-yellow-400" size={16} />
-                      <span className="font-semibold">{tour.rating}</span>
-                      <span className="text-gray-600 text-sm">({tour.reviews})</span>
-                    </div>
-                    <Button variant="tropical" size="sm">Забронировать</Button>
-                  </CardFooter>
-                </Card>
-              </Link>
-            ))}
+                    
+                    <CardHeader>
+                      <div className="flex items-center gap-2 text-sm text-gray-600 mb-2">
+                        <MapPin size={16} />
+                        <span>{tour.location}</span>
+                        <span className="ml-2">•</span>
+                        <Clock size={16} />
+                        <span>{tour.duration}ч</span>
+                      </div>
+                      <CardTitle className="text-xl line-clamp-2">{tour.title}</CardTitle>
+                    </CardHeader>
+                    
+                    <CardFooter className="flex items-center justify-between">
+                      <div className="flex items-center gap-1">
+                        <Star className="fill-yellow-400 text-yellow-400" size={16} />
+                        <span className="font-semibold">{tour.rating.toFixed(1)}</span>
+                        <span className="text-gray-600 text-sm">({tour.reviews_count})</span>
+                      </div>
+                      <Button variant="tropical" size="sm">Забронировать</Button>
+                    </CardFooter>
+                  </Card>
+                </Link>
+              ))
+            ) : (
+              <div className="col-span-full text-center py-12 text-gray-500">
+                <p>Загрузка экскурсий...</p>
+              </div>
+            )}
           </div>
         </div>
       </section>

@@ -1,7 +1,7 @@
 """
 Dependencies для проверки прав доступа
 """
-from fastapi import Depends, HTTPException, status
+from fastapi import Depends, HTTPException, status, Request
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.security import get_current_user_id
@@ -11,10 +11,21 @@ from app.models.user import User, UserRole
 
 
 async def get_current_user(
-    user_id: str = Depends(get_current_user_id),
+    request: Request,
     db: AsyncSession = Depends(get_db)
 ) -> User:
     """Получение текущего пользователя из БД"""
+    user_id_str = get_current_user_id(request)
+    
+    try:
+        user_id = int(user_id_str)
+    except ValueError:
+        # Если не удалось конвертировать в int (например, "demo_user")
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Требуется авторизация"
+        )
+    
     user = await UserService.get_user_by_id(db, user_id)
     
     if not user:
