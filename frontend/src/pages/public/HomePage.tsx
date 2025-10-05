@@ -90,20 +90,22 @@ export default function HomePage() {
             </p>
             
             {/* Search Bar */}
-            <div className="bg-white rounded-lg p-2 flex flex-col md:flex-row gap-2 shadow-2xl">
+            <form onSubmit={handleSearch} className="bg-white rounded-lg p-2 flex flex-col md:flex-row gap-2 shadow-2xl">
               <div className="flex-1 flex items-center gap-2 px-4">
                 <MapPin className="text-gray-400" size={20} />
                 <Input 
                   type="text" 
-                  placeholder="Куда хотите поехать?" 
+                  placeholder="Пхукет, Паттайя, Бангкок..." 
                   className="border-none shadow-none focus-visible:ring-0"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
                 />
               </div>
-              <Button variant="tropical" size="lg" className="md:w-auto">
+              <Button type="submit" variant="tropical" size="lg" className="md:w-auto">
                 <Search className="mr-2" size={20} />
                 Найти экскурсию
               </Button>
-            </div>
+            </form>
           </div>
         </div>
       </section>
