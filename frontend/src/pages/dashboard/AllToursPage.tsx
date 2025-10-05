@@ -1,18 +1,15 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { MapPin, Calendar, DollarSign } from 'lucide-react'
 import { useQuery } from '@tanstack/react-query'
-import axios from 'axios'
+import { toursApi } from '@/lib/api'
 
 export default function AllToursPage() {
   const { data: toursData, isLoading } = useQuery({
     queryKey: ['tours'],
-    queryFn: async () => {
-      const response = await axios.get('https://gide-production.up.railway.app/api/v1/tours/')
-      return response.data
-    },
+    queryFn: () => toursApi.getList({ page_size: 100 }),
   })
 
-  const tours = Array.isArray(toursData) ? toursData : (toursData?.tours || [])
+  const tours = toursData?.data?.tours || []
 
   if (isLoading) {
     return (

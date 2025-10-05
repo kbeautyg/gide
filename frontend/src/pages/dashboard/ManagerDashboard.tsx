@@ -2,7 +2,7 @@ import { useQuery } from '@tanstack/react-query'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { CreateTourDialog } from '@/components/CreateTourDialog'
 import { MapPin, Calendar, Wallet, TrendingUp } from 'lucide-react'
-import { api } from '@/lib/api'
+import { api, toursApi } from '@/lib/api'
 
 export default function ManagerDashboard() {
   // Загрузка профиля для баланса
@@ -14,13 +14,10 @@ export default function ManagerDashboard() {
     },
   })
 
-  // Загрузка экскурсий менеджера (нужен API эндпоинт)
+  // Загрузка экскурсий менеджера
   const { data: toursData } = useQuery({
     queryKey: ['tours', 'my'],
-    queryFn: async () => {
-      const response = await api.get('/tours/')
-      return response.data
-    },
+    queryFn: () => toursApi.getList(),
   })
 
   // Загрузка бронирований (нужен API эндпоинт)
@@ -32,7 +29,7 @@ export default function ManagerDashboard() {
     },
   })
 
-  const myToursCount = Array.isArray(toursData) ? toursData.length : (toursData?.tours?.length || 0)
+  const myToursCount = toursData?.data?.tours?.length || 0
   const bookingsCount = Array.isArray(bookingsData) ? bookingsData.length : 0
   const balance = profileData?.balance_rub || 0
 
