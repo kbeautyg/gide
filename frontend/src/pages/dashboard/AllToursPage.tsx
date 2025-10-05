@@ -4,13 +4,15 @@ import { useQuery } from '@tanstack/react-query'
 import axios from 'axios'
 
 export default function AllToursPage() {
-  const { data: tours, isLoading } = useQuery({
+  const { data: toursData, isLoading } = useQuery({
     queryKey: ['tours'],
     queryFn: async () => {
-      const response = await axios.get('https://gide-production.up.railway.app/api/v1/tours')
+      const response = await axios.get('https://gide-production.up.railway.app/api/v1/tours/')
       return response.data
     },
   })
+
+  const tours = toursData?.tours || []
 
   if (isLoading) {
     return (
@@ -36,7 +38,7 @@ export default function AllToursPage() {
             <CardTitle className="text-sm font-medium">Всего экскурсий</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{tours?.length || 0}</div>
+            <div className="text-2xl font-bold">{tours.length}</div>
             <p className="text-xs text-gray-500 mt-1">Активных экскурсий</p>
           </CardContent>
         </Card>
@@ -67,7 +69,7 @@ export default function AllToursPage() {
       </div>
 
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-        {tours && tours.length > 0 ? (
+        {tours.length > 0 ? (
           tours.map((tour: any) => (
             <Card key={tour.id} className="hover:shadow-lg transition-shadow">
               <CardHeader>
