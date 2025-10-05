@@ -52,6 +52,8 @@ class Settings(BaseSettings):
         "http://localhost:5173",
         "http://localhost:3000",
         "http://localhost:8080",
+        "https://thaiguide-frontend-production.up.railway.app",
+        "https://gide-production.up.railway.app",
     ]
     
     # Redis
