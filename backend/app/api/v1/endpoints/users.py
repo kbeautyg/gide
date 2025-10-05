@@ -1,7 +1,7 @@
 """
 Эндпоинты управления пользователями
 """
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Depends, HTTPException, status, Request
 from pydantic import BaseModel
 from typing import Optional
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -27,13 +27,15 @@ class UserProfile(BaseModel):
 
 @router.get("/me", response_model=UserProfile)
 async def get_current_user(
-    user_id: str = Depends(get_current_user_id),
+    request: Request,
     db: AsyncSession = Depends(get_db)
 ):
     """
     Получение профиля текущего пользователя
     """
     try:
+        user_id = get_current_user_id(request)
+        
         # Пытаемся получить пользователя из БД
         try:
             user_id_int = int(user_id)
