@@ -37,18 +37,18 @@ export default function ManagerDashboard() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold">Добро пожаловать!</h1>
-          <p className="text-gray-600 mt-1">Управляйте своими экскурсиями и бронированиями</p>
+          <h1 className="text-3xl font-bold text-orange-600">Дашборд Менеджера</h1>
+          <p className="text-gray-600 mt-1">Управление экскурсиями и бронированиями</p>
         </div>
         <CreateTourDialog />
       </div>
 
       {/* Статистика */}
       <div className="grid md:grid-cols-4 gap-6">
-        <Card>
+        <Card className="border-orange-200">
           <CardHeader className="pb-3">
-            <CardTitle className="text-sm font-medium flex items-center gap-2">
-              <MapPin size={18} className="text-tropical-turquoise" />
+            <CardTitle className="text-sm font-medium flex items-center gap-2 text-orange-600">
+              <MapPin size={18} />
               Мои экскурсии
             </CardTitle>
           </CardHeader>
@@ -58,10 +58,10 @@ export default function ManagerDashboard() {
           </CardContent>
         </Card>
 
-        <Card>
+        <Card className="border-blue-200">
           <CardHeader className="pb-3">
-            <CardTitle className="text-sm font-medium flex items-center gap-2">
-              <Calendar size={18} className="text-tropical-coral" />
+            <CardTitle className="text-sm font-medium flex items-center gap-2 text-blue-600">
+              <Calendar size={18} />
               Бронирования
             </CardTitle>
           </CardHeader>
@@ -71,10 +71,10 @@ export default function ManagerDashboard() {
           </CardContent>
         </Card>
 
-        <Card>
+        <Card className="border-green-200">
           <CardHeader className="pb-3">
-            <CardTitle className="text-sm font-medium flex items-center gap-2">
-              <Wallet size={18} className="text-tropical-gold" />
+            <CardTitle className="text-sm font-medium flex items-center gap-2 text-green-600">
+              <Wallet size={18} />
               Баланс
             </CardTitle>
           </CardHeader>
@@ -84,10 +84,10 @@ export default function ManagerDashboard() {
           </CardContent>
         </Card>
 
-        <Card>
+        <Card className="border-orange-200">
           <CardHeader className="pb-3">
-            <CardTitle className="text-sm font-medium flex items-center gap-2">
-              <TrendingUp size={18} className="text-green-600" />
+            <CardTitle className="text-sm font-medium flex items-center gap-2 text-orange-600">
+              <TrendingUp size={18} />
               Доход
             </CardTitle>
           </CardHeader>
@@ -120,31 +120,31 @@ export default function ManagerDashboard() {
 
       {/* Быстрые действия */}
       <div className="grid md:grid-cols-2 gap-6">
-        <Card className="hover:shadow-lg transition-shadow cursor-pointer">
+        <Card className="border-2 border-orange-200 hover:shadow-lg transition-shadow cursor-pointer">
           <CardHeader>
-            <CardTitle>Мои экскурсии</CardTitle>
+            <CardTitle className="text-orange-600">Мои экскурсии</CardTitle>
             <CardDescription>Управление вашими экскурсиями</CardDescription>
           </CardHeader>
           <CardContent>
             <p className="text-sm text-gray-600 mb-4">
               Просмотрите, редактируйте и управляйте всеми вашими экскурсиями
             </p>
-            <a href="/dashboard/my-tours" className="text-tropical-ocean hover:underline font-medium">
+            <a href="/dashboard/my-tours" className="text-orange-600 hover:underline font-medium">
               Перейти к экскурсиям →
             </a>
           </CardContent>
         </Card>
 
-        <Card className="hover:shadow-lg transition-shadow cursor-pointer">
+        <Card className="border-2 border-blue-200 hover:shadow-lg transition-shadow cursor-pointer">
           <CardHeader>
-            <CardTitle>Бронирования</CardTitle>
+            <CardTitle className="text-blue-600">Бронирования</CardTitle>
             <CardDescription>Управление заказами</CardDescription>
           </CardHeader>
           <CardContent>
             <p className="text-sm text-gray-600 mb-4">
               Просмотрите все бронирования и управляйте заказами
             </p>
-            <a href="/dashboard/bookings" className="text-tropical-ocean hover:underline font-medium">
+            <a href="/dashboard/bookings" className="text-blue-600 hover:underline font-medium">
               Перейти к бронированиям →
             </a>
           </CardContent>
