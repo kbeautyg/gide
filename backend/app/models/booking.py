@@ -27,11 +27,11 @@ class Booking(Base):
     """Модель бронирования"""
     __tablename__ = "bookings"
 
-    id = Column(String, primary_key=True, index=True)
+    id = Column(Integer, primary_key=True, index=True, autoincrement=True)
     
     # Связь с экскурсией и клиентом
-    tour_id = Column(String, ForeignKey("tours.id"), nullable=False)
-    client_id = Column(String, ForeignKey("users.id"), nullable=False)
+    tour_id = Column(Integer, ForeignKey("tours.id"), nullable=False)
+    client_id = Column(Integer, ForeignKey("users.id"), nullable=False)
     
     # Детали бронирования
     date = Column(Date, nullable=False)

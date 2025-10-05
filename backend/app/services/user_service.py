@@ -37,11 +37,10 @@ class UserService:
         email: Optional[str] = None,
         name: Optional[str] = None,
         role: UserRole = UserRole.CLIENT,
-        parent_id: Optional[str] = None,
+        parent_id: Optional[int] = None,
     ) -> User:
         """Создание нового пользователя"""
         user = User(
-            id=str(uuid.uuid4()),
             phone=phone,
             email=email,
             name=name,

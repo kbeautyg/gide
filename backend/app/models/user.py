@@ -1,7 +1,7 @@
 """
 Модель пользователя
 """
-from sqlalchemy import Column, String, Float, ForeignKey, DateTime, Enum as SQLEnum
+from sqlalchemy import Column, String, Integer, Float, ForeignKey, DateTime, Enum as SQLEnum
 from sqlalchemy.orm import relationship
 from datetime import datetime
 import enum
@@ -23,7 +23,7 @@ class User(Base):
     """Модель пользователя"""
     __tablename__ = "users"
 
-    id = Column(String, primary_key=True, index=True)
+    id = Column(Integer, primary_key=True, index=True, autoincrement=True)
     phone = Column(String, unique=True, nullable=False, index=True)
     email = Column(String, unique=True, nullable=True, index=True)
     name = Column(String, nullable=True)
@@ -31,7 +31,7 @@ class User(Base):
     role = Column(SQLEnum(UserRole), nullable=False, default=UserRole.CLIENT)
     
     # Иерархия - родительский пользователь (админ/супер-менеджер)
-    parent_id = Column(String, ForeignKey("users.id"), nullable=True)
+    parent_id = Column(Integer, ForeignKey("users.id"), nullable=True)
     
     # Балансы
     balance_rub = Column(Float, default=0.0)

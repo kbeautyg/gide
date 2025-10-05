@@ -11,10 +11,10 @@ class Tour(Base):
     """Модель экскурсии"""
     __tablename__ = "tours"
 
-    id = Column(String, primary_key=True, index=True)
+    id = Column(Integer, primary_key=True, index=True, autoincrement=True)
     
     # Гид/менеджер который создал экскурсию
-    guide_id = Column(String, ForeignKey("users.id"), nullable=False)
+    guide_id = Column(Integer, ForeignKey("users.id"), nullable=False)
     
     # Основная информация
     title = Column(String, nullable=False)

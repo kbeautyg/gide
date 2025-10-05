@@ -70,7 +70,7 @@ class TourService:
     @staticmethod
     async def create_tour(
         db: AsyncSession,
-        guide_id: str,
+        guide_id: int,
         title: str,
         description: str,
         price: float,
@@ -81,7 +81,6 @@ class TourService:
     ) -> Tour:
         """Создание новой экскурсии"""
         tour = Tour(
-            id=str(uuid.uuid4()),
             guide_id=guide_id,
             title=title,
             description=description,
