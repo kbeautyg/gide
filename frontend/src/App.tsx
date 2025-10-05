@@ -1,4 +1,5 @@
 import { Routes, Route } from 'react-router-dom'
+import { ProtectedRoute } from './components/ProtectedRoute'
 
 // Публичные страницы
 import HomePage from './pages/public/HomePage'
@@ -28,11 +29,32 @@ function App() {
       <Route path="/register" element={<RegisterPage />} />
       
       {/* Личные кабинеты (защищенные маршруты) */}
-      <Route path="/dashboard" element={<DashboardLayout />}>
+      <Route
+        path="/dashboard"
+        element={
+          <ProtectedRoute>
+            <DashboardLayout />
+          </ProtectedRoute>
+        }
+      >
         <Route index element={<ManagerDashboard />} />
         <Route path="manager" element={<ManagerDashboard />} />
-        <Route path="admin" element={<AdminDashboard />} />
-        <Route path="superadmin" element={<SuperAdminDashboard />} />
+        <Route
+          path="admin"
+          element={
+            <ProtectedRoute allowedRoles={['admin', 'super_admin']}>
+              <AdminDashboard />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="superadmin"
+          element={
+            <ProtectedRoute allowedRoles={['super_admin']}>
+              <SuperAdminDashboard />
+            </ProtectedRoute>
+          }
+        />
       </Route>
     </Routes>
   )

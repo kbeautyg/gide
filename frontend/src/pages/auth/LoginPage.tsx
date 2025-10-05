@@ -1,10 +1,21 @@
+import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
+import { useAuth } from '@/hooks/useAuth'
 
 export default function LoginPage() {
+  const [phone, setPhone] = useState('')
+  const [password, setPassword] = useState('')
+  const { login, isLoggingIn } = useAuth()
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault()
+    login({ phone, password })
+  }
+
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4">
       <Card className="w-full max-w-md">
@@ -17,29 +28,43 @@ export default function LoginPage() {
             Войдите для доступа к личному кабинету
           </CardDescription>
         </CardHeader>
-        <CardContent className="space-y-4">
-          <div>
-            <Label htmlFor="phone">Номер телефона</Label>
-            <Input
-              id="phone"
-              type="tel"
-              placeholder="+7 (999) 999-99-99"
-              className="mt-1"
-            />
-          </div>
-          <div>
-            <Label htmlFor="password">Пароль</Label>
-            <Input
-              id="password"
-              type="password"
-              placeholder="Введите пароль"
-              className="mt-1"
-            />
-          </div>
-          <Button variant="tropical" className="w-full" size="lg">
-            Войти
-          </Button>
-        </CardContent>
+        <form onSubmit={handleSubmit}>
+          <CardContent className="space-y-4">
+            <div>
+              <Label htmlFor="phone">Номер телефона</Label>
+              <Input
+                id="phone"
+                type="tel"
+                placeholder="+7 (999) 999-99-99"
+                className="mt-1"
+                value={phone}
+                onChange={(e) => setPhone(e.target.value)}
+                required
+              />
+            </div>
+            <div>
+              <Label htmlFor="password">Пароль</Label>
+              <Input
+                id="password"
+                type="password"
+                placeholder="Введите пароль"
+                className="mt-1"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+              />
+            </div>
+            <Button 
+              type="submit"
+              variant="tropical" 
+              className="w-full" 
+              size="lg"
+              disabled={isLoggingIn}
+            >
+              {isLoggingIn ? 'Вход...' : 'Войти'}
+            </Button>
+          </CardContent>
+        </form>
         <CardFooter className="flex flex-col gap-4">
           <div className="text-sm text-center">
             Нет аккаунта?{' '}
