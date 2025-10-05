@@ -1,5 +1,4 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { Button } from '@/components/ui/button'
 import { MapPin, Calendar, DollarSign } from 'lucide-react'
 import { useQuery } from '@tanstack/react-query'
 import axios from 'axios'
