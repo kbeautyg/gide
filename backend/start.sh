@@ -7,5 +7,8 @@ alembic upgrade head || echo "⚠️ Миграции не применилис�
 echo "🔧 Инициализируем БД..."
 python init_db.py || echo "⚠️ Инициализация не прошла (возможно супер-админ уже существует)"
 
+echo "🌱 Создаем тестовые данные..."
+python seed_data.py || echo "⚠️ Тестовые данные не созданы (возможно уже существуют)"
+
 echo "🚀 Запускаем сервер..."
 python3 -m uvicorn app.main:app --host 0.0.0.0 --port $PORT
