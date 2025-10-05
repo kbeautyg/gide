@@ -1,18 +1,24 @@
+import { useState } from 'react'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Users, TrendingUp, Wallet, DollarSign, Plus } from 'lucide-react'
 import { formatRUB } from '@/lib/utils'
+import { CreateUserDialog } from '@/components/CreateUserDialog'
 
 export default function SuperAdminDashboard() {
+  const [dialogOpen, setDialogOpen] = useState(false)
+
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <h1 className="text-3xl font-bold">Дашборд Супер-Админа</h1>
-        <Button variant="tropical">
+        <Button variant="tropical" onClick={() => setDialogOpen(true)}>
           <Plus className="mr-2" size={18} />
           Создать админа
         </Button>
       </div>
+
+      <CreateUserDialog open={dialogOpen} onOpenChange={setDialogOpen} />
 
       {/* Общая статистика */}
       <div>
