@@ -17,6 +17,10 @@ import AdminDashboard from './pages/dashboard/AdminDashboard'
 import SuperAdminDashboard from './pages/dashboard/SuperAdminDashboard'
 import MyToursPage from './pages/dashboard/MyToursPage'
 import BookingsPage from './pages/dashboard/BookingsPage'
+import UsersPage from './pages/dashboard/UsersPage'
+import AllToursPage from './pages/dashboard/AllToursPage'
+import FinancesPage from './pages/dashboard/FinancesPage'
+import SettingsPage from './pages/dashboard/SettingsPage'
 
 function App() {
   return (
@@ -43,6 +47,10 @@ function App() {
         <Route path="manager" element={<ManagerDashboard />} />
         <Route path="my-tours" element={<MyToursPage />} />
         <Route path="bookings" element={<BookingsPage />} />
+        <Route path="users" element={<UsersPage />} />
+        <Route path="all-tours" element={<AllToursPage />} />
+        <Route path="finances" element={<FinancesPage />} />
+        <Route path="settings" element={<SettingsPage />} />
         <Route
           path="admin"
           element={

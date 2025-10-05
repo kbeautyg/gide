@@ -75,7 +75,7 @@ export default function HomePage() {
         <div className="container mx-auto px-4">
           <div className="max-w-3xl mx-auto text-center">
             <h1 className="text-4xl md:text-6xl font-bold mb-6">
-              Откройте для себя настоящий Таиланд!
+              Откройте для себя настоящую Азию!
             </h1>
             <p className="text-xl md:text-2xl mb-8 text-white/90">
               Более 100 уникальных экскурсий с русскоязычными гидами. 
@@ -111,7 +111,7 @@ export default function HomePage() {
               </div>
               <h3 className="text-xl font-semibold mb-2">Опытные гиды</h3>
               <p className="text-gray-600">
-                Русскоязычные гиды с многолетним опытом работы в Таиланде
+                Русскоязычные гиды с многолетним опытом работы по всей Азии
               </p>
             </div>
             
@@ -218,7 +218,7 @@ export default function HomePage() {
             Готовы к приключениям?
           </h2>
           <p className="text-xl mb-8 text-white/90">
-            Начните планировать свой незабываемый отдых в Таиланде прямо сейчас!
+            Начните планировать свой незабываемый отдых в Азии прямо сейчас!
           </p>
           <Link to="/tours">
             <Button size="lg" variant="secondary" className="text-lg px-8 py-6">
@@ -235,7 +235,7 @@ export default function HomePage() {
             <div>
               <h3 className="text-xl font-bold mb-4">ThaiGuide Pro</h3>
               <p className="text-gray-400">
-                Лучшие экскурсии по Таиланду с русскоязычными гидами
+                Лучшие экскурсии по всей Азии с русскоязычными гидами
               </p>
             </div>
             

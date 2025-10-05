@@ -60,7 +60,7 @@ export default function ToursPage() {
       {/* Page Header */}
       <section className="bg-gradient-to-r from-tropical-turquoise to-tropical-ocean text-white py-12">
         <div className="container mx-auto px-4">
-          <h1 className="text-4xl font-bold mb-4">Экскурсии по Таиланду</h1>
+          <h1 className="text-4xl font-bold mb-4">Экскурсии по всей Азии</h1>
           <p className="text-xl text-white/90">
             Выберите из {tours.length}+ незабываемых туров
           </p>
