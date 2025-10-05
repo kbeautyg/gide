@@ -45,24 +45,29 @@ async def login(
     Вход в систему
     """
     try:
+        print(f"🔐 Попытка входа: {request.phone}")
+        
         # Аутентификация пользователя
         user = await UserService.authenticate_user(db, request.phone, request.password)
         
         if not user:
+            print(f"❌ Аутентификация не удалась для {request.phone}")
             raise HTTPException(
                 status_code=status.HTTP_401_UNAUTHORIZED,
                 detail="Неверный телефон или пароль",
                 headers={"WWW-Authenticate": "Bearer"},
             )
         
+        print(f"✅ Аутентификация успешна: {user.phone} (ID: {user.id}, Роль: {user.role.value})")
+        
         # Создаем JWT токен
         access_token = create_access_token(
-            data={"sub": user.id, "role": user.role.value}
+            data={"sub": str(user.id), "role": user.role.value}
         )
         
         return TokenResponse(
             access_token=access_token,
-            user_id=user.id,
+            user_id=str(user.id),
             role=user.role.value
         )
     except HTTPException:
@@ -112,12 +117,12 @@ async def register(
         
         # Создаем JWT токен
         access_token = create_access_token(
-            data={"sub": user.id, "role": user.role.value}
+            data={"sub": str(user.id), "role": user.role.value}
         )
         
         return TokenResponse(
             access_token=access_token,
-            user_id=user.id,
+            user_id=str(user.id),
             role=user.role.value
         )
     except Exception as e:
