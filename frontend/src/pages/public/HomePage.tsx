@@ -1,4 +1,5 @@
-import { Link } from 'react-router-dom'
+import { useState } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
 import { Search, MapPin, Star, Users, TrendingUp, UserCircle, Clock } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -10,6 +11,8 @@ import { toursApi } from '@/lib/api'
 
 export default function HomePage() {
   const { isAuthenticated, user } = useAuthStore()
+  const navigate = useNavigate()
+  const [searchQuery, setSearchQuery] = useState('')
   
   // Загрузка популярных экскурсий из API
   const { data: toursData } = useQuery({
@@ -18,6 +21,15 @@ export default function HomePage() {
   })
 
   const popularTours = toursData?.data?.tours || []
+
+  const handleSearch = (e: React.FormEvent) => {
+    e.preventDefault()
+    if (searchQuery.trim()) {
+      navigate(`/tours?search=${encodeURIComponent(searchQuery)}`)
+    } else {
+      navigate('/tours')
+    }
+  }
 
   return (
     <div className="min-h-screen bg-white">
