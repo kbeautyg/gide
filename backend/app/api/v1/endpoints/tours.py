@@ -100,7 +100,7 @@ async def get_tours(
     if not tours_list:
         mock_tours = [
         Tour(
-            id="tour_1",
+            id=1,
             title="Обзорная экскурсия по Пхукету",
             description="Познакомьтесь с главными достопримечательностями острова! Посетите Большого Будду, храм Ват Чалонг, и насладитесь панорамными видами с мыса Промтеп.",
             price=2500.0,
@@ -114,10 +114,10 @@ async def get_tours(
             rating=4.8,
             reviews_count=127,
             guide_name="Александр",
-            guide_id="guide_1",
+            guide_id=1,
         ),
         Tour(
-            id="tour_2",
+            id=2,
             title="Острова Пхи-Пхи на скоростной лодке",
             description="Незабываемое путешествие на знаменитые острова Пхи-Пхи! Снорклинг в кристально чистых водах, пляж Майя Бэй, обед на острове.",
             price=3200.0,
@@ -131,10 +131,10 @@ async def get_tours(
             rating=4.9,
             reviews_count=203,
             guide_name="Мария",
-            guide_id="guide_2",
+            guide_id=1,
         ),
         Tour(
-            id="tour_3",
+            id=3,
             title="Джунгли и водопады Краби",
             description="Приключение в джунглях провинции Краби! Треккинг к водопадам, купание в изумрудном озере, посещение горячих источников.",
             price=2800.0,
@@ -147,7 +147,7 @@ async def get_tours(
             rating=4.7,
             reviews_count=89,
             guide_name="Дмитрий",
-            guide_id="guide_3",
+            guide_id=1,
         ),
     ]
     
@@ -208,7 +208,7 @@ async def get_tour(
             rating=4.8,
             reviews_count=127,
             guide_name="Александр",
-            guide_id="guide_1",
+            guide_id=1,
         )
     
     return Tour(

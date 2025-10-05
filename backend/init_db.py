@@ -33,7 +33,6 @@ async def init_db():
         
         if not existing_admin:
             super_admin = User(
-                id=str(uuid.uuid4()),
                 phone=settings.SUPER_ADMIN_PHONE,
                 email="admin@thaiguide.pro",
                 name="Супер Админ",
