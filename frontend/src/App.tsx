@@ -15,6 +15,7 @@ import DashboardLayout from './pages/dashboard/DashboardLayout'
 import ManagerDashboard from './pages/dashboard/ManagerDashboard'
 import AdminDashboard from './pages/dashboard/AdminDashboard'
 import SuperAdminDashboard from './pages/dashboard/SuperAdminDashboard'
+import MyToursPage from './pages/dashboard/MyToursPage'
 
 function App() {
   return (
@@ -39,6 +40,7 @@ function App() {
       >
         <Route index element={<ManagerDashboard />} />
         <Route path="manager" element={<ManagerDashboard />} />
+        <Route path="my-tours" element={<MyToursPage />} />
         <Route
           path="admin"
           element={
