@@ -124,19 +124,6 @@ export default function TourDetailPage() {
                     <li>✅ Страховка</li>
                   </ul>
                 </div>
-
-                <div className="mt-6">
-                  <h4 className="font-semibold mb-3">О гиде</h4>
-                  <div className="flex items-center gap-3">
-                    <div className="w-12 h-12 bg-tropical-turquoise/20 rounded-full flex items-center justify-center">
-                      <Users size={24} className="text-tropical-turquoise" />
-                    </div>
-                    <div>
-                      <p className="font-medium">{tour.guide_name}</p>
-                      <p className="text-sm text-gray-600">Русскоязычный гид</p>
-                    </div>
-                  </div>
-                </div>
               </CardContent>
             </Card>
           </div>

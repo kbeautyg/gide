@@ -88,9 +88,6 @@ export default function AllToursPage() {
                     <DollarSign size={16} />
                     <span>{tour.price} ₽</span>
                   </div>
-                  <div className="text-xs text-gray-500 mt-2">
-                    Гид: {tour.guide_name}
-                  </div>
                 </div>
               </CardContent>
             </Card>
