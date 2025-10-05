@@ -17,13 +17,45 @@ export default function DashboardLayout() {
   const { user } = useAuthStore()
   const { logout } = useAuth()
 
+  // Цвета для каждой роли
+  const roleColors = {
+    super_admin: 'text-purple-600 bg-purple-50',
+    admin: 'text-blue-600 bg-blue-50',
+    super_manager: 'text-green-600 bg-green-50',
+    manager: 'text-orange-600 bg-orange-50',
+    guide: 'text-orange-600 bg-orange-50',
+  }
+
   // Определяем меню в зависимости от роли
   const getMenuItems = () => {
     const role = user?.role
 
     if (role === 'super_admin') {
       return [
-        { icon: LayoutDashboard, label: 'Главная', path: '/dashboard/superadmin' },
+        { 
+          icon: LayoutDashboard, 
+          label: 'Дашборд Супер-Админа', 
+          path: '/dashboard/superadmin',
+          color: roleColors.super_admin
+        },
+        { 
+          icon: LayoutDashboard, 
+          label: 'Дашборд Админа', 
+          path: '/dashboard/admin',
+          color: roleColors.admin
+        },
+        { 
+          icon: LayoutDashboard, 
+          label: 'Дашборд Супер-Менеджера', 
+          path: '/dashboard/supermanager',
+          color: roleColors.super_manager
+        },
+        { 
+          icon: LayoutDashboard, 
+          label: 'Дашборд Менеджера', 
+          path: '/dashboard/manager',
+          color: roleColors.manager
+        },
         { icon: Users, label: 'Пользователи', path: '/dashboard/users' },
         { icon: MapPin, label: 'Все экскурсии', path: '/dashboard/all-tours' },
         { icon: Wallet, label: 'Финансы', path: '/dashboard/finances' },
@@ -33,7 +65,24 @@ export default function DashboardLayout() {
 
     if (role === 'admin') {
       return [
-        { icon: LayoutDashboard, label: 'Главная', path: '/dashboard' },
+        { 
+          icon: LayoutDashboard, 
+          label: 'Дашборд Админа', 
+          path: '/dashboard/admin',
+          color: roleColors.admin
+        },
+        { 
+          icon: LayoutDashboard, 
+          label: 'Дашборд Супер-Менеджера', 
+          path: '/dashboard/supermanager',
+          color: roleColors.super_manager
+        },
+        { 
+          icon: LayoutDashboard, 
+          label: 'Дашборд Менеджера', 
+          path: '/dashboard/manager',
+          color: roleColors.manager
+        },
         { icon: Users, label: 'Моя команда', path: '/dashboard/users' },
         { icon: MapPin, label: 'Все экскурсии', path: '/dashboard/all-tours' },
         { icon: Wallet, label: 'Финансы', path: '/dashboard/finances' },
@@ -43,7 +92,18 @@ export default function DashboardLayout() {
 
     if (role === 'super_manager') {
       return [
-        { icon: LayoutDashboard, label: 'Главная', path: '/dashboard' },
+        { 
+          icon: LayoutDashboard, 
+          label: 'Дашборд Супер-Менеджера', 
+          path: '/dashboard/supermanager',
+          color: roleColors.super_manager
+        },
+        { 
+          icon: LayoutDashboard, 
+          label: 'Дашборд Менеджера', 
+          path: '/dashboard/manager',
+          color: roleColors.manager
+        },
         { icon: Users, label: 'Моя команда', path: '/dashboard/users' },
         { icon: MapPin, label: 'Экскурсии', path: '/dashboard/all-tours' },
         { icon: Wallet, label: 'Финансы', path: '/dashboard/finances' },
@@ -52,7 +112,12 @@ export default function DashboardLayout() {
 
     if (role === 'manager' || role === 'guide') {
       return [
-        { icon: LayoutDashboard, label: 'Главная', path: '/dashboard' },
+        { 
+          icon: LayoutDashboard, 
+          label: 'Дашборд Менеджера', 
+          path: '/dashboard/manager',
+          color: roleColors.manager
+        },
         { icon: MapPin, label: 'Мои экскурсии', path: '/dashboard/my-tours' },
         { icon: Calendar, label: 'Бронирования', path: '/dashboard/bookings' },
         { icon: Wallet, label: 'Финансы', path: '/dashboard/finances' },
@@ -105,7 +170,10 @@ export default function DashboardLayout() {
           <nav className="space-y-2">
             {menuItems.map((item, index) => (
               <Link key={`${item.path}-${index}`} to={item.path}>
-                <Button variant="ghost" className="w-full justify-start gap-2">
+                <Button 
+                  variant="ghost" 
+                  className={`w-full justify-start gap-2 ${item.color || ''}`}
+                >
                   <item.icon size={18} />
                   {item.label}
                 </Button>

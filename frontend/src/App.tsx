@@ -13,7 +13,8 @@ import RegisterPage from './pages/auth/RegisterPage'
 // Личные кабинеты
 import DashboardLayout from './pages/dashboard/DashboardLayout'
 import ManagerDashboard from './pages/dashboard/ManagerDashboard'
-import AdminDashboard from './pages/dashboard/AdminDashboard'
+import AdminDashboardPage from './pages/dashboard/AdminDashboardPage'
+import SuperManagerDashboardPage from './pages/dashboard/SuperManagerDashboardPage'
 import SuperAdminDashboard from './pages/dashboard/SuperAdminDashboard'
 import MyToursPage from './pages/dashboard/MyToursPage'
 import BookingsPage from './pages/dashboard/BookingsPage'
@@ -55,7 +56,15 @@ function App() {
           path="admin"
           element={
             <ProtectedRoute allowedRoles={['admin', 'super_admin']}>
-              <AdminDashboard />
+              <AdminDashboardPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="supermanager"
+          element={
+            <ProtectedRoute allowedRoles={['super_manager', 'admin', 'super_admin']}>
+              <SuperManagerDashboardPage />
             </ProtectedRoute>
           }
         />

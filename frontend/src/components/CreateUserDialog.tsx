@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { api } from '@/lib/api'
+import { useAuthStore } from '@/lib/store'
 
 interface CreateUserDialogProps {
   open: boolean
@@ -13,12 +14,39 @@ interface CreateUserDialogProps {
 
 export function CreateUserDialog({ open, onOpenChange }: CreateUserDialogProps) {
   const queryClient = useQueryClient()
+  const { user } = useAuthStore()
+  
+  // Определяем доступные роли в зависимости от текущего пользователя
+  const getAvailableRoles = () => {
+    switch (user?.role) {
+      case 'super_admin':
+        return [
+          { value: 'admin', label: 'Админ', color: 'bg-blue-100 text-blue-800' },
+          { value: 'super_manager', label: 'Супер-менеджер', color: 'bg-green-100 text-green-800' },
+          { value: 'manager', label: 'Менеджер', color: 'bg-orange-100 text-orange-800' },
+        ]
+      case 'admin':
+        return [
+          { value: 'super_manager', label: 'Супер-менеджер', color: 'bg-green-100 text-green-800' },
+          { value: 'manager', label: 'Менеджер', color: 'bg-orange-100 text-orange-800' },
+        ]
+      case 'super_manager':
+        return [
+          { value: 'manager', label: 'Менеджер', color: 'bg-orange-100 text-orange-800' },
+        ]
+      default:
+        return []
+    }
+  }
+
+  const availableRoles = getAvailableRoles()
+  
   const [formData, setFormData] = useState({
     phone: '',
     email: '',
     password: '',
     name: '',
-    role: 'manager',
+    role: availableRoles[0]?.value || 'manager',
   })
 
   const createMutation = useMutation({
@@ -98,16 +126,38 @@ export function CreateUserDialog({ open, onOpenChange }: CreateUserDialogProps) 
             </div>
             <div className="space-y-2">
               <Label htmlFor="role">Роль</Label>
-              <select
-                id="role"
-                className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-                value={formData.role}
-                onChange={(e) => setFormData({ ...formData, role: e.target.value })}
-              >
-                <option value="manager">Менеджер/Гид</option>
-                <option value="super_manager">Супер-менеджер</option>
-                <option value="admin">Админ</option>
-              </select>
+              <div className="grid grid-cols-1 gap-2">
+                {availableRoles.map((role) => (
+                  <label
+                    key={role.value}
+                    className={`flex items-center justify-between p-3 border-2 rounded-lg cursor-pointer transition-all ${
+                      formData.role === role.value
+                        ? 'border-tropical-turquoise bg-tropical-turquoise/10'
+                        : 'border-gray-200 hover:border-gray-300'
+                    }`}
+                  >
+                    <div className="flex items-center gap-3">
+                      <input
+                        type="radio"
+                        name="role"
+                        value={role.value}
+                        checked={formData.role === role.value}
+                        onChange={(e) => setFormData({ ...formData, role: e.target.value })}
+                        className="w-4 h-4"
+                      />
+                      <span className="font-medium">{role.label}</span>
+                    </div>
+                    <span className={`px-3 py-1 rounded-full text-xs font-medium ${role.color}`}>
+                      {role.label}
+                    </span>
+                  </label>
+                ))}
+              </div>
+              <p className="text-xs text-gray-500 mt-2">
+                {user?.role === 'super_admin' && 'Вы можете создавать админов, супер-менеджеров и менеджеров'}
+                {user?.role === 'admin' && 'Вы можете создавать супер-менеджеров и менеджеров'}
+                {user?.role === 'super_manager' && 'Вы можете создавать только менеджеров'}
+              </p>
             </div>
             {createMutation.error && (
               <div className="bg-red-50 border border-red-200 text-red-800 px-4 py-3 rounded-md text-sm">
