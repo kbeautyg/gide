@@ -16,6 +16,7 @@ import ManagerDashboard from './pages/dashboard/ManagerDashboard'
 import AdminDashboard from './pages/dashboard/AdminDashboard'
 import SuperAdminDashboard from './pages/dashboard/SuperAdminDashboard'
 import MyToursPage from './pages/dashboard/MyToursPage'
+import BookingsPage from './pages/dashboard/BookingsPage'
 
 function App() {
   return (
@@ -41,6 +42,7 @@ function App() {
         <Route index element={<ManagerDashboard />} />
         <Route path="manager" element={<ManagerDashboard />} />
         <Route path="my-tours" element={<MyToursPage />} />
+        <Route path="bookings" element={<BookingsPage />} />
         <Route
           path="admin"
           element={
