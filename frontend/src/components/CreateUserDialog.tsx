@@ -43,8 +43,8 @@ export function CreateUserDialog({ open, onOpenChange }: CreateUserDialogProps) 
   }
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-md">
+    <Dialog open={open} onOpenChange={onOpenChange} modal={true}>
+      <DialogContent className="sm:max-w-md z-[100]">
         <DialogHeader>
           <DialogTitle>Создать пользователя</DialogTitle>
           <DialogDescription>

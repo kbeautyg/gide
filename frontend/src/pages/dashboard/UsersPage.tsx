@@ -27,13 +27,20 @@ export default function UsersPage() {
           <h1 className="text-3xl font-bold">Управление пользователями</h1>
           <p className="text-gray-600 mt-1">Создание и управление гидами, менеджерами и администраторами</p>
         </div>
-        <Button className="gap-2" onClick={() => setDialogOpen(true)}>
+        <Button 
+          className="gap-2 cursor-pointer" 
+          onClick={() => {
+            console.log('Opening dialog...')
+            setDialogOpen(true)
+          }}
+          type="button"
+        >
           <UserPlus size={20} />
           Добавить пользователя
         </Button>
       </div>
 
-      <CreateUserDialog open={dialogOpen} onOpenChange={setDialogOpen} />
+      {dialogOpen && <CreateUserDialog open={dialogOpen} onOpenChange={setDialogOpen} />}
 
       <div className="grid gap-6 md:grid-cols-3">
         <Card>

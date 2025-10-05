@@ -17,43 +17,56 @@ export default function DashboardLayout() {
   const { user } = useAuthStore()
   const { logout } = useAuth()
 
-  // Определяем меню в зависимости от роли
+  // Определяем меню в зависимости от роли (иерархия дашбордов)
   const getMenuItems = () => {
     const role = user?.role
+    const menuItems = []
 
+    // Супер-админ видит все 4 дашборда
     if (role === 'super_admin') {
-      return [
-        { icon: LayoutDashboard, label: 'Главная', path: '/dashboard/superadmin' },
+      menuItems.push(
+        { icon: LayoutDashboard, label: 'Дашборд Супер-Админа', path: '/dashboard/superadmin' },
+        { icon: LayoutDashboard, label: 'Дашборд Админа', path: '/dashboard' },
+        { icon: LayoutDashboard, label: 'Дашборд Супер-Менеджера', path: '/dashboard' },
+        { icon: LayoutDashboard, label: 'Дашборд Менеджера', path: '/dashboard' },
         { icon: Users, label: 'Пользователи', path: '/dashboard/users' },
         { icon: MapPin, label: 'Все экскурсии', path: '/dashboard/all-tours' },
         { icon: Wallet, label: 'Финансы', path: '/dashboard/finances' },
         { icon: Settings, label: 'Настройки', path: '/dashboard/settings' },
-      ]
+      )
     }
-    
-    const commonItems = [
-      { icon: LayoutDashboard, label: 'Главная', path: '/dashboard' },
-    ]
-
-    if (role === 'admin') {
-      return [
-        ...commonItems,
+    // Админ видит 3 дашборда (без супер-админского)
+    else if (role === 'admin') {
+      menuItems.push(
+        { icon: LayoutDashboard, label: 'Дашборд Админа', path: '/dashboard' },
+        { icon: LayoutDashboard, label: 'Дашборд Супер-Менеджера', path: '/dashboard' },
+        { icon: LayoutDashboard, label: 'Дашборд Менеджера', path: '/dashboard' },
         { icon: Users, label: 'Моя команда', path: '/dashboard/team' },
         { icon: MapPin, label: 'Экскурсии', path: '/dashboard/tours' },
         { icon: Wallet, label: 'Финансы', path: '/dashboard/finances' },
-      ]
+      )
     }
-
-    if (role === 'manager' || role === 'guide') {
-      return [
-        ...commonItems,
+    // Супер-менеджер видит 2 дашборда
+    else if (role === 'super_manager') {
+      menuItems.push(
+        { icon: LayoutDashboard, label: 'Дашборд Супер-Менеджера', path: '/dashboard' },
+        { icon: LayoutDashboard, label: 'Дашборд Менеджера', path: '/dashboard' },
+        { icon: Users, label: 'Моя команда', path: '/dashboard/team' },
+        { icon: MapPin, label: 'Экскурсии', path: '/dashboard/tours' },
+        { icon: Wallet, label: 'Финансы', path: '/dashboard/finances' },
+      )
+    }
+    // Менеджер/Гид видит только свой дашборд
+    else if (role === 'manager' || role === 'guide') {
+      menuItems.push(
+        { icon: LayoutDashboard, label: 'Дашборд Менеджера', path: '/dashboard' },
         { icon: MapPin, label: 'Мои экскурсии', path: '/dashboard/my-tours' },
         { icon: Calendar, label: 'Бронирования', path: '/dashboard/bookings' },
         { icon: Wallet, label: 'Финансы', path: '/dashboard/finances' },
-      ]
+      )
     }
 
-    return commonItems
+    return menuItems
   }
 
   const menuItems = getMenuItems()
@@ -77,8 +90,15 @@ export default function DashboardLayout() {
                 {user?.role === 'client' && 'Клиент'}
               </p>
             </div>
+            <Link to="/">
+              <Button variant="outline" size="sm" className="gap-2">
+                <Home size={18} />
+                На главную
+              </Button>
+            </Link>
             <Button variant="ghost" size="sm" onClick={logout}>
               <LogOut size={18} />
+              Выход
             </Button>
           </div>
         </div>
@@ -88,14 +108,8 @@ export default function DashboardLayout() {
         {/* Sidebar */}
         <aside className="w-64 bg-white rounded-lg border p-4 h-fit sticky top-24">
           <nav className="space-y-2">
-            <Link to="/">
-              <Button variant="ghost" className="w-full justify-start gap-2">
-                <Home size={18} />
-                На главную
-              </Button>
-            </Link>
-            {menuItems.map((item) => (
-              <Link key={item.path} to={item.path}>
+            {menuItems.map((item, index) => (
+              <Link key={`${item.path}-${index}`} to={item.path}>
                 <Button variant="ghost" className="w-full justify-start gap-2">
                   <item.icon size={18} />
                   {item.label}
