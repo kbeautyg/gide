@@ -1,11 +1,15 @@
 """
 Эндпоинты аутентификации
 """
-from fastapi import APIRouter, HTTPException, status
+from fastapi import APIRouter, HTTPException, status, Depends
 from pydantic import BaseModel, Field
 from typing import Optional
+from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.core.security import create_access_token, get_password_hash, verify_password
+from app.core.security import create_access_token
+from app.db.session import get_db
+from app.services.user_service import UserService
+from app.models.user import UserRole
 
 router = APIRouter()
 
@@ -33,49 +37,71 @@ class TokenResponse(BaseModel):
 
 
 @router.post("/login", response_model=TokenResponse)
-async def login(request: LoginRequest):
+async def login(
+    request: LoginRequest,
+    db: AsyncSession = Depends(get_db)
+):
     """
     Вход в систему
-    
-    TODO: Подключить реальную БД
     """
-    # Временная заглушка
-    # В реальности здесь будет проверка в БД
+    # Аутентификация пользователя
+    user = await UserService.authenticate_user(db, request.phone, request.password)
     
-    # Создаем токен
+    if not user:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Неверный телефон или пароль",
+            headers={"WWW-Authenticate": "Bearer"},
+        )
+    
+    # Создаем JWT токен
     access_token = create_access_token(
-        data={"sub": "temp_user_id", "role": "manager"}
+        data={"sub": user.id, "role": user.role.value}
     )
     
     return TokenResponse(
         access_token=access_token,
-        user_id="temp_user_id",
-        role="manager"
+        user_id=user.id,
+        role=user.role.value
     )
 
 
 @router.post("/register", response_model=TokenResponse)
-async def register(request: RegisterRequest):
+async def register(
+    request: RegisterRequest,
+    db: AsyncSession = Depends(get_db)
+):
     """
-    Регистрация нового пользователя
-    
-    TODO: Подключить реальную БД
+    Регистрация нового пользователя (клиента/туриста)
     """
-    # Временная заглушка
-    # В реальности здесь будет создание пользователя в БД
+    # Проверяем существует ли пользователь
+    existing_user = await UserService.get_user_by_phone(db, request.phone)
     
-    # Хешируем пароль
-    hashed_password = get_password_hash(request.password)
+    if existing_user:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Пользователь с таким телефоном уже существует"
+        )
     
-    # Создаем токен
+    # Создаем нового пользователя (по умолчанию - клиент)
+    user = await UserService.create_user(
+        db=db,
+        phone=request.phone,
+        password=request.password,
+        email=request.email,
+        name=request.name,
+        role=UserRole.CLIENT,
+    )
+    
+    # Создаем JWT токен
     access_token = create_access_token(
-        data={"sub": "new_user_id", "role": "client"}
+        data={"sub": user.id, "role": user.role.value}
     )
     
     return TokenResponse(
         access_token=access_token,
-        user_id="new_user_id",
-        role="client"
+        user_id=user.id,
+        role=user.role.value
     )
 
 
