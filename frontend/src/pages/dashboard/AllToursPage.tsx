@@ -12,7 +12,7 @@ export default function AllToursPage() {
     },
   })
 
-  const tours = toursData?.tours || []
+  const tours = Array.isArray(toursData) ? toursData : (toursData?.tours || [])
 
   if (isLoading) {
     return (

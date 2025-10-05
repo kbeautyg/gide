@@ -32,8 +32,8 @@ export default function ManagerDashboard() {
     },
   })
 
-  const myToursCount = toursData?.length || 0
-  const bookingsCount = bookingsData?.length || 0
+  const myToursCount = Array.isArray(toursData) ? toursData.length : (toursData?.tours?.length || 0)
+  const bookingsCount = Array.isArray(bookingsData) ? bookingsData.length : 0
   const balance = profileData?.balance_rub || 0
 
   return (

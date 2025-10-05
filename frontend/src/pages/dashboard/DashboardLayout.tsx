@@ -20,20 +20,20 @@ export default function DashboardLayout() {
   // Определяем меню в зависимости от роли
   const getMenuItems = () => {
     const role = user?.role
-    
-    const commonItems = [
-      { icon: LayoutDashboard, label: 'Главная', path: '/dashboard' },
-    ]
 
     if (role === 'super_admin') {
       return [
-        ...commonItems,
+        { icon: LayoutDashboard, label: 'Главная', path: '/dashboard/superadmin' },
         { icon: Users, label: 'Пользователи', path: '/dashboard/users' },
         { icon: MapPin, label: 'Все экскурсии', path: '/dashboard/all-tours' },
         { icon: Wallet, label: 'Финансы', path: '/dashboard/finances' },
         { icon: Settings, label: 'Настройки', path: '/dashboard/settings' },
       ]
     }
+    
+    const commonItems = [
+      { icon: LayoutDashboard, label: 'Главная', path: '/dashboard' },
+    ]
 
     if (role === 'admin') {
       return [
