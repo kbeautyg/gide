@@ -60,7 +60,7 @@ class TourService:
         return tours, total
     
     @staticmethod
-    async def get_tour_by_id(db: AsyncSession, tour_id: str) -> Optional[Tour]:
+    async def get_tour_by_id(db: AsyncSession, tour_id: int) -> Optional[Tour]:
         """Получение экскурсии по ID"""
         result = await db.execute(
             select(Tour).where(Tour.id == tour_id)
@@ -103,7 +103,7 @@ class TourService:
     @staticmethod
     async def update_tour(
         db: AsyncSession,
-        tour_id: str,
+        tour_id: int,
         **updates
     ) -> Optional[Tour]:
         """Обновление экскурсии"""
@@ -122,7 +122,7 @@ class TourService:
         return tour
     
     @staticmethod
-    async def delete_tour(db: AsyncSession, tour_id: str) -> bool:
+    async def delete_tour(db: AsyncSession, tour_id: int) -> bool:
         """Мягкое удаление экскурсии (деактивация)"""
         tour = await TourService.get_tour_by_id(db, tour_id)
         

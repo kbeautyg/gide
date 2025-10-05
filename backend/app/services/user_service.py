@@ -22,7 +22,7 @@ class UserService:
         return result.scalar_one_or_none()
     
     @staticmethod
-    async def get_user_by_id(db: AsyncSession, user_id: str) -> Optional[User]:
+    async def get_user_by_id(db: AsyncSession, user_id: int) -> Optional[User]:
         """Получение пользователя по ID"""
         result = await db.execute(
             select(User).where(User.id == user_id)
@@ -78,7 +78,7 @@ class UserService:
     @staticmethod
     async def get_user_hierarchy(
         db: AsyncSession,
-        user_id: str
+        user_id: int
     ) -> List[User]:
         """
         Получение всех подчиненных пользователей
@@ -92,7 +92,7 @@ class UserService:
     @staticmethod
     async def update_user_balance(
         db: AsyncSession,
-        user_id: str,
+        user_id: int,
         currency: str,  # 'rub', 'usd', 'thb'
         amount: float,
     ) -> Optional[User]:
@@ -117,8 +117,8 @@ class UserService:
     @staticmethod
     async def change_user_parent(
         db: AsyncSession,
-        user_id: str,
-        new_parent_id: str,
+        user_id: int,
+        new_parent_id: int,
     ) -> Optional[User]:
         """
         Переназначение менеджера между админами

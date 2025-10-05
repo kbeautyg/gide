@@ -182,7 +182,7 @@ async def get_tours(
 
 @router.get("/{tour_id}", response_model=Tour)
 async def get_tour(
-    tour_id: str,
+    tour_id: int,
     db: AsyncSession = Depends(get_db)
 ):
     """

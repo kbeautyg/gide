@@ -12,7 +12,7 @@ router = APIRouter()
 
 class BookingCreate(BaseModel):
     """Создание бронирования"""
-    tour_id: str = Field(..., description="ID экскурсии")
+    tour_id: int = Field(..., description="ID экскурсии")
     date: dt.date = Field(..., description="Дата экскурсии")
     participants_count: int = Field(..., ge=1, description="Количество участников")
     client_name: str = Field(..., description="Имя клиента")
@@ -22,8 +22,8 @@ class BookingCreate(BaseModel):
 
 class Booking(BaseModel):
     """Модель бронирования"""
-    id: str
-    tour_id: str
+    id: int
+    tour_id: int
     tour_title: str
     client_name: str
     client_phone: str
@@ -62,7 +62,7 @@ async def create_booking(booking: BookingCreate):
 
 
 @router.get("/{booking_id}", response_model=Booking)
-async def get_booking(booking_id: str):
+async def get_booking(booking_id: int):
     """
     Получение информации о бронировании
     

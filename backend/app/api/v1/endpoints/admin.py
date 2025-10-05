@@ -38,8 +38,8 @@ class UserResponse(BaseModel):
 
 class ChangeParentRequest(BaseModel):
     """Запрос на смену родителя (переназначение менеджера)"""
-    user_id: str = Field(..., description="ID пользователя для переназначения")
-    new_parent_id: str = Field(..., description="ID нового родителя")
+    user_id: int = Field(..., description="ID пользователя для переназначения")
+    new_parent_id: int = Field(..., description="ID нового родителя")
 
 
 @router.post("/users", response_model=UserResponse)
