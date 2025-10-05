@@ -1,16 +1,13 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { Button } from '@/components/ui/button'
-import { MapPin, Calendar, Wallet, Plus } from 'lucide-react'
+import { CreateTourDialog } from '@/components/CreateTourDialog'
+import { MapPin, Calendar, Wallet } from 'lucide-react'
 
 export default function ManagerDashboard() {
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <h1 className="text-3xl font-bold">Дашборд Менеджера</h1>
-        <Button variant="tropical">
-          <Plus className="mr-2" size={18} />
-          Создать экскурсию
-        </Button>
+        <CreateTourDialog />
       </div>
 
       {/* Статистика */}
