@@ -15,7 +15,7 @@ router = APIRouter()
 
 class Tour(BaseModel):
     """Модель экскурсии"""
-    id: str
+    id: int
     title: str = Field(..., description="Название экскурсии")
     description: str = Field(..., description="Описание")
     price: float = Field(..., description="Цена в RUB")
@@ -26,7 +26,7 @@ class Tour(BaseModel):
     rating: float = Field(default=0.0, description="Рейтинг (0-5)")
     reviews_count: int = Field(default=0, description="Количество отзывов")
     guide_name: str = Field(..., description="Имя гида")
-    guide_id: str = Field(..., description="ID гида")
+    guide_id: int = Field(..., description="ID гида")
     active: bool = Field(default=True, description="Активна ли экскурсия")
     created_at: datetime = Field(default_factory=datetime.now)
 

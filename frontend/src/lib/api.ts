@@ -34,7 +34,12 @@ api.interceptors.response.use(
     if (error.response?.status === 401) {
       // Разлогиниваем пользователя при 401
       localStorage.removeItem('access_token')
-      window.location.href = '/login'
+      
+      // Редиректим на логин только если пользователь на защищенной странице
+      const currentPath = window.location.pathname
+      if (currentPath.startsWith('/dashboard')) {
+        window.location.href = '/login'
+      }
     }
     return Promise.reject(error)
   }
@@ -43,7 +48,7 @@ api.interceptors.response.use(
 // === ТИПЫ ===
 
 export interface Tour {
-  id: string
+  id: number
   title: string
   description: string
   price: number
@@ -54,7 +59,7 @@ export interface Tour {
   rating: number
   reviews_count: number
   guide_name: string
-  guide_id: string
+  guide_id: number
   active: boolean
   created_at: string
 }
@@ -67,8 +72,8 @@ export interface TourListResponse {
 }
 
 export interface Booking {
-  id: string
-  tour_id: string
+  id: number
+  tour_id: number
   tour_title: string
   client_name: string
   client_phone: string
@@ -120,7 +125,7 @@ export const toursApi = {
     page_size?: number
   }) => api.get<TourListResponse>('/tours/', { params }),
   
-  getById: (id: string) => api.get<Tour>(`/tours/${id}`),
+  getById: (id: number | string) => api.get<Tour>(`/tours/${id}`),
   
   create: (tour: {
     title: string
@@ -136,7 +141,7 @@ export const toursApi = {
 // Бронирования
 export const bookingsApi = {
   create: (booking: {
-    tour_id: string
+    tour_id: number
     date: string
     participants_count: number
     client_name: string
@@ -144,7 +149,7 @@ export const bookingsApi = {
     client_email?: string
   }) => api.post<Booking>('/bookings/', booking),
   
-  getById: (id: string) => api.get<Booking>(`/bookings/${id}`),
+  getById: (id: number | string) => api.get<Booking>(`/bookings/${id}`),
 }
 
 export default api
