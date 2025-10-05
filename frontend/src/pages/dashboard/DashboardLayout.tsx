@@ -23,11 +23,11 @@ export default function DashboardLayout() {
 
   // Цвета для каждой роли
   const roleColors = {
-    super_admin: 'text-purple-600 bg-purple-50',
-    admin: 'text-blue-600 bg-blue-50',
-    super_manager: 'text-green-600 bg-green-50',
-    manager: 'text-orange-600 bg-orange-50',
-    guide: 'text-orange-600 bg-orange-50',
+    super_admin: 'text-purple-600',
+    admin: 'text-blue-600',
+    super_manager: 'text-green-600',
+    manager: 'text-orange-600',
+    guide: 'text-orange-600',
   }
 
   // Определяем доступные дашборды в зависимости от роли
