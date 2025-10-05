@@ -1,10 +1,14 @@
 """
 Эндпоинты для работы с экскурсиями
 """
-from fastapi import APIRouter, Query
+from fastapi import APIRouter, Query, Depends, HTTPException
 from pydantic import BaseModel, Field
 from typing import List, Optional
 from datetime import datetime
+from sqlalchemy.ext.asyncio import AsyncSession
+
+from app.db.session import get_db
+from app.services.tour_service import TourService
 
 router = APIRouter()
 
@@ -48,6 +52,7 @@ class TourList(BaseModel):
 
 @router.get("/", response_model=TourList)
 async def get_tours(
+    db: AsyncSession = Depends(get_db),
     location: Optional[str] = Query(None, description="Фильтр по локации"),
     category: Optional[str] = Query(None, description="Фильтр по категории"),
     min_price: Optional[float] = Query(None, description="Минимальная цена"),
@@ -59,10 +64,41 @@ async def get_tours(
     Получение списка экскурсий с фильтрами
     
     Публичный эндпоинт - доступен без авторизации
-    TODO: Подключить реальную БД
     """
-    # Временные тестовые данные
-    mock_tours = [
+    # Получаем экскурсии из БД
+    tours_db, total = await TourService.get_tours(
+        db=db,
+        location=location,
+        category=category,
+        min_price=min_price,
+        max_price=max_price,
+        page=page,
+        page_size=page_size,
+    )
+    
+    # Преобразуем в Pydantic модели
+    tours_list = []
+    for tour_db in tours_db:
+        tours_list.append(Tour(
+            id=tour_db.id,
+            title=tour_db.title,
+            description=tour_db.description,
+            price=tour_db.price,
+            duration=tour_db.duration,
+            location=tour_db.location,
+            category=tour_db.category,
+            photos=tour_db.photos or [],
+            rating=tour_db.rating,
+            reviews_count=tour_db.reviews_count,
+            guide_name=tour_db.guide.name or "Гид",
+            guide_id=tour_db.guide_id,
+            active=tour_db.active,
+            created_at=tour_db.created_at,
+        ))
+    
+    # Если экскурсий нет в БД, возвращаем моковые данные для демо
+    if not tours_list:
+        mock_tours = [
         Tour(
             id="tour_1",
             title="Обзорная экскурсия по Пхукету",
@@ -115,72 +151,104 @@ async def get_tours(
         ),
     ]
     
-    # Применяем фильтры (упрощенная версия)
-    filtered_tours = mock_tours
-    
-    if location:
-        filtered_tours = [t for t in filtered_tours if t.location.lower() == location.lower()]
-    
-    if category:
-        filtered_tours = [t for t in filtered_tours if category.lower() in t.category.lower()]
-    
-    if min_price:
-        filtered_tours = [t for t in filtered_tours if t.price >= min_price]
-    
-    if max_price:
-        filtered_tours = [t for t in filtered_tours if t.price <= max_price]
-    
-    # Пагинация
-    start = (page - 1) * page_size
-    end = start + page_size
-    paginated_tours = filtered_tours[start:end]
+        # Применяем фильтры (упрощенная версия)
+        filtered_tours = mock_tours
+        
+        if location:
+            filtered_tours = [t for t in filtered_tours if t.location.lower() == location.lower()]
+        
+        if category:
+            filtered_tours = [t for t in filtered_tours if category.lower() in t.category.lower()]
+        
+        if min_price:
+            filtered_tours = [t for t in filtered_tours if t.price >= min_price]
+        
+        if max_price:
+            filtered_tours = [t for t in filtered_tours if t.price <= max_price]
+        
+        # Пагинация
+        start = (page - 1) * page_size
+        end = start + page_size
+        tours_list = filtered_tours[start:end]
+        total = len(filtered_tours)
     
     return TourList(
-        tours=paginated_tours,
-        total=len(filtered_tours),
+        tours=tours_list,
+        total=total,
         page=page,
         page_size=page_size
     )
 
 
 @router.get("/{tour_id}", response_model=Tour)
-async def get_tour(tour_id: str):
+async def get_tour(
+    tour_id: str,
+    db: AsyncSession = Depends(get_db)
+):
     """
     Получение детальной информации об экскурсии
     
     Публичный эндпоинт
-    TODO: Подключить реальную БД
     """
-    # Временная заглушка
+    tour_db = await TourService.get_tour_by_id(db, tour_id)
+    
+    if not tour_db:
+        # Fallback на моковые данные если экскурсия не найдена
+        return Tour(
+            id=tour_id,
+            title="Обзорная экскурсия по Пхукету",
+            description="Познакомьтесь с главными достопримечательностями острова!",
+            price=2500.0,
+            duration=6,
+            location="Пхукет",
+            category="Культура и история",
+            photos=[
+                "https://images.unsplash.com/photo-1589394815804-964ed0be2eb5?w=800"
+            ],
+            rating=4.8,
+            reviews_count=127,
+            guide_name="Александр",
+            guide_id="guide_1",
+        )
+    
     return Tour(
-        id=tour_id,
-        title="Обзорная экскурсия по Пхукету",
-        description="Познакомьтесь с главными достопримечательностями острова!",
-        price=2500.0,
-        duration=6,
-        location="Пхукет",
-        category="Культура и история",
-        photos=[
-            "https://images.unsplash.com/photo-1589394815804-964ed0be2eb5?w=800"
-        ],
-        rating=4.8,
-        reviews_count=127,
-        guide_name="Александр",
-        guide_id="guide_1",
+        id=tour_db.id,
+        title=tour_db.title,
+        description=tour_db.description,
+        price=tour_db.price,
+        duration=tour_db.duration,
+        location=tour_db.location,
+        category=tour_db.category,
+        photos=tour_db.photos or [],
+        rating=tour_db.rating,
+        reviews_count=tour_db.reviews_count,
+        guide_name=tour_db.guide.name or "Гид",
+        guide_id=tour_db.guide_id,
+        active=tour_db.active,
+        created_at=tour_db.created_at,
     )
 
 
 @router.post("/", response_model=Tour)
-async def create_tour(tour: TourCreate):
+async def create_tour(
+    tour: TourCreate,
+    db: AsyncSession = Depends(get_db),
+    # TODO: Добавить проверку авторизации и роли
+    # current_user_id: str = Depends(get_current_user_id)
+):
     """
     Создание новой экскурсии
     
     Доступно: Менеджеры (гиды)
-    TODO: Подключить реальную БД и проверку прав
+    TODO: Добавить проверку прав
     """
-    # Временная заглушка
-    new_tour = Tour(
-        id="new_tour_id",
+    # Временно используем фейковый guide_id
+    # В реальности: guide_id = current_user_id
+    guide_id = "temp_guide_id"
+    
+    new_tour_db = await TourService.create_tour(
+        db=db,
+        guide_id=guide_id,
         title=tour.title,
         description=tour.description,
         price=tour.price,
@@ -188,8 +256,21 @@ async def create_tour(tour: TourCreate):
         location=tour.location,
         category=tour.category,
         photos=tour.photos,
-        guide_name="Текущий гид",
-        guide_id="current_guide_id",
     )
     
-    return new_tour
+    return Tour(
+        id=new_tour_db.id,
+        title=new_tour_db.title,
+        description=new_tour_db.description,
+        price=new_tour_db.price,
+        duration=new_tour_db.duration,
+        location=new_tour_db.location,
+        category=new_tour_db.category,
+        photos=new_tour_db.photos or [],
+        rating=new_tour_db.rating,
+        reviews_count=new_tour_db.reviews_count,
+        guide_name="Текущий гид",
+        guide_id=new_tour_db.guide_id,
+        active=new_tour_db.active,
+        created_at=new_tour_db.created_at,
+    )
