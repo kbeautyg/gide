@@ -2,6 +2,7 @@
 Сервис для работы с экскурсиями
 """
 from sqlalchemy import select
+from sqlalchemy.orm import selectinload
 from sqlalchemy.ext.asyncio import AsyncSession
 from typing import List, Optional
 import uuid
@@ -29,8 +30,8 @@ class TourService:
         Returns:
             tuple: (список экскурсий, общее количество)
         """
-        # Базовый запрос
-        query = select(Tour).where(Tour.active == True)
+        # Базовый запрос с eager loading связанного гида
+        query = select(Tour).where(Tour.active == True).options(selectinload(Tour.guide))
         
         # Применяем фильтры
         if location:
@@ -63,7 +64,7 @@ class TourService:
     async def get_tour_by_id(db: AsyncSession, tour_id: int) -> Optional[Tour]:
         """Получение экскурсии по ID"""
         result = await db.execute(
-            select(Tour).where(Tour.id == tour_id)
+            select(Tour).where(Tour.id == tour_id).options(selectinload(Tour.guide))
         )
         return result.scalar_one_or_none()
     
