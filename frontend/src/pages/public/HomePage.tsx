@@ -1,11 +1,13 @@
 import { Link } from 'react-router-dom'
-import { Search, MapPin, Star, Users, TrendingUp } from 'lucide-react'
+import { Search, MapPin, Star, Users, TrendingUp, UserCircle } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Card, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
 import { formatRUB } from '@/lib/utils'
+import { useAuthStore } from '@/lib/store'
 
 export default function HomePage() {
+  const { isAuthenticated, user } = useAuthStore()
   // Популярные экскурсии (временные данные)
   const popularTours = [
     {
@@ -60,12 +62,28 @@ export default function HomePage() {
             </Link>
           </nav>
           <div className="flex items-center gap-3">
-            <Link to="/login">
-              <Button variant="ghost">Войти</Button>
-            </Link>
-            <Link to="/register">
-              <Button variant="tropical">Регистрация</Button>
-            </Link>
+            {isAuthenticated && user ? (
+              <>
+                <Link to="/dashboard">
+                  <Button variant="ghost" className="gap-2">
+                    <UserCircle size={20} />
+                    {user.name || user.phone}
+                  </Button>
+                </Link>
+                <Link to="/dashboard">
+                  <Button variant="tropical">Личный кабинет</Button>
+                </Link>
+              </>
+            ) : (
+              <>
+                <Link to="/login">
+                  <Button variant="ghost">Войти</Button>
+                </Link>
+                <Link to="/register">
+                  <Button variant="tropical">Регистрация</Button>
+                </Link>
+              </>
+            )}
           </div>
         </div>
       </header>

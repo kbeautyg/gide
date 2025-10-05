@@ -1,15 +1,17 @@
 import { useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
-import { MapPin, Clock, Star, Calendar, Users, ArrowLeft } from 'lucide-react'
+import { MapPin, Clock, Star, Calendar, Users, ArrowLeft, UserCircle } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { toursApi } from '@/lib/api'
 import { formatRUB } from '@/lib/utils'
+import { useAuthStore } from '@/lib/store'
 
 export default function TourDetailPage() {
+  const { isAuthenticated, user } = useAuthStore()
   const { id } = useParams<{ id: string }>()
   const [bookingData, setBookingData] = useState({
     date: '',
@@ -54,12 +56,22 @@ export default function TourDetailPage() {
           <Link to="/" className="text-2xl font-bold text-gradient">
             ThaiGuide Pro
           </Link>
-          <Link to="/tours">
-            <Button variant="ghost">
-              <ArrowLeft className="mr-2" size={18} />
-              Назад к экскурсиям
-            </Button>
-          </Link>
+          <div className="flex items-center gap-3">
+            <Link to="/tours">
+              <Button variant="ghost">
+                <ArrowLeft className="mr-2" size={18} />
+                Назад к экскурсиям
+              </Button>
+            </Link>
+            {isAuthenticated && user && (
+              <Link to="/dashboard">
+                <Button variant="ghost" className="gap-2">
+                  <UserCircle size={20} />
+                  {user.name || user.phone}
+                </Button>
+              </Link>
+            )}
+          </div>
         </div>
       </header>
 
