@@ -1,19 +1,28 @@
 import { useState } from 'react'
 import { useQuery } from '@tanstack/react-query'
+import { Link } from 'react-router-dom'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
-import { Users, UserPlus, Mail, Phone, Search, Filter, TrendingUp } from 'lucide-react'
+import { Users, UserPlus, Mail, Phone, Search, Filter, TrendingUp, ExternalLink } from 'lucide-react'
 import { CreateUserDialog } from '@/components/CreateUserDialog'
+import { AssignRoleDialog } from '@/components/AssignRoleDialog'
 import { api } from '@/lib/api'
 import { formatRUB } from '@/lib/utils'
 import { useAuthStore } from '@/lib/store'
 
 export default function UsersPage() {
   const [dialogOpen, setDialogOpen] = useState(false)
+  const [assignRoleOpen, setAssignRoleOpen] = useState(false)
+  const [selectedUser, setSelectedUser] = useState<any>(null)
   const [searchTerm, setSearchTerm] = useState('')
   const [selectedRole, setSelectedRole] = useState<string>('all')
   const { user } = useAuthStore()
+
+  const handleAssignRole = (teamUser: any) => {
+    setSelectedUser(teamUser)
+    setAssignRoleOpen(true)
+  }
 
   // Загрузка команды
   const { data: teamData, isLoading } = useQuery({
@@ -149,53 +158,59 @@ export default function UsersPage() {
             </div>
           ) : filteredTeam.length > 0 ? (
             <div className="space-y-2">
-              {filteredTeam.map((user: any) => (
-                <div key={user.id} className="flex items-center justify-between p-4 border-2 rounded-lg hover:bg-gray-50 transition-colors">
-                  <div className="flex items-center gap-4">
+              {filteredTeam.map((teamUser: any) => (
+                <div key={teamUser.id} className="flex items-center justify-between p-4 border-2 rounded-lg hover:border-tropical-ocean hover:shadow-md transition-all group">
+                  <Link to={`/dashboard/profile/${teamUser.id}`} className="flex items-center gap-4 flex-1">
                     <div className={`w-12 h-12 rounded-full flex items-center justify-center font-bold text-lg ${
-                      user.role === 'admin' ? 'bg-blue-100 text-blue-600' :
-                      user.role === 'super_manager' ? 'bg-green-100 text-green-600' :
-                      user.role === 'manager' ? 'bg-orange-100 text-orange-600' : 'bg-gray-100'
+                      teamUser.role === 'super_admin' ? 'bg-purple-100 text-purple-600' :
+                      teamUser.role === 'admin' ? 'bg-blue-100 text-blue-600' :
+                      teamUser.role === 'super_manager' ? 'bg-green-100 text-green-600' :
+                      teamUser.role === 'manager' ? 'bg-orange-100 text-orange-600' : 'bg-gray-100'
                     }`}>
-                      {user.name?.[0] || user.phone?.[0] || '?'}
+                      {teamUser.name?.[0] || teamUser.phone?.[0] || '?'}
                     </div>
                     <div>
-                      <div className="font-bold text-lg">{user.name || user.phone}</div>
+                      <div className="font-bold text-lg flex items-center gap-2 group-hover:text-tropical-ocean transition-colors">
+                        {teamUser.name || teamUser.phone}
+                        <ExternalLink size={16} className="opacity-0 group-hover:opacity-100 transition-opacity" />
+                      </div>
                       <div className="text-sm text-gray-500 flex items-center gap-3">
                         <span className="flex items-center gap-1">
                           <Phone size={14} />
-                          {user.phone}
+                          {teamUser.phone}
                         </span>
-                        {user.email && (
+                        {teamUser.email && (
                           <span className="flex items-center gap-1">
                             <Mail size={14} />
-                            {user.email}
+                            {teamUser.email}
                           </span>
                         )}
                       </div>
                     </div>
-                  </div>
+                  </Link>
                   <div className="flex items-center gap-4">
                     <span className={`px-4 py-2 rounded-full text-sm font-medium ${
-                      user.role === 'admin' ? 'bg-blue-100 text-blue-800' :
-                      user.role === 'super_manager' ? 'bg-green-100 text-green-800' :
-                      user.role === 'manager' ? 'bg-orange-100 text-orange-800' : 'bg-gray-100'
+                      teamUser.role === 'super_admin' ? 'bg-purple-100 text-purple-800' :
+                      teamUser.role === 'admin' ? 'bg-blue-100 text-blue-800' :
+                      teamUser.role === 'super_manager' ? 'bg-green-100 text-green-800' :
+                      teamUser.role === 'manager' ? 'bg-orange-100 text-orange-800' : 'bg-gray-100'
                     }`}>
-                      {user.role === 'admin' ? 'Админ' : 
-                       user.role === 'super_manager' ? 'Супер-менеджер' :
-                       user.role === 'manager' ? 'Менеджер' : user.role}
+                      {teamUser.role === 'super_admin' ? 'Супер-админ' :
+                       teamUser.role === 'admin' ? 'Админ' : 
+                       teamUser.role === 'super_manager' ? 'Супер-менеджер' :
+                       teamUser.role === 'manager' ? 'Менеджер' : teamUser.role}
                     </span>
                     <div className="text-right min-w-[120px]">
-                      <div className="text-lg font-bold">{formatRUB(user.balance_rub || 0)}</div>
+                      <div className="text-lg font-bold">{formatRUB(teamUser.balance_rub || 0)}</div>
                       <div className="text-xs text-gray-500">Баланс</div>
                     </div>
                     <div className="flex gap-2">
                       <Button 
                         size="sm" 
                         variant="outline"
-                        onClick={() => {
-                          // TODO: Открыть диалог назначения роли
-                          alert(`Назначить роль для ${user.name || user.phone}`)
+                        onClick={(e) => {
+                          e.preventDefault()
+                          handleAssignRole(teamUser)
                         }}
                       >
                         Назначить роль
@@ -224,6 +239,15 @@ export default function UsersPage() {
           )}
         </CardContent>
       </Card>
+
+      {/* Assign Role Dialog */}
+      {selectedUser && (
+        <AssignRoleDialog
+          open={assignRoleOpen}
+          onOpenChange={setAssignRoleOpen}
+          user={selectedUser}
+        />
+      )}
     </div>
   )
 }
