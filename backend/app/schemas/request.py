@@ -30,15 +30,15 @@ class RequestUpdate(BaseModel):
     budget: Optional[float] = None
     location: Optional[str] = None
     status: Optional[str] = None
-    assigned_to: Optional[str] = None
+    assigned_to: Optional[int] = None
 
 
 class Request(RequestBase):
     """Схема заявки"""
-    id: str
-    client_id: str
+    id: int
+    client_id: int
     status: str
-    assigned_to: Optional[str] = None
+    assigned_to: Optional[int] = None
     
     class Config:
         from_attributes = True

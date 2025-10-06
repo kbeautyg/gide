@@ -4,7 +4,6 @@
 from sqlalchemy import Column, String, Float, Integer, ForeignKey, DateTime, Text, Date
 from sqlalchemy.orm import relationship
 from datetime import datetime
-import uuid
 from app.db.base import Base
 
 
@@ -12,10 +11,10 @@ class Request(Base):
     """Модель заявки клиента на экскурсию"""
     __tablename__ = "requests"
 
-    id = Column(String, primary_key=True, index=True, default=lambda: str(uuid.uuid4()))
+    id = Column(Integer, primary_key=True, index=True, autoincrement=True)
     
     # Клиент который создал заявку
-    client_id = Column(String, ForeignKey("users.id"), nullable=False)
+    client_id = Column(Integer, ForeignKey("users.id"), nullable=False)
     
     # Основная информация
     title = Column(String, nullable=False)
@@ -29,7 +28,7 @@ class Request(Base):
     status = Column(String, nullable=True, default='pending')  # pending, in_progress, completed, cancelled
     
     # Кому назначена заявка
-    assigned_to = Column(String, ForeignKey("users.id"), nullable=True)
+    assigned_to = Column(Integer, ForeignKey("users.id"), nullable=True)
     
     # Временные метки
     created_at = Column(DateTime, default=datetime.utcnow)

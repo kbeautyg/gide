@@ -6,7 +6,6 @@ from typing import List, Optional
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select, and_, or_, func
 from datetime import datetime
-import uuid
 
 from app.db.session import get_db
 from app.models.request import Request
@@ -27,10 +26,7 @@ async def create_request(
     if current_user.role != UserRole.CLIENT:
         raise HTTPException(status_code=403, detail="Только клиенты могут создавать заявки")
     
-    request_id = str(uuid.uuid4())
-    
     db_request = Request(
-        id=request_id,
         client_id=current_user.id,
         title=request_data.title,
         description=request_data.description,
