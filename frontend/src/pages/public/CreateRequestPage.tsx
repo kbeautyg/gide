@@ -7,6 +7,8 @@ import { Textarea } from '@/components/ui/textarea'
 import { Label } from '@/components/ui/label'
 import { Calendar, Users, DollarSign, Send } from 'lucide-react'
 import { api } from '@/lib/api'
+import { Header } from '@/components/Header'
+import { Footer } from '@/components/Footer'
 
 export default function CreateRequestPage() {
   const [formData, setFormData] = useState({
@@ -51,6 +53,7 @@ export default function CreateRequestPage() {
 
   return (
     <div className="min-h-screen bg-gray-50">
+      <Header />
       {/* Hero Section */}
       <section className="bg-gradient-to-r from-tropical-turquoise to-tropical-ocean text-white py-20">
         <div className="container mx-auto px-4">
@@ -216,6 +219,7 @@ export default function CreateRequestPage() {
           </div>
         </div>
       </section>
+      <Footer />
     </div>
   )
 }

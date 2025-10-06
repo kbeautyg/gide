@@ -1,9 +1,12 @@
 import { Users, MapPin, Star, Award, Heart } from 'lucide-react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Header } from '@/components/Header'
+import { Footer } from '@/components/Footer'
 
 export default function AboutPage() {
   return (
     <div className="min-h-screen bg-gray-50">
+      <Header />
       {/* Hero Section */}
       <section className="bg-gradient-to-r from-tropical-turquoise to-tropical-ocean text-white py-20">
         <div className="container mx-auto px-4">
@@ -166,6 +169,7 @@ export default function AboutPage() {
           </a>
         </div>
       </section>
+      <Footer />
     </div>
   )
 }
