@@ -48,7 +48,7 @@ export default function HomePage() {
             </p>
             
             {/* Search Bar */}
-            <form onSubmit={handleSearch} className="bg-white rounded-lg p-2 flex flex-col md:flex-row gap-2 shadow-2xl">
+            <form onSubmit={handleSearch} className="bg-white rounded-lg p-2 flex flex-col md:flex-row gap-2 shadow-2xl mb-6">
               <div className="flex-1 flex items-center gap-2 px-4">
                 <MapPin className="text-gray-400" size={20} />
                 <Input 
@@ -64,6 +64,19 @@ export default function HomePage() {
                 Найти экскурсию
               </Button>
             </form>
+            
+            {/* Custom Tour Request Button */}
+            <div className="flex justify-center">
+              <Link to="/request">
+                <Button 
+                  variant="secondary" 
+                  size="lg" 
+                  className="text-tropical-ocean border-2 border-white hover:bg-white/10 font-semibold text-lg px-8"
+                >
+                  ✨ Заказать индивидуальную экскурсию
+                </Button>
+              </Link>
+            </div>
           </div>
         </div>
       </section>

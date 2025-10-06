@@ -8,7 +8,7 @@ if [ "$RESET_DB" = "true" ]; then
 fi
 
 echo "🔄 Применяем миграции Alembic..."
-alembic upgrade head || echo "⚠️ Миграции не применены (возможно уже применены)"
+python -m alembic upgrade head || echo "⚠️ Миграции не применены (возможно уже применены)"
 
 echo "🔧 Инициализируем БД..."
 python init_db.py || echo "⚠️ Инициализация не прошла (возможно уже есть)"
