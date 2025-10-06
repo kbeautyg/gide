@@ -1,16 +1,16 @@
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { Search, MapPin, Star, Users, TrendingUp, UserCircle, Clock, Calendar } from 'lucide-react'
+import { Search, MapPin, Star, Users, TrendingUp, Clock, Calendar } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Card, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
 import { formatRUB } from '@/lib/utils'
-import { useAuthStore } from '@/lib/store'
 import { useQuery } from '@tanstack/react-query'
 import { toursApi } from '@/lib/api'
+import { PublicHeader } from '@/components/PublicHeader'
+import { PublicFooter } from '@/components/PublicFooter'
 
 export default function HomePage() {
-  const { isAuthenticated, user } = useAuthStore()
   const navigate = useNavigate()
   const [searchQuery, setSearchQuery] = useState('')
   
@@ -33,49 +33,7 @@ export default function HomePage() {
 
   return (
     <div className="min-h-screen bg-white">
-      {/* Header */}
-      <header className="border-b">
-        <div className="container mx-auto px-4 py-4 flex items-center justify-between">
-          <Link to="/" className="text-2xl font-bold text-gradient">
-            ThaiGuide Pro
-          </Link>
-          <nav className="hidden md:flex items-center gap-6">
-            <Link to="/tours" className="hover:text-tropical-ocean transition-colors">
-              Экскурсии
-            </Link>
-            <Link to="/about" className="hover:text-tropical-ocean transition-colors">
-              О нас
-            </Link>
-            <Link to="/contact" className="hover:text-tropical-ocean transition-colors">
-              Контакты
-            </Link>
-          </nav>
-          <div className="flex items-center gap-3">
-            {isAuthenticated && user ? (
-              <>
-                <Link to="/dashboard">
-                  <Button variant="ghost" className="gap-2">
-                    <UserCircle size={20} />
-                    {user.name || user.phone}
-                  </Button>
-                </Link>
-                <Link to="/dashboard">
-                  <Button variant="tropical">Личный кабинет</Button>
-                </Link>
-              </>
-            ) : (
-              <>
-                <Link to="/login">
-                  <Button variant="ghost">Войти</Button>
-                </Link>
-                <Link to="/register">
-                  <Button variant="tropical">Регистрация</Button>
-                </Link>
-              </>
-            )}
-          </div>
-        </div>
-      </header>
+      <PublicHeader />
 
       {/* Hero Section */}
       <section className="hero-gradient text-white py-20 md:py-32">
@@ -251,52 +209,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Footer */}
-      <footer className="bg-gray-900 text-white py-12">
-        <div className="container mx-auto px-4">
-          <div className="grid md:grid-cols-4 gap-8">
-            <div>
-              <h3 className="text-xl font-bold mb-4">ThaiGuide Pro</h3>
-              <p className="text-gray-400">
-                Лучшие экскурсии по всей Азии с русскоязычными гидами
-              </p>
-            </div>
-            
-            <div>
-              <h4 className="font-semibold mb-4">Экскурсии</h4>
-              <ul className="space-y-2 text-gray-400">
-                <li><Link to="/tours?location=phuket" className="hover:text-white transition-colors">Пхукет</Link></li>
-                <li><Link to="/tours?location=pattaya" className="hover:text-white transition-colors">Паттайя</Link></li>
-                <li><Link to="/tours?location=bangkok" className="hover:text-white transition-colors">Бангкок</Link></li>
-                <li><Link to="/tours?location=krabi" className="hover:text-white transition-colors">Краби</Link></li>
-              </ul>
-            </div>
-            
-            <div>
-              <h4 className="font-semibold mb-4">Компания</h4>
-              <ul className="space-y-2 text-gray-400">
-                <li><Link to="/about" className="hover:text-white transition-colors">О нас</Link></li>
-                <li><Link to="/contact" className="hover:text-white transition-colors">Контакты</Link></li>
-                <li><Link to="/request" className="hover:text-white transition-colors">Заказать экскурсию</Link></li>
-                <li><Link to="/guides" className="hover:text-white transition-colors">Стать гидом</Link></li>
-              </ul>
-            </div>
-            
-            <div>
-              <h4 className="font-semibold mb-4">Поддержка</h4>
-              <ul className="space-y-2 text-gray-400">
-                <li><Link to="/faq" className="hover:text-white transition-colors">FAQ</Link></li>
-                <li><Link to="/terms" className="hover:text-white transition-colors">Условия использования</Link></li>
-                <li><Link to="/privacy" className="hover:text-white transition-colors">Политика конфиденциальности</Link></li>
-              </ul>
-            </div>
-          </div>
-          
-          <div className="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400">
-            <p>© 2025 ThaiGuide Pro. Все права защищены.</p>
-          </div>
-        </div>
-      </footer>
+      <PublicFooter />
     </div>
   )
 }
