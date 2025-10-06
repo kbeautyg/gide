@@ -18,6 +18,8 @@ export function CreateTourDialog() {
     location: '',
     category: '',
     photos: '',
+    start_date: '',
+    end_date: '',
   })
   
   const queryClient = useQueryClient()
@@ -35,6 +37,8 @@ export function CreateTourDialog() {
         location: '',
         category: '',
         photos: '',
+        start_date: '',
+        end_date: '',
       })
       alert('✅ Экскурсия создана!')
     },
@@ -55,6 +59,8 @@ export function CreateTourDialog() {
       location: formData.location,
       category: formData.category,
       photos,
+      start_date: formData.start_date || null,
+      end_date: formData.end_date || null,
     })
   }
   
@@ -161,6 +167,28 @@ export function CreateTourDialog() {
                 <option value="Водные развлечения">Водные развлечения</option>
                 <option value="Развлечения">Развлечения</option>
               </select>
+            </div>
+          </div>
+          
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <Label htmlFor="start_date">Дата начала</Label>
+              <Input
+                id="start_date"
+                type="date"
+                value={formData.start_date}
+                onChange={(e) => setFormData({ ...formData, start_date: e.target.value })}
+              />
+            </div>
+            
+            <div>
+              <Label htmlFor="end_date">Дата окончания</Label>
+              <Input
+                id="end_date"
+                type="date"
+                value={formData.end_date}
+                onChange={(e) => setFormData({ ...formData, end_date: e.target.value })}
+              />
             </div>
           </div>
           

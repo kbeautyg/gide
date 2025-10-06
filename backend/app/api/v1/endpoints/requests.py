@@ -1,0 +1,205 @@
+"""
+Эндпоинты для работы с заявками клиентов
+"""
+from fastapi import APIRouter, Depends, HTTPException, Query
+from typing import List, Optional
+from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy import select, and_, or_, func
+from datetime import datetime
+import uuid
+
+from app.db.session import get_db
+from app.models.request import Request
+from app.models.user import User, UserRole
+from app.schemas.request import RequestCreate, RequestUpdate, Request as RequestSchema, RequestList
+from app.core.deps import get_current_user
+
+router = APIRouter()
+
+
+@router.post("/", response_model=RequestSchema)
+async def create_request(
+    request_data: RequestCreate,
+    current_user: User = Depends(get_current_user),
+    db: AsyncSession = Depends(get_db)
+):
+    """Создать заявку на экскурсию"""
+    if current_user.role != UserRole.CLIENT:
+        raise HTTPException(status_code=403, detail="Только клиенты могут создавать заявки")
+    
+    request_id = str(uuid.uuid4())
+    
+    db_request = Request(
+        id=request_id,
+        client_id=current_user.id,
+        title=request_data.title,
+        description=request_data.description,
+        preferred_date=request_data.preferred_date,
+        participants_count=request_data.participants_count,
+        budget=request_data.budget,
+        location=request_data.location,
+        status='pending'
+    )
+    
+    db.add(db_request)
+    await db.commit()
+    await db.refresh(db_request)
+    
+    return db_request
+
+
+@router.get("/", response_model=RequestList)
+async def get_requests(
+    page: int = Query(1, ge=1),
+    per_page: int = Query(20, ge=1, le=100),
+    status: Optional[str] = Query(None),
+    current_user: User = Depends(get_current_user),
+    db: AsyncSession = Depends(get_db)
+):
+    """Получить список заявок"""
+    # Проверяем права доступа
+    if current_user.role not in [UserRole.SUPER_ADMIN, UserRole.ADMIN, UserRole.SUPER_MANAGER, UserRole.MANAGER]:
+        raise HTTPException(status_code=403, detail="Недостаточно прав для просмотра заявок")
+    
+    query = select(Request)
+    
+    # Фильтр по статусу
+    if status:
+        query = query.where(Request.status == status)
+    
+    # Если не супер-админ, показываем только заявки назначенные им или их команде
+    if current_user.role != UserRole.SUPER_ADMIN:
+        if current_user.role == UserRole.ADMIN:
+            # Админ видит заявки назначенные ему или его команде
+            query = query.where(
+                or_(
+                    Request.assigned_to == current_user.id,
+                    Request.assigned_to.in_(
+                        select(User.id).where(User.parent_id == current_user.id)
+                    )
+                )
+            )
+        elif current_user.role == UserRole.SUPER_MANAGER:
+            # Супер-менеджер видит заявки назначенные ему или его команде
+            query = query.where(
+                or_(
+                    Request.assigned_to == current_user.id,
+                    Request.assigned_to.in_(
+                        select(User.id).where(User.parent_id == current_user.id)
+                    )
+                )
+            )
+        elif current_user.role == UserRole.MANAGER:
+            # Менеджер видит только заявки назначенные ему
+            query = query.where(Request.assigned_to == current_user.id)
+    
+    # Подсчет общего количества
+    count_query = select(func.count()).select_from(query.subquery())
+    total = await db.scalar(count_query)
+    
+    # Пагинация
+    offset = (page - 1) * per_page
+    query = query.offset(offset).limit(per_page)
+    
+    result = await db.execute(query)
+    requests = result.scalars().all()
+    
+    return RequestList(
+        requests=requests,
+        total=total,
+        page=page,
+        per_page=per_page
+    )
+
+
+@router.get("/my", response_model=RequestList)
+async def get_my_requests(
+    page: int = Query(1, ge=1),
+    per_page: int = Query(20, ge=1, le=100),
+    current_user: User = Depends(get_current_user),
+    db: AsyncSession = Depends(get_db)
+):
+    """Получить мои заявки (для клиентов)"""
+    if current_user.role != UserRole.CLIENT:
+        raise HTTPException(status_code=403, detail="Только клиенты могут просматривать свои заявки")
+    
+    query = select(Request).where(Request.client_id == current_user.id)
+    
+    # Подсчет общего количества
+    count_query = select(func.count()).select_from(query.subquery())
+    total = await db.scalar(count_query)
+    
+    # Пагинация
+    offset = (page - 1) * per_page
+    query = query.offset(offset).limit(per_page)
+    
+    result = await db.execute(query)
+    requests = result.scalars().all()
+    
+    return RequestList(
+        requests=requests,
+        total=total,
+        page=page,
+        per_page=per_page
+    )
+
+
+@router.put("/{request_id}", response_model=RequestSchema)
+async def update_request(
+    request_id: str,
+    request_data: RequestUpdate,
+    current_user: User = Depends(get_current_user),
+    db: AsyncSession = Depends(get_db)
+):
+    """Обновить заявку"""
+    query = select(Request).where(Request.id == request_id)
+    result = await db.execute(query)
+    request = result.scalar_one_or_none()
+    
+    if not request:
+        raise HTTPException(status_code=404, detail="Заявка не найдена")
+    
+    # Проверяем права
+    if current_user.role == UserRole.CLIENT:
+        if request.client_id != current_user.id:
+            raise HTTPException(status_code=403, detail="Можно редактировать только свои заявки")
+    elif current_user.role not in [UserRole.SUPER_ADMIN, UserRole.ADMIN, UserRole.SUPER_MANAGER, UserRole.MANAGER]:
+        raise HTTPException(status_code=403, detail="Недостаточно прав для редактирования заявок")
+    
+    # Обновляем поля
+    for field, value in request_data.dict(exclude_unset=True).items():
+        setattr(request, field, value)
+    
+    request.updated_at = datetime.utcnow()
+    
+    await db.commit()
+    await db.refresh(request)
+    
+    return request
+
+
+@router.delete("/{request_id}")
+async def delete_request(
+    request_id: str,
+    current_user: User = Depends(get_current_user),
+    db: AsyncSession = Depends(get_db)
+):
+    """Удалить заявку"""
+    query = select(Request).where(Request.id == request_id)
+    result = await db.execute(query)
+    request = result.scalar_one_or_none()
+    
+    if not request:
+        raise HTTPException(status_code=404, detail="Заявка не найдена")
+    
+    # Проверяем права
+    if current_user.role == UserRole.CLIENT:
+        if request.client_id != current_user.id:
+            raise HTTPException(status_code=403, detail="Можно удалять только свои заявки")
+    elif current_user.role not in [UserRole.SUPER_ADMIN, UserRole.ADMIN]:
+        raise HTTPException(status_code=403, detail="Недостаточно прав для удаления заявок")
+    
+    await db.delete(request)
+    await db.commit()
+    
+    return {"message": "Заявка удалена"}

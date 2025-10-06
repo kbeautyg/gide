@@ -40,6 +40,8 @@ class TourCreate(BaseModel):
     location: str
     category: str
     photos: List[str] = []
+    start_date: Optional[str] = None
+    end_date: Optional[str] = None
 
 
 class TourList(BaseModel):

@@ -12,7 +12,8 @@ import {
   Home,
   Calendar,
   ChevronDown,
-  ChevronUp
+  ChevronUp,
+  MessageSquare
 } from 'lucide-react'
 import { useState } from 'react'
 
@@ -115,6 +116,7 @@ export default function DashboardLayout() {
       return [
         { icon: Users, label: 'Пользователи', path: '/dashboard/users' },
         { icon: MapPin, label: 'Все экскурсии', path: '/dashboard/all-tours' },
+        { icon: MessageSquare, label: 'Заявки', path: '/dashboard/requests' },
         { icon: Wallet, label: 'Финансы', path: '/dashboard/finances' },
         { icon: Settings, label: 'Настройки', path: '/dashboard/settings' },
       ]
@@ -124,6 +126,7 @@ export default function DashboardLayout() {
       return [
         { icon: Users, label: 'Моя команда', path: '/dashboard/users' },
         { icon: MapPin, label: 'Все экскурсии', path: '/dashboard/all-tours' },
+        { icon: MessageSquare, label: 'Заявки', path: '/dashboard/requests' },
         { icon: Wallet, label: 'Финансы', path: '/dashboard/finances' },
         { icon: Settings, label: 'Настройки', path: '/dashboard/settings' },
       ]
@@ -133,6 +136,7 @@ export default function DashboardLayout() {
       return [
         { icon: Users, label: 'Моя команда', path: '/dashboard/users' },
         { icon: MapPin, label: 'Экскурсии', path: '/dashboard/all-tours' },
+        { icon: MessageSquare, label: 'Заявки', path: '/dashboard/requests' },
         { icon: Wallet, label: 'Финансы', path: '/dashboard/finances' },
       ]
     }
@@ -141,6 +145,7 @@ export default function DashboardLayout() {
       return [
         { icon: MapPin, label: 'Мои экскурсии', path: '/dashboard/my-tours' },
         { icon: Calendar, label: 'Бронирования', path: '/dashboard/bookings' },
+        { icon: MessageSquare, label: 'Заявки', path: '/dashboard/requests' },
         { icon: Wallet, label: 'Финансы', path: '/dashboard/finances' },
       ]
     }

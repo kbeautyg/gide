@@ -189,6 +189,18 @@ export default function UsersPage() {
                       <div className="text-lg font-bold">{formatRUB(user.balance_rub || 0)}</div>
                       <div className="text-xs text-gray-500">Баланс</div>
                     </div>
+                    <div className="flex gap-2">
+                      <Button 
+                        size="sm" 
+                        variant="outline"
+                        onClick={() => {
+                          // TODO: Открыть диалог назначения роли
+                          alert(`Назначить роль для ${user.name || user.phone}`)
+                        }}
+                      >
+                        Назначить роль
+                      </Button>
+                    </div>
                   </div>
                 </div>
               ))}

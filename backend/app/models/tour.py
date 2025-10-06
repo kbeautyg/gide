@@ -1,7 +1,7 @@
 """
 Модель экскурсии
 """
-from sqlalchemy import Column, String, Float, Integer, Boolean, ForeignKey, DateTime, Text, JSON
+from sqlalchemy import Column, String, Float, Integer, Boolean, ForeignKey, DateTime, Text, JSON, Date
 from sqlalchemy.orm import relationship
 from datetime import datetime
 from app.db.base import Base
@@ -23,6 +23,10 @@ class Tour(Base):
     duration = Column(Integer, nullable=False)  # Длительность в часах
     location = Column(String, nullable=False)  # Пхукет, Паттайя и т.д.
     category = Column(String, nullable=False)  # Культура, природа и т.д.
+    
+    # Даты проведения экскурсии
+    start_date = Column(Date, nullable=True)  # С какой даты
+    end_date = Column(Date, nullable=True)   # По какую дату
     
     # Фотографии (список URL)
     photos = Column(JSON, default=list)

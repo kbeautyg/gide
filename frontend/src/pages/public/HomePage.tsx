@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { Search, MapPin, Star, Users, TrendingUp, UserCircle, Clock } from 'lucide-react'
+import { Search, MapPin, Star, Users, TrendingUp, UserCircle, Clock, Calendar } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Card, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
@@ -46,7 +46,7 @@ export default function HomePage() {
             <Link to="/about" className="hover:text-tropical-ocean transition-colors">
               О нас
             </Link>
-            <Link to="/contacts" className="hover:text-tropical-ocean transition-colors">
+            <Link to="/contact" className="hover:text-tropical-ocean transition-colors">
               Контакты
             </Link>
           </nav>
@@ -181,6 +181,12 @@ export default function HomePage() {
                         <Clock size={16} />
                         <span>{tour.duration}ч</span>
                       </div>
+                      {tour.start_date && tour.end_date && (
+                        <div className="flex items-center gap-2 text-sm text-gray-600 mb-2">
+                          <Calendar size={16} />
+                          <span>{new Date(tour.start_date).toLocaleDateString('ru-RU')} - {new Date(tour.end_date).toLocaleDateString('ru-RU')}</span>
+                        </div>
+                      )}
                       <CardTitle className="text-xl line-clamp-2">{tour.title}</CardTitle>
                     </CardHeader>
                     
@@ -270,7 +276,8 @@ export default function HomePage() {
               <h4 className="font-semibold mb-4">Компания</h4>
               <ul className="space-y-2 text-gray-400">
                 <li><Link to="/about" className="hover:text-white transition-colors">О нас</Link></li>
-                <li><Link to="/contacts" className="hover:text-white transition-colors">Контакты</Link></li>
+                <li><Link to="/contact" className="hover:text-white transition-colors">Контакты</Link></li>
+                <li><Link to="/request" className="hover:text-white transition-colors">Заказать экскурсию</Link></li>
                 <li><Link to="/guides" className="hover:text-white transition-colors">Стать гидом</Link></li>
               </ul>
             </div>

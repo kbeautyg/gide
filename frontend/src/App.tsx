@@ -5,6 +5,9 @@ import { ProtectedRoute } from './components/ProtectedRoute'
 import HomePage from './pages/public/HomePage'
 import ToursPage from './pages/public/ToursPage'
 import TourDetailPage from './pages/public/TourDetailPage'
+import AboutPage from './pages/public/AboutPage'
+import ContactPage from './pages/public/ContactPage'
+import CreateRequestPage from './pages/public/CreateRequestPage'
 
 // Страницы аутентификации
 import LoginPage from './pages/auth/LoginPage'
@@ -22,6 +25,7 @@ import UsersPage from './pages/dashboard/UsersPage'
 import AllToursPage from './pages/dashboard/AllToursPage'
 import FinancesPage from './pages/dashboard/FinancesPage'
 import SettingsPage from './pages/dashboard/SettingsPage'
+import RequestsPage from './pages/dashboard/RequestsPage'
 
 function App() {
   return (
@@ -30,6 +34,9 @@ function App() {
       <Route path="/" element={<HomePage />} />
       <Route path="/tours" element={<ToursPage />} />
       <Route path="/tours/:id" element={<TourDetailPage />} />
+      <Route path="/about" element={<AboutPage />} />
+      <Route path="/contact" element={<ContactPage />} />
+      <Route path="/request" element={<CreateRequestPage />} />
       
       {/* Аутентификация */}
       <Route path="/login" element={<LoginPage />} />
@@ -52,6 +59,7 @@ function App() {
         <Route path="all-tours" element={<AllToursPage />} />
         <Route path="finances" element={<FinancesPage />} />
         <Route path="settings" element={<SettingsPage />} />
+        <Route path="requests" element={<RequestsPage />} />
         <Route
           path="admin"
           element={
