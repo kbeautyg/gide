@@ -36,7 +36,7 @@ class Request(Base):
     
     # Relationships
     client = relationship("User", foreign_keys=[client_id], back_populates="requests")
-    assigned_user = relationship("User", foreign_keys=[assigned_to])
+    assigned_user = relationship("User", foreign_keys=[assigned_to], overlaps="requests")
     
     def __repr__(self):
         return f"<Request {self.title} by {self.client_id}>"
