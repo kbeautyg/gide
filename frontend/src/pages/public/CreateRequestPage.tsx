@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
 import { Label } from '@/components/ui/label'
-import { MapPin, Calendar, Users, DollarSign, Send } from 'lucide-react'
+import { Calendar, Users, DollarSign, Send } from 'lucide-react'
 import { api } from '@/lib/api'
 
 export default function CreateRequestPage() {
