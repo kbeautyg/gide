@@ -15,6 +15,14 @@ export function PublicHeader() {
         </Link>
         <nav className="hidden md:flex items-center gap-6">
           <Link 
+            to="/" 
+            className={`hover:text-tropical-ocean transition-colors ${
+              location.pathname === '/' ? 'text-tropical-ocean font-semibold' : ''
+            }`}
+          >
+            Главная
+          </Link>
+          <Link 
             to="/tours" 
             className={`hover:text-tropical-ocean transition-colors ${
               location.pathname === '/tours' ? 'text-tropical-ocean font-semibold' : ''
