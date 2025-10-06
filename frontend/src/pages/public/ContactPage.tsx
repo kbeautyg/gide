@@ -4,13 +4,13 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
 import { Label } from '@/components/ui/label'
-import { Header } from '@/components/Header'
-import { Footer } from '@/components/Footer'
+import { PublicHeader } from '@/components/PublicHeader'
+import { PublicFooter } from '@/components/PublicFooter'
 
 export default function ContactPage() {
   return (
     <div className="min-h-screen bg-gray-50">
-      <Header />
+      <PublicHeader />
       {/* Hero Section */}
       <section className="bg-gradient-to-r from-tropical-turquoise to-tropical-ocean text-white py-20">
         <div className="container mx-auto px-4">
@@ -218,7 +218,8 @@ export default function ContactPage() {
           </div>
         </div>
       </section>
-      <Footer />
+      
+      <PublicFooter />
     </div>
   )
 }

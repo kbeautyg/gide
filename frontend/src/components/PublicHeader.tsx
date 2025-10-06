@@ -1,9 +1,9 @@
 import { Link } from 'react-router-dom'
-import { Button } from './ui/button'
+import { Button } from '@/components/ui/button'
 import { UserCircle } from 'lucide-react'
 import { useAuthStore } from '@/lib/store'
 
-export function Header() {
+export function PublicHeader() {
   const { isAuthenticated, user } = useAuthStore()
 
   return (
@@ -13,9 +13,6 @@ export function Header() {
           ThaiGuide Pro
         </Link>
         <nav className="hidden md:flex items-center gap-6">
-          <Link to="/" className="hover:text-tropical-ocean transition-colors">
-            Главная
-          </Link>
           <Link to="/tours" className="hover:text-tropical-ocean transition-colors">
             Экскурсии
           </Link>

@@ -1,16 +1,16 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
-import { MapPin, Star, Filter, Search, UserCircle } from 'lucide-react'
+import { MapPin, Star, Filter, Search } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
 import { toursApi } from '@/lib/api'
 import { formatRUB } from '@/lib/utils'
-import { useAuthStore } from '@/lib/store'
+import { PublicHeader } from '@/components/PublicHeader'
+import { PublicFooter } from '@/components/PublicFooter'
 
 export default function ToursPage() {
-  const { isAuthenticated, user } = useAuthStore()
   const [filters, setFilters] = useState({
     location: '',
     category: '',
@@ -34,44 +34,7 @@ export default function ToursPage() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Header */}
-      <header className="bg-white border-b sticky top-0 z-50">
-        <div className="container mx-auto px-4 py-4 flex items-center justify-between">
-          <Link to="/" className="text-2xl font-bold text-gradient">
-            ThaiGuide Pro
-          </Link>
-          <nav className="hidden md:flex items-center gap-6">
-            <Link to="/tours" className="text-tropical-ocean font-semibold">
-              Экскурсии
-            </Link>
-            <Link to="/about" className="hover:text-tropical-ocean transition-colors">
-              О нас
-            </Link>
-            <Link to="/contacts" className="hover:text-tropical-ocean transition-colors">
-              Контакты
-            </Link>
-          </nav>
-          <div className="flex items-center gap-3">
-            {isAuthenticated && user ? (
-              <Link to="/dashboard">
-                <Button variant="ghost" className="gap-2">
-                  <UserCircle size={20} />
-                  {user.name || user.phone}
-                </Button>
-              </Link>
-            ) : (
-              <>
-                <Link to="/login">
-                  <Button variant="ghost">Войти</Button>
-                </Link>
-                <Link to="/register">
-                  <Button variant="tropical">Регистрация</Button>
-                </Link>
-              </>
-            )}
-          </div>
-        </div>
-      </header>
+      <PublicHeader />
 
       {/* Page Header */}
       <section className="bg-gradient-to-r from-tropical-turquoise to-tropical-ocean text-white py-12">
@@ -239,6 +202,8 @@ export default function ToursPage() {
           </div>
         </div>
       </div>
+      
+      <PublicFooter />
     </div>
   )
 }
