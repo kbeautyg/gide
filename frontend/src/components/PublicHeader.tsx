@@ -1,10 +1,11 @@
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import { Button } from '@/components/ui/button'
 import { UserCircle } from 'lucide-react'
 import { useAuthStore } from '@/lib/store'
 
 export function PublicHeader() {
   const { isAuthenticated, user } = useAuthStore()
+  const location = useLocation()
 
   return (
     <header className="bg-white border-b sticky top-0 z-50">
@@ -13,13 +14,28 @@ export function PublicHeader() {
           ThaiGuide Pro
         </Link>
         <nav className="hidden md:flex items-center gap-6">
-          <Link to="/tours" className="hover:text-tropical-ocean transition-colors">
+          <Link 
+            to="/tours" 
+            className={`hover:text-tropical-ocean transition-colors ${
+              location.pathname === '/tours' ? 'text-tropical-ocean font-semibold' : ''
+            }`}
+          >
             Экскурсии
           </Link>
-          <Link to="/about" className="hover:text-tropical-ocean transition-colors">
+          <Link 
+            to="/about" 
+            className={`hover:text-tropical-ocean transition-colors ${
+              location.pathname === '/about' ? 'text-tropical-ocean font-semibold' : ''
+            }`}
+          >
             О нас
           </Link>
-          <Link to="/contact" className="hover:text-tropical-ocean transition-colors">
+          <Link 
+            to="/contact" 
+            className={`hover:text-tropical-ocean transition-colors ${
+              location.pathname === '/contact' ? 'text-tropical-ocean font-semibold' : ''
+            }`}
+          >
             Контакты
           </Link>
         </nav>
