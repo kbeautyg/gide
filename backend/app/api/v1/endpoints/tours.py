@@ -6,9 +6,11 @@ from pydantic import BaseModel, Field
 from typing import List, Optional
 from datetime import datetime
 from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy import select, func
 
 from app.db.session import get_db
 from app.services.tour_service import TourService
+from app.models.booking import Booking
 
 router = APIRouter()
 
@@ -82,9 +84,6 @@ async def get_tours(
     )
     
     # Преобразуем в Pydantic модели с статистикой
-    from sqlalchemy import func
-    from app.models.booking import Booking
-    
     tours_list = []
     for tour_db in tours_db:
         # Получаем статистику для каждой экскурсии
@@ -139,9 +138,6 @@ async def get_tour_by_code(
     
     Публичный эндпоинт без авторизации
     """
-    from sqlalchemy import select, func
-    from app.models.booking import Booking
-    
     tour_db = await TourService.get_tour_by_share_code(db, share_code)
     
     if not tour_db:
@@ -189,9 +185,6 @@ async def get_tour(
     
     Публичный эндпоинт
     """
-    from sqlalchemy import select, func
-    from app.models.booking import Booking
-    
     tour_db = await TourService.get_tour_by_id(db, tour_id)
     
     if not tour_db:
