@@ -4,7 +4,7 @@ import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/componen
 import { Button } from '@/components/ui/button'
 import { CreateTourDialog } from '@/components/CreateTourDialog'
 import { MarkAsPaidDialog } from '@/components/MarkAsPaidDialog'
-import { MapPin, Clock, Star, Edit, Trash2, Link as LinkIcon, Copy, CheckCircle, CreditCard, ExternalLink, TrendingUp } from 'lucide-react'
+import { MapPin, Clock, Star, Edit, Trash2, Link as LinkIcon, Copy, CheckCircle, ExternalLink } from 'lucide-react'
 import { toursApi } from '@/lib/api'
 import { formatRUB } from '@/lib/utils'
 

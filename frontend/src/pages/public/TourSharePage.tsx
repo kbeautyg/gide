@@ -5,7 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import { MapPin, Clock, Users, Calendar, CheckCircle } from 'lucide-react'
+import { MapPin, Clock, Calendar, CheckCircle } from 'lucide-react'
 import { api } from '@/lib/api'
 import { formatRUB } from '@/lib/utils'
 
@@ -155,7 +155,7 @@ export default function TourSharePage() {
               <div className="mb-8">
                 <h2 className="text-2xl font-bold mb-4">Фотогалерея</h2>
                 <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-                  {tour.photos.slice(1).map((photo, i) => (
+                  {tour.photos.slice(1).map((photo: string, i: number) => (
                     <img
                       key={i}
                       src={photo}

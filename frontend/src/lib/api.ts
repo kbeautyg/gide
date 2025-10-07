@@ -49,6 +49,7 @@ api.interceptors.response.use(
 
 export interface Tour {
   id: number
+  share_code?: string
   title: string
   description: string
   price: number
@@ -58,6 +59,8 @@ export interface Tour {
   photos: string[]
   rating: number
   reviews_count: number
+  bookings_count?: number
+  total_revenue?: number
   guide_name: string
   guide_id: number
   active: boolean

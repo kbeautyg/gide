@@ -131,7 +131,7 @@ export default function ManagerDashboard() {
         </CardHeader>
         <CardContent>
           <div className="flex items-end justify-between h-48 gap-2">
-            {revenueData.map((revenue, i) => {
+            {revenueData.map((revenue: number, i: number) => {
               const maxRevenue = Math.max(...revenueData, 1)
               const heightPercent = maxRevenue > 0 ? (revenue / maxRevenue) * 100 : 0
               
