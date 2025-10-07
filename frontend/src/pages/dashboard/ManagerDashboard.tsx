@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { useQuery } from '@tanstack/react-query'
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { CreateTourDialog } from '@/components/CreateTourDialog'
@@ -9,6 +9,7 @@ import { formatRUB } from '@/lib/utils'
 
 export default function ManagerDashboard() {
   const [copiedId, setCopiedId] = useState<number | null>(null)
+  const queryClient = useQueryClient()
 
   // Загрузка профиля для баланса
   const { data: profileData } = useQuery({
@@ -47,6 +48,44 @@ export default function ManagerDashboard() {
   const bookingsCount = Array.isArray(bookingsData) ? bookingsData.length : 0
   const balance = profileData?.balance_rub || 0
 
+  // Удаление экскурсии
+  const deleteTourMutation = useMutation({
+    mutationFn: async (tourId: number) => {
+      await api.delete(`/tours/${tourId}`)
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['tours'] })
+      alert('✅ Экскурсия удалена!')
+    },
+    onError: () => {
+      alert('❌ Ошибка при удалении')
+    },
+  })
+
+  // Тестовая оплата - создаёт РЕАЛЬНОЕ бронирование
+  const createTestBooking = useMutation({
+    mutationFn: async (tour: any) => {
+      const bookingData = {
+        tour_id: tour.id,
+        date: new Date().toISOString().split('T')[0],
+        participants_count: 2,
+        client_name: 'Тестовый Клиент',
+        client_phone: '79177445199',
+        client_email: 'test@test.com',
+      }
+      const response = await api.post('/bookings/', bookingData)
+      return response.data
+    },
+    onSuccess: (data) => {
+      queryClient.invalidateQueries({ queryKey: ['bookings'] })
+      queryClient.invalidateQueries({ queryKey: ['user', 'me'] })
+      alert(`✅ ТЕСТОВОЕ БРОНИРОВАНИЕ СОЗДАНО!\n\nID бронирования: ${data.id}\nСтатус: ${data.status}\nСумма: ${formatRUB(data.total_price)}\n\n💾 Данные записаны в БД!\n📊 Обновите страницу чтобы увидеть изменения в статистике`)
+    },
+    onError: (error: any) => {
+      alert(`❌ Ошибка: ${error.response?.data?.detail || 'Не удалось создать бронирование'}`)
+    },
+  })
+
   const copyTourLink = (tourId: number) => {
     const link = `${window.location.origin}/tours/${tourId}`
     navigator.clipboard.writeText(link)
@@ -54,21 +93,10 @@ export default function ManagerDashboard() {
     setTimeout(() => setCopiedId(null), 2000)
   }
 
-  const testPayment = (tour: any) => {
-    const info = `
-🧾 ТЕСТОВАЯ ОПЛАТА ЭКСКУРСИИ
-
-📌 Название: ${tour.title}
-💰 Цена: ${formatRUB(tour.price)}
-🆔 ID экскурсии: ${tour.id}
-📍 Локация: ${tour.location}
-⏱️ Длительность: ${tour.duration} часов
-⭐ Рейтинг: ${tour.rating}
-
-✅ Все данные корректно загружены из БД!
-    `.trim()
-    
-    alert(info)
+  const handleDeleteTour = (tour: any) => {
+    if (confirm(`Удалить экскурсию "${tour.title}"?`)) {
+      deleteTourMutation.mutate(tour.id)
+    }
   }
 
   return (
@@ -231,13 +259,6 @@ export default function ManagerDashboard() {
                           </Button>
                         </div>
                       </div>
-
-                      <div className="bg-yellow-50 border border-yellow-200 p-3 rounded-lg">
-                        <p className="text-xs text-yellow-800">
-                          ⚠️ <strong>Важно:</strong> Эта экскурсия не опубликована на главной странице. 
-                          Только админ может активировать экскурсии для публичного каталога.
-                        </p>
-                      </div>
                     </div>
 
                     {/* Right - Actions */}
@@ -247,16 +268,17 @@ export default function ManagerDashboard() {
                       <Button
                         variant="tropical"
                         className="w-full"
-                        onClick={() => testPayment(tour)}
+                        onClick={() => createTestBooking.mutate(tour)}
+                        disabled={createTestBooking.isPending}
                       >
                         <CreditCard size={16} className="mr-2" />
-                        Тест: Оплатить
+                        {createTestBooking.isPending ? 'Создание...' : 'Тест: Оплатить'}
                       </Button>
 
                       <Button
                         variant="outline"
                         className="w-full"
-                        onClick={() => alert('Функция редактирования в разработке')}
+                        onClick={() => alert('Редактирование в разработке. Пока можно удалить и создать заново.')}
                       >
                         Редактировать
                       </Button>
@@ -268,6 +290,15 @@ export default function ManagerDashboard() {
                       >
                         <ExternalLink size={16} className="mr-2" />
                         Посмотреть на сайте
+                      </Button>
+
+                      <Button
+                        variant="destructive"
+                        className="w-full"
+                        onClick={() => handleDeleteTour(tour)}
+                        disabled={deleteTourMutation.isPending}
+                      >
+                        Удалить экскурсию
                       </Button>
 
                       <div className="pt-3 border-t">
