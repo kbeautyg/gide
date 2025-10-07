@@ -4,7 +4,7 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select, func, and_
-from sqlalchemy.orm import selectinload
+# from sqlalchemy.orm import selectinload  # Не используется
 from datetime import datetime, timedelta
 from typing import List, Dict, Any
 from app.db.database import get_db
