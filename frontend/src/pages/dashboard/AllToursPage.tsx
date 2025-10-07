@@ -1,9 +1,8 @@
-import { useState } from 'react'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
-import { MapPin, Calendar, DollarSign, CheckCircle, XCircle, Eye } from 'lucide-react'
+import { MapPin, Calendar, CheckCircle, XCircle, Eye } from 'lucide-react'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
-import { api, toursApi } from '@/lib/api'
+import { api } from '@/lib/api'
 import { useAuthStore } from '@/lib/store'
 import { formatRUB } from '@/lib/utils'
 

@@ -39,6 +39,7 @@ class Request(RequestBase):
     client_id: int
     status: str
     assigned_to: Optional[int] = None
+    created_at: Optional[str] = None
     
     class Config:
         from_attributes = True
