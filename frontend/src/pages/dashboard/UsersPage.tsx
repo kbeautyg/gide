@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import { Link, useSearchParams } from 'react-router-dom'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
@@ -64,9 +64,6 @@ export default function UsersPage() {
     super_manager: team.filter((u: any) => u.role === 'super_manager').length,
     manager: team.filter((u: any) => u.role === 'manager' || u.role === 'guide').length,
   }
-
-  // Найдем пользователя если применен фильтр
-  const filteredParentUser = filterParent ? team.find((u: any) => u.id === parseInt(filterParent)) : null
 
   return (
     <div className="space-y-6">
