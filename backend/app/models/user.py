@@ -47,7 +47,6 @@ class User(Base):
     tours = relationship("Tour", back_populates="guide")
     bookings = relationship("Booking", back_populates="client", foreign_keys="Booking.client_id")
     requests = relationship("Request", back_populates="client", foreign_keys="Request.client_id")
-    transactions = relationship("Transaction", back_populates="user")
     
     def __repr__(self):
         return f"<User {self.phone} ({self.role})>"

@@ -20,17 +20,11 @@ import RegisterPage from './pages/auth/RegisterPage'
 // Личные кабинеты
 import DashboardLayout from './pages/dashboard/DashboardLayout'
 import ManagerDashboard from './pages/dashboard/ManagerDashboard'
-import AdminDashboardPage from './pages/dashboard/AdminDashboardPage'
-import SuperManagerDashboardPage from './pages/dashboard/SuperManagerDashboardPage'
-import SuperAdminDashboard from './pages/dashboard/SuperAdminDashboard'
 import MyToursPage from './pages/dashboard/MyToursPage'
+import CalendarPage from './pages/dashboard/CalendarPage'
 import BookingsPage from './pages/dashboard/BookingsPage'
-import UsersPage from './pages/dashboard/UsersPage'
-import UserProfilePage from './pages/dashboard/UserProfilePage'
-import AllToursPage from './pages/dashboard/AllToursPage'
 import FinancesPage from './pages/dashboard/FinancesPage'
 import SettingsPage from './pages/dashboard/SettingsPage'
-import RequestsPage from './pages/dashboard/RequestsPage'
 
 function App() {
   return (
@@ -61,39 +55,11 @@ function App() {
         }
       >
         <Route index element={<ManagerDashboard />} />
-        <Route path="manager" element={<ManagerDashboard />} />
         <Route path="my-tours" element={<MyToursPage />} />
+        <Route path="calendar" element={<CalendarPage />} />
         <Route path="bookings" element={<BookingsPage />} />
-        <Route path="users" element={<UsersPage />} />
-        <Route path="profile/:userId" element={<UserProfilePage />} />
-        <Route path="all-tours" element={<AllToursPage />} />
         <Route path="finances" element={<FinancesPage />} />
         <Route path="settings" element={<SettingsPage />} />
-        <Route path="requests" element={<RequestsPage />} />
-        <Route
-          path="admin"
-          element={
-            <ProtectedRoute allowedRoles={['admin', 'super_admin']}>
-              <AdminDashboardPage />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="supermanager"
-          element={
-            <ProtectedRoute allowedRoles={['super_manager', 'admin', 'super_admin']}>
-              <SuperManagerDashboardPage />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="superadmin"
-          element={
-            <ProtectedRoute allowedRoles={['super_admin']}>
-              <SuperAdminDashboard />
-            </ProtectedRoute>
-          }
-        />
       </Route>
     </Routes>
   )

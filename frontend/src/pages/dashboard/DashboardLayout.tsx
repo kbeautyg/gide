@@ -1,249 +1,107 @@
-import { Outlet, Link } from 'react-router-dom'
+import { Outlet, Link, useLocation } from 'react-router-dom'
 import { useAuthStore } from '@/lib/store'
 import { useAuth } from '@/hooks/useAuth'
 import { Button } from '@/components/ui/button'
 import { 
   LayoutDashboard, 
   MapPin, 
-  Users, 
+  Calendar,
+  CreditCard,
   Wallet, 
   Settings, 
   LogOut,
-  Home,
-  Calendar,
-  ChevronDown,
-  ChevronUp,
-  MessageSquare
+  Home
 } from 'lucide-react'
-import { useState } from 'react'
 
 export default function DashboardLayout() {
   const { user } = useAuthStore()
   const { logout } = useAuth()
-  const [dashboardsOpen, setDashboardsOpen] = useState(true)
+  const location = useLocation()
 
-  // Цвета для каждой роли
-  const roleColors = {
-    super_admin: 'text-purple-600',
-    admin: 'text-blue-600',
-    super_manager: 'text-green-600',
-    manager: 'text-orange-600',
-    guide: 'text-orange-600',
+  const menuItems = [
+    { icon: LayoutDashboard, label: 'Дашборд', path: '/dashboard' },
+    { icon: MapPin, label: 'Мои экскурсии', path: '/dashboard/my-tours' },
+    { icon: Calendar, label: 'Календарь', path: '/dashboard/calendar' },
+    { icon: CreditCard, label: 'Заказы', path: '/dashboard/bookings' },
+    { icon: Wallet, label: 'Финансы', path: '/dashboard/finances' },
+    { icon: Settings, label: 'Настройки', path: '/dashboard/settings' },
+  ]
+
+  const isActive = (path: string) => {
+    if (path === '/dashboard') {
+      return location.pathname === '/dashboard' || location.pathname === '/dashboard/'
+    }
+    return location.pathname.startsWith(path)
   }
-
-  // Определяем доступные дашборды в зависимости от роли
-  const getDashboards = () => {
-    const role = user?.role
-
-    if (role === 'super_admin') {
-      return [
-        { 
-          label: 'Дашборд Супер-Админа', 
-          path: '/dashboard/superadmin',
-          color: roleColors.super_admin
-        },
-        { 
-          label: 'Дашборд Админа', 
-          path: '/dashboard/admin',
-          color: roleColors.admin
-        },
-        { 
-          label: 'Дашборд Супер-Менеджера', 
-          path: '/dashboard/supermanager',
-          color: roleColors.super_manager
-        },
-        { 
-          label: 'Дашборд Менеджера', 
-          path: '/dashboard/manager',
-          color: roleColors.manager
-        },
-      ]
-    }
-
-    if (role === 'admin') {
-      return [
-        { 
-          label: 'Дашборд Админа', 
-          path: '/dashboard/admin',
-          color: roleColors.admin
-        },
-        { 
-          label: 'Дашборд Супер-Менеджера', 
-          path: '/dashboard/supermanager',
-          color: roleColors.super_manager
-        },
-        { 
-          label: 'Дашборд Менеджера', 
-          path: '/dashboard/manager',
-          color: roleColors.manager
-        },
-      ]
-    }
-
-    if (role === 'super_manager') {
-      return [
-        { 
-          label: 'Дашборд Супер-Менеджера', 
-          path: '/dashboard/supermanager',
-          color: roleColors.super_manager
-        },
-        { 
-          label: 'Дашборд Менеджера', 
-          path: '/dashboard/manager',
-          color: roleColors.manager
-        },
-      ]
-    }
-
-    if (role === 'manager' || role === 'guide') {
-      return [
-        { 
-          label: 'Дашборд Менеджера', 
-          path: '/dashboard/manager',
-          color: roleColors.manager
-        },
-      ]
-    }
-
-    return []
-  }
-
-  // Определяем остальные пункты меню в зависимости от роли
-  const getMenuItems = () => {
-    const role = user?.role
-
-    if (role === 'super_admin') {
-      return [
-        { icon: Users, label: 'Пользователи', path: '/dashboard/users' },
-        { icon: MapPin, label: 'Все экскурсии', path: '/dashboard/all-tours' },
-        { icon: MessageSquare, label: 'Заявки', path: '/dashboard/requests' },
-        { icon: Wallet, label: 'Финансы', path: '/dashboard/finances' },
-        { icon: Settings, label: 'Настройки', path: '/dashboard/settings' },
-      ]
-    }
-
-    if (role === 'admin') {
-      return [
-        { icon: Users, label: 'Моя команда', path: '/dashboard/users' },
-        { icon: MapPin, label: 'Все экскурсии', path: '/dashboard/all-tours' },
-        { icon: MessageSquare, label: 'Заявки', path: '/dashboard/requests' },
-        { icon: Wallet, label: 'Финансы', path: '/dashboard/finances' },
-        { icon: Settings, label: 'Настройки', path: '/dashboard/settings' },
-      ]
-    }
-
-    if (role === 'super_manager') {
-      return [
-        { icon: Users, label: 'Моя команда', path: '/dashboard/users' },
-        { icon: MapPin, label: 'Экскурсии', path: '/dashboard/all-tours' },
-        { icon: MessageSquare, label: 'Заявки', path: '/dashboard/requests' },
-        { icon: Wallet, label: 'Финансы', path: '/dashboard/finances' },
-      ]
-    }
-
-    if (role === 'manager' || role === 'guide') {
-      return [
-        { icon: MapPin, label: 'Мои экскурсии', path: '/dashboard/my-tours' },
-        { icon: Calendar, label: 'Бронирования', path: '/dashboard/bookings' },
-        { icon: MessageSquare, label: 'Заявки', path: '/dashboard/requests' },
-        { icon: Wallet, label: 'Финансы', path: '/dashboard/finances' },
-      ]
-    }
-
-    return []
-  }
-
-  const dashboards = getDashboards()
-  const menuItems = getMenuItems()
 
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
-      <header className="bg-white border-b sticky top-0 z-50">
+      <header className="bg-white border-b sticky top-0 z-40">
         <div className="container mx-auto px-4 py-4 flex items-center justify-between">
-          <Link to="/" className="text-2xl font-bold text-gradient">
+          <Link to="/" className="text-2xl font-bold bg-gradient-to-r from-tropical-ocean to-tropical-turquoise bg-clip-text text-transparent">
             ThaiGuide Pro
           </Link>
+          
           <div className="flex items-center gap-4">
-            <div className="text-right">
-              <p className="font-medium">{user?.name || user?.phone}</p>
-              <p className="text-sm text-gray-600">
-                {user?.role === 'super_admin' && 'Супер-админ'}
-                {user?.role === 'admin' && 'Админ'}
-                {user?.role === 'super_manager' && 'Супер-менеджер'}
-                {user?.role === 'manager' && 'Менеджер'}
-                {user?.role === 'guide' && 'Гид'}
-                {user?.role === 'client' && 'Клиент'}
-              </p>
-            </div>
             <Link to="/">
-              <Button variant="outline" size="sm" className="gap-2">
+              <Button variant="ghost" size="sm" className="gap-2">
                 <Home size={18} />
                 На главную
               </Button>
             </Link>
-            <Button variant="ghost" size="sm" onClick={logout}>
+
+            <div className="flex items-center gap-3 px-4 py-2 bg-gray-50 rounded-lg">
+              <div className="w-8 h-8 bg-gradient-to-br from-tropical-ocean to-tropical-turquoise rounded-full flex items-center justify-center text-white font-bold text-sm">
+                {user?.name?.[0] || user?.phone?.[0] || 'Г'}
+              </div>
+              <div>
+                <p className="text-sm font-semibold">{user?.name || user?.phone}</p>
+                <p className="text-xs text-gray-500">Гид</p>
+              </div>
+            </div>
+
+            <Button 
+              variant="ghost" 
+              size="sm" 
+              onClick={logout}
+              className="gap-2"
+            >
               <LogOut size={18} />
-              Выход
+              Выйти
             </Button>
           </div>
         </div>
       </header>
 
-      <div className="container mx-auto px-4 py-6 flex gap-6">
+      <div className="flex">
         {/* Sidebar */}
-        <aside className="w-64 bg-white rounded-lg border p-4 h-fit sticky top-24">
-          <nav className="space-y-2">
-            {/* Дашборды - выпадающее меню */}
-            {dashboards.length > 0 && (
-              <div className="space-y-1">
-                <Button 
-                  variant="ghost" 
-                  className="w-full justify-between gap-2"
-                  onClick={() => setDashboardsOpen(!dashboardsOpen)}
+        <aside className="w-64 bg-white border-r min-h-[calc(100vh-73px)] sticky top-[73px]">
+          <nav className="p-4 space-y-2">
+            {menuItems.map((item) => {
+              const Icon = item.icon
+              const active = isActive(item.path)
+              
+              return (
+                <Link
+                  key={item.path}
+                  to={item.path}
+                  className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-all ${
+                    active
+                      ? 'bg-tropical-ocean text-white shadow-md'
+                      : 'text-gray-700 hover:bg-gray-100'
+                  }`}
                 >
-                  <div className="flex items-center gap-2">
-                    <LayoutDashboard size={18} />
-                    <span>Дашборды</span>
-                  </div>
-                  {dashboardsOpen ? <ChevronUp size={18} /> : <ChevronDown size={18} />}
-                </Button>
-                
-                {/* Подменю с дашбордами */}
-                {dashboardsOpen && (
-                  <div className="pl-4 space-y-1 border-l-2 border-gray-200 ml-2">
-                    {dashboards.map((dashboard, index) => (
-                      <Link key={`${dashboard.path}-${index}`} to={dashboard.path}>
-                        <Button 
-                          variant="ghost" 
-                          className={`w-full justify-start gap-2 text-sm ${dashboard.color || ''}`}
-                        >
-                          {dashboard.label}
-                        </Button>
-                      </Link>
-                    ))}
-                  </div>
-                )}
-              </div>
-            )}
-
-            {/* Остальные пункты меню */}
-            {menuItems.map((item, index) => (
-              <Link key={`${item.path}-${index}`} to={item.path}>
-                <Button 
-                  variant="ghost" 
-                  className="w-full justify-start gap-2"
-                >
-                  <item.icon size={18} />
-                  {item.label}
-                </Button>
-              </Link>
-            ))}
+                  <Icon size={20} />
+                  <span className="font-medium">{item.label}</span>
+                </Link>
+              )
+            })}
           </nav>
         </aside>
 
         {/* Main Content */}
-        <main className="flex-1">
+        <main className="flex-1 p-8">
           <Outlet />
         </main>
       </div>
