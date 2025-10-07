@@ -3,14 +3,17 @@ import { useQuery } from '@tanstack/react-query'
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { CreateTourDialog } from '@/components/CreateTourDialog'
+import { PaymentDialog } from '@/components/PaymentDialog'
 import { MapPin, Clock, Star, Edit, Trash2, Link as LinkIcon, Copy, CheckCircle, CreditCard, ExternalLink } from 'lucide-react'
 import { toursApi } from '@/lib/api'
 import { formatRUB } from '@/lib/utils'
 
 export default function MyToursPage() {
   const [copiedId, setCopiedId] = useState<number | null>(null)
+  const [paymentDialogOpen, setPaymentDialogOpen] = useState(false)
+  const [selectedTour, setSelectedTour] = useState<any>(null)
   
-  const { data: toursData, isLoading } = useQuery({
+  const { data: toursData, isLoading, refetch } = useQuery({
     queryKey: ['tours'],
     queryFn: () => toursApi.getList(),
   })
@@ -18,14 +21,21 @@ export default function MyToursPage() {
   const tours = toursData?.data?.tours || []
 
   const copyTourLink = (tourId: number) => {
-    const link = `${window.location.origin}/tours/${tourId}`
+    const link = `${window.location.origin}/private-tour/${tourId}`
     navigator.clipboard.writeText(link)
     setCopiedId(tourId)
     setTimeout(() => setCopiedId(null), 2000)
   }
 
-  const testPayment = (tour: any) => {
-    alert(`Тестовая оплата экскурсии "${tour.title}"\n\nЦена: ${formatRUB(tour.price)}\nID: ${tour.id}\n\n✅ Данные из БД корректны!`)
+  const handlePaymentClick = (tour: any) => {
+    setSelectedTour(tour)
+    setPaymentDialogOpen(true)
+  }
+
+  const handlePaymentSuccess = () => {
+    refetch() // Обновляем список экскурсий
+    // Обновляем статистику дашборда
+    window.location.reload() // Простое решение для обновления всех данных
   }
 
   return (
@@ -88,7 +98,7 @@ export default function MyToursPage() {
                     <span className="text-xs font-semibold text-gray-700">Ссылка на экскурсию</span>
                   </div>
                   <div className="text-xs text-gray-600 break-all mb-2">
-                    {window.location.origin}/tours/{tour.id}
+                    {window.location.origin}/private-tour/{tour.id}
                   </div>
                   <div className="flex gap-2">
                     <Button
@@ -113,22 +123,22 @@ export default function MyToursPage() {
                       size="sm"
                       variant="outline"
                       className="text-xs"
-                      onClick={() => window.open(`/tours/${tour.id}`, '_blank')}
+                      onClick={() => window.open(`/private-tour/${tour.id}`, '_blank')}
                     >
                       <ExternalLink size={14} />
                     </Button>
                   </div>
                 </div>
 
-                {/* Тестовая оплата */}
+                {/* Оплата */}
                 <Button
                   variant="tropical"
                   size="sm"
                   className="w-full text-xs"
-                  onClick={() => testPayment(tour)}
+                  onClick={() => handlePaymentClick(tour)}
                 >
                   <CreditCard size={14} className="mr-1" />
-                  Тест: Оплатить
+                  Оплачено
                 </Button>
               </CardContent>
 
@@ -144,6 +154,16 @@ export default function MyToursPage() {
             </Card>
           ))}
         </div>
+      )}
+
+      {/* Диалог оплаты */}
+      {selectedTour && (
+        <PaymentDialog
+          tour={selectedTour}
+          open={paymentDialogOpen}
+          onOpenChange={setPaymentDialogOpen}
+          onSuccess={handlePaymentSuccess}
+        />
       )}
     </div>
   )

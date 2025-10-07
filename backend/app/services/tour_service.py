@@ -69,14 +69,6 @@ class TourService:
         return result.scalar_one_or_none()
     
     @staticmethod
-    async def get_tour_by_code(db: AsyncSession, unique_code: str) -> Optional[Tour]:
-        """Получение экскурсии по уникальному коду"""
-        result = await db.execute(
-            select(Tour).where(Tour.unique_code == unique_code).options(selectinload(Tour.guide))
-        )
-        return result.scalar_one_or_none()
-    
-    @staticmethod
     async def create_tour(
         db: AsyncSession,
         guide_id: int,
@@ -89,20 +81,7 @@ class TourService:
         photos: List[str] = None,
     ) -> Tour:
         """Создание новой экскурсии"""
-        import secrets
-        
-        # Генерируем уникальный код (12 символов)
-        unique_code = secrets.token_urlsafe(9)[:12].lower()
-        
-        # Проверяем уникальность (на всякий случай)
-        while True:
-            existing = await db.execute(select(Tour).where(Tour.unique_code == unique_code))
-            if not existing.scalar_one_or_none():
-                break
-            unique_code = secrets.token_urlsafe(9)[:12].lower()
-        
         tour = Tour(
-            unique_code=unique_code,
             guide_id=guide_id,
             title=title,
             description=description,

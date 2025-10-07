@@ -12,7 +12,6 @@ class Tour(Base):
     __tablename__ = "tours"
 
     id = Column(Integer, primary_key=True, index=True, autoincrement=True)
-    unique_code = Column(String, unique=True, index=True, nullable=False)  # Уникальный код для приватной ссылки
     
     # Гид/менеджер который создал экскурсию
     guide_id = Column(Integer, ForeignKey("users.id"), nullable=False)

@@ -2,46 +2,34 @@ import { useQuery } from '@tanstack/react-query'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { MapPin, CreditCard, TrendingUp, Users, CheckCircle } from 'lucide-react'
 import { formatRUB } from '@/lib/utils'
-import { api, toursApi } from '@/lib/api'
+import { api } from '@/lib/api'
 import { useAuthStore } from '@/lib/store'
 
 export default function ManagerDashboard() {
   const { user } = useAuthStore()
 
-  // Загрузка моих экскурсий
-  const { data: toursData } = useQuery({
-    queryKey: ['tours'],
-    queryFn: () => toursApi.getList(),
-  })
-
-  // Загрузка бронирований
-  const { data: bookingsData } = useQuery({
-    queryKey: ['bookings'],
+  // Загрузка статистики гида
+  const { data: statsData, isLoading } = useQuery({
+    queryKey: ['guide-stats'],
     queryFn: async () => {
-      const response = await api.get('/bookings/')
+      const response = await api.get('/guide-stats/dashboard')
       return response.data
     },
   })
 
-  const tours = toursData?.data?.tours || []
-  const bookings = bookingsData?.bookings || []
+  const stats = statsData || {}
   
   // Статистика
-  const activeTours = tours.filter((t: any) => t.active !== false).length
-  const thisMonthBookings = bookings.filter((b: any) => {
-    const bookingDate = new Date(b.created_at)
-    const now = new Date()
-    return bookingDate.getMonth() === now.getMonth() && bookingDate.getFullYear() === now.getFullYear()
-  }).length
+  const activeTours = stats.active_tours || 0
+  const thisMonthBookings = stats.monthly_bookings || 0
+  const monthlyIncome = stats.monthly_income || 0
 
-  // Доход за месяц (упрощенная версия)
-  const monthlyIncome = thisMonthBookings * 2500 // Примерно
-
-  // График доходов (последние 14 дней с рандомными данными для демонстрации)
-  const revenueData = [65, 45, 80, 55, 90, 70, 100, 85, 75, 95, 110, 88, 92, 105]
-
-  // Последние заказы (последние 3)
-  const recentBookings = bookings.slice(0, 3)
+  // График доходов (реальные данные за последние 30 дней)
+  const revenueChartData = stats.revenue_chart || []
+  const maxRevenue = Math.max(...revenueChartData.map((d: any) => d.income), 1)
+  
+  // Последние заказы
+  const recentBookings = stats.recent_bookings || []
 
   return (
     <div className="space-y-6">
@@ -110,19 +98,36 @@ export default function ManagerDashboard() {
           <CardDescription>За последние 30 дней</CardDescription>
         </CardHeader>
         <CardContent>
-          <div className="flex items-end justify-between h-48 gap-2">
-            {revenueData.map((height, i) => (
-              <div
-                key={i}
-                className="flex-1 bg-gradient-to-t from-tropical-ocean to-tropical-turquoise rounded-t-lg relative group cursor-pointer"
-                style={{ height: `${height}%` }}
-              >
-                <div className="absolute -top-8 left-1/2 transform -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity bg-gray-900 text-white text-xs px-2 py-1 rounded whitespace-nowrap">
-                  {formatRUB(height * 20)}
-                </div>
+          {isLoading ? (
+            <div className="flex items-center justify-center h-48">
+              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-tropical-ocean"></div>
+            </div>
+          ) : revenueChartData.length > 0 ? (
+            <div className="flex items-end justify-between h-48 gap-1">
+              {revenueChartData.slice(-30).map((day: any, i: number) => {
+                const height = (day.income / maxRevenue) * 100
+                return (
+                  <div
+                    key={i}
+                    className="flex-1 bg-gradient-to-t from-tropical-ocean to-tropical-turquoise rounded-t-lg relative group cursor-pointer"
+                    style={{ height: `${Math.max(height, 2)}%` }}
+                  >
+                    <div className="absolute -top-8 left-1/2 transform -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity bg-gray-900 text-white text-xs px-2 py-1 rounded whitespace-nowrap">
+                      {formatRUB(day.income)}
+                    </div>
+                  </div>
+                )
+              })}
+            </div>
+          ) : (
+            <div className="flex items-center justify-center h-48 text-gray-500">
+              <div className="text-center">
+                <TrendingUp size={48} className="mx-auto mb-2 opacity-50" />
+                <p>Нет данных о доходах</p>
+                <p className="text-sm">Создайте экскурсии и начните принимать оплаты</p>
               </div>
-            ))}
-          </div>
+            </div>
+          )}
         </CardContent>
       </Card>
 
