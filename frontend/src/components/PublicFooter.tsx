@@ -28,16 +28,16 @@ export function PublicFooter() {
               <li><Link to="/about" className="hover:text-white transition-colors">О нас</Link></li>
               <li><Link to="/contact" className="hover:text-white transition-colors">Контакты</Link></li>
               <li><Link to="/request" className="hover:text-white transition-colors">Заказать экскурсию</Link></li>
-              <li><Link to="/guides" className="hover:text-white transition-colors">Стать гидом</Link></li>
+              <li><Link to="/become-guide" className="hover:text-white transition-colors">Стать гидом</Link></li>
             </ul>
           </div>
           
           <div>
-            <h4 className="font-semibold mb-4">Поддержка</h4>
+            <h4 className="font-semibold mb-4">Информация</h4>
             <ul className="space-y-2 text-gray-400">
-              <li><Link to="/faq" className="hover:text-white transition-colors">FAQ</Link></li>
+              <li><Link to="/faq" className="hover:text-white transition-colors">Часто задаваемые вопросы</Link></li>
               <li><Link to="/terms" className="hover:text-white transition-colors">Условия использования</Link></li>
-              <li><Link to="/privacy" className="hover:text-white transition-colors">Политика конфиденциальности</Link></li>
+              <li><Link to="/privacy" className="hover:text-white transition-colors">Конфиденциальность</Link></li>
             </ul>
           </div>
         </div>
