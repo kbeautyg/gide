@@ -3,18 +3,18 @@
 
 # Автоматический сброс БД при первом запуске или по запросу
 if [ "$RESET_DB" = "true" ] || [ "$FORCE_RESET" = "true" ]; then
-  echo "🔄 СБРОС БАЗЫ ДАННЫХ..."
-  python reset_db.py || echo "⚠️ Сброс не прошел, продолжаем..."
+  echo "Resetting database..."
+  python reset_db.py || echo "WARNING: Reset failed, continuing..."
 fi
 
-echo "🔄 Применяем миграции Alembic..."
-python -m alembic upgrade head || echo "⚠️ Миграции не применены (возможно уже применены)"
+echo "Applying Alembic migrations..."
+python -m alembic upgrade head || echo "WARNING: Migrations not applied (may already be applied)"
 
-echo "🔧 Инициализируем БД..."
-python init_db.py || echo "⚠️ Инициализация не прошла (возможно уже есть)"
+echo "Initializing database..."
+python init_db.py || echo "WARNING: Initialization failed (may already exist)"
 
-echo "🌱 Создаем тестовые данные..."
-python seed_data.py || echo "⚠️ Тестовые данные не созданы (возможно уже есть)"
+echo "Creating test data..."
+python seed_data.py || echo "WARNING: Test data not created (may already exist)"
 
-echo "🚀 Запускаем сервер..."
+echo "Starting server..."
 python3 -m uvicorn app.main:app --host 0.0.0.0 --port $PORT

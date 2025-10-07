@@ -39,7 +39,7 @@ async def root():
     current_time = datetime.now(moscow_tz)
     
     return JSONResponse({
-        "message": "🏝️ ThaiGuide Pro 3.0 API",
+        "message": "ThaiGuide Pro 3.0 API",
         "version": "3.0.0",
         "status": "running",
         "timezone": "Europe/Moscow (UTC+3)",
