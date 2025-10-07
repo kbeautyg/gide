@@ -10,6 +10,9 @@ from datetime import datetime
 from app.core.config import settings
 from app.api.v1.router import api_router
 
+# Импортируем модели для регистрации в SQLAlchemy
+from app.models import user, tour, booking, request
+
 # Установка московского времени глобально
 import os
 os.environ['TZ'] = 'Europe/Moscow'
