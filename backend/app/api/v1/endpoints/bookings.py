@@ -3,10 +3,11 @@
 """
 from fastapi import APIRouter, Depends, HTTPException, Query
 from pydantic import BaseModel, Field
-from datetime import datetime, date, timedelta
+from datetime import datetime, timedelta
 from typing import Optional, List
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select, func, or_
+import datetime as dt
 
 from app.db.session import get_db
 from app.models.booking import Booking, BookingStatus, PaymentStatus
@@ -21,7 +22,7 @@ router = APIRouter()
 class BookingCreate(BaseModel):
     """Создание бронирования"""
     tour_id: int = Field(..., description="ID экскурсии")
-    date: date = Field(..., description="Дата экскурсии")
+    date: str = Field(..., description="Дата экскурсии (YYYY-MM-DD)")
     participants_count: int = Field(..., ge=1, description="Количество участников")
     client_name: str = Field(..., description="Имя клиента")
     client_phone: str = Field(..., description="Телефон клиента")
@@ -39,12 +40,12 @@ class BookingResponse(BaseModel):
     client_name: str
     client_phone: str
     client_email: Optional[str]
-    date: date
+    date: str
     participants_count: int
     total_price: float
     status: str
     payment_status: str
-    created_at: datetime
+    created_at: str
     
     class Config:
         from_attributes = True
@@ -85,11 +86,14 @@ async def create_test_booking(
     # Вычисляем общую стоимость
     total_price = tour.price * booking_data.participants_count
     
+    # Парсим дату
+    booking_date = dt.datetime.strptime(booking_data.date, '%Y-%m-%d').date()
+    
     # Создаем бронирование
     booking = Booking(
         tour_id=tour.id,
         client_id=current_user.id,
-        date=booking_data.date,
+        date=booking_date,
         participants_count=booking_data.participants_count,
         total_price=total_price,
         status=BookingStatus.CONFIRMED,
@@ -132,12 +136,12 @@ async def create_test_booking(
         client_name=booking.client_name,
         client_phone=booking.client_phone,
         client_email=booking.client_email,
-        date=booking.date,
+        date=booking.date.isoformat(),
         participants_count=booking.participants_count,
         total_price=booking.total_price,
         status=booking.status.value,
         payment_status=booking.payment_status.value,
-        created_at=booking.created_at
+        created_at=booking.created_at.isoformat()
     )
 
 
@@ -197,12 +201,12 @@ async def get_bookings(
             client_name=booking.client_name,
             client_phone=booking.client_phone,
             client_email=booking.client_email,
-            date=booking.date,
+            date=booking.date.isoformat(),
             participants_count=booking.participants_count,
             total_price=booking.total_price,
             status=booking.status.value,
             payment_status=booking.payment_status.value,
-            created_at=booking.created_at
+            created_at=booking.created_at.isoformat()
         ))
     
     return BookingList(

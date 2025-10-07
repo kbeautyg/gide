@@ -34,7 +34,6 @@ export default function ManagerDashboard() {
   const myToursCount = toursData?.data?.tours?.length || 0
   const bookingsCount = Array.isArray(bookingsData) ? bookingsData.length : 0
   const balance = profileData?.balance_rub || 0
-  const income = 0 // TODO: получать из транзакций за месяц
 
   return (
     <div className="space-y-6">
@@ -86,7 +85,7 @@ export default function ManagerDashboard() {
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <p className="text-3xl font-bold">{balance.toFixed(0)} ₽</p>
+            <p className="text-3xl font-bold">{formatRUB(balance)}</p>
             <p className="text-xs text-gray-500 mt-1">Доступно для вывода</p>
           </CardContent>
         </Card>
