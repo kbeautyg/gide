@@ -1,6 +1,6 @@
 import { FileText, Shield, AlertCircle, CheckCircle } from 'lucide-react'
-import PublicHeader from '@/components/PublicHeader'
-import PublicFooter from '@/components/PublicFooter'
+import { PublicHeader } from '@/components/PublicHeader'
+import { PublicFooter } from '@/components/PublicFooter'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 
 export default function TermsPage() {

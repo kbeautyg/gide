@@ -50,7 +50,7 @@ export function CreateUserDialog({ open, onOpenChange }: CreateUserDialogProps) 
   })
 
   const createMutation = useMutation({
-    mutationFn: (data: typeof formData) => 
+    mutationFn: (data: { phone: string; password: string; role: string; email?: string; name?: string }) => 
       api.post('/admin/users', data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['users'] })
@@ -67,9 +67,11 @@ export function CreateUserDialog({ open, onOpenChange }: CreateUserDialogProps) 
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
-    // Преобразуем пустые строки в null для необязательных полей
-    const cleanData = {
-      ...formData,
+    // Преобразуем пустые строки в undefined для необязательных полей
+    const cleanData: { phone: string; password: string; role: string; email?: string; name?: string } = {
+      phone: formData.phone,
+      password: formData.password,
+      role: formData.role,
       email: formData.email?.trim() || undefined,
       name: formData.name?.trim() || undefined,
     }

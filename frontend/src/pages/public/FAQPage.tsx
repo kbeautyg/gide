@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { ChevronDown, ChevronUp, MessageCircle, Phone, Mail, MapPin } from 'lucide-react'
-import PublicHeader from '@/components/PublicHeader'
-import PublicFooter from '@/components/PublicFooter'
+import { PublicHeader } from '@/components/PublicHeader'
+import { PublicFooter } from '@/components/PublicFooter'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 
 interface FAQItem {
