@@ -9,6 +9,8 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.db.session import get_db
 from app.services.tour_service import TourService
+from app.models.user import User
+from app.core.deps import get_current_user
 
 router = APIRouter()
 
@@ -235,22 +237,23 @@ async def get_tour(
 async def create_tour(
     tour: TourCreate,
     db: AsyncSession = Depends(get_db),
-    # TODO: Добавить проверку авторизации и роли
-    # current_user_id: str = Depends(get_current_user_id)
+    current_user: User = Depends(get_current_user)
 ):
     """
     Создание новой экскурсии
     
-    Доступно: Менеджеры (гиды)
-    TODO: Добавить проверку прав
+    Доступно: Менеджеры, супер-менеджеры, админы, супер-админ
+    Экскурсии создаются с active=False (неактивными)
+    Только админ может активировать экскурсии для главной страницы
     """
-    # Временно используем ID супер-админа (1)
-    # В реальности: guide_id = current_user_id
-    guide_id = 1
+    # Проверяем права
+    if current_user.role.value not in ['manager', 'guide', 'super_manager', 'admin', 'super_admin']:
+        raise HTTPException(status_code=403, detail="Недостаточно прав для создания экскурсий")
     
+    # Создаем экскурсию (по умолчанию active=False)
     new_tour_db = await TourService.create_tour(
         db=db,
-        guide_id=guide_id,
+        guide_id=current_user.id,
         title=tour.title,
         description=tour.description,
         price=tour.price,
@@ -271,8 +274,64 @@ async def create_tour(
         photos=new_tour_db.photos or [],
         rating=new_tour_db.rating,
         reviews_count=new_tour_db.reviews_count,
-        guide_name="Текущий гид",
+        guide_name=current_user.name or current_user.phone,
         guide_id=new_tour_db.guide_id,
         active=new_tour_db.active,
         created_at=new_tour_db.created_at,
     )
+
+
+@router.put("/{tour_id}/activate")
+async def activate_tour(
+    tour_id: int,
+    db: AsyncSession = Depends(get_db),
+    current_user: User = Depends(get_current_user)
+):
+    """
+    Активировать экскурсию для показа на главной странице
+    
+    Доступно: ТОЛЬКО Админ и Супер-админ
+    """
+    # Проверяем права
+    if current_user.role.value not in ['admin', 'super_admin']:
+        raise HTTPException(status_code=403, detail="Только админ может активировать экскурсии для главной страницы")
+    
+    # Получаем экскурсию
+    tour = await TourService.get_tour_by_id(db, tour_id)
+    if not tour:
+        raise HTTPException(status_code=404, detail="Экскурсия не найдена")
+    
+    # Активируем
+    tour.active = True
+    tour.updated_at = datetime.now()
+    await db.commit()
+    
+    return {"message": f"Экскурсия '{tour.title}' активирована и появится на главной странице", "tour_id": tour_id}
+
+
+@router.put("/{tour_id}/deactivate")
+async def deactivate_tour(
+    tour_id: int,
+    db: AsyncSession = Depends(get_db),
+    current_user: User = Depends(get_current_user)
+):
+    """
+    Деактивировать экскурсию (убрать с главной страницы)
+    
+    Доступно: ТОЛЬКО Админ и Супер-админ
+    """
+    # Проверяем права
+    if current_user.role.value not in ['admin', 'super_admin']:
+        raise HTTPException(status_code=403, detail="Только админ может деактивировать экскурсии")
+    
+    # Получаем экскурсию
+    tour = await TourService.get_tour_by_id(db, tour_id)
+    if not tour:
+        raise HTTPException(status_code=404, detail="Экскурсия не найдена")
+    
+    # Деактивируем
+    tour.active = False
+    tour.updated_at = datetime.now()
+    await db.commit()
+    
+    return {"message": f"Экскурсия '{tour.title}' деактивирована и убрана с главной страницы", "tour_id": tour_id}
