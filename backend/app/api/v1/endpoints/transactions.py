@@ -2,49 +2,66 @@
 Эндпоинты для работы с транзакциями
 """
 from fastapi import APIRouter, Depends, HTTPException, Query
-from typing import List, Optional
+from typing import List
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy import select, desc
-from datetime import datetime
+from sqlalchemy import select, func
 
 from app.db.session import get_db
-from app.models.transaction import Transaction, TransactionType
+from app.models.transaction import Transaction
 from app.models.user import User
+from app.schemas.transaction import Transaction as TransactionSchema, TransactionList
 from app.core.deps import get_current_user
 
 router = APIRouter()
 
 
-class TransactionResponse:
-    """Ответ с транзакцией"""
-    id: int
-    type: str
-    amount_rub: float
-    amount_usd: float
-    amount_thb: float
-    description: Optional[str]
-    booking_id: Optional[int]
-    created_at: str
-
-    def __init__(self, transaction: Transaction):
-        self.id = transaction.id
-        self.type = transaction.type.value
-        self.amount_rub = transaction.amount_rub
-        self.amount_usd = transaction.amount_usd
-        self.amount_thb = transaction.amount_thb
-        self.description = transaction.description
-        self.booking_id = transaction.booking_id
-        self.created_at = transaction.created_at.isoformat()
-
-
-@router.get("/", response_model=List[TransactionResponse])
+@router.get("/", response_model=TransactionList)
 async def get_transactions(
+    page: int = Query(1, ge=1),
+    per_page: int = Query(20, ge=1, le=100),
     current_user: User = Depends(get_current_user),
     db: AsyncSession = Depends(get_db)
 ):
-    """Получить транзакции пользователя"""
-    stmt = select(Transaction).where(Transaction.user_id == current_user.id).order_by(desc(Transaction.created_at))
-    result = await db.execute(stmt)
+    """Получить список транзакций текущего пользователя"""
+    
+    # Формируем запрос
+    query = select(Transaction).where(Transaction.user_id == current_user.id).order_by(Transaction.created_at.desc())
+    
+    # Подсчет общего количества
+    count_query = select(func.count()).select_from(Transaction).where(Transaction.user_id == current_user.id)
+    total = await db.scalar(count_query)
+    
+    # Пагинация
+    offset = (page - 1) * per_page
+    query = query.offset(offset).limit(per_page)
+    
+    result = await db.execute(query)
     transactions = result.scalars().all()
     
-    return [TransactionResponse(t) for t in transactions]
+    return TransactionList(
+        transactions=transactions,
+        total=total or 0,
+        page=page,
+        per_page=per_page
+    )
+
+
+@router.get("/{transaction_id}", response_model=TransactionSchema)
+async def get_transaction(
+    transaction_id: int,
+    current_user: User = Depends(get_current_user),
+    db: AsyncSession = Depends(get_db)
+):
+    """Получить детали транзакции"""
+    query = select(Transaction).where(Transaction.id == transaction_id)
+    result = await db.execute(query)
+    transaction = result.scalar_one_or_none()
+    
+    if not transaction:
+        raise HTTPException(status_code=404, detail="Транзакция не найдена")
+    
+    # Проверяем права
+    if transaction.user_id != current_user.id:
+        raise HTTPException(status_code=403, detail="Нет доступа к этой транзакции")
+    
+    return transaction

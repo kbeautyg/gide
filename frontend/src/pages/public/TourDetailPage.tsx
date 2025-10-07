@@ -90,10 +90,10 @@ export default function TourDetailPage() {
             ThaiGuide Pro
           </Link>
           <div className="flex items-center gap-3">
-            <Link to="/">
+            <Link to="/tours">
               <Button variant="ghost">
                 <ArrowLeft className="mr-2" size={18} />
-                На главную
+                Назад к экскурсиям
               </Button>
             </Link>
             {isAuthenticated && user && (

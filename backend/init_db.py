@@ -27,7 +27,7 @@ async def init_db():
     async with async_session() as session:
         # Очищаем телефон от всех символов кроме цифр
         phone_clean = ''.join(filter(str.isdigit, settings.SUPER_ADMIN_PHONE))
-        print(f"Super admin phone: {settings.SUPER_ADMIN_PHONE} -> cleaned: {phone_clean}")
+        print(f"📞 Супер-админ телефон: {settings.SUPER_ADMIN_PHONE} -> очищено: {phone_clean}")
         
         # Проверяем существует ли супер-админ
         result = await session.execute(
@@ -39,20 +39,20 @@ async def init_db():
             super_admin = User(
                 phone=phone_clean,
                 email="admin@thaiguide.pro",
-                name="Super Admin",
+                name="Супер Админ",
                 hashed_password=get_password_hash("admin123"),  # Измените на безопасный!
                 role=UserRole.SUPER_ADMIN,
                 parent_id=None,
             )
             session.add(super_admin)
             await session.commit()
-            print(f"Super admin created: {phone_clean}")
+            print(f"✅ Супер-админ создан: {phone_clean}")
         else:
-            print(f"Super admin already exists: {phone_clean}")
+            print(f"✅ Супер-админ уже существует: {phone_clean}")
 
 
 if __name__ == "__main__":
     import sqlalchemy as sa
-    print("Initializing database...")
+    print("🔧 Инициализация базы данных...")
     asyncio.run(init_db())
-    print("Database ready!")
+    print("✅ База данных готова!")

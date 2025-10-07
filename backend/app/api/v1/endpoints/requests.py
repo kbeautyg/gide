@@ -50,56 +50,28 @@ async def get_requests(
     current_user: User = Depends(get_current_user),
     db: AsyncSession = Depends(get_db)
 ):
-    """Получить список заявок (ВСЕ для менеджеров и выше, свои для клиентов)"""
+    """
+    Получить список заявок
+    МЕНЕДЖЕРЫ ВИДЯТ ВСЕ АКТИВНЫЕ ЗАЯВКИ (где preferred_date >= сегодня)
+    """
     from datetime import date as date_type
     
     # Проверяем права доступа
-    if current_user.role not in [UserRole.SUPER_ADMIN, UserRole.ADMIN, UserRole.SUPER_MANAGER, UserRole.MANAGER, UserRole.CLIENT]:
+    if current_user.role not in [UserRole.SUPER_ADMIN, UserRole.ADMIN, UserRole.SUPER_MANAGER, UserRole.MANAGER]:
         raise HTTPException(status_code=403, detail="Недостаточно прав для просмотра заявок")
     
-    # Менеджеры и выше видят ВСЕ заявки (не только свои)
-    # Клиенты видят только свои заявки
-    if current_user.role in [UserRole.SUPER_ADMIN, UserRole.ADMIN, UserRole.SUPER_MANAGER, UserRole.MANAGER]:
-        # Показываем ВСЕ заявки, исключая истекшие
-        query = select(Request).where(
-            or_(
-                Request.preferred_date >= date_type.today(),
-                Request.preferred_date.is_(None)
-            )
+    # МЕНЕДЖЕРЫ И ВЫШЕ ВИДЯТ ВСЕ ЗАЯВКИ (не только назначенные им)
+    # Автоматически скрываем истекшие заявки
+    query = select(Request).where(
+        or_(
+            Request.preferred_date >= date_type.today(),
+            Request.preferred_date.is_(None)
         )
-    else:
-        # Клиенты видят только свои
-        query = select(Request).where(Request.client_id == current_user.id)
+    )
     
     # Фильтр по статусу
     if status:
         query = query.where(Request.status == status)
-    
-    # Если не супер-админ, показываем только заявки назначенные им или их команде
-    if current_user.role != UserRole.SUPER_ADMIN:
-        if current_user.role == UserRole.ADMIN:
-            # Админ видит заявки назначенные ему или его команде
-            query = query.where(
-                or_(
-                    Request.assigned_to == current_user.id,
-                    Request.assigned_to.in_(
-                        select(User.id).where(User.parent_id == current_user.id)
-                    )
-                )
-            )
-        elif current_user.role == UserRole.SUPER_MANAGER:
-            # Супер-менеджер видит заявки назначенные ему или его команде
-            query = query.where(
-                or_(
-                    Request.assigned_to == current_user.id,
-                    Request.assigned_to.in_(
-                        select(User.id).where(User.parent_id == current_user.id)
-                    )
-                )
-            )
-        elif current_user.role == UserRole.MANAGER:
-            # Менеджер видит только заявки назначенные ему
-            query = query.where(Request.assigned_to == current_user.id)
     
     # Подсчет общего количества
     count_query = select(func.count()).select_from(query.subquery())

@@ -18,12 +18,11 @@ engine = create_async_engine(DATABASE_URL, echo=True)
 async def reset_db():
     """Сброс БД - удаление таблиц и версии Alembic"""
     
-    print("WARNING: This will delete tables: users, tours, bookings, requests, transactions, alembic_version")
+    print("⚠️ ВНИМАНИЕ: Это удалит таблицы: users, tours, bookings, requests, alembic_version")
     
     async with engine.begin() as conn:
         # Удаляем ТОЛЬКО наши таблицы (явно по именам)
-        print("Dropping our tables...")
-        await conn.execute(sa.text("DROP TABLE IF EXISTS transactions CASCADE"))
+        print("🗑️ Удаляем наши таблицы...")
         await conn.execute(sa.text("DROP TABLE IF EXISTS bookings CASCADE"))
         await conn.execute(sa.text("DROP TABLE IF EXISTS requests CASCADE"))
         await conn.execute(sa.text("DROP TABLE IF EXISTS tours CASCADE"))
@@ -34,14 +33,13 @@ async def reset_db():
         await conn.execute(sa.text("DROP TYPE IF EXISTS userrole CASCADE"))
         await conn.execute(sa.text("DROP TYPE IF EXISTS bookingstatus CASCADE"))
         await conn.execute(sa.text("DROP TYPE IF EXISTS paymentstatus CASCADE"))
-        await conn.execute(sa.text("DROP TYPE IF EXISTS transactiontype CASCADE"))
     
-    print("Database cleared!")
-    print("Deleted tables: users, tours, bookings, requests, transactions, alembic_version")
-    print("Alembic will now recreate tables through migrations")
+    print("✅ База данных очищена!")
+    print("📋 Удалены таблицы: users, tours, bookings, requests, alembic_version")
+    print("💡 Теперь Alembic создаст таблицы заново через миграции")
 
 
 if __name__ == "__main__":
-    print("Resetting database...")
+    print("🔄 Сброс базы данных...")
     asyncio.run(reset_db())
-    print("Done!")
+    print("✅ Готово!")

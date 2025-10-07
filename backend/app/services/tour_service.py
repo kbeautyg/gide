@@ -92,7 +92,7 @@ class TourService:
             photos=photos or [],
             rating=0.0,
             reviews_count=0,
-            active=False,
+            active=True,
         )
         
         db.add(tour)

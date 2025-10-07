@@ -54,7 +54,7 @@ class Booking(Base):
     # Relationships
     tour = relationship("Tour", back_populates="bookings")
     client = relationship("User", back_populates="bookings", foreign_keys=[client_id])
-    transactions = relationship("Transaction", back_populates="booking")
+    transaction = relationship("Transaction", back_populates="booking", uselist=False)
     
     def __repr__(self):
         return f"<Booking {self.id} for Tour {self.tour_id}>"

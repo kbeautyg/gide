@@ -35,8 +35,8 @@ class Tour(Base):
     rating = Column(Float, default=0.0)
     reviews_count = Column(Integer, default=0)
     
-    # Статус (по умолчанию неактивна - активирует админ)
-    active = Column(Boolean, default=False)
+    # Статус
+    active = Column(Boolean, default=True)
     
     # Временные метки
     created_at = Column(DateTime, default=datetime.utcnow)
