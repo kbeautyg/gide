@@ -32,86 +32,25 @@ async def seed_data():
         super_admin = result.scalar_one_or_none()
         
         if not super_admin:
-            print("❌ Супер-админ не найден")
+            print("Super admin not found")
             return
         
-        print(f"✅ Супер-админ найден: {super_admin.phone} (ID: {super_admin.id})")
+        print(f"Super admin found: {super_admin.phone} (ID: {super_admin.id})")
         
-        # Создаем тестовые экскурсии для супер-админа
-        tours_data = [
-            {
-                "title": "Обзорная экскурсия по Пхукету",
-                "description": "Познакомьтесь с главными достопримечательностями острова! Посетите Большого Будду, храм Ват Чалонг, и насладитесь панорамными видами с мыса Промтеп.",
-                "price": 2500.0,
-                "duration": 6,
-                "location": "Пхукет",
-                "category": "Культура и история",
-                "photos": [
-                    "https://images.unsplash.com/photo-1589394815804-964ed0be2eb5?w=800",
-                    "https://images.unsplash.com/photo-1552465011-b4e21bf6e79a?w=800"
-                ],
-            },
-            {
-                "title": "Острова Пхи-Пхи на скоростной лодке",
-                "description": "Незабываемое путешествие на знаменитые острова Пхи-Пхи! Снорклинг в кристально чистых водах, пляж Майя Бэй, обед на острове.",
-                "price": 3200.0,
-                "duration": 8,
-                "location": "Пхукет",
-                "category": "Природа и пляжи",
-                "photos": [
-                    "https://images.unsplash.com/photo-1583417319070-4a69db38a482?w=800",
-                    "https://images.unsplash.com/photo-1559827260-dc66d52bef19?w=800"
-                ],
-            },
-            {
-                "title": "Джунгли и водопады Краби",
-                "description": "Приключение в джунглях провинции Краби! Треккинг к водопадам, купание в изумрудном озере, посещение горячих источников.",
-                "price": 2800.0,
-                "duration": 7,
-                "location": "Краби",
-                "category": "Приключения",
-                "photos": [
-                    "https://images.unsplash.com/photo-1552465011-b4e21bf6e79a?w=800"
-                ],
-            },
-            {
-                "title": "Ночная жизнь Паттайи",
-                "description": "Откройте для себя яркую ночную жизнь Паттайи! Посещение лучших баров, дискотек, шоу трансвеститов Tiffany's.",
-                "price": 1800.0,
-                "duration": 5,
-                "location": "Паттайя",
-                "category": "Развлечения",
-                "photos": [
-                    "https://images.unsplash.com/photo-1514282401047-d79a71a590e8?w=800"
-                ],
-            },
-            {
-                "title": "Храмы Бангкока",
-                "description": "Погрузитесь в культуру Таиланда! Посетите Храм Изумрудного Будды, Лежащего Будды, Золотую гору и плавучий рынок.",
-                "price": 2200.0,
-                "duration": 8,
-                "location": "Бангкок",
-                "category": "Культура и история",
-                "photos": [
-                    "https://images.unsplash.com/photo-1563492065599-3520f775eeed?w=800"
-                ],
-            },
-        ]
-        
-        # Проверяем есть ли уже экскурсии
+        # Удаляем все тестовые экскурсии
         result = await session.execute(sa.select(Tour).where(Tour.guide_id == super_admin.id))
         existing_tours = result.scalars().all()
         
         if existing_tours:
-            print(f"✅ У супер-админа уже есть {len(existing_tours)} экскурсий")
-            return
-        
-        # НЕ создаем тестовые экскурсии - они мешают
-        # Экскурсии создаются менеджерами/гидами через UI
-        print(f"ℹ️ Тестовые экскурсии НЕ создаются (создавайте через UI)")
+            for tour in existing_tours:
+                await session.delete(tour)
+            await session.commit()
+            print(f"Deleted {len(existing_tours)} test tours")
+        else:
+            print("No test tours found")
 
 
 if __name__ == "__main__":
-    print("🌱 Создание тестовых данных...")
+    print("Creating test data...")
     asyncio.run(seed_data())
-    print("✅ Тестовые данные готовы!")
+    print("Test data ready!")

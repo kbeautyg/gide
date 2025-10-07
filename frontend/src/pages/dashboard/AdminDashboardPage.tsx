@@ -1,10 +1,14 @@
-import { useQuery } from '@tanstack/react-query'
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { Users, Wallet } from 'lucide-react'
+import { Button } from '@/components/ui/button'
+import { Users, Wallet, Plus } from 'lucide-react'
 import { formatRUB } from '@/lib/utils'
 import { api } from '@/lib/api'
+import { useState } from 'react'
 
 export default function AdminDashboardPage() {
+  const [showAddTourForm, setShowAddTourForm] = useState(false)
+  const queryClient = useQueryClient()
 
   // Загрузка команды
   const { data: teamData } = useQuery({
@@ -15,10 +19,21 @@ export default function AdminDashboardPage() {
     },
   })
 
+  // Загрузка всех экскурсий
+  const { data: toursData } = useQuery({
+    queryKey: ['tours', 'all'],
+    queryFn: async () => {
+      const response = await api.get('/tours/')
+      return response.data
+    },
+  })
+
   const team = teamData || []
+  const tours = toursData || []
   const superManagers = team.filter((u: any) => u.role === 'super_manager')
   const managers = team.filter((u: any) => u.role === 'manager' || u.role === 'guide')
   const totalBalance = team.reduce((sum: number, u: any) => sum + (u.balance_rub || 0), 0)
+  const inactiveTours = tours.filter((t: any) => !t.active)
 
   return (
     <div className="space-y-6">
@@ -81,6 +96,44 @@ export default function AdminDashboardPage() {
           </CardContent>
         </Card>
       </div>
+
+      {/* Экскурсии ожидают активации */}
+      {inactiveTours.length > 0 && (
+        <Card className="border-orange-200">
+          <CardHeader>
+            <CardTitle className="text-orange-600">Экскурсии ожидают активации</CardTitle>
+            <CardDescription>Экскурсии созданные менеджерами, которые можно добавить на главную страницу</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-3">
+              {inactiveTours.map((tour: any) => (
+                <div key={tour.id} className="flex items-center justify-between p-4 border border-orange-200 rounded-lg bg-orange-50">
+                  <div>
+                    <div className="font-medium">{tour.title}</div>
+                    <div className="text-sm text-gray-500">Гид: {tour.guide_name}</div>
+                    <div className="text-sm text-gray-500">{formatRUB(tour.price)}</div>
+                  </div>
+                  <Button 
+                    onClick={async () => {
+                      try {
+                        await api.put(`/tours/${tour.id}/activate`)
+                        alert(`Экскурсия "${tour.title}" добавлена на главную страницу!`)
+                        queryClient.invalidateQueries({ queryKey: ['tours'] })
+                      } catch (error) {
+                        alert('Ошибка при активации экскурсии')
+                      }
+                    }}
+                    className="bg-orange-600 hover:bg-orange-700"
+                  >
+                    <Plus size={16} className="mr-2" />
+                    Добавить на сайт
+                  </Button>
+                </div>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+      )}
 
       {/* Список команды */}
       <Card>

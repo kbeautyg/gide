@@ -35,8 +35,8 @@ class Request(Base):
     updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
     
     # Relationships
-    client = relationship("User", foreign_keys=[client_id], back_populates="requests")
-    assigned_user = relationship("User", foreign_keys=[assigned_to])
+    client = relationship("User", foreign_keys=[client_id], back_populates="client_requests")
+    assigned_user = relationship("User", foreign_keys=[assigned_to], back_populates="assigned_requests")
     
     def __repr__(self):
         return f"<Request {self.title} by {self.client_id}>"

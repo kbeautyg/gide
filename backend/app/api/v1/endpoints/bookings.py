@@ -12,6 +12,7 @@ from app.db.session import get_db
 from app.models.booking import Booking as BookingModel, BookingStatus, PaymentStatus
 from app.models.tour import Tour
 from app.models.user import User
+from app.models.transaction import Transaction, TransactionType
 from app.core.deps import get_current_user
 
 router = APIRouter()
@@ -80,6 +81,27 @@ async def create_booking(
     db.add(booking)
     await db.commit()
     await db.refresh(booking)
+    
+    # Обновляем баланс гида при тестовой оплате
+    guide_stmt = select(User).where(User.id == tour.guide_id)
+    guide = (await db.execute(guide_stmt)).scalar_one_or_none()
+    
+    if guide:
+        # Обновляем баланс в рублях
+        guide.balance_rub += total_price
+        guide.updated_at = datetime.now()
+        
+        # Создаем транзакцию
+        transaction = Transaction(
+            user_id=guide.id,
+            type=TransactionType.BOOKING_PAYMENT,
+            amount_rub=total_price,
+            description=f"Оплата за экскурсию: {tour.title}",
+            booking_id=booking.id
+        )
+        db.add(transaction)
+        
+        await db.commit()
     
     return BookingResponse(
         id=booking.id,
