@@ -98,81 +98,8 @@ async def get_tours(
             created_at=tour_db.created_at,
         ))
     
-    # Если экскурсий нет в БД, возвращаем моковые данные для демо
-    if not tours_list:
-        mock_tours = [
-        Tour(
-            id=1,
-            title="Обзорная экскурсия по Пхукету",
-            description="Познакомьтесь с главными достопримечательностями острова! Посетите Большого Будду, храм Ват Чалонг, и насладитесь панорамными видами с мыса Промтеп.",
-            price=2500.0,
-            duration=6,
-            location="Пхукет",
-            category="Культура и история",
-            photos=[
-                "https://images.unsplash.com/photo-1589394815804-964ed0be2eb5?w=800",
-                "https://images.unsplash.com/photo-1552465011-b4e21bf6e79a?w=800"
-            ],
-            rating=4.8,
-            reviews_count=127,
-            guide_name="Александр",
-            guide_id=1,
-        ),
-        Tour(
-            id=2,
-            title="Острова Пхи-Пхи на скоростной лодке",
-            description="Незабываемое путешествие на знаменитые острова Пхи-Пхи! Снорклинг в кристально чистых водах, пляж Майя Бэй, обед на острове.",
-            price=3200.0,
-            duration=8,
-            location="Пхукет",
-            category="Природа и пляжи",
-            photos=[
-                "https://images.unsplash.com/photo-1583417319070-4a69db38a482?w=800",
-                "https://images.unsplash.com/photo-1559827260-dc66d52bef19?w=800"
-            ],
-            rating=4.9,
-            reviews_count=203,
-            guide_name="Мария",
-            guide_id=1,
-        ),
-        Tour(
-            id=3,
-            title="Джунгли и водопады Краби",
-            description="Приключение в джунглях провинции Краби! Треккинг к водопадам, купание в изумрудном озере, посещение горячих источников.",
-            price=2800.0,
-            duration=7,
-            location="Краби",
-            category="Приключения",
-            photos=[
-                "https://images.unsplash.com/photo-1552465011-b4e21bf6e79a?w=800"
-            ],
-            rating=4.7,
-            reviews_count=89,
-            guide_name="Дмитрий",
-            guide_id=1,
-        ),
-    ]
-    
-        # Применяем фильтры (упрощенная версия)
-        filtered_tours = mock_tours
-        
-        if location:
-            filtered_tours = [t for t in filtered_tours if t.location.lower() == location.lower()]
-        
-        if category:
-            filtered_tours = [t for t in filtered_tours if category.lower() in t.category.lower()]
-        
-        if min_price:
-            filtered_tours = [t for t in filtered_tours if t.price >= min_price]
-        
-        if max_price:
-            filtered_tours = [t for t in filtered_tours if t.price <= max_price]
-        
-        # Пагинация
-        start = (page - 1) * page_size
-        end = start + page_size
-        tours_list = filtered_tours[start:end]
-        total = len(filtered_tours)
+    # Если экскурсий нет - возвращаем пустой список
+    # (Удалены mock данные - пользователи создают экскурсии сами)
     
     return TourList(
         tours=tours_list,
@@ -195,23 +122,7 @@ async def get_tour(
     tour_db = await TourService.get_tour_by_id(db, tour_id)
     
     if not tour_db:
-        # Fallback на моковые данные если экскурсия не найдена
-        return Tour(
-            id=tour_id,
-            title="Обзорная экскурсия по Пхукету",
-            description="Познакомьтесь с главными достопримечательностями острова!",
-            price=2500.0,
-            duration=6,
-            location="Пхукет",
-            category="Культура и история",
-            photos=[
-                "https://images.unsplash.com/photo-1589394815804-964ed0be2eb5?w=800"
-            ],
-            rating=4.8,
-            reviews_count=127,
-            guide_name="Александр",
-            guide_id=1,
-        )
+        raise HTTPException(status_code=404, detail="Экскурсия не найдена")
     
     return Tour(
         id=tour_db.id,
