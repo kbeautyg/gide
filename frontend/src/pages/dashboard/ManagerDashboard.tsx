@@ -20,7 +20,7 @@ export default function ManagerDashboard() {
   })
 
   // Загрузка экскурсий менеджера
-  const { data: toursData, refetch: refetchTours } = useQuery({
+  const { data: toursData } = useQuery({
     queryKey: ['tours', 'my'],
     queryFn: () => toursApi.getList(),
   })
