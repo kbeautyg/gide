@@ -93,11 +93,18 @@ export default function UserProfilePage() {
             <p className="text-gray-600 mt-1">Детальная информация и статистика</p>
           </div>
         </div>
-        {canAssignRole() && (
-          <Button variant="tropical" onClick={() => setAssignRoleOpen(true)}>
-            Назначить роль
-          </Button>
-        )}
+        <div className="flex items-center gap-3">
+          {canAssignRole() && (
+            <>
+              <Button variant="tropical" onClick={() => setAssignRoleOpen(true)}>
+                Назначить роль
+              </Button>
+              <Button variant="destructive">
+                Забанить
+              </Button>
+            </>
+          )}
+        </div>
       </div>
 
       {/* Main Profile Info */}
@@ -156,7 +163,10 @@ export default function UserProfilePage() {
             {profile.parent && (
               <div className="border-t pt-4">
                 <h3 className="text-sm font-semibold mb-2">Создан пользователем</h3>
-                <div className="bg-gray-50 p-3 rounded-lg">
+                <div 
+                  onClick={() => navigate(`/dashboard/profile/${profile.parent.id}`)}
+                  className="bg-gray-50 p-3 rounded-lg cursor-pointer hover:bg-gray-100 hover:border-tropical-ocean border-2 border-transparent transition-all"
+                >
                   <p className="text-sm font-medium">{profile.parent.name}</p>
                   <p className="text-xs text-gray-600">{profile.parent.phone}</p>
                   <p className="text-xs text-gray-500 mt-1">{getRoleName(profile.parent.role)}</p>
@@ -200,7 +210,10 @@ export default function UserProfilePage() {
               </Card>
             )}
 
-            <Card>
+            <Card 
+              className="cursor-pointer hover:shadow-lg hover:border-tropical-ocean transition-all"
+              onClick={() => navigate(`/dashboard/users?filter_parent=${userId}`)}
+            >
               <CardHeader className="pb-3">
                 <CardTitle className="text-sm font-medium flex items-center gap-2">
                   <Users size={18} className="text-tropical-ocean" />
@@ -209,7 +222,7 @@ export default function UserProfilePage() {
               </CardHeader>
               <CardContent>
                 <p className="text-3xl font-bold">{profile.stats.team_count}</p>
-                <p className="text-xs text-gray-600 mt-1">Подчиненных</p>
+                <p className="text-xs text-gray-600 mt-1">Нажмите чтобы посмотреть</p>
               </CardContent>
             </Card>
 
