@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { User Plus, MapPin, DollarSign, Users, Trophy, CheckCircle, Send } from 'lucide-react'
+import { UserPlus, MapPin, DollarSign, Users, Trophy, CheckCircle, Send } from 'lucide-react'
 import PublicHeader from '@/components/PublicHeader'
 import PublicFooter from '@/components/PublicFooter'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
