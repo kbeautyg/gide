@@ -9,7 +9,7 @@ from datetime import datetime, timedelta
 from typing import List, Dict, Any
 from app.db.session import get_db
 from app.core.security import get_current_user
-from app.models.user import User
+from app.models.user import User, UserRole
 from app.models.tour import Tour
 from app.models.booking import Booking, PaymentStatus, BookingStatus
 
@@ -24,7 +24,7 @@ async def get_guide_dashboard_stats(
     """
     Получение статистики для дашборда гида
     """
-    if current_user.role not in ['guide', 'manager', 'super_manager', 'admin', 'super_admin']:
+    if current_user.role not in [UserRole.GUIDE, UserRole.MANAGER, UserRole.SUPER_MANAGER, UserRole.ADMIN, UserRole.SUPER_ADMIN]:
         raise HTTPException(status_code=403, detail="Доступ запрещен")
     
     # Активные экскурсии
@@ -121,7 +121,7 @@ async def mark_tour_payment(
     """
     Отметить экскурсию как оплаченную (для гида)
     """
-    if current_user.role not in ['guide', 'manager', 'super_manager', 'admin', 'super_admin']:
+    if current_user.role not in [UserRole.GUIDE, UserRole.MANAGER, UserRole.SUPER_MANAGER, UserRole.ADMIN, UserRole.SUPER_ADMIN]:
         raise HTTPException(status_code=403, detail="Доступ запрещен")
     
     # Проверяем что экскурсия принадлежит гиду
