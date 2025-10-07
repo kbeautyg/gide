@@ -67,7 +67,13 @@ export function CreateUserDialog({ open, onOpenChange }: CreateUserDialogProps) 
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
-    createMutation.mutate(formData)
+    // Преобразуем пустые строки в null для необязательных полей
+    const cleanData = {
+      ...formData,
+      email: formData.email?.trim() || undefined,
+      name: formData.name?.trim() || undefined,
+    }
+    createMutation.mutate(cleanData)
   }
 
   return (

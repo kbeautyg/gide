@@ -81,12 +81,13 @@ async def create_user(
     
     # Создаем пользователя с parent_id = current_user.id
     # (привязываем к тому кто создал)
+    # Преобразуем пустые строки в None для необязательных полей
     user = await UserService.create_user(
         db=db,
         phone=request.phone,
         password=request.password,
-        email=request.email,
-        name=request.name,
+        email=request.email if request.email and request.email.strip() else None,
+        name=request.name if request.name and request.name.strip() else None,
         role=role,
         parent_id=current_user.id if role != UserRole.SUPER_ADMIN else None,
     )
