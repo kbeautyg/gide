@@ -16,27 +16,44 @@ engine = create_async_engine(DATABASE_URL, echo=True)
 
 
 async def reset_db():
-    """Сброс БД - удаление таблиц и версии Alembic"""
+    """Сброс БД - полное удаление всех наших объектов"""
     
-    print("⚠️ ВНИМАНИЕ: Это удалит таблицы: users, tours, bookings, requests, alembic_version")
+    print("⚠️ ВНИМАНИЕ: Полный сброс БД!")
     
     async with engine.begin() as conn:
-        # Удаляем ТОЛЬКО наши таблицы (явно по именам)
-        print("🗑️ Удаляем наши таблицы...")
+        # Шаг 1: Удаляем таблицы в правильном порядке (зависимые первыми)
+        print("🗑️ Удаляем таблицы...")
         await conn.execute(sa.text("DROP TABLE IF EXISTS bookings CASCADE"))
         await conn.execute(sa.text("DROP TABLE IF EXISTS requests CASCADE"))
         await conn.execute(sa.text("DROP TABLE IF EXISTS tours CASCADE"))
         await conn.execute(sa.text("DROP TABLE IF EXISTS users CASCADE"))
         await conn.execute(sa.text("DROP TABLE IF EXISTS alembic_version CASCADE"))
         
-        # Удаляем наши enum типы
+        # Шаг 2: Агрессивное удаление ENUM типов с CASCADE
+        print("🗑️ Удаляем ENUM типы...")
+        # Сначала пробуем DROP TYPE
         await conn.execute(sa.text("DROP TYPE IF EXISTS userrole CASCADE"))
         await conn.execute(sa.text("DROP TYPE IF EXISTS bookingstatus CASCADE"))
         await conn.execute(sa.text("DROP TYPE IF EXISTS paymentstatus CASCADE"))
+        
+        # Шаг 3: Принудительное удаление через pg_type (на случай если CASCADE не сработал)
+        await conn.execute(sa.text("""
+            DO $$ 
+            BEGIN
+                IF EXISTS (SELECT 1 FROM pg_type WHERE typname = 'userrole') THEN
+                    DROP TYPE userrole CASCADE;
+                END IF;
+                IF EXISTS (SELECT 1 FROM pg_type WHERE typname = 'bookingstatus') THEN
+                    DROP TYPE bookingstatus CASCADE;
+                END IF;
+                IF EXISTS (SELECT 1 FROM pg_type WHERE typname = 'paymentstatus') THEN
+                    DROP TYPE paymentstatus CASCADE;
+                END IF;
+            END $$;
+        """))
     
-    print("✅ База данных очищена!")
-    print("📋 Удалены таблицы: users, tours, bookings, requests, alembic_version")
-    print("💡 Теперь Alembic создаст таблицы заново через миграции")
+    print("✅ База данных полностью очищена!")
+    print("💡 Alembic создаст всё заново")
 
 
 if __name__ == "__main__":
