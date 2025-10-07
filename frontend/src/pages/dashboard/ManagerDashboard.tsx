@@ -1,10 +1,12 @@
 import { useQuery } from '@tanstack/react-query'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { CreateTourDialog } from '@/components/CreateTourDialog'
 import { MapPin, Calendar, Wallet, TrendingUp } from 'lucide-react'
 import { api, toursApi } from '@/lib/api'
+import { useAuthStore } from '@/lib/store'
+import { formatRUB } from '@/lib/utils'
 
 export default function ManagerDashboard() {
+  const { user } = useAuthStore()
   // Загрузка профиля для баланса
   const { data: profileData } = useQuery({
     queryKey: ['user', 'me'],
@@ -32,29 +34,34 @@ export default function ManagerDashboard() {
   const myToursCount = toursData?.data?.tours?.length || 0
   const bookingsCount = Array.isArray(bookingsData) ? bookingsData.length : 0
   const balance = profileData?.balance_rub || 0
+  const income = 0 // TODO: получать из транзакций за месяц
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-3xl font-bold text-orange-600">Дашборд Менеджера</h1>
-          <p className="text-gray-600 mt-1">Управление экскурсиями и бронированиями</p>
-        </div>
-        <CreateTourDialog />
+      <div>
+        <h1 className="text-3xl font-bold text-orange-600">Дашборд Менеджера</h1>
+        <p className="text-gray-600 mt-1">
+          {user?.role === 'manager' || user?.role === 'guide' 
+            ? 'Генерация платёжных ссылок и приём оплаты'
+            : 'Управление экскурсиями и бронированиями'
+          }
+        </p>
       </div>
 
       {/* Статистика */}
       <div className="grid md:grid-cols-4 gap-6">
-        <Card className="border-orange-200">
+        <Card className="border-orange-200 border-t-4">
           <CardHeader className="pb-3">
             <CardTitle className="text-sm font-medium flex items-center gap-2 text-orange-600">
               <MapPin size={18} />
-              Мои экскурсии
+              {user?.role === 'manager' || user?.role === 'guide' ? 'Доступные экскурсии' : 'Мои экскурсии'}
             </CardTitle>
           </CardHeader>
           <CardContent>
             <p className="text-3xl font-bold">{myToursCount}</p>
-            <p className="text-xs text-gray-500 mt-1">Активных экскурсий</p>
+            <p className="text-xs text-gray-500 mt-1">
+              {user?.role === 'manager' || user?.role === 'guide' ? 'Для генерации ссылок' : 'Активных экскурсий'}
+            </p>
           </CardContent>
         </Card>
 
