@@ -7,7 +7,7 @@ from sqlalchemy import select, func, and_
 # from sqlalchemy.orm import selectinload  # Не используется
 from datetime import datetime, timedelta
 from typing import List, Dict, Any
-from app.db.database import get_db
+from app.db.session import get_db
 from app.core.security import get_current_user
 from app.models.user import User
 from app.models.tour import Tour
