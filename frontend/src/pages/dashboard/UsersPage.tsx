@@ -1,6 +1,6 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useQuery } from '@tanstack/react-query'
-import { Link } from 'react-router-dom'
+import { Link, useSearchParams } from 'react-router-dom'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -18,16 +18,24 @@ export default function UsersPage() {
   const [searchTerm, setSearchTerm] = useState('')
   const [selectedRole, setSelectedRole] = useState<string>('all')
   const { user } = useAuthStore()
+  const [searchParams] = useSearchParams()
+  const filterParent = searchParams.get('filter_parent')
 
   const handleAssignRole = (teamUser: any) => {
     setSelectedUser(teamUser)
     setAssignRoleOpen(true)
   }
 
-  // Загрузка команды
+  // Загрузка команды (для супер-админа - все пользователи, для остальных - своя команда)
   const { data: teamData, isLoading } = useQuery({
-    queryKey: ['users', 'team'],
+    queryKey: ['users', 'team', user?.role],
     queryFn: async () => {
+      // Супер-админ видит ВСЕХпользователей системы
+      if (user?.role === 'super_admin') {
+        const response = await api.get('/admin/users/all')
+        return response.data
+      }
+      // Остальные видят только свою команду
       const response = await api.get('/admin/users/my-team')
       return response.data
     },
@@ -44,7 +52,10 @@ export default function UsersPage() {
     
     const matchesRole = selectedRole === 'all' || u.role === selectedRole
     
-    return matchesSearch && matchesRole
+    // Фильтр по parent_id (команда конкретного пользователя)
+    const matchesParent = !filterParent || u.parent_id === parseInt(filterParent)
+    
+    return matchesSearch && matchesRole && matchesParent
   })
 
   // Статистика по ролям
@@ -54,12 +65,24 @@ export default function UsersPage() {
     manager: team.filter((u: any) => u.role === 'manager' || u.role === 'guide').length,
   }
 
+  // Найдем пользователя если применен фильтр
+  const filteredParentUser = filterParent ? team.find((u: any) => u.id === parseInt(filterParent)) : null
+
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
         <div>
-          <h1 className="text-3xl font-bold">Управление командой</h1>
-          <p className="text-gray-600 mt-1">Создание и управление вашей командой</p>
+          <h1 className="text-3xl font-bold">
+            {filterParent ? `Команда пользователя` : 'Управление командой'}
+          </h1>
+          <p className="text-gray-600 mt-1">
+            {filterParent 
+              ? `Просмотр подчиненных (фильтр по parent_id: ${filterParent})`
+              : user?.role === 'super_admin' 
+                ? 'Все пользователи системы' 
+                : 'Создание и управление вашей командой'
+            }
+          </p>
         </div>
         <Button 
           className="gap-2 cursor-pointer" 

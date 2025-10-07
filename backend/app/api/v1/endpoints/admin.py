@@ -109,6 +109,39 @@ async def create_user(
     )
 
 
+@router.get("/users/all", response_model=List[UserResponse])
+async def get_all_users(
+    db: AsyncSession = Depends(get_db),
+    current_user: User = Depends(require_super_admin)
+):
+    """
+    Получение ВСЕХ пользователей системы
+    
+    Доступно: Только супер-админ
+    """
+    from sqlalchemy import select
+    
+    # Получаем всех пользователей
+    stmt = select(User)
+    result = await db.execute(stmt)
+    all_users = result.scalars().all()
+    
+    return [
+        UserResponse(
+            id=u.id,
+            phone=u.phone,
+            email=u.email,
+            name=u.name,
+            role=u.role.value,
+            parent_id=u.parent_id,
+            balance_rub=u.balance_rub,
+            balance_usd=u.balance_usd,
+            balance_thb=u.balance_thb,
+        )
+        for u in all_users
+    ]
+
+
 @router.get("/users/my-team", response_model=List[UserResponse])
 async def get_my_team(
     db: AsyncSession = Depends(get_db),
