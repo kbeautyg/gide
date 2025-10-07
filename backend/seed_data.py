@@ -22,9 +22,12 @@ async def seed_data():
     async with async_session() as session:
         import sqlalchemy as sa
         
+        # Очищаем телефон супер-админа
+        phone_clean = ''.join(filter(str.isdigit, settings.SUPER_ADMIN_PHONE))
+        
         # Получаем супер-админа
         result = await session.execute(
-            sa.select(User).where(User.phone == settings.SUPER_ADMIN_PHONE)
+            sa.select(User).where(User.phone == phone_clean)
         )
         super_admin = result.scalar_one_or_none()
         

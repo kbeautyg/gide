@@ -45,13 +45,21 @@ async def login(
     Вход в систему
     """
     try:
-        print(f"🔐 Попытка входа: {request.phone}")
+        # Очищаем телефон от всех символов кроме цифр
+        phone_clean = ''.join(filter(str.isdigit, request.phone))
+        print(f"🔐 Попытка входа: {request.phone} -> очищено: {phone_clean}")
         
         # Аутентификация пользователя
-        user = await UserService.authenticate_user(db, request.phone, request.password)
+        user = await UserService.authenticate_user(db, phone_clean, request.password)
         
         if not user:
-            print(f"❌ Аутентификация не удалась для {request.phone}")
+            print(f"❌ Аутентификация не удалась для {phone_clean}")
+            # Проверяем, существует ли пользователь с таким телефоном вообще
+            test_user = await UserService.get_user_by_phone(db, phone_clean)
+            if test_user:
+                print(f"⚠️ Пользователь найден, но пароль неверный. ID: {test_user.id}")
+            else:
+                print(f"⚠️ Пользователь с телефоном {phone_clean} не найден в БД")
             raise HTTPException(
                 status_code=status.HTTP_401_UNAUTHORIZED,
                 detail="Неверный телефон или пароль",

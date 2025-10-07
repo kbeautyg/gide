@@ -71,8 +71,12 @@ async def create_user(
             detail="Только супер-админ может создавать супер-админов"
         )
     
+    # Очищаем телефон от всех символов кроме цифр
+    phone_clean = ''.join(filter(str.isdigit, request.phone))
+    print(f"📞 Создание пользователя: {request.phone} -> очищено: {phone_clean}")
+    
     # Проверяем существует ли пользователь
-    existing_user = await UserService.get_user_by_phone(db, request.phone)
+    existing_user = await UserService.get_user_by_phone(db, phone_clean)
     if existing_user:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
@@ -84,7 +88,7 @@ async def create_user(
     # Преобразуем пустые строки в None для необязательных полей
     user = await UserService.create_user(
         db=db,
-        phone=request.phone,
+        phone=phone_clean,
         password=request.password,
         email=request.email if request.email and request.email.strip() else None,
         name=request.name if request.name and request.name.strip() else None,

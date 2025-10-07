@@ -25,15 +25,19 @@ async def init_db():
     
     # Создаем супер-админа
     async with async_session() as session:
+        # Очищаем телефон от всех символов кроме цифр
+        phone_clean = ''.join(filter(str.isdigit, settings.SUPER_ADMIN_PHONE))
+        print(f"📞 Супер-админ телефон: {settings.SUPER_ADMIN_PHONE} -> очищено: {phone_clean}")
+        
         # Проверяем существует ли супер-админ
         result = await session.execute(
-            sa.select(User).where(User.phone == settings.SUPER_ADMIN_PHONE)
+            sa.select(User).where(User.phone == phone_clean)
         )
         existing_admin = result.scalar_one_or_none()
         
         if not existing_admin:
             super_admin = User(
-                phone=settings.SUPER_ADMIN_PHONE,
+                phone=phone_clean,
                 email="admin@thaiguide.pro",
                 name="Супер Админ",
                 hashed_password=get_password_hash("admin123"),  # Измените на безопасный!
@@ -42,9 +46,9 @@ async def init_db():
             )
             session.add(super_admin)
             await session.commit()
-            print(f"✅ Супер-админ создан: {settings.SUPER_ADMIN_PHONE}")
+            print(f"✅ Супер-админ создан: {phone_clean}")
         else:
-            print(f"✅ Супер-админ уже существует: {settings.SUPER_ADMIN_PHONE}")
+            print(f"✅ Супер-админ уже существует: {phone_clean}")
 
 
 if __name__ == "__main__":
