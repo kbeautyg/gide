@@ -80,7 +80,7 @@ class TourService:
         category: str,
         photos: List[str] = None,
     ) -> Tour:
-        """Создание новой экскурсии"""
+        """Создание новой экскурсии (неактивной по умолчанию - активирует админ)"""
         tour = Tour(
             guide_id=guide_id,
             title=title,
@@ -92,7 +92,7 @@ class TourService:
             photos=photos or [],
             rating=0.0,
             reviews_count=0,
-            active=True,
+            # active по умолчанию False из модели - НЕ переопределяем
         )
         
         db.add(tour)

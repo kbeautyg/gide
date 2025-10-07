@@ -106,25 +106,9 @@ async def seed_data():
             print(f"✅ У супер-админа уже есть {len(existing_tours)} экскурсий")
             return
         
-        # Создаем экскурсии
-        for tour_data in tours_data:
-            tour = Tour(
-                guide_id=super_admin.id,
-                title=tour_data["title"],
-                description=tour_data["description"],
-                price=tour_data["price"],
-                duration=tour_data["duration"],
-                location=tour_data["location"],
-                category=tour_data["category"],
-                photos=tour_data["photos"],
-                rating=4.5 + (len(tour_data["title"]) % 10) / 20,  # Случайный рейтинг 4.5-5.0
-                reviews_count=(len(tour_data["title"]) % 50) + 50,  # Случайно 50-100
-                active=True,
-            )
-            session.add(tour)
-        
-        await session.commit()
-        print(f"✅ Создано {len(tours_data)} экскурсий для супер-админа")
+        # НЕ создаем тестовые экскурсии - они мешают
+        # Экскурсии создаются менеджерами/гидами через UI
+        print(f"ℹ️ Тестовые экскурсии НЕ создаются (создавайте через UI)")
 
 
 if __name__ == "__main__":
