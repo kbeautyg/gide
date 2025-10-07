@@ -69,6 +69,14 @@ class TourService:
         return result.scalar_one_or_none()
     
     @staticmethod
+    async def get_tour_by_share_code(db: AsyncSession, share_code: str) -> Optional[Tour]:
+        """Получение экскурсии по share_code"""
+        result = await db.execute(
+            select(Tour).where(Tour.share_code == share_code).options(selectinload(Tour.guide))
+        )
+        return result.scalar_one_or_none()
+    
+    @staticmethod
     async def create_tour(
         db: AsyncSession,
         guide_id: int,
@@ -79,10 +87,22 @@ class TourService:
         location: str,
         category: str,
         photos: List[str] = None,
+        start_date: Optional[str] = None,
+        end_date: Optional[str] = None,
     ) -> Tour:
         """Создание новой экскурсии"""
+        # Генерируем уникальный короткий код
+        share_code = uuid.uuid4().hex[:8]
+        
+        # Проверяем уникальность (крайне редкий случай коллизии)
+        existing = await db.execute(select(Tour).where(Tour.share_code == share_code))
+        while existing.scalar_one_or_none():
+            share_code = uuid.uuid4().hex[:8]
+            existing = await db.execute(select(Tour).where(Tour.share_code == share_code))
+        
         tour = Tour(
             guide_id=guide_id,
+            share_code=share_code,
             title=title,
             description=description,
             price=price,
@@ -90,6 +110,8 @@ class TourService:
             location=location,
             category=category,
             photos=photos or [],
+            start_date=start_date,
+            end_date=end_date,
             rating=0.0,
             reviews_count=0,
             active=True,

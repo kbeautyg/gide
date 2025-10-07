@@ -3,39 +3,33 @@ import { useQuery } from '@tanstack/react-query'
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { CreateTourDialog } from '@/components/CreateTourDialog'
-import { PaymentDialog } from '@/components/PaymentDialog'
-import { MapPin, Clock, Star, Edit, Trash2, Link as LinkIcon, Copy, CheckCircle, CreditCard, ExternalLink } from 'lucide-react'
+import { MarkAsPaidDialog } from '@/components/MarkAsPaidDialog'
+import { MapPin, Clock, Star, Edit, Trash2, Link as LinkIcon, Copy, CheckCircle, CreditCard, ExternalLink, TrendingUp } from 'lucide-react'
 import { toursApi } from '@/lib/api'
 import { formatRUB } from '@/lib/utils'
 
 export default function MyToursPage() {
   const [copiedId, setCopiedId] = useState<number | null>(null)
-  const [paymentDialogOpen, setPaymentDialogOpen] = useState(false)
+  const [markPaidOpen, setMarkPaidOpen] = useState(false)
   const [selectedTour, setSelectedTour] = useState<any>(null)
   
-  const { data: toursData, isLoading, refetch } = useQuery({
+  const { data: toursData, isLoading } = useQuery({
     queryKey: ['tours'],
     queryFn: () => toursApi.getList(),
   })
 
   const tours = toursData?.data?.tours || []
 
-  const copyTourLink = (tourId: number) => {
-    const link = `${window.location.origin}/private-tour/${tourId}`
+  const copyTourLink = (tourId: number, shareCode: string) => {
+    const link = `${window.location.origin}/t/${shareCode}`
     navigator.clipboard.writeText(link)
     setCopiedId(tourId)
     setTimeout(() => setCopiedId(null), 2000)
   }
 
-  const handlePaymentClick = (tour: any) => {
+  const handleMarkAsPaid = (tour: any) => {
     setSelectedTour(tour)
-    setPaymentDialogOpen(true)
-  }
-
-  const handlePaymentSuccess = () => {
-    refetch() // Обновляем список экскурсий
-    // Обновляем статистику дашборда
-    window.location.reload() // Простое решение для обновления всех данных
+    setMarkPaidOpen(true)
   }
 
   return (
@@ -91,21 +85,33 @@ export default function MyToursPage() {
                   <span className="text-gray-600">({tour.reviews_count} отзывов)</span>
                 </div>
 
+                {/* Мини-статистика */}
+                <div className="grid grid-cols-2 gap-2 mb-3">
+                  <div className="bg-blue-50 p-2 rounded">
+                    <p className="text-xs text-gray-600">Оплат</p>
+                    <p className="text-lg font-bold text-blue-600">{tour.bookings_count || 0}</p>
+                  </div>
+                  <div className="bg-green-50 p-2 rounded">
+                    <p className="text-xs text-gray-600">Заработано</p>
+                    <p className="text-lg font-bold text-green-600">{formatRUB(tour.total_revenue || 0)}</p>
+                  </div>
+                </div>
+
                 {/* Ссылка на экскурсию */}
-                <div className="bg-gray-50 p-3 rounded-lg border">
+                <div className="bg-gradient-to-r from-tropical-ocean/10 to-tropical-turquoise/10 p-3 rounded-lg border-2 border-tropical-ocean/30">
                   <div className="flex items-center gap-2 mb-2">
                     <LinkIcon size={14} className="text-tropical-ocean" />
-                    <span className="text-xs font-semibold text-gray-700">Ссылка на экскурсию</span>
+                    <span className="text-xs font-semibold text-tropical-ocean">Платёжная ссылка</span>
                   </div>
-                  <div className="text-xs text-gray-600 break-all mb-2">
-                    {window.location.origin}/private-tour/{tour.id}
+                  <div className="text-xs text-gray-700 break-all mb-2 bg-white p-2 rounded font-mono">
+                    {window.location.origin}/t/{tour.share_code || tour.id}
                   </div>
                   <div className="flex gap-2">
                     <Button
                       size="sm"
                       variant="outline"
                       className="flex-1 text-xs"
-                      onClick={() => copyTourLink(tour.id)}
+                      onClick={() => copyTourLink(tour.id, tour.share_code || tour.id)}
                     >
                       {copiedId === tour.id ? (
                         <>
@@ -123,26 +129,24 @@ export default function MyToursPage() {
                       size="sm"
                       variant="outline"
                       className="text-xs"
-                      onClick={() => window.open(`/private-tour/${tour.id}`, '_blank')}
+                      onClick={() => window.open(`/t/${tour.share_code || tour.id}`, '_blank')}
                     >
                       <ExternalLink size={14} />
                     </Button>
                   </div>
                 </div>
-
-                {/* Оплата */}
-                <Button
-                  variant="tropical"
-                  size="sm"
-                  className="w-full text-xs"
-                  onClick={() => handlePaymentClick(tour)}
-                >
-                  <CreditCard size={14} className="mr-1" />
-                  Оплачено
-                </Button>
               </CardContent>
 
               <CardFooter className="flex gap-2">
+                <Button 
+                  variant="default" 
+                  size="sm" 
+                  className="flex-1 bg-green-600 hover:bg-green-700"
+                  onClick={() => handleMarkAsPaid(tour)}
+                >
+                  <CheckCircle size={16} className="mr-1" />
+                  Оплачено
+                </Button>
                 <Button variant="outline" size="sm" className="flex-1">
                   <Edit size={16} className="mr-1" />
                   Редактировать
@@ -156,13 +160,12 @@ export default function MyToursPage() {
         </div>
       )}
 
-      {/* Диалог оплаты */}
+      {/* Mark As Paid Dialog */}
       {selectedTour && (
-        <PaymentDialog
+        <MarkAsPaidDialog
+          open={markPaidOpen}
+          onOpenChange={setMarkPaidOpen}
           tour={selectedTour}
-          open={paymentDialogOpen}
-          onOpenChange={setPaymentDialogOpen}
-          onSuccess={handlePaymentSuccess}
         />
       )}
     </div>

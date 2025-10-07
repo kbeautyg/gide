@@ -2,36 +2,66 @@ import { useQuery } from '@tanstack/react-query'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { MapPin, CreditCard, TrendingUp, Users, CheckCircle } from 'lucide-react'
 import { formatRUB } from '@/lib/utils'
-import { api } from '@/lib/api'
+import { api, toursApi } from '@/lib/api'
 import { useAuthStore } from '@/lib/store'
 
 export default function ManagerDashboard() {
   const { user } = useAuthStore()
 
-  // Загрузка статистики гида
-  const { data: statsData, isLoading } = useQuery({
-    queryKey: ['guide-stats'],
+  // Загрузка моих экскурсий
+  const { data: toursData } = useQuery({
+    queryKey: ['tours'],
+    queryFn: () => toursApi.getList(),
+  })
+
+  // Загрузка бронирований
+  const { data: bookingsData } = useQuery({
+    queryKey: ['bookings'],
     queryFn: async () => {
-      const response = await api.get('/guide-stats/dashboard')
+      const response = await api.get('/bookings/')
       return response.data
     },
   })
 
-  const stats = statsData || {}
+  // Загрузка статистики доходов (для графика)
+  const { data: revenueStatsData } = useQuery({
+    queryKey: ['revenue-stats'],
+    queryFn: async () => {
+      const response = await api.get('/bookings/revenue-stats?days=14')
+      return response.data
+    },
+  })
+
+  const tours = toursData?.data?.tours || []
+  const bookings = bookingsData?.bookings || []
+  const revenueStats = revenueStatsData || []
   
   // Статистика
-  const activeTours = stats.active_tours || 0
-  const thisMonthBookings = stats.monthly_bookings || 0
-  const monthlyIncome = stats.monthly_income || 0
+  const activeTours = tours.filter((t: any) => t.active !== false).length
+  const thisMonthBookings = bookings.filter((b: any) => {
+    const bookingDate = new Date(b.created_at)
+    const now = new Date()
+    return bookingDate.getMonth() === now.getMonth() && bookingDate.getFullYear() === now.getFullYear()
+  }).length
 
-  // График доходов (реальные данные за последние 30 дней)
-  const revenueChartData = stats.revenue_chart || []
-  const maxRevenue = revenueChartData.length > 0 
-    ? Math.max(...revenueChartData.map((d: any) => d.income), 1)
-    : 1
-  
-  // Последние заказы
-  const recentBookings = stats.recent_bookings || []
+  // Доход за месяц (реальный из бронирований)
+  const monthlyIncome = bookings
+    .filter((b: any) => {
+      const bookingDate = new Date(b.created_at)
+      const now = new Date()
+      return bookingDate.getMonth() === now.getMonth() && 
+             bookingDate.getFullYear() === now.getFullYear() &&
+             b.payment_status === 'paid'
+    })
+    .reduce((sum: number, b: any) => sum + (b.total_price || 0), 0)
+
+  // График доходов - реальные данные из API или нули
+  const revenueData = revenueStats.length > 0 
+    ? revenueStats.map((stat: any) => stat.revenue)
+    : Array(14).fill(0)
+
+  // Последние заказы (последние 3)
+  const recentBookings = bookings.slice(0, 3)
 
   return (
     <div className="space-y-6">
@@ -100,36 +130,24 @@ export default function ManagerDashboard() {
           <CardDescription>За последние 30 дней</CardDescription>
         </CardHeader>
         <CardContent>
-          {isLoading ? (
-            <div className="flex items-center justify-center h-48">
-              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-tropical-ocean"></div>
-            </div>
-          ) : revenueChartData.length > 0 ? (
-            <div className="flex items-end justify-between h-48 gap-1">
-              {revenueChartData.slice(-30).map((day: any, i: number) => {
-                const height = (day.income / maxRevenue) * 100
-                return (
-                  <div
-                    key={i}
-                    className="flex-1 bg-gradient-to-t from-tropical-ocean to-tropical-turquoise rounded-t-lg relative group cursor-pointer"
-                    style={{ height: `${Math.max(height, 2)}%` }}
-                  >
-                    <div className="absolute -top-8 left-1/2 transform -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity bg-gray-900 text-white text-xs px-2 py-1 rounded whitespace-nowrap">
-                      {formatRUB(day.income)}
-                    </div>
+          <div className="flex items-end justify-between h-48 gap-2">
+            {revenueData.map((revenue, i) => {
+              const maxRevenue = Math.max(...revenueData, 1)
+              const heightPercent = maxRevenue > 0 ? (revenue / maxRevenue) * 100 : 0
+              
+              return (
+                <div
+                  key={i}
+                  className="flex-1 bg-gradient-to-t from-tropical-ocean to-tropical-turquoise rounded-t-lg relative group cursor-pointer"
+                  style={{ height: `${Math.max(heightPercent, 2)}%` }}
+                >
+                  <div className="absolute -top-8 left-1/2 transform -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity bg-gray-900 text-white text-xs px-2 py-1 rounded whitespace-nowrap">
+                    {formatRUB(revenue)}
                   </div>
-                )
-              })}
-            </div>
-          ) : (
-            <div className="flex items-center justify-center h-48 text-gray-500">
-              <div className="text-center">
-                <TrendingUp size={48} className="mx-auto mb-2 opacity-50" />
-                <p>Нет данных о доходах</p>
-                <p className="text-sm">Создайте экскурсии и начните принимать оплаты</p>
-              </div>
-            </div>
-          )}
+                </div>
+              )
+            })}
+          </div>
         </CardContent>
       </Card>
 

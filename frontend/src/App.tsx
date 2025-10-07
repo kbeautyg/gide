@@ -5,6 +5,7 @@ import { ProtectedRoute } from './components/ProtectedRoute'
 import HomePage from './pages/public/HomePage'
 import ToursPage from './pages/public/ToursPage'
 import TourDetailPage from './pages/public/TourDetailPage'
+import TourSharePage from './pages/public/TourSharePage'
 import AboutPage from './pages/public/AboutPage'
 import ContactPage from './pages/public/ContactPage'
 import CreateRequestPage from './pages/public/CreateRequestPage'
@@ -12,7 +13,6 @@ import FAQPage from './pages/public/FAQPage'
 import TermsPage from './pages/public/TermsPage'
 import PrivacyPage from './pages/public/PrivacyPage'
 import BecomeGuidePage from './pages/public/BecomeGuidePage'
-import PrivateTourPage from './pages/PrivateTourPage'
 
 // Страницы аутентификации
 import LoginPage from './pages/auth/LoginPage'
@@ -34,6 +34,7 @@ function App() {
       <Route path="/" element={<HomePage />} />
       <Route path="/tours" element={<ToursPage />} />
       <Route path="/tours/:id" element={<TourDetailPage />} />
+      <Route path="/t/:code" element={<TourSharePage />} />
       <Route path="/about" element={<AboutPage />} />
       <Route path="/contact" element={<ContactPage />} />
       <Route path="/request" element={<CreateRequestPage />} />
@@ -41,7 +42,6 @@ function App() {
       <Route path="/terms" element={<TermsPage />} />
       <Route path="/privacy" element={<PrivacyPage />} />
       <Route path="/become-guide" element={<BecomeGuidePage />} />
-      <Route path="/private-tour/:tourId" element={<PrivateTourPage />} />
       
       {/* Аутентификация */}
       <Route path="/login" element={<LoginPage />} />

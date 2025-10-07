@@ -7,8 +7,8 @@ if [ "$RESET_DB" = "true" ] || [ "$FORCE_RESET" = "true" ]; then
   python reset_db.py || echo "⚠️ Сброс не прошел, продолжаем..."
 fi
 
-# echo "🔄 Применяем миграции Alembic..."
-# python -m alembic upgrade head || echo "⚠️ Миграции не применены (возможно уже применены)"
+echo "🔄 Применяем миграции Alembic..."
+python -m alembic upgrade head || echo "⚠️ Миграции не применены (возможно уже применены)"
 
 echo "🔧 Инициализируем БД..."
 python init_db.py || echo "⚠️ Инициализация не прошла (возможно уже есть)"

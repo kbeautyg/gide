@@ -1,11 +1,18 @@
 """
 Эндпоинты для работы с бронированиями
 """
-from fastapi import APIRouter
+from fastapi import APIRouter, Depends, HTTPException
 from pydantic import BaseModel, Field
-from datetime import datetime
-from typing import Optional
-import datetime as dt
+from datetime import datetime, timedelta, date as date_type
+from typing import Optional, List
+from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy import select, func, and_
+
+from app.db.session import get_db
+from app.models.booking import Booking as BookingModel, BookingStatus, PaymentStatus
+from app.models.tour import Tour
+from app.models.user import User
+from app.core.deps import get_current_user
 
 router = APIRouter()
 
@@ -13,72 +20,209 @@ router = APIRouter()
 class BookingCreate(BaseModel):
     """Создание бронирования"""
     tour_id: int = Field(..., description="ID экскурсии")
-    date: dt.date = Field(..., description="Дата экскурсии")
+    date: date_type = Field(..., description="Дата экскурсии")
     participants_count: int = Field(..., ge=1, description="Количество участников")
     client_name: str = Field(..., description="Имя клиента")
     client_phone: str = Field(..., description="Телефон клиента")
     client_email: Optional[str] = Field(None, description="Email клиента")
 
 
+class OfflinePaymentRequest(BaseModel):
+    """Офлайн оплата (гид вручную отмечает)"""
+    tour_id: int
+    client_name: str
+    client_phone: str
+    client_email: Optional[str] = None
+    participants_count: int = Field(default=1, ge=1)
+    date: Optional[date_type] = None  # Если не указана, используется сегодня
+
+
 class Booking(BaseModel):
     """Модель бронирования"""
     id: int
     tour_id: int
-    tour_title: str
+    client_id: int
     client_name: str
     client_phone: str
-    date: dt.date
+    client_email: Optional[str]
+    date: date_type
     participants_count: int
     total_price: float
-    status: str = Field(..., description="в ожидании, подтверждено, отменено")
-    payment_status: str = Field(..., description="ожидание оплаты, оплачено, возврат")
+    status: str
+    payment_status: str
     created_at: datetime
 
 
-@router.post("/", response_model=Booking)
-async def create_booking(booking: BookingCreate):
+class BookingList(BaseModel):
+    """Список бронирований"""
+    bookings: List[Booking]
+    total: int
+
+
+class RevenueStats(BaseModel):
+    """Статистика доходов"""
+    date: str
+    revenue: float
+
+
+@router.post("/offline-payment", response_model=Booking)
+async def mark_as_paid(
+    payment: OfflinePaymentRequest,
+    current_user: User = Depends(get_current_user),
+    db: AsyncSession = Depends(get_db)
+):
     """
-    Создание нового бронирования
+    Офлайн оплата - гид отмечает что клиент оплатил
     
-    Публичный эндпоинт (может использоваться без авторизации)
-    TODO: Подключить реальную БД
+    Создаёт бронирование со статусом 'paid' и обновляет баланс гида
     """
-    # Временная заглушка
-    # В реальности: проверка доступности, расчет цены, создание в БД
+    # Получаем экскурсию
+    tour_result = await db.execute(select(Tour).where(Tour.id == payment.tour_id))
+    tour = tour_result.scalar_one_or_none()
+    
+    if not tour:
+        raise HTTPException(status_code=404, detail="Экскурсия не найдена")
+    
+    # Проверяем что текущий пользователь - владелец экскурсии
+    if tour.guide_id != current_user.id:
+        raise HTTPException(status_code=403, detail="Вы можете отмечать оплаты только своих экскурсий")
+    
+    # Рассчитываем общую стоимость
+    total_price = tour.price * payment.participants_count
+    
+    # Создаём бронирование
+    booking = BookingModel(
+        tour_id=payment.tour_id,
+        client_id=current_user.id,  # Гид создаёт от своего имени
+        date=payment.date or date_type.today(),
+        participants_count=payment.participants_count,
+        total_price=total_price,
+        status=BookingStatus.CONFIRMED,
+        payment_status=PaymentStatus.PAID,
+        client_name=payment.client_name,
+        client_phone=payment.client_phone,
+        client_email=payment.client_email,
+    )
+    
+    db.add(booking)
+    
+    # Обновляем баланс гида
+    current_user.balance_rub += total_price
+    
+    await db.commit()
+    await db.refresh(booking)
     
     return Booking(
-        id="booking_123",
+        id=booking.id,
         tour_id=booking.tour_id,
-        tour_title="Обзорная экскурсия по Пхукету",
+        client_id=booking.client_id,
         client_name=booking.client_name,
         client_phone=booking.client_phone,
+        client_email=booking.client_email,
         date=booking.date,
         participants_count=booking.participants_count,
-        total_price=2500.0 * booking.participants_count,
-        status="в ожидании",
-        payment_status="ожидание оплаты",
-        created_at=datetime.now()
+        total_price=booking.total_price,
+        status=booking.status.value,
+        payment_status=booking.payment_status.value,
+        created_at=booking.created_at,
     )
 
 
-@router.get("/{booking_id}", response_model=Booking)
-async def get_booking(booking_id: int):
+@router.get("/revenue-stats", response_model=List[RevenueStats])
+async def get_revenue_stats(
+    days: int = 14,
+    current_user: User = Depends(get_current_user),
+    db: AsyncSession = Depends(get_db)
+):
     """
-    Получение информации о бронировании
+    Статистика доходов по дням за последние N дней
     
-    TODO: Подключить реальную БД
+    Используется для графика доходов в дашборде
     """
-    # Временная заглушка
-    return Booking(
-        id=booking_id,
-        tour_id="tour_1",
-        tour_title="Обзорная экскурсия по Пхукету",
-        client_name="Иван Иванов",
-        client_phone="+79999999999",
-        date=dt.date.today(),
-        participants_count=2,
-        total_price=5000.0,
-        status="подтверждено",
-        payment_status="оплачено",
-        created_at=datetime.now()
+    # Получаем бронирования текущего гида за последние N дней
+    start_date = datetime.now() - timedelta(days=days)
+    
+    # Получаем ID всех экскурсий текущего гида
+    tours_result = await db.execute(
+        select(Tour.id).where(Tour.guide_id == current_user.id)
     )
+    tour_ids = [row[0] for row in tours_result.all()]
+    
+    if not tour_ids:
+        # Нет экскурсий - возвращаем нули
+        return [
+            RevenueStats(date=(datetime.now() - timedelta(days=i)).strftime('%Y-%m-%d'), revenue=0.0)
+            for i in range(days-1, -1, -1)
+        ]
+    
+    # Группируем бронирования по дням
+    stmt = select(
+        func.date(BookingModel.created_at).label('date'),
+        func.sum(BookingModel.total_price).label('revenue')
+    ).where(
+        and_(
+            BookingModel.tour_id.in_(tour_ids),
+            BookingModel.payment_status == PaymentStatus.PAID,
+            BookingModel.created_at >= start_date
+        )
+    ).group_by(func.date(BookingModel.created_at))
+    
+    result = await db.execute(stmt)
+    stats_dict = {str(row.date): float(row.revenue) for row in result.all()}
+    
+    # Формируем ответ за все дни (заполняя нулями пропуски)
+    revenue_stats = []
+    for i in range(days-1, -1, -1):
+        day = datetime.now() - timedelta(days=i)
+        day_str = day.strftime('%Y-%m-%d')
+        revenue_stats.append(
+            RevenueStats(
+                date=day_str,
+                revenue=stats_dict.get(day_str, 0.0)
+            )
+        )
+    
+    return revenue_stats
+
+
+@router.get("/", response_model=BookingList)
+async def get_bookings(
+    current_user: User = Depends(get_current_user),
+    db: AsyncSession = Depends(get_db)
+):
+    """
+    Получение списка бронирований текущего гида
+    """
+    # Получаем ID всех экскурсий текущего гида
+    tours_result = await db.execute(
+        select(Tour.id).where(Tour.guide_id == current_user.id)
+    )
+    tour_ids = [row[0] for row in tours_result.all()]
+    
+    if not tour_ids:
+        return BookingList(bookings=[], total=0)
+    
+    # Получаем бронирования
+    stmt = select(BookingModel).where(BookingModel.tour_id.in_(tour_ids)).order_by(BookingModel.created_at.desc())
+    result = await db.execute(stmt)
+    bookings_db = result.scalars().all()
+    
+    bookings_list = [
+        Booking(
+            id=b.id,
+            tour_id=b.tour_id,
+            client_id=b.client_id,
+            client_name=b.client_name,
+            client_phone=b.client_phone,
+            client_email=b.client_email,
+            date=b.date,
+            participants_count=b.participants_count,
+            total_price=b.total_price,
+            status=b.status.value,
+            payment_status=b.payment_status.value,
+            created_at=b.created_at,
+        )
+        for b in bookings_db
+    ]
+    
+    return BookingList(bookings=bookings_list, total=len(bookings_list))

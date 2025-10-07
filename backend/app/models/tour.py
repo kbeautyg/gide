@@ -16,6 +16,9 @@ class Tour(Base):
     # Гид/менеджер который создал экскурсию
     guide_id = Column(Integer, ForeignKey("users.id"), nullable=False)
     
+    # Уникальный код для шаринга (короткая ссылка)
+    share_code = Column(String(8), unique=True, index=True, nullable=True)
+    
     # Основная информация
     title = Column(String, nullable=False)
     description = Column(Text, nullable=False)

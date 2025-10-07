@@ -16,6 +16,7 @@ router = APIRouter()
 class Tour(BaseModel):
     """Модель экскурсии"""
     id: int
+    share_code: Optional[str] = Field(None, description="Уникальный код для шаринга")
     title: str = Field(..., description="Название экскурсии")
     description: str = Field(..., description="Описание")
     price: float = Field(..., description="Цена в RUB")
@@ -29,6 +30,8 @@ class Tour(BaseModel):
     guide_id: int = Field(..., description="ID гида")
     active: bool = Field(default=True, description="Активна ли экскурсия")
     created_at: datetime = Field(default_factory=datetime.now)
+    bookings_count: int = Field(default=0, description="Количество бронирований")
+    total_revenue: float = Field(default=0.0, description="Общий доход с экскурсии")
 
 
 class TourCreate(BaseModel):
@@ -78,11 +81,26 @@ async def get_tours(
         page_size=page_size,
     )
     
-    # Преобразуем в Pydantic модели
+    # Преобразуем в Pydantic модели с статистикой
+    from sqlalchemy import func
+    from app.models.booking import Booking
+    
     tours_list = []
     for tour_db in tours_db:
+        # Получаем статистику для каждой экскурсии
+        bookings_result = await db.execute(
+            select(
+                func.count(Booking.id).label('count'),
+                func.sum(Booking.total_price).label('revenue')
+            ).where(Booking.tour_id == tour_db.id, Booking.payment_status == 'paid')
+        )
+        stats = bookings_result.first()
+        bookings_count = stats.count if stats.count else 0
+        total_revenue = float(stats.revenue) if stats.revenue else 0.0
+        
         tours_list.append(Tour(
             id=tour_db.id,
+            share_code=tour_db.share_code,
             title=tour_db.title,
             description=tour_db.description,
             price=tour_db.price,
@@ -96,6 +114,8 @@ async def get_tours(
             guide_id=tour_db.guide_id,
             active=tour_db.active,
             created_at=tour_db.created_at,
+            bookings_count=bookings_count,
+            total_revenue=total_revenue,
         ))
     
     # Если экскурсий нет - возвращаем пустой список
@@ -109,23 +129,38 @@ async def get_tours(
     )
 
 
-@router.get("/{tour_id}", response_model=Tour)
-async def get_tour(
-    tour_id: int,
+@router.get("/by-code/{share_code}", response_model=Tour)
+async def get_tour_by_code(
+    share_code: str,
     db: AsyncSession = Depends(get_db)
 ):
     """
-    Получение детальной информации об экскурсии
+    Получение экскурсии по уникальному коду (для шаринга)
     
-    Публичный эндпоинт
+    Публичный эндпоинт без авторизации
     """
-    tour_db = await TourService.get_tour_by_id(db, tour_id)
+    from sqlalchemy import select, func
+    from app.models.booking import Booking
+    
+    tour_db = await TourService.get_tour_by_share_code(db, share_code)
     
     if not tour_db:
         raise HTTPException(status_code=404, detail="Экскурсия не найдена")
     
+    # Получаем статистику по бронированиям
+    bookings_result = await db.execute(
+        select(
+            func.count(Booking.id).label('count'),
+            func.sum(Booking.total_price).label('revenue')
+        ).where(Booking.tour_id == tour_db.id, Booking.payment_status == 'paid')
+    )
+    stats = bookings_result.first()
+    bookings_count = stats.count if stats.count else 0
+    total_revenue = float(stats.revenue) if stats.revenue else 0.0
+    
     return Tour(
         id=tour_db.id,
+        share_code=tour_db.share_code,
         title=tour_db.title,
         description=tour_db.description,
         price=tour_db.price,
@@ -139,6 +174,58 @@ async def get_tour(
         guide_id=tour_db.guide_id,
         active=tour_db.active,
         created_at=tour_db.created_at,
+        bookings_count=bookings_count,
+        total_revenue=total_revenue,
+    )
+
+
+@router.get("/{tour_id}", response_model=Tour)
+async def get_tour(
+    tour_id: int,
+    db: AsyncSession = Depends(get_db)
+):
+    """
+    Получение детальной информации об экскурсии
+    
+    Публичный эндпоинт
+    """
+    from sqlalchemy import select, func
+    from app.models.booking import Booking
+    
+    tour_db = await TourService.get_tour_by_id(db, tour_id)
+    
+    if not tour_db:
+        raise HTTPException(status_code=404, detail="Экскурсия не найдена")
+    
+    # Получаем статистику по бронированиям
+    bookings_result = await db.execute(
+        select(
+            func.count(Booking.id).label('count'),
+            func.sum(Booking.total_price).label('revenue')
+        ).where(Booking.tour_id == tour_db.id, Booking.payment_status == 'paid')
+    )
+    stats = bookings_result.first()
+    bookings_count = stats.count if stats.count else 0
+    total_revenue = float(stats.revenue) if stats.revenue else 0.0
+    
+    return Tour(
+        id=tour_db.id,
+        share_code=tour_db.share_code,
+        title=tour_db.title,
+        description=tour_db.description,
+        price=tour_db.price,
+        duration=tour_db.duration,
+        location=tour_db.location,
+        category=tour_db.category,
+        photos=tour_db.photos or [],
+        rating=tour_db.rating,
+        reviews_count=tour_db.reviews_count,
+        guide_name=tour_db.guide.name or "Гид",
+        guide_id=tour_db.guide_id,
+        active=tour_db.active,
+        created_at=tour_db.created_at,
+        bookings_count=bookings_count,
+        total_revenue=total_revenue,
     )
 
 
@@ -169,10 +256,13 @@ async def create_tour(
         location=tour.location,
         category=tour.category,
         photos=tour.photos,
+        start_date=tour.start_date,
+        end_date=tour.end_date,
     )
     
     return Tour(
         id=new_tour_db.id,
+        share_code=new_tour_db.share_code,
         title=new_tour_db.title,
         description=new_tour_db.description,
         price=new_tour_db.price,
@@ -184,6 +274,8 @@ async def create_tour(
         reviews_count=new_tour_db.reviews_count,
         guide_name="Текущий гид",
         guide_id=new_tour_db.guide_id,
+        bookings_count=0,
+        total_revenue=0.0,
         active=new_tour_db.active,
         created_at=new_tour_db.created_at,
     )

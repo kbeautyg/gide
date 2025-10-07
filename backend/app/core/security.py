@@ -8,12 +8,9 @@ from passlib.context import CryptContext
 from fastapi import Depends, HTTPException, status, Request
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from fastapi.security.utils import get_authorization_scheme_param
-from sqlalchemy.ext.asyncio import AsyncSession
 import pytz
 
 from app.core.config import settings
-from app.db.session import get_db
-from app.models.user import User, UserRole
 
 # Контекст для хеширования паролей
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
@@ -129,60 +126,6 @@ def get_current_user_id(request: Request) -> str:
     except Exception:
         # Fallback для демо-режима при ошибке токена
         return "demo_user"
-
-
-async def get_current_user(
-    request: Request,
-    db: AsyncSession = Depends(get_db)
-) -> User:
-    """
-    Получение текущего пользователя из токена
-    
-    Args:
-        request: HTTP запрос
-        db: Сессия базы данных
-    
-    Returns:
-        Объект пользователя
-    
-    Raises:
-        HTTPException: Если токен невалиден или пользователь не найден
-    """
-    from app.models.user import User
-    from sqlalchemy import select
-    
-    # Получаем ID пользователя из токена
-    user_id_str = get_current_user_id(request)
-    
-    if user_id_str == "demo_user":
-        # Для демо-режима возвращаем демо-пользователя
-        # Создаем временный объект пользователя
-        demo_user = User()
-        demo_user.id = 1
-        demo_user.phone = "demo"
-        demo_user.name = "Demo User"
-        demo_user.role = UserRole.GUIDE
-        return demo_user
-    
-    try:
-        user_id = int(user_id_str)
-    except ValueError:
-        raise HTTPException(
-            status_code=401,
-            detail="Невалидный ID пользователя"
-        )
-    
-    # Получаем пользователя из БД
-    result = await db.execute(select(User).where(User.id == user_id))
-    user = result.scalar_one_or_none()
-    
-    if not user:
-        raise HTTPException(
-            status_code=401,
-            detail="Пользователь не найден"
-        )
-    
-    return user
 
 
 def get_moscow_time() -> datetime:
