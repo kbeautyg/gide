@@ -1,13 +1,11 @@
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
+import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Users, Wallet, Plus } from 'lucide-react'
 import { formatRUB } from '@/lib/utils'
 import { api } from '@/lib/api'
-import { useState } from 'react'
 
 export default function AdminDashboardPage() {
-  const [showAddTourForm, setShowAddTourForm] = useState(false)
   const queryClient = useQueryClient()
 
   // Загрузка команды
