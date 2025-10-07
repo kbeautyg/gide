@@ -1,6 +1,5 @@
 import { useQuery } from '@tanstack/react-query'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { Button } from '@/components/ui/button'
 import { MapPin, CreditCard, TrendingUp, Users, CheckCircle } from 'lucide-react'
 import { formatRUB } from '@/lib/utils'
 import { api, toursApi } from '@/lib/api'
