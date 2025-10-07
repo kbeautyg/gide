@@ -22,9 +22,7 @@ async def create_request(
     current_user: User = Depends(get_current_user),
     db: AsyncSession = Depends(get_db)
 ):
-    """Создать заявку на экскурсию"""
-    if current_user.role != UserRole.CLIENT:
-        raise HTTPException(status_code=403, detail="Только клиенты могут создавать заявки")
+    """Создать заявку на экскурсию (доступно всем авторизованным пользователям)"""
     
     db_request = Request(
         client_id=current_user.id,
