@@ -50,12 +50,26 @@ async def get_requests(
     current_user: User = Depends(get_current_user),
     db: AsyncSession = Depends(get_db)
 ):
-    """Получить список заявок"""
+    """Получить список заявок (ВСЕ для менеджеров и выше, свои для клиентов)"""
+    from datetime import date as date_type
+    
     # Проверяем права доступа
-    if current_user.role not in [UserRole.SUPER_ADMIN, UserRole.ADMIN, UserRole.SUPER_MANAGER, UserRole.MANAGER]:
+    if current_user.role not in [UserRole.SUPER_ADMIN, UserRole.ADMIN, UserRole.SUPER_MANAGER, UserRole.MANAGER, UserRole.CLIENT]:
         raise HTTPException(status_code=403, detail="Недостаточно прав для просмотра заявок")
     
-    query = select(Request)
+    # Менеджеры и выше видят ВСЕ заявки (не только свои)
+    # Клиенты видят только свои заявки
+    if current_user.role in [UserRole.SUPER_ADMIN, UserRole.ADMIN, UserRole.SUPER_MANAGER, UserRole.MANAGER]:
+        # Показываем ВСЕ заявки, исключая истекшие
+        query = select(Request).where(
+            or_(
+                Request.preferred_date >= date_type.today(),
+                Request.preferred_date.is_(None)
+            )
+        )
+    else:
+        # Клиенты видят только свои
+        query = select(Request).where(Request.client_id == current_user.id)
     
     # Фильтр по статусу
     if status:
