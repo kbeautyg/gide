@@ -1,14 +1,10 @@
-import { useState } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { Button } from '@/components/ui/button'
-import { Users, Wallet, Plus } from 'lucide-react'
+import { Users, Wallet } from 'lucide-react'
 import { formatRUB } from '@/lib/utils'
-import { CreateUserDialog } from '@/components/CreateUserDialog'
 import { api } from '@/lib/api'
 
 export default function AdminDashboardPage() {
-  const [dialogOpen, setDialogOpen] = useState(false)
 
   // Загрузка команды
   const { data: teamData } = useQuery({
@@ -26,18 +22,10 @@ export default function AdminDashboardPage() {
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-3xl font-bold text-blue-600">Дашборд Админа</h1>
-          <p className="text-gray-600 mt-1">Управление вашей командой</p>
-        </div>
-        <Button className="gap-2 bg-blue-600 hover:bg-blue-700" onClick={() => setDialogOpen(true)}>
-          <Plus size={18} />
-          Создать пользователя
-        </Button>
+      <div>
+        <h1 className="text-3xl font-bold text-blue-600">Дашборд Админа</h1>
+        <p className="text-gray-600 mt-1">Управление вашей командой</p>
       </div>
-
-      <CreateUserDialog open={dialogOpen} onOpenChange={setDialogOpen} />
 
       {/* Статистика */}
       <div className="grid md:grid-cols-4 gap-6">

@@ -39,6 +39,22 @@ export function PublicHeader() {
             О нас
           </Link>
           <Link 
+            to="/faq" 
+            className={`hover:text-tropical-ocean transition-colors ${
+              location.pathname === '/faq' ? 'text-tropical-ocean font-semibold' : ''
+            }`}
+          >
+            FAQ
+          </Link>
+          <Link 
+            to="/become-guide" 
+            className={`hover:text-tropical-ocean transition-colors ${
+              location.pathname === '/become-guide' ? 'text-tropical-ocean font-semibold' : ''
+            }`}
+          >
+            Стать гидом
+          </Link>
+          <Link 
             to="/contact" 
             className={`hover:text-tropical-ocean transition-colors ${
               location.pathname === '/contact' ? 'text-tropical-ocean font-semibold' : ''

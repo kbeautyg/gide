@@ -1,15 +1,12 @@
 import { useState } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
-import { Users, Wallet, Plus, Search, Eye } from 'lucide-react'
+import { Users, Wallet, Search, Eye } from 'lucide-react'
 import { formatRUB } from '@/lib/utils'
-import { CreateUserDialog } from '@/components/CreateUserDialog'
 import { api } from '@/lib/api'
 
 export default function SuperAdminDashboard() {
-  const [dialogOpen, setDialogOpen] = useState(false)
   const [searchTerm, setSearchTerm] = useState('')
   const [selectedRole, setSelectedRole] = useState<string>('all')
 
@@ -55,18 +52,10 @@ export default function SuperAdminDashboard() {
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-3xl font-bold text-purple-600">Дашборд Супер-Админа</h1>
-          <p className="text-gray-600 mt-1">Полный контроль над всей системой</p>
-        </div>
-        <Button className="gap-2 bg-purple-600 hover:bg-purple-700" onClick={() => setDialogOpen(true)}>
-          <Plus size={18} />
-          Создать пользователя
-        </Button>
+      <div>
+        <h1 className="text-3xl font-bold text-purple-600">Дашборд Супер-Админа</h1>
+        <p className="text-gray-600 mt-1">Полный контроль над всей системой</p>
       </div>
-
-      <CreateUserDialog open={dialogOpen} onOpenChange={setDialogOpen} />
 
       {/* Общая статистика */}
       <div>
