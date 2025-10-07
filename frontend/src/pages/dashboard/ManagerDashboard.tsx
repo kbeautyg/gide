@@ -26,7 +26,9 @@ export default function ManagerDashboard() {
 
   // График доходов (реальные данные за последние 30 дней)
   const revenueChartData = stats.revenue_chart || []
-  const maxRevenue = Math.max(...revenueChartData.map((d: any) => d.income), 1)
+  const maxRevenue = revenueChartData.length > 0 
+    ? Math.max(...revenueChartData.map((d: any) => d.income), 1)
+    : 1
   
   // Последние заказы
   const recentBookings = stats.recent_bookings || []
