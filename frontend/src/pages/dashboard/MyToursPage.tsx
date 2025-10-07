@@ -20,7 +20,7 @@ export default function MyToursPage() {
 
   const tours = toursData?.data?.tours || []
 
-  const copyTourLink = (tourId: number, shareCode: string) => {
+  const copyTourLink = (tourId: number, shareCode: string | number) => {
     const link = `${window.location.origin}/t/${shareCode}`
     navigator.clipboard.writeText(link)
     setCopiedId(tourId)
