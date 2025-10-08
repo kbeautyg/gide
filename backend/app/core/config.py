@@ -54,6 +54,7 @@ class Settings(BaseSettings):
         "http://localhost:8080",
         "https://thaiguide-frontend-production.up.railway.app",
         "https://gide-production.up.railway.app",
+        "*",  # Временно для отладки
     ]
     
     # Redis
