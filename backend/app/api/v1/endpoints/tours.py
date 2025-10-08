@@ -70,13 +70,17 @@ async def get_tours(
     page: int = Query(1, ge=1, description="Номер страницы"),
     page_size: int = Query(12, ge=1, le=100, description="Размер страницы"),
     include_private: bool = Query(False, description="Включать ли приватные экскурсии (только по токену гида)"),
-    current_user: Optional[User] = Depends(get_current_user) if include_private else None,
+    current_user: Optional[User] = Depends(get_current_user),
 ):
     """
     Получение списка экскурсий с фильтрами
     
     Публичный эндпоинт - доступен без авторизации
     """
+    # Проверяем авторизацию для приватных экскурсий
+    if include_private and not current_user:
+        raise HTTPException(status_code=401, detail="Необходима авторизация для просмотра приватных экскурсий")
+    
     # Получаем экскурсии из БД
     guide_id = current_user.id if current_user else None
 
