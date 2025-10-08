@@ -1,20 +1,36 @@
 import { useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
-import { Search, MapPin, Star, Users, TrendingUp, Clock, Calendar } from 'lucide-react'
+import { Link } from 'react-router-dom'
+import { motion } from 'framer-motion'
+import { Star, Users, Shield, Clock, ChevronLeft, ChevronRight, ArrowRight } from 'lucide-react'
 import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import { Card, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
-import { formatRUB } from '@/lib/utils'
 import { useQuery } from '@tanstack/react-query'
 import { toursApi } from '@/lib/api'
 import { PublicHeader } from '@/components/PublicHeader'
 import { PublicFooter } from '@/components/PublicFooter'
+import { SearchBar } from '@/components/SearchBar'
+import { TourCard } from '@/components/TourCard'
+
+// Анимационные варианты
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.1
+    }
+  }
+}
+
+const itemVariants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: { opacity: 1, y: 0 }
+}
 
 export default function HomePage() {
-  const navigate = useNavigate()
-  const [searchQuery, setSearchQuery] = useState('')
+  const [seasonalIndex, setSeasonalIndex] = useState(0)
+  const [reviewIndex, setReviewIndex] = useState(0)
   
-  // Загрузка популярных экскурсий из API
+  // Загрузка популярных экскурсий
   const { data: toursData } = useQuery({
     queryKey: ['tours', 'popular'],
     queryFn: () => toursApi.getList({ page: 1, page_size: 6 }),
@@ -22,203 +38,403 @@ export default function HomePage() {
 
   const popularTours = toursData?.data?.tours || []
 
-  const handleSearch = (e: React.FormEvent) => {
-    e.preventDefault()
-    if (searchQuery.trim()) {
-      navigate(`/tours?search=${encodeURIComponent(searchQuery)}`)
-    } else {
-      navigate('/tours')
-    }
-  }
+  // Mock данные для сезонных идей
+  const seasonalIdeas = [
+    {
+      title: 'Оценить стрит-фуд Стамбула',
+      image: 'https://images.unsplash.com/photo-1527838832700-5059252407fa?w=600&h=400&fit=crop',
+      link: '/tours?category=food&location=Стамбул'
+    },
+    {
+      title: 'Изучить древние храмы Тбилиси',
+      image: 'https://images.unsplash.com/photo-1597079858949-19881cff2e1d?w=600&h=400&fit=crop',
+      link: '/tours?category=culture&location=Тбилиси'
+    },
+    {
+      title: 'Покататься на слонах в Чианг Мае',
+      image: 'https://images.unsplash.com/photo-1563784462041-5f97ac9523dd?w=600&h=400&fit=crop',
+      link: '/tours?category=nature&location=Чианг%20Май'
+    },
+    {
+      title: 'Продлить лето в Дубае',
+      image: 'https://images.unsplash.com/photo-1512453979798-5ea266f8880c?w=600&h=400&fit=crop',
+      link: '/tours?location=Дубай'
+    },
+  ]
+
+  // Mock данные для направлений
+  const destinations = [
+    { name: 'Тбилиси', count: 480, image: 'https://images.unsplash.com/photo-1597079858949-19881cff2e1d?w=500&h=500&fit=crop', country: 'Грузия' },
+    { name: 'Стамбул', count: 1240, image: 'https://images.unsplash.com/photo-1527838832700-5059252407fa?w=500&h=500&fit=crop', country: 'Турция' },
+    { name: 'Бангкок', count: 890, image: 'https://images.unsplash.com/photo-1563784462041-5f97ac9523dd?w=500&h=500&fit=crop', country: 'Таиланд' },
+    { name: 'Дубай', count: 650, image: 'https://images.unsplash.com/photo-1512453979798-5ea266f8880c?w=500&h=500&fit=crop', country: 'ОАЭ' },
+    { name: 'Париж', count: 1150, image: 'https://images.unsplash.com/photo-1502602898657-3e91760cbb34?w=500&h=500&fit=crop', country: 'Франция' },
+    { name: 'Рим', count: 920, image: 'https://images.unsplash.com/photo-1552832230-c0197dd311b5?w=500&h=500&fit=crop', country: 'Италия' },
+  ]
+
+  // Mock данные для отзывов
+  const reviews = [
+    {
+      name: 'Мария',
+      photo: 'https://i.pravatar.cc/150?img=1',
+      rating: 5,
+      text: 'Это была моя самая лучшая экскурсия в жизни! Михаил — самый чудесный экскурсовод; накормит, напоит и сфотографирует! Было очень интересно слушать информацию...',
+      tour: 'Золотое кольцо Кахетии',
+      experience: 14
+    },
+    {
+      name: 'Андрей',
+      photo: 'https://i.pravatar.cc/150?img=33',
+      rating: 5,
+      text: 'Приятная экскурсия, приятный очаровательный экскурсовод Тамара, хороший водитель, долгий путь. Рекомендую всем!',
+      tour: 'Из Тбилиси — к селу Кanoби',
+      experience: 1
+    },
+    {
+      name: 'Дарья',
+      photo: 'https://i.pravatar.cc/150?img=5',
+      rating: 5,
+      text: 'Замечательный экскурсовод Арчи, очень интересно, подробно рассказывал о всех достопримечательностях. Спасибо!',
+      tour: 'Древняя Мцхета',
+      experience: 9
+    },
+  ]
 
   return (
     <div className="min-h-screen bg-white">
       <PublicHeader />
 
       {/* Hero Section */}
-      <section className="hero-gradient text-white py-20 md:py-32">
-        <div className="container mx-auto px-4">
-          <div className="max-w-3xl mx-auto text-center">
-            <h1 className="text-4xl md:text-6xl font-bold mb-6">
-              Откройте для себя настоящую Азию!
+      <section className="relative hero-gradient text-white py-24 md:py-32 overflow-hidden">
+        {/* Parallax фон */}
+        <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1488646953014-85cb44e25828?w=1920&h=1080&fit=crop')] bg-cover bg-center opacity-20" />
+        
+        <div className="container mx-auto px-4 relative z-10">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            className="max-w-4xl mx-auto text-center"
+          >
+            <h1 className="text-5xl md:text-6xl font-bold mb-6 leading-tight">
+              Откройте незабываемые экскурсии
             </h1>
-            <p className="text-xl md:text-2xl mb-8 text-white/90">
-              Более 100 уникальных экскурсий с русскоязычными гидами. 
-              Оплата российскими картами и СБП.
+            <p className="text-xl md:text-2xl mb-10 text-white/90 max-w-2xl mx-auto">
+              Более 500 уникальных экскурсий с местными гидами по всему миру
             </p>
             
-            {/* Search Bar */}
-            <form onSubmit={handleSearch} className="bg-white rounded-lg p-2 flex flex-col md:flex-row gap-2 shadow-2xl mb-6">
-              <div className="flex-1 flex items-center gap-2 px-4">
-                <MapPin className="text-gray-400" size={20} />
-                <Input 
-                  type="text" 
-                  placeholder="Пхукет, Паттайя, Бангкок..." 
-                  className="border-none shadow-none focus-visible:ring-0"
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                />
-              </div>
-              <Button type="submit" variant="tropical" size="lg" className="md:w-auto">
-                <Search className="mr-2" size={20} />
-                Найти экскурсию
+            {/* SearchBar */}
+            <div className="mb-8">
+              <SearchBar variant="hero" />
+            </div>
+            
+            {/* CTA */}
+            <Link to="/request">
+              <Button 
+                variant="secondary" 
+                size="lg" 
+                className="bg-white text-airbnb-rausch hover:bg-gray-50 font-semibold text-lg px-8 shadow-lg"
+              >
+                ✨ Заказать индивидуальную экскурсию
               </Button>
-            </form>
-            
-            {/* Custom Tour Request Button */}
-            <div className="flex justify-center">
-              <Link to="/request">
-                <Button 
-                  variant="secondary" 
-                  size="lg" 
-                  className="text-tropical-ocean border-2 border-white hover:bg-white/10 font-semibold text-lg px-8"
-                >
-                  ✨ Заказать индивидуальную экскурсию
-                </Button>
-              </Link>
-            </div>
-          </div>
+            </Link>
+          </motion.div>
         </div>
       </section>
 
-      {/* Features Section */}
-      <section className="py-16 bg-gray-50">
-        <div className="container mx-auto px-4">
-          <div className="grid md:grid-cols-3 gap-8">
-            <div className="text-center">
-              <div className="w-16 h-16 bg-tropical-turquoise/10 rounded-full flex items-center justify-center mx-auto mb-4">
-                <Users className="text-tropical-turquoise" size={32} />
-              </div>
-              <h3 className="text-xl font-semibold mb-2">Опытные гиды</h3>
-              <p className="text-gray-600">
-                Русскоязычные гиды с многолетним опытом работы по всей Азии
-              </p>
-            </div>
-            
-            <div className="text-center">
-              <div className="w-16 h-16 bg-tropical-coral/10 rounded-full flex items-center justify-center mx-auto mb-4">
-                <Star className="text-tropical-coral" size={32} />
-              </div>
-              <h3 className="text-xl font-semibold mb-2">Лучшие маршруты</h3>
-              <p className="text-gray-600">
-                Тщательно проверенные экскурсии с высокими рейтингами
-              </p>
-            </div>
-            
-            <div className="text-center">
-              <div className="w-16 h-16 bg-tropical-gold/10 rounded-full flex items-center justify-center mx-auto mb-4">
-                <TrendingUp className="text-tropical-gold" size={32} />
-              </div>
-              <h3 className="text-xl font-semibold mb-2">Удобная оплата</h3>
-              <p className="text-gray-600">
-                Оплата российскими картами, СБП и через QR-коды
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Popular Tours */}
-      <section className="py-16">
+      {/* Блок "Планы на сезон" */}
+      <section className="py-20 bg-white">
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-between mb-8">
-            <h2 className="text-3xl font-bold">Популярные экскурсии</h2>
-            <Link to="/tours">
-              <Button variant="outline">Все экскурсии</Button>
-            </Link>
+            <h2 className="text-3xl font-bold text-gray-900">Планы на яркую осень 🍁</h2>
+            <div className="flex gap-2">
+              <button
+                onClick={() => setSeasonalIndex(Math.max(0, seasonalIndex - 1))}
+                disabled={seasonalIndex === 0}
+                className="p-2 rounded-full border border-gray-300 hover:border-gray-900 disabled:opacity-30 transition-all"
+              >
+                <ChevronLeft size={20} />
+              </button>
+              <button
+                onClick={() => setSeasonalIndex(Math.min(seasonalIdeas.length - 3, seasonalIndex + 1))}
+                disabled={seasonalIndex >= seasonalIdeas.length - 3}
+                className="p-2 rounded-full border border-gray-300 hover:border-gray-900 disabled:opacity-30 transition-all"
+              >
+                <ChevronRight size={20} />
+              </button>
+            </div>
           </div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {popularTours.length > 0 ? (
-              popularTours.map((tour) => (
-                <Link to={`/tours/${tour.id}`} key={tour.id}>
-                  <Card className="hover:shadow-lg transition-shadow cursor-pointer h-full">
-                    <div className="relative">
-                      <img 
-                        src={tour.photos && tour.photos.length > 0 ? tour.photos[0] : 'https://images.unsplash.com/photo-1589394815804-964ed0be2eb5?w=800&h=600&fit=crop'} 
-                        alt={tour.title}
-                        className="w-full h-48 object-cover rounded-t-lg"
-                      />
-                      <div className="absolute top-3 right-3 bg-white px-3 py-1 rounded-full text-sm font-semibold">
-                        {formatRUB(tour.price)}
-                      </div>
+          <div className="grid md:grid-cols-3 gap-6 overflow-hidden">
+            {seasonalIdeas.slice(seasonalIndex, seasonalIndex + 3).map((idea, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, x: 50 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: i * 0.1 }}
+              >
+                <Link to={idea.link}>
+                  <div className="group relative aspect-[4/3] rounded-xl overflow-hidden cursor-pointer">
+                    <img
+                      src={idea.image}
+                      alt={idea.title}
+                      className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+                    <div className="absolute bottom-0 left-0 right-0 p-6">
+                      <h3 className="text-xl font-bold text-white">{idea.title}</h3>
                     </div>
-                    
-                    <CardHeader>
-                      <div className="flex items-center gap-2 text-sm text-gray-600 mb-2">
-                        <MapPin size={16} />
-                        <span>{tour.location}</span>
-                        <span className="ml-2">•</span>
-                        <Clock size={16} />
-                        <span>{tour.duration}ч</span>
-                      </div>
-                      {tour.start_date && tour.end_date && (
-                        <div className="flex items-center gap-2 text-sm text-gray-600 mb-2">
-                          <Calendar size={16} />
-                          <span>{new Date(tour.start_date).toLocaleDateString('ru-RU')} - {new Date(tour.end_date).toLocaleDateString('ru-RU')}</span>
-                        </div>
-                      )}
-                      <CardTitle className="text-xl line-clamp-2">{tour.title}</CardTitle>
-                    </CardHeader>
-                    
-                    <CardFooter className="flex items-center justify-between">
-                      <div className="flex items-center gap-1">
-                        <Star className="fill-yellow-400 text-yellow-400" size={16} />
-                        <span className="font-semibold">{tour.rating.toFixed(1)}</span>
-                        <span className="text-gray-600 text-sm">({tour.reviews_count})</span>
-                      </div>
-                      <Button variant="tropical" size="sm">Забронировать</Button>
-                    </CardFooter>
-                  </Card>
+                  </div>
                 </Link>
-              ))
-            ) : (
-              <div className="col-span-full text-center py-12 text-gray-500">
-                <p>Загрузка экскурсий...</p>
-              </div>
-            )}
-          </div>
-        </div>
-      </section>
-
-      {/* How It Works */}
-      <section className="py-16 bg-gray-50">
-        <div className="container mx-auto px-4">
-          <h2 className="text-3xl font-bold text-center mb-12">Как это работает?</h2>
-          
-          <div className="grid md:grid-cols-4 gap-8">
-            {[
-              { step: '1', title: 'Выберите экскурсию', desc: 'Изучите каталог и найдите идеальный тур' },
-              { step: '2', title: 'Забронируйте дату', desc: 'Выберите удобную дату в календаре' },
-              { step: '3', title: 'Оплатите онлайн', desc: 'Безопасная оплата картой РФ или СБП' },
-              { step: '4', title: 'Наслаждайтесь!', desc: 'Встречайтесь с гидом и отправляйтесь в путешествие' },
-            ].map((item) => (
-              <div key={item.step} className="text-center">
-                <div className="w-16 h-16 bg-tropical-ocean text-white rounded-full flex items-center justify-center text-2xl font-bold mx-auto mb-4">
-                  {item.step}
-                </div>
-                <h3 className="text-xl font-semibold mb-2">{item.title}</h3>
-                <p className="text-gray-600">{item.desc}</p>
-              </div>
+              </motion.div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* CTA Section */}
-      <section className="py-16 bg-gradient-to-r from-tropical-turquoise to-tropical-ocean text-white">
-        <div className="container mx-auto px-4 text-center">
-          <h2 className="text-3xl md:text-4xl font-bold mb-4">
-            Готовы к приключениям?
-          </h2>
-          <p className="text-xl mb-8 text-white/90">
-            Начните планировать свой незабываемый отдых в Азии прямо сейчас!
-          </p>
-          <Link to="/tours">
-            <Button size="lg" variant="secondary" className="text-lg px-8 py-6">
-              Посмотреть все экскурсии
-            </Button>
-          </Link>
+      {/* Популярные направления */}
+      <section className="py-20 bg-gray-50">
+        <div className="container mx-auto px-4">
+          <h2 className="text-3xl font-bold text-gray-900 mb-8">Популярные направления</h2>
+          
+          <motion.div
+            className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4"
+            variants={containerVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+          >
+            {destinations.map((dest, i) => (
+              <motion.div key={i} variants={itemVariants}>
+                <Link to={`/destinations/${dest.name.toLowerCase()}`}>
+                  <div className="group relative aspect-square rounded-xl overflow-hidden cursor-pointer">
+                    <img
+                      src={dest.image}
+                      alt={dest.name}
+                      className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent group-hover:from-black/80 transition-all" />
+                    <div className="absolute bottom-0 left-0 right-0 p-4 text-white">
+                      <div className="font-bold text-lg">{dest.name}</div>
+                      <div className="text-sm text-white/90">{dest.count} экскурсий</div>
+                    </div>
+                  </div>
+                </Link>
+              </motion.div>
+            ))}
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Популярные экскурсии */}
+      <section className="py-20 bg-white">
+        <div className="container mx-auto px-4">
+          <div className="flex items-center justify-between mb-8">
+            <h2 className="text-3xl font-bold text-gray-900">Популярные экскурсии</h2>
+            <Link to="/tours">
+              <Button variant="outline" className="rounded-full">
+                Все экскурсии <ArrowRight className="ml-2" size={16} />
+              </Button>
+            </Link>
+          </div>
+
+          <motion.div
+            className="grid md:grid-cols-2 lg:grid-cols-3 gap-6"
+            variants={containerVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+          >
+            {popularTours.length > 0 ? (
+              popularTours.map((tour) => (
+                <motion.div key={tour.id} variants={itemVariants}>
+                  <TourCard tour={tour} />
+                </motion.div>
+              ))
+            ) : (
+              // Skeleton loaders
+              Array.from({ length: 6 }).map((_, idx) => (
+                <div key={idx} className="skeleton rounded-xl h-[380px]" />
+              ))
+            )}
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Как мы делаем экскурсии */}
+      <section className="py-20 bg-gray-50">
+        <div className="container mx-auto px-4">
+          <div className="max-w-3xl mx-auto text-center mb-12">
+            <h2 className="text-3xl font-bold text-gray-900 mb-4">Как мы делаем экскурсии</h2>
+            <p className="text-lg text-gray-600">
+              Мы — тысячи увлечённых гидов с необычным опытом и глубокими знаниями. 
+              Это журналисты, историки, архитекторы и другие интересные люди, 
+              которые умеют увлечь историями о своих городах и странах.
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-8">
+            <motion.div
+              className="text-center"
+              whileInView={{ opacity: 1, y: 0 }}
+              initial={{ opacity: 0, y: 20 }}
+              viewport={{ once: true }}
+            >
+              <div className="w-20 h-20 bg-airbnb-babu/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                <Users className="text-airbnb-babu" size={36} />
+              </div>
+              <h3 className="text-xl font-semibold mb-2 text-gray-900">Проверенные гиды</h3>
+              <p className="text-gray-600">
+                Все гиды прошли тщательный отбор и имеют высокие рейтинги
+              </p>
+            </motion.div>
+            
+            <motion.div
+              className="text-center"
+              whileInView={{ opacity: 1, y: 0 }}
+              initial={{ opacity: 0, y: 20 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.1 }}
+            >
+              <div className="w-20 h-20 bg-airbnb-rausch/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                <Clock className="text-airbnb-rausch" size={36} />
+              </div>
+              <h3 className="text-xl font-semibold mb-2 text-gray-900">Моментальное бронирование</h3>
+              <p className="text-gray-600">
+                Платите сразу онлайн, без ожидания подтверждения
+              </p>
+            </motion.div>
+            
+            <motion.div
+              className="text-center"
+              whileInView={{ opacity: 1, y: 0 }}
+              initial={{ opacity: 0, y: 20 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.2 }}
+            >
+              <div className="w-20 h-20 bg-green-500/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                <Shield className="text-green-600" size={36} />
+              </div>
+              <h3 className="text-xl font-semibold mb-2 text-gray-900">Гарантия возврата</h3>
+              <p className="text-gray-600">
+                Вернём деньги при отмене за 48 часов до начала
+              </p>
+            </motion.div>
+          </div>
+        </div>
+      </section>
+
+      {/* Свежие отзывы */}
+      <section className="py-20 bg-white">
+        <div className="container mx-auto px-4">
+          <div className="flex items-center justify-between mb-8">
+            <h2 className="text-3xl font-bold text-gray-900">Свежие отзывы</h2>
+            <div className="flex gap-2">
+              <button
+                onClick={() => setReviewIndex(Math.max(0, reviewIndex - 1))}
+                disabled={reviewIndex === 0}
+                className="p-2 rounded-full border border-gray-300 hover:border-gray-900 disabled:opacity-30 transition-all"
+              >
+                <ChevronLeft size={20} />
+              </button>
+              <button
+                onClick={() => setReviewIndex(Math.min(reviews.length - 1, reviewIndex + 1))}
+                disabled={reviewIndex >= reviews.length - 1}
+                className="p-2 rounded-full border border-gray-300 hover:border-gray-900 disabled:opacity-30 transition-all"
+              >
+                <ChevronRight size={20} />
+              </button>
+            </div>
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-6">
+            {reviews.map((review) => (
+              <motion.div
+                key={review.name}
+                className="bg-gray-50 rounded-xl p-6 border border-gray-200"
+                initial={{ opacity: 0 }}
+                whileInView={{ opacity: 1 }}
+                viewport={{ once: true }}
+              >
+                <div className="flex items-center gap-3 mb-4">
+                  <img
+                    src={review.photo}
+                    alt={review.name}
+                    className="w-12 h-12 rounded-full object-cover"
+                  />
+                  <div>
+                    <div className="font-semibold text-gray-900">{review.name}</div>
+                    <div className="flex items-center gap-1">
+                      {Array.from({ length: 5 }).map((_, j) => (
+                        <Star
+                          key={j}
+                          size={14}
+                          className="fill-yellow-400 text-yellow-400"
+                        />
+                      ))}
+                    </div>
+                  </div>
+                </div>
+                
+                <p className="text-gray-700 mb-3 line-clamp-4">{review.text}</p>
+                
+                <div className="text-sm text-gray-600 mb-1">
+                  <span className="font-medium">{review.tour}</span>
+                </div>
+                <div className="text-xs text-gray-500">
+                  Опыт: {review.experience} экскурси{review.experience === 1 ? 'я' : 'й'}
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Email подписка */}
+      <section className="py-16 bg-gradient-to-r from-airbnb-rausch to-airbnb-arches text-white">
+        <div className="container mx-auto px-4">
+          <div className="max-w-2xl mx-auto text-center">
+            <h3 className="text-2xl font-bold mb-3">
+              Экскурсии и туры от экспертов
+            </h3>
+            <p className="mb-6 text-white/90">
+              Классные места, скидки и интересные события у вас в почте · 
+              <a href="#" className="underline ml-1">Пример письма</a>
+            </p>
+            <div className="flex gap-2 max-w-md mx-auto">
+              <input
+                type="email"
+                placeholder="Эл. почта"
+                className="flex-1 px-4 py-3 rounded-lg text-gray-900"
+              />
+              <Button className="bg-gray-900 hover:bg-gray-800 text-white px-6">
+                Подписаться
+              </Button>
+            </div>
+            <p className="text-xs text-white/70 mt-3">
+              Нажимая «Подписаться», вы даёте согласие на получение рекламных сообщений
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* Статистика */}
+      <section className="py-16 bg-white border-t">
+        <div className="container mx-auto px-4">
+          <div className="grid md:grid-cols-3 gap-8 text-center">
+            <div>
+              <div className="text-4xl font-bold text-airbnb-rausch mb-2">500+</div>
+              <div className="text-gray-600">Увлечённых гидов</div>
+            </div>
+            <div>
+              <div className="text-4xl font-bold text-airbnb-babu mb-2">10,000+</div>
+              <div className="text-gray-600">Довольных путешественников</div>
+            </div>
+            <div>
+              <div className="text-4xl font-bold text-airbnb-arches mb-2">4.9</div>
+              <div className="text-gray-600">Средний рейтинг</div>
+            </div>
+          </div>
         </div>
       </section>
 

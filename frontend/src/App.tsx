@@ -13,6 +13,9 @@ import FAQPage from './pages/public/FAQPage'
 import TermsPage from './pages/public/TermsPage'
 import PrivacyPage from './pages/public/PrivacyPage'
 import BecomeGuidePage from './pages/public/BecomeGuidePage'
+import DestinationPage from './pages/public/DestinationPage'
+import JournalPage from './pages/public/JournalPage'
+import ArticlePage from './pages/public/ArticlePage'
 
 // Страницы аутентификации
 import LoginPage from './pages/auth/LoginPage'
@@ -34,6 +37,9 @@ function App() {
       <Route path="/tours" element={<ToursPage />} />
       <Route path="/tours/:id" element={<TourDetailPage />} />
       <Route path="/t/:code" element={<TourSharePage />} />
+      <Route path="/destinations/:city" element={<DestinationPage />} />
+      <Route path="/journal" element={<JournalPage />} />
+      <Route path="/journal/:slug" element={<ArticlePage />} />
       <Route path="/about" element={<AboutPage />} />
       <Route path="/contact" element={<ContactPage />} />
       <Route path="/request" element={<CreateRequestPage />} />

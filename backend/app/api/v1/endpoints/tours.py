@@ -283,3 +283,38 @@ async def create_tour(
         created_at=new_tour_db.created_at,
         is_public=new_tour_db.is_public,
     )
+
+
+@router.get("/categories")
+async def get_categories(db: AsyncSession = Depends(get_db)):
+    """Получить список категорий с количеством туров"""
+    tours = await TourService.get_all_tours(db)
+    
+    # Подсчёт по быстрым фильтрам
+    all_count = len([t for t in tours if t.is_public])
+    discount_count = len([t for t in tours if t.is_public and t.has_discount])
+    new_count = len([t for t in tours if t.is_public and t.is_new])
+    
+    # Подсчёт по темам
+    themes_count = {}
+    for tour in tours:
+        if tour.is_public and tour.themes:
+            for theme in tour.themes:
+                themes_count[theme] = themes_count.get(theme, 0) + 1
+    
+    # Подсчёт по форматам
+    formats_count = {}
+    for tour in tours:
+        if tour.is_public and tour.formats:
+            for format_type in tour.formats:
+                formats_count[format_type] = formats_count.get(format_type, 0) + 1
+    
+    return {
+        "quick_filters": {
+            "all": all_count,
+            "with_discount": discount_count,
+            "new": new_count
+        },
+        "themes": themes_count,
+        "formats": formats_count
+    }

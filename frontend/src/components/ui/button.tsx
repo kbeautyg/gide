@@ -18,7 +18,8 @@ const buttonVariants = cva(
           "bg-secondary text-secondary-foreground hover:bg-secondary/80",
         ghost: "hover:bg-accent hover:text-accent-foreground",
         link: "text-primary underline-offset-4 hover:underline",
-        tropical: "bg-gradient-to-r from-tropical-turquoise to-tropical-ocean text-white hover:opacity-90",
+        tropical: "bg-gradient-to-r from-airbnb-rausch to-airbnb-arches text-white hover:opacity-90",
+        airbnb: "bg-airbnb-rausch hover:bg-airbnb-rausch/90 text-white",
       },
       size: {
         default: "h-10 px-4 py-2",

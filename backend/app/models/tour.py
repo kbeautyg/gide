@@ -38,6 +38,36 @@ class Tour(Base):
     rating = Column(Float, default=0.0)
     reviews_count = Column(Integer, default=0)
     
+    # Контентные блоки (Tripster-стиль)
+    what_to_expect = Column(Text, nullable=True)  # "Что вас ожидает"
+    organizational_details = Column(Text, nullable=True)  # "Организационные детали"
+    included = Column(JSON, default=list)  # Список включённого
+    not_included = Column(JSON, default=list)  # Что НЕ включено
+    meeting_point = Column(String, nullable=True)  # Место встречи
+    languages = Column(JSON, default=list)  # ["русский", "английский"]
+    max_group_size = Column(Integer, nullable=True)  # Макс. размер группы
+    min_age = Column(Integer, nullable=True)  # Минимальный возраст
+    difficulty_level = Column(String, nullable=True)  # "Лёгкая", "Средняя", "Сложная"
+    
+    # Достопримечательности и теги
+    landmarks = Column(JSON, default=list)  # ["Серпантин", "Храм", "Водопад"]
+    tags = Column(JSON, default=list)  # ["Для семей", "Фотосессия", "Гастро"]
+    themes = Column(JSON, default=list)  # ["Винные", "Казбеги", "Кахетия"]
+    formats = Column(JSON, default=list)  # ["Индивидуальные туры", "Треккинг"]
+    
+    # SEO и контент
+    seo_title = Column(String, nullable=True)
+    seo_description = Column(Text, nullable=True)
+    long_description = Column(Text, nullable=True)  # Длинный редакционный текст
+    
+    # Статистика и промо
+    total_bookings = Column(Integer, default=0)
+    views_count = Column(Integer, default=0)
+    has_discount = Column(Boolean, default=False)
+    is_new = Column(Boolean, default=False)
+    discount_percentage = Column(Integer, nullable=True)  # Процент скидки
+    original_price = Column(Float, nullable=True)  # Старая цена
+    
     # Статус
     active = Column(Boolean, default=True)
     is_public = Column(Boolean, default=False, index=True)

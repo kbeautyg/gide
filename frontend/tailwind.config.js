@@ -51,18 +51,34 @@ export default {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
-        // Тропические цвета для туристической темы
+        // Цвета в стиле Airbnb
+        airbnb: {
+          rausch: '#FF385C',          // Основной розовый
+          babu: '#00A699',            // Бирюзовый для акцентов
+          arches: '#FC642D',          // Оранжевый для акций
+          hof: '#484848',             // Тёмно-серый для текста
+          foggy: '#767676',           // Средний серый
+        },
+        // Сохраняем тропические для совместимости (будут заменены постепенно)
         tropical: {
-          turquoise: '#00CED1',
-          coral: '#FF6B6B',
+          turquoise: '#00A699',
+          coral: '#FF385C',
           gold: '#FFD700',
-          ocean: '#006994',
+          ocean: '#00A699',
         },
       },
       borderRadius: {
-        lg: "var(--radius)",
-        md: "calc(var(--radius) - 2px)",
-        sm: "calc(var(--radius) - 4px)",
+        lg: "12px",  // Увеличено для карточек (Airbnb-стиль)
+        md: "8px",
+        sm: "6px",
+        xl: "16px",  // Для больших блоков
+        full: "9999px",
+      },
+      boxShadow: {
+        'airbnb-sm': '0 1px 2px rgba(0,0,0,0.08), 0 4px 12px rgba(0,0,0,0.05)',
+        'airbnb': '0 2px 16px rgba(0,0,0,0.12)',
+        'airbnb-hover': '0 6px 20px rgba(0,0,0,0.15)',
+        'airbnb-lg': '0 8px 28px rgba(0,0,0,0.18)',
       },
       keyframes: {
         "accordion-down": {
@@ -77,6 +93,14 @@ export default {
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
+      },
+      screens: {
+        'xs': '475px',
+        'sm': '640px',
+        'md': '768px',
+        'lg': '1024px',
+        'xl': '1280px',
+        '2xl': '1536px',
       },
     },
   },

@@ -3,7 +3,10 @@
 """
 from fastapi import APIRouter
 
-from app.api.v1.endpoints import auth, users, tours, bookings, admin, requests, user_profile
+from app.api.v1.endpoints import (
+    auth, users, tours, bookings, admin, requests, user_profile,
+    destinations, reviews, articles
+)
 
 api_router = APIRouter()
 
@@ -15,3 +18,6 @@ api_router.include_router(tours.router, prefix="/tours", tags=["Экскурси
 api_router.include_router(bookings.router, prefix="/bookings", tags=["Бронирования"])
 api_router.include_router(admin.router, prefix="/admin", tags=["Администрирование"])
 api_router.include_router(requests.router, prefix="/requests", tags=["Заявки"])
+api_router.include_router(destinations.router, prefix="/destinations", tags=["Направления"])
+api_router.include_router(reviews.router, prefix="/reviews", tags=["Отзывы"])
+api_router.include_router(articles.router, prefix="/articles", tags=["Статьи"])
