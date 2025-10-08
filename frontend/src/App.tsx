@@ -1,4 +1,4 @@
-import { Routes, Route } from 'react-router-dom'
+import { Routes, Route, Navigate } from 'react-router-dom'
 import { ProtectedRoute } from './components/ProtectedRoute'
 
 // Публичные страницы
@@ -45,6 +45,12 @@ function App() {
       {/* Аутентификация */}
       <Route path="/login" element={<LoginPage />} />
       <Route path="/register" element={<RegisterPage />} />
+      
+      {/* Редиректы для старых админских маршрутов */}
+      <Route path="/dashboard/superadmin" element={<Navigate to="/dashboard" replace />} />
+      <Route path="/dashboard/admin" element={<Navigate to="/dashboard" replace />} />
+      <Route path="/dashboard/supermanager" element={<Navigate to="/dashboard" replace />} />
+      <Route path="/dashboard/manager" element={<Navigate to="/dashboard" replace />} />
       
       {/* Личные кабинеты (защищенные маршруты) */}
       <Route
