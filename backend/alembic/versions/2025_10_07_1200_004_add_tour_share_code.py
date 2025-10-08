@@ -10,8 +10,8 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '004'
-down_revision = '002'
+revision = '2025_10_07_1200_004_add_tour_share_code'
+down_revision = '2025_10_05_0300-002_add_tour_date_range_and_requests'
 branch_labels = None
 depends_on = None
 

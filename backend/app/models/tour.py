@@ -40,7 +40,7 @@ class Tour(Base):
     
     # Статус
     active = Column(Boolean, default=True)
-    is_public = Column(Boolean, default=False, nullable=False)
+    is_public = Column(Boolean, default=False, index=True)
     
     # Временные метки
     created_at = Column(DateTime, default=datetime.utcnow)

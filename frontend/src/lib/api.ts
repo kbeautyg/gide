@@ -64,7 +64,6 @@ export interface Tour {
   guide_name: string
   guide_id: number
   active: boolean
-  is_public?: boolean
   created_at: string
   start_date?: string
   end_date?: string
@@ -129,8 +128,8 @@ export const toursApi = {
     max_price?: number
     page?: number
     page_size?: number
+    include_private?: boolean
   }) => api.get<TourListResponse>('/tours/', { params }),
-  getMine: () => api.get<TourListResponse>('/tours/my'),
   
   getById: (id: number | string) => api.get<Tour>(`/tours/${id}`),
   

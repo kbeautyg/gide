@@ -4,7 +4,7 @@
 from sqlalchemy import select
 from sqlalchemy.orm import selectinload
 from sqlalchemy.ext.asyncio import AsyncSession
-from typing import List, Optional
+from typing import List, Optional, Tuple
 import uuid
 
 from app.models.tour import Tour
@@ -23,9 +23,9 @@ class TourService:
         max_price: Optional[float] = None,
         page: int = 1,
         page_size: int = 12,
-        only_public: bool = False,
+        include_private: bool = False,
         guide_id: Optional[int] = None,
-    ) -> tuple[List[Tour], int]:
+    ) -> Tuple[List[Tour], int]:
         """
         Получение списка экскурсий с фильтрами
         
@@ -35,11 +35,11 @@ class TourService:
         # Базовый запрос с eager loading связанного гида
         query = select(Tour).where(Tour.active == True).options(selectinload(Tour.guide))
 
-        if only_public:
-            query = query.where(Tour.is_public == True)
-
-        if guide_id is not None:
+        # Фильтр публикации
+        if include_private and guide_id is not None:
             query = query.where(Tour.guide_id == guide_id)
+        else:
+            query = query.where(Tour.is_public == True)
         
         # Применяем фильтры
         if location:
@@ -56,7 +56,7 @@ class TourService:
         
         # Подсчет общего количества
         count_result = await db.execute(query)
-        total = len(count_result.all())
+        total = len(count_result.scalars().all())
         
         # Пагинация
         offset = (page - 1) * page_size
@@ -97,7 +97,6 @@ class TourService:
         photos: List[str] = None,
         start_date: Optional[str] = None,
         end_date: Optional[str] = None,
-        is_public: bool = False,
     ) -> Tour:
         """Создание новой экскурсии"""
         # Генерируем уникальный короткий код
@@ -124,7 +123,6 @@ class TourService:
             rating=0.0,
             reviews_count=0,
             active=True,
-            is_public=is_public,
         )
         
         db.add(tour)

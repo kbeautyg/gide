@@ -1,7 +1,7 @@
 """
 Эндпоинты для работы с экскурсиями
 """
-from fastapi import APIRouter, Query, Depends, HTTPException, Request
+from fastapi import APIRouter, Query, Depends, HTTPException
 from pydantic import BaseModel, Field
 from typing import List, Optional
 from datetime import datetime
@@ -11,8 +11,8 @@ from sqlalchemy import select, func
 from app.db.session import get_db
 from app.services.tour_service import TourService
 from app.models.booking import Booking
-from app.models.user import User
 from app.core.deps import get_current_user
+from app.models.user import User
 
 router = APIRouter()
 
@@ -33,10 +33,10 @@ class Tour(BaseModel):
     guide_name: str = Field(..., description="Имя гида")
     guide_id: int = Field(..., description="ID гида")
     active: bool = Field(default=True, description="Активна ли экскурсия")
-    is_public: bool = Field(default=False, description="Публикуется ли экскурсия в каталоге")
     created_at: datetime = Field(default_factory=datetime.now)
     bookings_count: int = Field(default=0, description="Количество бронирований")
     total_revenue: float = Field(default=0.0, description="Общий доход с экскурсии")
+    is_public: bool = Field(default=False, description="Опубликована ли экскурсия в каталоге")
 
 
 class TourCreate(BaseModel):
@@ -50,7 +50,6 @@ class TourCreate(BaseModel):
     photos: List[str] = []
     start_date: Optional[str] = None
     end_date: Optional[str] = None
-    is_public: bool = Field(default=False, description="Публиковать ли экскурсию в каталоге")
 
 
 class TourList(BaseModel):
@@ -59,29 +58,6 @@ class TourList(BaseModel):
     total: int
     page: int
     page_size: int
-
-
-def build_tour_response(tour_db, bookings_count: int, total_revenue: float) -> Tour:
-    return Tour(
-        id=tour_db.id,
-        share_code=tour_db.share_code,
-        title=tour_db.title,
-        description=tour_db.description,
-        price=tour_db.price,
-        duration=tour_db.duration,
-        location=tour_db.location,
-        category=tour_db.category,
-        photos=tour_db.photos or [],
-        rating=tour_db.rating,
-        reviews_count=tour_db.reviews_count,
-        guide_name=tour_db.guide.name or "Гид",
-        guide_id=tour_db.guide_id,
-        active=tour_db.active,
-        is_public=tour_db.is_public,
-        created_at=tour_db.created_at,
-        bookings_count=bookings_count,
-        total_revenue=total_revenue,
-    )
 
 
 @router.get("/", response_model=TourList)
@@ -93,6 +69,8 @@ async def get_tours(
     max_price: Optional[float] = Query(None, description="Максимальная цена"),
     page: int = Query(1, ge=1, description="Номер страницы"),
     page_size: int = Query(12, ge=1, le=100, description="Размер страницы"),
+    include_private: bool = Query(False, description="Включать ли приватные экскурсии (только по токену гида)"),
+    current_user: Optional[User] = Depends(get_current_user) if include_private else None,
 ):
     """
     Получение списка экскурсий с фильтрами
@@ -100,6 +78,8 @@ async def get_tours(
     Публичный эндпоинт - доступен без авторизации
     """
     # Получаем экскурсии из БД
+    guide_id = current_user.id if current_user else None
+
     tours_db, total = await TourService.get_tours(
         db=db,
         location=location,
@@ -108,7 +88,8 @@ async def get_tours(
         max_price=max_price,
         page=page,
         page_size=page_size,
-        only_public=True,
+        include_private=include_private,
+        guide_id=guide_id,
     )
     
     # Преобразуем в Pydantic модели с статистикой
@@ -125,7 +106,26 @@ async def get_tours(
         bookings_count = stats.count if stats.count else 0
         total_revenue = float(stats.revenue) if stats.revenue else 0.0
         
-        tours_list.append(build_tour_response(tour_db, bookings_count, total_revenue))
+        tours_list.append(Tour(
+            id=tour_db.id,
+            share_code=tour_db.share_code,
+            title=tour_db.title,
+            description=tour_db.description,
+            price=tour_db.price,
+            duration=tour_db.duration,
+            location=tour_db.location,
+            category=tour_db.category,
+            photos=tour_db.photos or [],
+            rating=tour_db.rating,
+            reviews_count=tour_db.reviews_count,
+            guide_name=tour_db.guide.name or "Гид",
+            guide_id=tour_db.guide_id,
+            active=tour_db.active,
+            created_at=tour_db.created_at,
+            bookings_count=bookings_count,
+            total_revenue=total_revenue,
+            is_public=tour_db.is_public,
+        ))
     
     # Если экскурсий нет - возвращаем пустой список
     # (Удалены mock данные - пользователи создают экскурсии сами)
@@ -164,7 +164,26 @@ async def get_tour_by_code(
     bookings_count = stats.count if stats.count else 0
     total_revenue = float(stats.revenue) if stats.revenue else 0.0
     
-    return build_tour_response(tour_db, bookings_count, total_revenue)
+    return Tour(
+        id=tour_db.id,
+        share_code=tour_db.share_code,
+        title=tour_db.title,
+        description=tour_db.description,
+        price=tour_db.price,
+        duration=tour_db.duration,
+        location=tour_db.location,
+        category=tour_db.category,
+        photos=tour_db.photos or [],
+        rating=tour_db.rating,
+        reviews_count=tour_db.reviews_count,
+        guide_name=tour_db.guide.name or "Гид",
+        guide_id=tour_db.guide_id,
+        active=tour_db.active,
+        created_at=tour_db.created_at,
+        bookings_count=bookings_count,
+        total_revenue=total_revenue,
+        is_public=tour_db.is_public,
+    )
 
 
 @router.get("/{tour_id}", response_model=Tour)
@@ -193,15 +212,32 @@ async def get_tour(
     bookings_count = stats.count if stats.count else 0
     total_revenue = float(stats.revenue) if stats.revenue else 0.0
     
-    return build_tour_response(tour_db, bookings_count, total_revenue)
+    return Tour(
+        id=tour_db.id,
+        share_code=tour_db.share_code,
+        title=tour_db.title,
+        description=tour_db.description,
+        price=tour_db.price,
+        duration=tour_db.duration,
+        location=tour_db.location,
+        category=tour_db.category,
+        photos=tour_db.photos or [],
+        rating=tour_db.rating,
+        reviews_count=tour_db.reviews_count,
+        guide_name=tour_db.guide.name or "Гид",
+        guide_id=tour_db.guide_id,
+        active=tour_db.active,
+        created_at=tour_db.created_at,
+        bookings_count=bookings_count,
+        total_revenue=total_revenue,
+    )
 
 
 @router.post("/", response_model=Tour)
 async def create_tour(
     tour: TourCreate,
-    request: Request,
     db: AsyncSession = Depends(get_db),
-    current_user: User = Depends(get_current_user),
+    current_user: User = Depends(get_current_user)
 ):
     """
     Создание новой экскурсии
@@ -221,46 +257,25 @@ async def create_tour(
         photos=tour.photos,
         start_date=tour.start_date,
         end_date=tour.end_date,
-        is_public=tour.is_public,
     )
     
-    return build_tour_response(new_tour_db, 0, 0.0)
-
-
-@router.get("/my", response_model=TourList)
-async def get_my_tours(
-    request: Request,
-    db: AsyncSession = Depends(get_db),
-    current_user: User = Depends(get_current_user),
-):
-    """
-    Получение экскурсий текущего гида (непубличный список)
-    """
-    tours_db, total = await TourService.get_tours(
-        db=db,
-        guide_id=current_user.id,
-        page=1,
-        page_size=100,
-        only_public=False,
-    )
-
-    tours_list = []
-    for tour_db in tours_db:
-        bookings_result = await db.execute(
-            select(
-                func.count(Booking.id).label('count'),
-                func.sum(Booking.total_price).label('revenue')
-            ).where(Booking.tour_id == tour_db.id, Booking.payment_status == 'paid')
-        )
-        stats = bookings_result.first()
-        bookings_count = stats.count if stats.count else 0
-        total_revenue = float(stats.revenue) if stats.revenue else 0.0
-
-        tours_list.append(build_tour_response(tour_db, bookings_count, total_revenue))
-
-    return TourList(
-        tours=tours_list,
-        total=total,
-        page=1,
-        page_size=100,
+    return Tour(
+        id=new_tour_db.id,
+        share_code=new_tour_db.share_code,
+        title=new_tour_db.title,
+        description=new_tour_db.description,
+        price=new_tour_db.price,
+        duration=new_tour_db.duration,
+        location=new_tour_db.location,
+        category=new_tour_db.category,
+        photos=new_tour_db.photos or [],
+        rating=new_tour_db.rating,
+        reviews_count=new_tour_db.reviews_count,
+        guide_name="Текущий гид",
+        guide_id=new_tour_db.guide_id,
+        bookings_count=0,
+        total_revenue=0.0,
+        active=new_tour_db.active,
+        created_at=new_tour_db.created_at,
+        is_public=new_tour_db.is_public,
     )
