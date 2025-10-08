@@ -38,8 +38,10 @@ class TourService:
 
         # Фильтр публикации
         if include_private and guide_id is not None:
+            # Для приватного списка показываем все экскурсии гида
             query = query.where(Tour.guide_id == guide_id)
         else:
+            # Для публичного списка показываем только опубликованные экскурсии
             query = query.where(Tour.is_public == True)
         
         # Применяем фильтры
