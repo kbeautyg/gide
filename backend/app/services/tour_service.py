@@ -23,6 +23,8 @@ class TourService:
         max_price: Optional[float] = None,
         page: int = 1,
         page_size: int = 12,
+        only_public: bool = False,
+        guide_id: Optional[int] = None,
     ) -> tuple[List[Tour], int]:
         """
         Получение списка экскурсий с фильтрами
@@ -32,6 +34,12 @@ class TourService:
         """
         # Базовый запрос с eager loading связанного гида
         query = select(Tour).where(Tour.active == True).options(selectinload(Tour.guide))
+
+        if only_public:
+            query = query.where(Tour.is_public == True)
+
+        if guide_id is not None:
+            query = query.where(Tour.guide_id == guide_id)
         
         # Применяем фильтры
         if location:
@@ -89,6 +97,7 @@ class TourService:
         photos: List[str] = None,
         start_date: Optional[str] = None,
         end_date: Optional[str] = None,
+        is_public: bool = False,
     ) -> Tour:
         """Создание новой экскурсии"""
         # Генерируем уникальный короткий код
@@ -115,6 +124,7 @@ class TourService:
             rating=0.0,
             reviews_count=0,
             active=True,
+            is_public=is_public,
         )
         
         db.add(tour)

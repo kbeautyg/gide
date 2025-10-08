@@ -11,8 +11,8 @@ export default function ManagerDashboard() {
 
   // Загрузка моих экскурсий
   const { data: toursData } = useQuery({
-    queryKey: ['tours'],
-    queryFn: () => toursApi.getList(),
+    queryKey: ['tours', 'mine'],
+    queryFn: () => toursApi.getMine(),
   })
 
   // Загрузка бронирований

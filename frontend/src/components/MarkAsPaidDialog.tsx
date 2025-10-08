@@ -42,7 +42,7 @@ export function MarkAsPaidDialog({ open, onOpenChange, tour }: MarkAsPaidDialogP
       return response.data
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['tours'] })
+      queryClient.invalidateQueries({ queryKey: ['tours', 'mine'] })
       queryClient.invalidateQueries({ queryKey: ['bookings'] })
       queryClient.invalidateQueries({ queryKey: ['revenue-stats'] })
       queryClient.invalidateQueries({ queryKey: ['users', 'me'] })

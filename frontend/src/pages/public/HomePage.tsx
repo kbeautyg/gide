@@ -16,7 +16,7 @@ export default function HomePage() {
   
   // Загрузка популярных экскурсий из API
   const { data: toursData } = useQuery({
-    queryKey: ['tours', 'popular'],
+    queryKey: ['tours', 'public', 'popular'],
     queryFn: () => toursApi.getList({ page: 1, page_size: 6 }),
   })
 

@@ -21,7 +21,7 @@ export default function ToursPage() {
 
   // Загрузка экскурсий
   const { data: toursData, isLoading } = useQuery({
-    queryKey: ['tours', filters],
+    queryKey: ['tours', 'public', filters],
     queryFn: () => toursApi.getList({
       location: filters.location || undefined,
       category: filters.category || undefined,

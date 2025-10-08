@@ -20,6 +20,7 @@ export function CreateTourDialog() {
     photos: '',
     start_date: '',
     end_date: '',
+    is_public: false,
   })
   
   const queryClient = useQueryClient()
@@ -27,7 +28,9 @@ export function CreateTourDialog() {
   const createMutation = useMutation({
     mutationFn: (data: any) => toursApi.create(data),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['tours'] })
+      queryClient.invalidateQueries({ queryKey: ['tours', 'public'] })
+      queryClient.invalidateQueries({ queryKey: ['tours', 'public', 'popular'] })
+      queryClient.invalidateQueries({ queryKey: ['tours', 'mine'] })
       setOpen(false)
       setFormData({
         title: '',
@@ -39,6 +42,7 @@ export function CreateTourDialog() {
         photos: '',
         start_date: '',
         end_date: '',
+        is_public: false,
       })
       alert('✅ Экскурсия создана!')
     },
@@ -61,6 +65,7 @@ export function CreateTourDialog() {
       photos,
       start_date: formData.start_date || null,
       end_date: formData.end_date || null,
+      is_public: formData.is_public,
     })
   }
   
@@ -201,6 +206,19 @@ export function CreateTourDialog() {
               placeholder="https://images.unsplash.com/photo-1589394815804-964ed0be2eb5"
               rows={3}
             />
+          </div>
+
+          <div className="flex items-center gap-3">
+            <input
+              id="is_public"
+              type="checkbox"
+              className="h-4 w-4"
+              checked={formData.is_public}
+              onChange={(e) => setFormData({ ...formData, is_public: e.target.checked })}
+            />
+            <Label htmlFor="is_public" className="text-sm">
+              Опубликовать экскурсию в каталоге (появится на главной и в разделе "Экскурсии")
+            </Label>
           </div>
           
           <DialogFooter>
