@@ -6,6 +6,7 @@ from sqlalchemy.orm import selectinload
 from sqlalchemy.ext.asyncio import AsyncSession
 from typing import List, Optional, Tuple
 import uuid
+from datetime import datetime
 
 from app.models.tour import Tour
 from app.models.user import User
@@ -108,6 +109,22 @@ class TourService:
             share_code = uuid.uuid4().hex[:8]
             existing = await db.execute(select(Tour).where(Tour.share_code == share_code))
         
+        # Парсим даты из строк в объекты date
+        parsed_start_date = None
+        parsed_end_date = None
+        
+        if start_date:
+            try:
+                parsed_start_date = datetime.strptime(start_date, '%Y-%m-%d').date()
+            except ValueError:
+                pass
+        
+        if end_date:
+            try:
+                parsed_end_date = datetime.strptime(end_date, '%Y-%m-%d').date()
+            except ValueError:
+                pass
+        
         tour = Tour(
             guide_id=guide_id,
             share_code=share_code,
@@ -118,8 +135,8 @@ class TourService:
             location=location,
             category=category,
             photos=photos or [],
-            start_date=start_date,
-            end_date=end_date,
+            start_date=parsed_start_date,
+            end_date=parsed_end_date,
             rating=0.0,
             reviews_count=0,
             active=True,
