@@ -1,6 +1,7 @@
 import { useQuery } from '@tanstack/react-query'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { MapPin, CreditCard, TrendingUp, Users, CheckCircle } from 'lucide-react'
+import { Button } from '@/components/ui/button'
+import { MapPin, CreditCard, TrendingUp, Users, CheckCircle, ArrowUpRight } from 'lucide-react'
 import { formatRUB } from '@/lib/utils'
 import { api, toursApi } from '@/lib/api'
 import { useAuthStore } from '@/lib/store'
@@ -77,9 +78,15 @@ export default function ManagerDashboard() {
               <p className="text-white/90">Гид • ThaiGuide Pro</p>
             </div>
           </div>
-          <div>
+          <div className="text-right space-y-3">
             <p className="text-white/90 text-sm mb-1">Доход за месяц</p>
             <p className="text-3xl font-bold">{formatRUB(monthlyIncome)}</p>
+            <Button
+              className="gap-2 bg-white text-tropical-ocean hover:bg-white/90"
+              onClick={() => alert('Заявка на вывод средств отправлена менеджеру.')}>
+              <ArrowUpRight size={18} />
+              Вывести средства
+            </Button>
           </div>
         </div>
       </div>

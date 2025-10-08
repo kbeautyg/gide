@@ -24,7 +24,6 @@ import ManagerDashboard from './pages/dashboard/ManagerDashboard'
 import MyToursPage from './pages/dashboard/MyToursPage'
 import CalendarPage from './pages/dashboard/CalendarPage'
 import BookingsPage from './pages/dashboard/BookingsPage'
-import FinancesPage from './pages/dashboard/FinancesPage'
 import SettingsPage from './pages/dashboard/SettingsPage'
 
 function App() {
@@ -60,7 +59,6 @@ function App() {
         <Route path="my-tours" element={<MyToursPage />} />
         <Route path="calendar" element={<CalendarPage />} />
         <Route path="bookings" element={<BookingsPage />} />
-        <Route path="finances" element={<FinancesPage />} />
         <Route path="settings" element={<SettingsPage />} />
       </Route>
     </Routes>

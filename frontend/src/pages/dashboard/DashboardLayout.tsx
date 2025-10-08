@@ -7,7 +7,6 @@ import {
   MapPin, 
   Calendar,
   CreditCard,
-  Wallet, 
   Settings, 
   LogOut,
   Home
@@ -23,7 +22,6 @@ export default function DashboardLayout() {
     { icon: MapPin, label: 'Мои экскурсии', path: '/dashboard/my-tours' },
     { icon: Calendar, label: 'Календарь', path: '/dashboard/calendar' },
     { icon: CreditCard, label: 'Заказы', path: '/dashboard/bookings' },
-    { icon: Wallet, label: 'Финансы', path: '/dashboard/finances' },
     { icon: Settings, label: 'Настройки', path: '/dashboard/settings' },
   ]
 
