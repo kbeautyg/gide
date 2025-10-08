@@ -15,7 +15,7 @@ export default function MyToursPage() {
   
   const { data: toursData, isLoading } = useQuery({
     queryKey: ['tours'],
-    queryFn: () => toursApi.getList(),
+    queryFn: () => toursApi.getList({ include_private: true }),
   })
 
   const tours = toursData?.data?.tours || []

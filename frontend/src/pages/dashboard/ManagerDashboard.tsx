@@ -12,7 +12,7 @@ export default function ManagerDashboard() {
   // Загрузка моих экскурсий
   const { data: toursData } = useQuery({
     queryKey: ['tours'],
-    queryFn: () => toursApi.getList(),
+    queryFn: () => toursApi.getList({ include_private: true }),
   })
 
   // Загрузка бронирований
