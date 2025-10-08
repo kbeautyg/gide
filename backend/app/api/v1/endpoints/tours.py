@@ -1,7 +1,7 @@
 """
 Эндпоинты для работы с экскурсиями
 """
-from fastapi import APIRouter, Query, Depends, HTTPException
+from fastapi import APIRouter, Query, Depends, HTTPException, Request
 from pydantic import BaseModel, Field
 from typing import List, Optional
 from datetime import datetime
@@ -228,6 +228,7 @@ async def create_tour(
 
 @router.get("/my", response_model=TourList)
 async def get_my_tours(
+    request: Request,
     db: AsyncSession = Depends(get_db),
     current_user: User = Depends(get_current_user),
 ):
