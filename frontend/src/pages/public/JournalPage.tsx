@@ -1,11 +1,9 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
-import { useQuery } from '@tanstack/react-query'
 import { motion } from 'framer-motion'
-import { Clock, Calendar, ArrowRight } from 'lucide-react'
+import { Clock, Calendar } from 'lucide-react'
 import { PublicHeader } from '@/components/PublicHeader'
 import { PublicFooter } from '@/components/PublicFooter'
-import { Button } from '@/components/ui/button'
 
 export default function JournalPage() {
   const [selectedCountry, setSelectedCountry] = useState<string | null>(null)

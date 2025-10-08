@@ -3,9 +3,9 @@ import { Link, useParams } from 'react-router-dom'
 import { useQuery, useMutation } from '@tanstack/react-query'
 import { motion } from 'framer-motion'
 import { 
-  MapPin, Clock, Star, Calendar, Users, ArrowLeft, 
+  MapPin, Clock, Star, Users,
   Heart, Share2, CheckCircle, XCircle, Image as ImageIcon,
-  ChevronLeft, ChevronRight, Shield
+  Shield
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
@@ -13,15 +13,13 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Badge } from '@/components/ui/badge'
 import { toursApi, bookingsApi } from '@/lib/api'
+import type { Tour } from '@/types/tour'
 import { formatRUB } from '@/lib/utils'
 import { PublicHeader } from '@/components/PublicHeader'
 import { PublicFooter } from '@/components/PublicFooter'
-import { TourCard } from '@/components/TourCard'
 
 export default function TourDetailPage() {
   const { id } = useParams<{ id: string }>()
-  const [currentPhotoIndex, setCurrentPhotoIndex] = useState(0)
-  const [showAllPhotos, setShowAllPhotos] = useState(false)
   const [isFavorite, setIsFavorite] = useState(false)
   const [bookingData, setBookingData] = useState({
     date: '',
@@ -47,7 +45,7 @@ export default function TourDetailPage() {
     enabled: !!id,
   })
 
-  const tour = tourData?.data
+  const tour = tourData?.data as Tour | undefined
   const reviews = reviewsData || []
 
   // Создание бронирования

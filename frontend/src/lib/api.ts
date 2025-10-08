@@ -46,28 +46,9 @@ api.interceptors.response.use(
 )
 
 // === ТИПЫ ===
+import type { Tour } from '@/types/tour'
 
-export interface Tour {
-  id: number
-  share_code?: string
-  title: string
-  description: string
-  price: number
-  duration: number
-  location: string
-  category: string
-  photos: string[]
-  rating: number
-  reviews_count: number
-  bookings_count?: number
-  total_revenue?: number
-  guide_name: string
-  guide_id: number
-  active: boolean
-  created_at: string
-  start_date?: string
-  end_date?: string
-}
+export type { Tour }
 
 export interface TourListResponse {
   tours: Tour[]

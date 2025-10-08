@@ -6,22 +6,7 @@ import { Card } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { formatRUB } from '@/lib/utils'
 import { cn } from '@/lib/utils'
-
-interface Tour {
-  id: number
-  title: string
-  location: string
-  duration: number
-  price: number
-  original_price?: number
-  discount_percentage?: number
-  photos: string[]
-  rating: number
-  reviews_count: number
-  has_discount?: boolean
-  is_new?: boolean
-  tags?: string[]
-}
+import type { Tour } from '@/types/tour'
 
 interface TourCardProps {
   tour: Tour

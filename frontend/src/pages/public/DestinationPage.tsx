@@ -1,8 +1,8 @@
-import { useState } from 'react'
 import { useParams, Link } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
 import { motion } from 'framer-motion'
-import { MapPin, Star, ChevronLeft, ChevronRight, User } from 'lucide-react'
+import { Star } from 'lucide-react'
+import { Button } from '@/components/ui/button'
 import { PublicHeader } from '@/components/PublicHeader'
 import { PublicFooter } from '@/components/PublicFooter'
 import { TourCard } from '@/components/TourCard'
@@ -10,7 +10,6 @@ import { toursApi } from '@/lib/api'
 
 export default function DestinationPage() {
   const { city } = useParams<{ city: string }>()
-  const [landmarkIndex, setLandmarkIndex] = useState(0)
 
   // Mock данные для направления
   const destination = {
