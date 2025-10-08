@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
-import { DollarSign, TrendingUp, Wallet, ArrowUpRight, ArrowDownRight, CheckCircle, Clock } from 'lucide-react'
+import { TrendingUp, Wallet, ArrowUpRight, ArrowDownRight, CheckCircle, Clock } from 'lucide-react'
 import { api } from '@/lib/api'
 import { useAuthStore } from '@/lib/store'
 import { formatRUB } from '@/lib/utils'

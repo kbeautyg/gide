@@ -10,6 +10,9 @@ interface User {
   email?: string
   name?: string
   role: string
+  balance_rub?: number
+  balance_usd?: number
+  balance_thb?: number
 }
 
 interface AuthState {
