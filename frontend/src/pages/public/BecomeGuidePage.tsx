@@ -391,51 +391,93 @@ export default function BecomeGuidePage() {
 
         {/* Benefits Section */}
         <div className="mb-20">
-          <div className="text-center mb-12">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-center mb-12"
+          >
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-3">
-              Почему выбирают ThaiGuide Pro
+              Почему выбирают Turex Pro
             </h2>
             <p className="text-lg text-gray-600">
               Все инструменты для успешного ведения туристического бизнеса
             </p>
-          </div>
+          </motion.div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-            <Card className="border-t-4 border-t-airbnb-rausch hover:shadow-lg transition-shadow">
-              <CardHeader>
-                <div className="w-12 h-12 bg-tropical-ocean/10 rounded-full flex items-center justify-center mb-3">
-                  <DollarSign className="text-airbnb-rausch" size={24} />
-                </div>
-                <CardTitle>Высокий доход</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-gray-600 mb-4">
-                  Зарабатывайте от 50,000₽ до 200,000₽ в месяц
-                </p>
-                <ul className="space-y-2 text-sm text-gray-600">
-                  <li className="flex items-center gap-2">
-                    <CheckCircle size={14} className="text-green-600" />
-                    Комиссия всего 20%
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <CheckCircle size={14} className="text-green-600" />
-                    Еженедельные выплаты
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <CheckCircle size={14} className="text-green-600" />
-                    Бонусы за рейтинг
-                  </li>
-                </ul>
-              </CardContent>
-            </Card>
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            variants={{
+              hidden: { opacity: 0 },
+              visible: {
+                opacity: 1,
+                transition: {
+                  staggerChildren: 0.1
+                }
+              }
+            }}
+            className="grid md:grid-cols-2 lg:grid-cols-4 gap-6"
+          >
+            <motion.div
+              variants={{
+                hidden: { opacity: 0, y: 30 },
+                visible: { opacity: 1, y: 0 }
+              }}
+              whileHover={{ y: -10, scale: 1.02 }}
+            >
+              <Card className="border-t-4 border-t-airbnb-rausch hover:shadow-2xl transition-shadow h-full">
+                <CardHeader>
+                  <motion.div
+                    whileHover={{ rotate: 360, scale: 1.1 }}
+                    transition={{ duration: 0.6 }}
+                    className="w-12 h-12 bg-red-50 rounded-full flex items-center justify-center mb-3"
+                  >
+                    <DollarSign className="text-airbnb-rausch" size={24} />
+                  </motion.div>
+                  <CardTitle>Высокий доход</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-gray-600 mb-4">
+                    Зарабатывайте от 50,000₽ до 200,000₽ в месяц
+                  </p>
+                  <ul className="space-y-2 text-sm text-gray-600">
+                    <li className="flex items-center gap-2">
+                      <CheckCircle size={14} className="text-green-600" />
+                      Комиссия всего 3%
+                    </li>
+                    <li className="flex items-center gap-2">
+                      <CheckCircle size={14} className="text-green-600" />
+                      Еженедельные выплаты
+                    </li>
+                    <li className="flex items-center gap-2">
+                      <CheckCircle size={14} className="text-green-600" />
+                      Бонусы за рейтинг
+                    </li>
+                  </ul>
+                </CardContent>
+              </Card>
+            </motion.div>
 
-            <Card className="border-t-4 border-t-green-500 hover:shadow-lg transition-shadow">
-              <CardHeader>
-                <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mb-3">
-                  <Clock className="text-green-600" size={24} />
-                </div>
-                <CardTitle>Гибкий график</CardTitle>
-              </CardHeader>
+            <motion.div
+              variants={{
+                hidden: { opacity: 0, y: 30 },
+                visible: { opacity: 1, y: 0 }
+              }}
+              whileHover={{ y: -10, scale: 1.02 }}
+            >
+              <Card className="border-t-4 border-t-green-500 hover:shadow-2xl transition-shadow h-full">
+                <CardHeader>
+                  <motion.div
+                    whileHover={{ rotate: 360, scale: 1.1 }}
+                    transition={{ duration: 0.6 }}
+                    className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mb-3"
+                  >
+                    <Clock className="text-green-600" size={24} />
+                  </motion.div>
+                  <CardTitle>Гибкий график</CardTitle>
+                </CardHeader>
               <CardContent>
                 <p className="text-gray-600 mb-4">
                   Работайте когда удобно вам
@@ -456,12 +498,24 @@ export default function BecomeGuidePage() {
                 </ul>
               </CardContent>
             </Card>
+            </motion.div>
 
-            <Card className="border-t-4 border-t-blue-500 hover:shadow-lg transition-shadow">
+            <motion.div
+              variants={{
+                hidden: { opacity: 0, y: 30 },
+                visible: { opacity: 1, y: 0 }
+              }}
+              whileHover={{ y: -10, scale: 1.02 }}
+            >
+            <Card className="border-t-4 border-t-blue-500 hover:shadow-2xl transition-shadow h-full">
               <CardHeader>
-                <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mb-3">
+                <motion.div
+                  whileHover={{ rotate: 360, scale: 1.1 }}
+                  transition={{ duration: 0.6 }}
+                  className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mb-3"
+                >
                   <Users className="text-blue-600" size={24} />
-                </div>
+                </motion.div>
                 <CardTitle>Готовые клиенты</CardTitle>
               </CardHeader>
               <CardContent>
@@ -484,12 +538,24 @@ export default function BecomeGuidePage() {
                 </ul>
               </CardContent>
             </Card>
+            </motion.div>
 
-            <Card className="border-t-4 border-t-purple-500 hover:shadow-lg transition-shadow">
+            <motion.div
+              variants={{
+                hidden: { opacity: 0, y: 30 },
+                visible: { opacity: 1, y: 0 }
+              }}
+              whileHover={{ y: -10, scale: 1.02 }}
+            >
+            <Card className="border-t-4 border-t-purple-500 hover:shadow-2xl transition-shadow h-full">
               <CardHeader>
-                <div className="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center mb-3">
+                <motion.div
+                  whileHover={{ rotate: 360, scale: 1.1 }}
+                  transition={{ duration: 0.6 }}
+                  className="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center mb-3"
+                >
                   <Trophy className="text-purple-600" size={24} />
-                </div>
+                </motion.div>
                 <CardTitle>Поддержка 24/7</CardTitle>
               </CardHeader>
               <CardContent>
@@ -512,7 +578,8 @@ export default function BecomeGuidePage() {
                 </ul>
               </CardContent>
             </Card>
-          </div>
+            </motion.div>
+          </motion.div>
         </div>
 
         {/* How it Works */}
