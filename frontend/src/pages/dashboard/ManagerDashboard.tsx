@@ -138,7 +138,7 @@ export default function ManagerDashboard() {
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <p className="text-4xl font-bold text-blue-500">{formatRUB(monthlyIncome / 0.03)}</p>
+            <p className="text-4xl font-bold text-blue-500">{formatRUB(monthlyTurnover)}</p>
             <p className="text-xs text-gray-500 mt-1">Полная стоимость</p>
           </CardContent>
         </Card>
