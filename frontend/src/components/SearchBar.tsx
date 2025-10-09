@@ -73,8 +73,12 @@ export function SearchBar({ variant = 'hero', className }: SearchBarProps) {
           className={cn(
             "px-6 py-2.5 text-base font-semibold transition-all rounded-full",
             activeTab === 'tours' 
-              ? "bg-airbnb-rausch text-white shadow-md" 
-              : "bg-white/90 backdrop-blur-sm text-white/95 border border-white/40 hover:bg-white/95 hover:text-gray-900"
+              ? isHero 
+                ? "bg-white text-gray-900 shadow-md" 
+                : "bg-airbnb-rausch text-white shadow-md"
+              : isHero
+                ? "bg-white/20 backdrop-blur-sm text-white border border-white/40 hover:bg-white/30"
+                : "bg-gray-100 text-gray-700 hover:bg-gray-200"
           )}
         >
           Экскурсии
@@ -85,8 +89,12 @@ export function SearchBar({ variant = 'hero', className }: SearchBarProps) {
           className={cn(
             "px-6 py-2.5 text-base font-semibold transition-all rounded-full",
             activeTab === 'experiences' 
-              ? "bg-airbnb-rausch text-white shadow-md" 
-              : "bg-white/90 backdrop-blur-sm text-white/95 border border-white/40 hover:bg-white/95 hover:text-gray-900"
+              ? isHero 
+                ? "bg-white text-gray-900 shadow-md" 
+                : "bg-airbnb-rausch text-white shadow-md"
+              : isHero
+                ? "bg-white/20 backdrop-blur-sm text-white border border-white/40 hover:bg-white/30"
+                : "bg-gray-100 text-gray-700 hover:bg-gray-200"
           )}
         >
           Впечатления
@@ -270,12 +278,14 @@ export function SearchBar({ variant = 'hero', className }: SearchBarProps) {
           </AnimatePresence>
         </div>
 
-        {/* Кнопка поиска - только иконка, увеличенная */}
+        {/* Кнопка поиска - увеличенная с ripple */}
         <Button
           onClick={handleSearch}
-          className="rounded-full bg-airbnb-rausch hover:bg-airbnb-rausch/90 hover:scale-110 hover:shadow-xl text-white flex items-center justify-center transition-all w-14 h-14 p-0"
+          className="rounded-full bg-airbnb-rausch hover:bg-airbnb-rausch/90 hover:scale-110 hover:shadow-2xl text-white flex items-center justify-center transition-all w-16 h-16 p-0 relative overflow-hidden group"
         >
-          <Search size={24} />
+          <Search size={28} strokeWidth={2.5} className="relative z-10" />
+          {/* Ripple effect */}
+          <span className="absolute inset-0 bg-white/20 scale-0 group-hover:scale-100 transition-transform duration-500 rounded-full" />
         </Button>
       </motion.div>
     </div>
