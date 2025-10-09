@@ -1,8 +1,11 @@
+import { useState } from 'react'
 import { Routes, Route } from 'react-router-dom'
 import { ProtectedRoute } from './components/ProtectedRoute'
 import { RequestFloatingButton } from './components/RequestFloatingButton'
 import { ScrollToTop } from './components/ScrollToTop'
 import { ScrollProgress } from './components/ScrollProgress'
+import { SecretDiscount } from './components/SecretDiscount'
+import { useKonamiCode } from './hooks/useKonamiCode'
 
 // Публичные страницы
 import HomePage from './pages/public/HomePage'
@@ -38,11 +41,21 @@ import SettingsPage from './pages/dashboard/SettingsPage'
 import RequestsPage from './pages/dashboard/RequestsPage'
 
 function App() {
+  const [showSecretDiscount, setShowSecretDiscount] = useState(false)
+
+  useKonamiCode(() => {
+    setShowSecretDiscount(true)
+  })
+
   return (
     <>
       <ScrollProgress />
       <RequestFloatingButton />
       <ScrollToTop />
+      <SecretDiscount 
+        isOpen={showSecretDiscount} 
+        onClose={() => setShowSecretDiscount(false)} 
+      />
       <Routes>
       {/* Публичные маршруты */}
       <Route path="/" element={<HomePage />} />
