@@ -27,20 +27,20 @@ async def seed_data():
     async with async_session() as session:
         import sqlalchemy as sa
         
-        # Очищаем телефон супер-админа
+        # Очищаем телефон админа
         phone_clean = ''.join(filter(str.isdigit, settings.SUPER_ADMIN_PHONE))
         
-        # Получаем супер-админа
+        # Получаем админа
         result = await session.execute(
             sa.select(User).where(User.phone == phone_clean)
         )
-        super_admin = result.scalar_one_or_none()
+        admin = result.scalar_one_or_none()
         
-        if not super_admin:
-            print("❌ Супер-админ не найден")
+        if not admin:
+            print("❌ Админ не найден")
             return
         
-        print(f"✅ Супер-админ найден: {super_admin.phone} (ID: {super_admin.id})")
+        print(f"✅ Админ найден: {admin.phone} (ID: {admin.id})")
         
         # Создаём системного гида для публичных туров (чтобы не показывать их обычным гидам)
         system_guide_phone = "00000000000"  # Системный номер
@@ -57,7 +57,7 @@ async def seed_data():
                 name="Каталог ThaiGuide",
                 hashed_password=get_password_hash("system_password_no_login"),
                 role=UserRole.MANAGER,
-                parent_id=super_admin.id
+                parent_id=admin.id
             )
             session.add(system_guide)
             await session.commit()
@@ -385,7 +385,7 @@ async def seed_data():
         # Создаём тестовые заявки (проверяем дубликаты по title)
         requests_data = [
             {
-                "client_id": super_admin.id,
+                "client_id": admin.id,
                 "title": "Романтическая прогулка по Пхукету",
                 "description": "Хотим увидеть красивые закаты, романтичные места, сделать фотосессию на фоне океана",
                 "duration_hours": 2,
@@ -395,7 +395,7 @@ async def seed_data():
                 "status": "pending"
             },
             {
-                "client_id": super_admin.id,
+                "client_id": admin.id,
                 "title": "Полный день на островах Пхи-Пхи",
                 "description": "Снорклинг, пляжи, обед на острове, фотографии, посещение бухты Майя Бэй",
                 "duration_hours": 7,
@@ -405,7 +405,7 @@ async def seed_data():
                 "status": "pending"
             },
             {
-                "client_id": super_admin.id,
+                "client_id": admin.id,
                 "title": "Обзорная экскурсия по Бангкоку",
                 "description": "Храмы Ват Пхо и Ват Арун, рынки, уличная еда, прогулка по каналам",
                 "duration_hours": 6,
@@ -415,7 +415,7 @@ async def seed_data():
                 "status": "pending"
             },
             {
-                "client_id": super_admin.id,
+                "client_id": admin.id,
                 "title": "Утренний храмовый комплекс",
                 "description": "Посещение главных храмов Бангкока до наплыва туристов, в том числе Изумрудного Будды",
                 "duration_hours": 3,
@@ -425,7 +425,7 @@ async def seed_data():
                 "status": "pending"
             },
             {
-                "client_id": super_admin.id,
+                "client_id": admin.id,
                 "title": "Вечерний закат на пляже Ката",
                 "description": "Романтический ужин на пляже с видом на закат, фотосессия",
                 "duration_hours": 2,
@@ -435,7 +435,7 @@ async def seed_data():
                 "status": "pending"
             },
             {
-                "client_id": super_admin.id,
+                "client_id": admin.id,
                 "title": "Трекинг в джунглях Краби",
                 "description": "Поход по джунглям с посещением водопадов, купание в горячих источниках",
                 "duration_hours": 5,

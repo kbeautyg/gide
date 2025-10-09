@@ -68,10 +68,8 @@ class RoleChecker:
 
 
 # Готовые dependency для проверки ролей
-require_super_admin = RoleChecker([UserRole.SUPER_ADMIN])
-require_admin = RoleChecker([UserRole.SUPER_ADMIN, UserRole.ADMIN])
-require_manager = RoleChecker([UserRole.SUPER_ADMIN, UserRole.ADMIN, UserRole.SUPER_MANAGER, UserRole.MANAGER, UserRole.GUIDE])
-require_guide = RoleChecker([UserRole.MANAGER, UserRole.GUIDE])
+require_admin = RoleChecker([UserRole.ADMIN])
+require_manager = RoleChecker([UserRole.ADMIN, UserRole.MANAGER])
 
 
 def check_hierarchy(current_user: User, target_user: User) -> bool:
@@ -79,21 +77,15 @@ def check_hierarchy(current_user: User, target_user: User) -> bool:
     Проверка иерархии: может ли current_user управлять target_user
     
     Правила:
-    - Супер-админ может управлять всеми
-    - Админ может управлять своей когортой (parent_id = admin.id)
-    - Супер-менеджер может управлять своими менеджерами (parent_id = super_manager.id)
+    - Админ может управлять всеми гидами
+    - Гид может управлять только своими клиентами
     """
-    # Супер-админ может всё
-    if current_user.role == UserRole.SUPER_ADMIN:
+    # Админ может управлять всеми
+    if current_user.role == UserRole.ADMIN:
         return True
     
     # Проверяем прямую иерархию
     if target_user.parent_id == current_user.id:
         return True
-    
-    # Для админа - проверяем всю цепочку
-    if current_user.role == UserRole.ADMIN:
-        # TODO: Реализовать рекурсивную проверку всей когорты
-        return target_user.parent_id == current_user.id
     
     return False

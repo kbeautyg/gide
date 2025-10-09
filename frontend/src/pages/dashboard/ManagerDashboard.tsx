@@ -76,9 +76,7 @@ export default function ManagerDashboard() {
             <div>
               <p className="text-2xl font-bold">{user?.name || 'Гид'}</p>
               <p className="text-white/90">
-                {user?.role === 'super_admin' ? 'Супер-админ' : 
-                 user?.role === 'admin' ? 'Администратор' : 
-                 user?.role === 'super_manager' ? 'Супер-менеджер' : 'Гид'} • ThaiGuide Pro
+                {user?.role === 'admin' ? 'Администратор' : 'Гид'} • ThaiGuide Pro
               </p>
             </div>
           </div>

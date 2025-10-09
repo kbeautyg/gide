@@ -10,13 +10,9 @@ from app.db.base import Base
 
 class UserRole(str, enum.Enum):
     """Роли пользователей"""
-    SUPER_ADMIN = "super_admin"
-    ADMIN = "admin"
-    SUPER_MANAGER = "super_manager"
-    MANAGER = "manager"
-    GUIDE = "guide"
-    CLIENT = "client"
-    EXCHANGER = "exchanger"
+    ADMIN = "admin"           # Администратор (управление контентом)
+    MANAGER = "manager"       # Гид (создаёт экскурсии)
+    CLIENT = "client"         # Клиент (бронирует экскурсии)
 
 
 class User(Base):

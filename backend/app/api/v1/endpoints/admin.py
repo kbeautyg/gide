@@ -9,7 +9,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.db.session import get_db
 from app.services.user_service import UserService
 from app.models.user import User, UserRole
-from app.core.deps import require_admin, require_super_admin, get_current_user, check_hierarchy
+from app.core.deps import require_admin, get_current_user, check_hierarchy
 
 router = APIRouter()
 
@@ -20,7 +20,7 @@ class CreateUserRequest(BaseModel):
     email: Optional[str] = Field(None, description="Email")
     password: str = Field(..., description="Пароль")
     name: Optional[str] = Field(None, description="Имя")
-    role: str = Field(..., description="Роль (admin, super_manager, manager, guide)")
+    role: str = Field(..., description="Роль (manager, client)")
 
 
 class UserResponse(BaseModel):
@@ -51,24 +51,17 @@ async def create_user(
     """
     Создание нового пользователя
     
-    Доступно: Админ, Супер-админ
+    Доступно: Только ADMIN
     
-    Админ может создавать: супер-менеджеров и менеджеров
-    Супер-админ может создавать: админов, супер-менеджеров, менеджеров
+    Админ может создавать: гидов (MANAGER) и клиентов (CLIENT)
     """
     # Проверяем права на создание этой роли
     role = UserRole(request.role)
     
-    if current_user.role == UserRole.ADMIN and role == UserRole.ADMIN:
+    if role == UserRole.ADMIN:
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
-            detail="Админ не может создавать других админов"
-        )
-    
-    if current_user.role != UserRole.SUPER_ADMIN and role == UserRole.SUPER_ADMIN:
-        raise HTTPException(
-            status_code=status.HTTP_403_FORBIDDEN,
-            detail="Только супер-админ может создавать супер-админов"
+            detail="Нельзя создавать других админов через API"
         )
     
     # Очищаем телефон от всех символов кроме цифр
@@ -83,8 +76,7 @@ async def create_user(
             detail="Пользователь с таким телефоном уже существует"
         )
     
-    # Создаем пользователя с parent_id = current_user.id
-    # (привязываем к тому кто создал)
+    # Создаем пользователя с parent_id = current_user.id (админ создаёт гидов)
     # Преобразуем пустые строки в None для необязательных полей
     user = await UserService.create_user(
         db=db,
@@ -93,7 +85,7 @@ async def create_user(
         email=request.email if request.email and request.email.strip() else None,
         name=request.name if request.name and request.name.strip() else None,
         role=role,
-        parent_id=current_user.id if role != UserRole.SUPER_ADMIN else None,
+        parent_id=current_user.id if role == UserRole.MANAGER else None,
     )
     
     return UserResponse(
@@ -112,12 +104,12 @@ async def create_user(
 @router.get("/users/all", response_model=List[UserResponse])
 async def get_all_users(
     db: AsyncSession = Depends(get_db),
-    current_user: User = Depends(require_super_admin)
+    current_user: User = Depends(require_admin)
 ):
     """
     Получение ВСЕХ пользователей системы
     
-    Доступно: Только супер-админ
+    Доступно: Только ADMIN
     """
     from sqlalchemy import select
     
@@ -148,9 +140,9 @@ async def get_my_team(
     current_user: User = Depends(get_current_user)
 ):
     """
-    Получение списка подчиненных пользователей (моя когорта)
+    Получение списка подчиненных пользователей
     
-    Доступно: Админ, Супер-менеджер
+    Доступно: ADMIN (все гиды), MANAGER (свои клиенты)
     """
     # Получаем всех подчиненных
     team = await UserService.get_user_hierarchy(db, current_user.id)
@@ -175,14 +167,12 @@ async def get_my_team(
 async def change_user_parent(
     request: ChangeParentRequest,
     db: AsyncSession = Depends(get_db),
-    current_user: User = Depends(require_super_admin)
+    current_user: User = Depends(require_admin)
 ):
     """
-    Переназначение менеджера между админами
+    Переназначение гида к другому родителю
     
-    Доступно: Только супер-админ
-    
-    Пример: перенести flower@nadi.com с Kiril на Farukh
+    Доступно: Только ADMIN
     """
     # Получаем пользователя и нового родителя
     user = await UserService.get_user_by_id(db, request.user_id)
@@ -356,11 +346,11 @@ async def get_all_guides(
     """
     Список всех гидов
     
-    Доступно: ADMIN, SUPER_ADMIN
+    Доступно: Только ADMIN
     """
     from sqlalchemy import select
     
-    query = select(User).where(User.role.in_([UserRole.MANAGER, UserRole.SUPER_MANAGER]))
+    query = select(User).where(User.role == UserRole.MANAGER)
     result = await db.execute(query)
     guides = result.scalars().all()
     
@@ -376,14 +366,14 @@ async def approve_guide(
     """
     Одобрить гида (активировать)
     
-    Доступно: ADMIN, SUPER_ADMIN
+    Доступно: Только ADMIN
     """
     user = await UserService.get_user_by_id(db, guide_id)
     
     if not user:
         raise HTTPException(status_code=404, detail="Гид не найден")
     
-    if user.role not in [UserRole.MANAGER, UserRole.SUPER_MANAGER]:
+    if user.role != UserRole.MANAGER:
         raise HTTPException(status_code=400, detail="Это не гид")
     
     # Здесь можно добавить поле approved в модель User
@@ -400,14 +390,14 @@ async def block_guide(
     """
     Заблокировать гида
     
-    Доступно: ADMIN, SUPER_ADMIN
+    Доступно: Только ADMIN
     """
     user = await UserService.get_user_by_id(db, guide_id)
     
     if not user:
         raise HTTPException(status_code=404, detail="Гид не найден")
     
-    if user.role not in [UserRole.MANAGER, UserRole.SUPER_MANAGER]:
+    if user.role != UserRole.MANAGER:
         raise HTTPException(status_code=400, detail="Это не гид")
     
     # Здесь можно добавить поле blocked в модель User
@@ -438,7 +428,7 @@ async def get_admin_stats(
     
     # Количество гидов
     total_guides_query = select(func.count()).select_from(User).where(
-        User.role.in_([UserRole.MANAGER, UserRole.SUPER_MANAGER])
+        User.role == UserRole.MANAGER
     )
     total_guides_result = await db.execute(total_guides_query)
     total_guides = total_guides_result.scalar() or 0
