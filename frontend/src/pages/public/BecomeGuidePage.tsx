@@ -31,34 +31,90 @@ export default function BecomeGuidePage() {
     <div className="min-h-screen bg-white">
       <PublicHeader />
       
+      {/* Hero - Анимированный с градиентом */}
+      <section className="relative py-24 overflow-hidden bg-gradient-to-br from-gray-900 via-purple-900 to-airbnb-rausch">
+        <motion.div
+          animate={{
+            scale: [1, 1.2, 1],
+            rotate: [0, 90, 0]
+          }}
+          transition={{
+            duration: 25,
+            repeat: Infinity,
+            ease: 'linear'
+          }}
+          className="absolute top-0 left-0 w-96 h-96 bg-white/10 rounded-full blur-3xl"
+        />
+
+        <div className="container mx-auto px-4 relative z-10">
+          <motion.div 
+            className="text-center mb-16 text-white"
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+          >
+            <motion.div
+              animate={{ 
+                rotate: [0, 360],
+                scale: [1, 1.1, 1]
+              }}
+              transition={{
+                duration: 3,
+                repeat: Infinity,
+                ease: 'easeInOut'
+              }}
+              className="inline-block p-4 bg-white/20 backdrop-blur-sm rounded-full mb-6"
+            >
+              <UserPlus size={56} className="text-white" />
+            </motion.div>
+            
+            <h1 className="text-5xl md:text-7xl font-black mb-6">
+              Подключитесь к платформе
+              <br />
+              <motion.span
+                animate={{
+                  backgroundPosition: ['0% 50%', '100% 50%', '0% 50%']
+                }}
+                transition={{
+                  duration: 5,
+                  repeat: Infinity,
+                  ease: 'linear'
+                }}
+                style={{
+                  backgroundSize: '200% 200%'
+                }}
+                className="bg-gradient-to-r from-yellow-300 via-pink-300 to-yellow-300 bg-clip-text text-transparent"
+              >
+                и начните зарабатывать
+              </motion.span>
+            </h1>
+            
+            <p className="text-xl md:text-2xl text-white/90 max-w-3xl mx-auto mb-10">
+              Turex Pro — это не просто площадка. Это полноценная система управления 
+              вашим бизнесом: бронирования, платежи, статистика и выплаты в одном месте.
+            </p>
+            
+            <div className="flex justify-center gap-4 flex-wrap">
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className="px-10 py-5 bg-white text-airbnb-rausch rounded-full font-bold text-lg shadow-2xl hover:shadow-3xl transition-all"
+              >
+                🚀 Начать сейчас
+              </motion.button>
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className="px-10 py-5 bg-transparent border-2 border-white text-white rounded-full font-bold text-lg hover:bg-white hover:text-airbnb-rausch transition-all"
+              >
+                📱 Посмотреть демо
+              </motion.button>
+            </div>
+          </motion.div>
+        </div>
+      </section>
+
       <main className="container mx-auto px-4 py-12">
-        {/* Hero Section */}
-        <motion.div 
-          className="text-center mb-16"
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-        >
-          <div className="inline-block p-3 bg-airbnb-rausch/10 rounded-full mb-4">
-            <UserPlus size={48} className="text-airbnb-rausch" />
-          </div>
-          <h1 className="text-4xl md:text-6xl font-bold text-gray-900 mb-4">
-            Подключитесь к платформе<br />
-            <span className="text-airbnb-rausch">и начните зарабатывать уже сегодня</span>
-          </h1>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            ThaiGuide Pro — это не просто площадка для экскурсий. Это полноценная система управления 
-            вашим бизнесом: бронирования, платежи, статистика и выплаты в одном месте.
-          </p>
-          <div className="flex justify-center gap-4 mt-8">
-            <Button size="lg" variant="tropical" className="text-lg px-8 py-6">
-              Начать сейчас
-            </Button>
-            <Button size="lg" variant="outline" className="text-lg px-8 py-6">
-              Посмотреть демо
-            </Button>
-          </div>
-        </motion.div>
 
         {/* Dashboard Preview - ГЛАВНЫЙ КОЗЫРЬ */}
         <div className="mb-20">
