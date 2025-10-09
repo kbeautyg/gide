@@ -24,6 +24,7 @@ import RegisterPage from './pages/auth/RegisterPage'
 // Личные кабинеты
 import DashboardLayout from './pages/dashboard/DashboardLayout'
 import ManagerDashboard from './pages/dashboard/ManagerDashboard'
+import AdminDashboard from './pages/dashboard/AdminDashboard'
 import MyToursPage from './pages/dashboard/MyToursPage'
 import CalendarPage from './pages/dashboard/CalendarPage'
 import BookingsPage from './pages/dashboard/BookingsPage'
@@ -63,6 +64,7 @@ function App() {
         }
       >
         <Route index element={<ManagerDashboard />} />
+        <Route path="admin" element={<AdminDashboard />} />
         <Route path="my-tours" element={<MyToursPage />} />
         <Route path="requests" element={<RequestsPage />} />
         <Route path="calendar" element={<CalendarPage />} />

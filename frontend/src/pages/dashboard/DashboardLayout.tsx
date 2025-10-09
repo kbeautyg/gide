@@ -10,7 +10,8 @@ import {
   Settings, 
   LogOut,
   Home,
-  FileText
+  FileText,
+  Shield
 } from 'lucide-react'
 
 export default function DashboardLayout() {
@@ -20,6 +21,9 @@ export default function DashboardLayout() {
 
   const menuItems = [
     { icon: LayoutDashboard, label: 'Дашборд', path: '/dashboard' },
+    ...(user?.role === 'admin' || user?.role === 'super_admin' 
+      ? [{ icon: Shield, label: 'Админ-панель', path: '/dashboard/admin' }] 
+      : []),
     { icon: MapPin, label: 'Мои экскурсии', path: '/dashboard/my-tours' },
     { icon: FileText, label: 'Заявки', path: '/dashboard/requests', badge: 'new' },
     { icon: Calendar, label: 'Календарь', path: '/dashboard/calendar' },
