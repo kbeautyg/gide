@@ -9,6 +9,7 @@ import { PublicHeader } from '@/components/PublicHeader'
 import { PublicFooter } from '@/components/PublicFooter'
 import { SearchBar } from '@/components/SearchBar'
 import { TourCard } from '@/components/TourCard'
+import { TourCardSkeleton } from '@/components/TourCardSkeleton'
 
 // Анимационные варианты
 const containerVariants = {
@@ -296,7 +297,7 @@ export default function HomePage() {
             ) : (
               // Skeleton loaders
               Array.from({ length: 6 }).map((_, idx) => (
-                <div key={idx} className="skeleton rounded-xl h-[380px]" />
+                <TourCardSkeleton key={idx} />
               ))
             )}
           </motion.div>
