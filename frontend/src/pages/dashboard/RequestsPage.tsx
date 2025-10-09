@@ -196,7 +196,7 @@ export default function RequestsPage() {
 
       {/* Modal выбора даты */}
       <Dialog open={showTakeModal} onOpenChange={setShowTakeModal}>
-        <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto">
+        <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto scrollbar-hide">
           <DialogHeader>
             <DialogTitle className="text-2xl">Взять заявку</DialogTitle>
           </DialogHeader>
