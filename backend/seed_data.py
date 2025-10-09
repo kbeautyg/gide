@@ -41,7 +41,7 @@ async def seed_data():
         
         print(f"✅ Супер-админ найден: {super_admin.phone} (ID: {super_admin.id})")
         
-        # Создаём направления
+        # Создаём направления (проверяем на существование)
         destinations_data = [
             {"name": "Тбилиси", "country": "Грузия", "slug": "tbilisi", 
              "photo_url": "https://images.unsplash.com/photo-1597079858949-19881cff2e1d?w=800",
@@ -60,12 +60,19 @@ async def seed_data():
              "description": "Город света и романтики", "tours_count": 0},
         ]
         
+        created_count = 0
         for dest_data in destinations_data:
-            dest = Destination(**dest_data)
-            session.add(dest)
+            # Проверяем, существует ли уже
+            existing = await session.execute(
+                sa.select(Destination).where(Destination.slug == dest_data['slug'])
+            )
+            if not existing.scalar_one_or_none():
+                dest = Destination(**dest_data)
+                session.add(dest)
+                created_count += 1
         
         await session.commit()
-        print(f"✅ Создано {len(destinations_data)} направлений")
+        print(f"✅ Создано {created_count} новых направлений (пропущено {len(destinations_data) - created_count} существующих)")
         
         # Получаем Тбилиси для достопримечательностей
         result = await session.execute(
@@ -85,14 +92,24 @@ async def seed_data():
                  "photo_url": "https://images.unsplash.com/photo-1597079858949-19881cff2e1d?w=300", "tours_count": 0},
             ]
             
+            landmark_created = 0
             for landmark_data in landmarks_data:
-                landmark = Landmark(**landmark_data)
-                session.add(landmark)
+                # Проверяем дубликаты по имени и destination_id
+                existing = await session.execute(
+                    sa.select(Landmark).where(
+                        Landmark.destination_id == landmark_data['destination_id'],
+                        Landmark.name == landmark_data['name']
+                    )
+                )
+                if not existing.scalar_one_or_none():
+                    landmark = Landmark(**landmark_data)
+                    session.add(landmark)
+                    landmark_created += 1
             
             await session.commit()
-            print(f"✅ Создано {len(landmarks_data)} достопримечательностей")
+            print(f"✅ Создано {landmark_created} новых достопримечательностей")
         
-        # Создаём статьи
+        # Создаём статьи (проверяем дубликаты)
         articles_data = [
             {
                 "title": "Как добраться до Китайской стены: поездка из Пекина",
@@ -126,12 +143,19 @@ async def seed_data():
             },
         ]
         
+        article_created = 0
         for article_data in articles_data:
-            article = Article(**article_data)
-            session.add(article)
+            # Проверяем дубликаты по slug
+            existing = await session.execute(
+                sa.select(Article).where(Article.slug == article_data['slug'])
+            )
+            if not existing.scalar_one_or_none():
+                article = Article(**article_data)
+                session.add(article)
+                article_created += 1
         
         await session.commit()
-        print(f"✅ Создано {len(articles_data)} статей")
+        print(f"✅ Создано {article_created} новых статей")
         
         # Обновляем существующие туры с новыми полями
         result = await session.execute(sa.select(Tour))
@@ -201,7 +225,7 @@ async def seed_data():
             await session.commit()
             print(f"✅ Создано {len(reviews_data)} отзывов")
         
-        # Создаём тестовые заявки
+        # Создаём тестовые заявки (проверяем дубликаты по title)
         requests_data = [
             {
                 "client_id": super_admin.id,
@@ -265,12 +289,22 @@ async def seed_data():
             },
         ]
         
+        request_created = 0
         for req_data in requests_data:
-            req = Request(**req_data)
-            session.add(req)
+            # Проверяем дубликаты по title и status
+            existing = await session.execute(
+                sa.select(Request).where(
+                    Request.title == req_data['title'],
+                    Request.status == 'pending'
+                )
+            )
+            if not existing.scalar_one_or_none():
+                req = Request(**req_data)
+                session.add(req)
+                request_created += 1
         
         await session.commit()
-        print(f"✅ Создано {len(requests_data)} тестовых заявок")
+        print(f"✅ Создано {request_created} новых заявок (пропущено {len(requests_data) - request_created} существующих)")
         
         print("ℹ️ Пользователи могут создавать экскурсии сами через ЛК")
 
