@@ -56,7 +56,7 @@ export default function ManagerDashboard() {
     })
     .reduce((sum: number, b: any) => sum + ((b.total_price || 0) * 0.03), 0)  // 3% комиссия
 
-  // Оборот за месяц (полная стоимость)
+  // Оборот за месяц (полная стоимость) - используется в карточке
   const monthlyTurnover = bookings
     .filter((b: any) => {
       const bookingDate = new Date(b.created_at)
@@ -66,9 +66,6 @@ export default function ManagerDashboard() {
              b.payment_status === 'paid'
     })
     .reduce((sum: number, b: any) => sum + (b.total_price || 0), 0)
-
-  // Средний чек (сохраняем для будущего использования)
-  // const averageCheck = thisMonthBookings > 0 ? monthlyTurnover / thisMonthBookings : 0
 
   // График доходов - 3% комиссия гида от выручки
   const revenueData = revenueStats.length > 0 
