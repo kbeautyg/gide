@@ -1,5 +1,6 @@
 import { Routes, Route } from 'react-router-dom'
 import { ProtectedRoute } from './components/ProtectedRoute'
+import { RequestFloatingButton } from './components/RequestFloatingButton'
 
 // Публичные страницы
 import HomePage from './pages/public/HomePage'
@@ -33,7 +34,9 @@ import RequestsPage from './pages/dashboard/RequestsPage'
 
 function App() {
   return (
-    <Routes>
+    <>
+      <RequestFloatingButton />
+      <Routes>
       {/* Публичные маршруты */}
       <Route path="/" element={<HomePage />} />
       <Route path="/tours" element={<ToursPage />} />
@@ -72,6 +75,7 @@ function App() {
         <Route path="settings" element={<SettingsPage />} />
       </Route>
     </Routes>
+    </>
   )
 }
 

@@ -274,6 +274,37 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* CTA блок: Индивидуальные туры */}
+      <section className="py-20 bg-airbnb-rausch">
+        <div className="container mx-auto px-4">
+          <motion.div
+            className="max-w-4xl mx-auto text-center text-white"
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+          >
+            <div className="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-6">
+              <span className="text-4xl">✨</span>
+            </div>
+            <h2 className="text-4xl md:text-5xl font-bold mb-6">
+              Не нашли подходящую экскурсию?
+            </h2>
+            <p className="text-xl text-white/90 mb-8 max-w-2xl mx-auto">
+              Опишите что хотите увидеть, и мы создадим индивидуальный тур специально для вас
+            </p>
+            <Link to="/request">
+              <Button 
+                size="lg"
+                className="bg-white text-airbnb-rausch hover:bg-gray-50 font-semibold text-lg px-8 py-6 rounded-full shadow-xl hover:scale-105 transition-transform"
+              >
+                Оставить заявку на индивидуальный тур
+              </Button>
+            </Link>
+          </motion.div>
+        </div>
+      </section>
+
       {/* Как мы делаем экскурсии */}
       <section className="py-20 bg-gray-50">
         <div className="container mx-auto px-4">
