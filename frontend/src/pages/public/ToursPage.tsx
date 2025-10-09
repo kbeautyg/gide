@@ -13,6 +13,9 @@ import { TourCard } from '@/components/TourCard'
 
 export default function ToursPage() {
   const [selectedThemes, setSelectedThemes] = useState<string[]>([])
+  const [selectedPriceRanges, setSelectedPriceRanges] = useState<string[]>([])
+  const [selectedDurations, setSelectedDurations] = useState<string[]>([])
+  const [selectedRatings, setSelectedRatings] = useState<string[]>([])
   const [showFilters, setShowFilters] = useState(false)
   const [sortBy, setSortBy] = useState('popular')
 
@@ -22,21 +25,60 @@ export default function ToursPage() {
     queryFn: () => fetch('/api/v1/tours/categories').then(res => res.json()),
   })
 
-  // Загрузка экскурсий
+  // Загрузка экскурсий с фильтрами
   const { data: toursData, isLoading, error } = useQuery({
-    queryKey: ['tours', selectedThemes],
+    queryKey: ['tours', selectedThemes, selectedPriceRanges, selectedDurations, selectedRatings],
     queryFn: async () => {
-      const response = await toursApi.getList({
+      // Преобразуем фильтры в параметры API
+      const params: any = {
         page: 1,
         page_size: 50,
-      })
+      }
+
+      // Цена
+      if (selectedPriceRanges.includes('До 5000₽')) params.max_price = 5000
+      if (selectedPriceRanges.includes('5000-10000₽')) {
+        params.min_price = 5000
+        params.max_price = 10000
+      }
+      if (selectedPriceRanges.includes('10000+₽')) params.min_price = 10000
+
+      const response = await toursApi.getList(params)
       console.log('Tours API response:', response.data)
       return response.data
     },
   })
 
   const tours = toursData?.tours || []
-  console.log('Tours array:', tours, 'Length:', tours.length)
+  
+  // Клиентская фильтрация (длительность и рейтинг)
+  const filteredTours = tours.filter((tour: any) => {
+    // Длительность
+    if (selectedDurations.length > 0) {
+      const matchesDuration = selectedDurations.some(dur => {
+        if (dur === '1-3 часа') return tour.duration >= 1 && tour.duration <= 3
+        if (dur === '4-6 часов') return tour.duration >= 4 && tour.duration <= 6
+        if (dur === 'Полный день (7+ч)') return tour.duration >= 7
+        return false
+      })
+      if (!matchesDuration) return false
+    }
+
+    // Рейтинг
+    if (selectedRatings.length > 0) {
+      const matchesRating = selectedRatings.some(rating => {
+        if (rating === '4.5+ звёзд') return tour.rating >= 4.5
+        if (rating === '4.7+') return tour.rating >= 4.7
+        if (rating === '4.9+ (топ)') return tour.rating >= 4.9
+        return false
+      })
+      if (!matchesRating) return false
+    }
+
+    return true
+  })
+
+  console.log('Filtered tours:', filteredTours.length)
 
   // Формируем список категорий для чипсов
   const themeCategories = categoriesData?.themes 
@@ -125,14 +167,103 @@ export default function ToursPage() {
 
       {/* Секция категорий (Рубрики) */}
       <div className="bg-white border-b">
-        <div className="container mx-auto px-4 py-6">
-          <h2 className="text-xl font-bold text-gray-900 mb-4">Рубрики</h2>
-          <CategoryChips
-            categories={themeCategories}
-            selected={selectedThemes}
-            onSelect={handleThemeSelect}
-            maxVisible={12}
-          />
+        <div className="container mx-auto px-4 py-6 space-y-4">
+          <div>
+            <h2 className="text-xl font-bold text-gray-900 mb-4">Категории</h2>
+            <CategoryChips
+              categories={themeCategories}
+              selected={selectedThemes}
+              onSelect={handleThemeSelect}
+              maxVisible={12}
+            />
+          </div>
+
+          {/* Фильтр по цене */}
+          <div>
+            <h3 className="text-sm font-semibold text-gray-700 mb-2">Цена</h3>
+            <div className="flex gap-2 overflow-x-auto scrollbar-hide">
+              {['До 5000₽', '5000-10000₽', '10000+₽'].map((range) => (
+                <button
+                  key={range}
+                  onClick={() => {
+                    setSelectedPriceRanges(prev =>
+                      prev.includes(range) ? prev.filter(r => r !== range) : [...prev, range]
+                    )
+                  }}
+                  className={`px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-all ${
+                    selectedPriceRanges.includes(range)
+                      ? 'bg-airbnb-rausch text-white shadow-md'
+                      : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                  }`}
+                >
+                  {range}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Фильтр по длительности */}
+          <div>
+            <h3 className="text-sm font-semibold text-gray-700 mb-2">Длительность</h3>
+            <div className="flex gap-2 overflow-x-auto scrollbar-hide">
+              {['1-3 часа', '4-6 часов', 'Полный день (7+ч)'].map((duration) => (
+                <button
+                  key={duration}
+                  onClick={() => {
+                    setSelectedDurations(prev =>
+                      prev.includes(duration) ? prev.filter(d => d !== duration) : [...prev, duration]
+                    )
+                  }}
+                  className={`px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-all ${
+                    selectedDurations.includes(duration)
+                      ? 'bg-airbnb-rausch text-white shadow-md'
+                      : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                  }`}
+                >
+                  {duration}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Фильтр по рейтингу */}
+          <div>
+            <h3 className="text-sm font-semibold text-gray-700 mb-2">Рейтинг</h3>
+            <div className="flex gap-2 overflow-x-auto scrollbar-hide">
+              {['4.5+ звёзд', '4.7+', '4.9+ (топ)'].map((rating) => (
+                <button
+                  key={rating}
+                  onClick={() => {
+                    setSelectedRatings(prev =>
+                      prev.includes(rating) ? prev.filter(r => r !== rating) : [...prev, rating]
+                    )
+                  }}
+                  className={`px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-all ${
+                    selectedRatings.includes(rating)
+                      ? 'bg-airbnb-rausch text-white shadow-md'
+                      : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                  }`}
+                >
+                  ⭐ {rating}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Сброс фильтров */}
+          {(selectedThemes.length > 0 || selectedPriceRanges.length > 0 || selectedDurations.length > 0 || selectedRatings.length > 0) && (
+            <button
+              onClick={() => {
+                setSelectedThemes([])
+                setSelectedPriceRanges([])
+                setSelectedDurations([])
+                setSelectedRatings([])
+              }}
+              className="text-sm text-airbnb-rausch hover:underline font-medium"
+            >
+              Сбросить все фильтры
+            </button>
+          )}
         </div>
       </div>
 
@@ -144,7 +275,7 @@ export default function ToursPage() {
             <div>
               <h2 className="text-2xl font-bold text-gray-900 mb-1">Все туры</h2>
               <p className="text-gray-600">
-                {tours.length} предложени{tours.length === 1 ? 'е' : tours.length < 5 ? 'я' : 'й'}
+                {filteredTours.length} предложени{filteredTours.length === 1 ? 'е' : filteredTours.length < 5 ? 'я' : 'й'}
               </p>
             </div>
             
@@ -168,7 +299,7 @@ export default function ToursPage() {
                 <div key={i} className="skeleton rounded-xl h-[400px]" />
               ))}
             </div>
-          ) : tours.length === 0 ? (
+          ) : filteredTours.length === 0 ? (
             <div className="text-center py-20">
               <p className="text-gray-600 text-lg">Экскурсии не найдены</p>
               <p className="text-gray-500 mt-2">Попробуйте изменить фильтры</p>
@@ -188,7 +319,7 @@ export default function ToursPage() {
                 }
               }}
             >
-              {tours.map((tour) => (
+              {filteredTours.map((tour) => (
                 <motion.div
                   key={tour.id}
                   variants={{
