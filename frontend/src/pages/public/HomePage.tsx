@@ -139,18 +139,18 @@ export default function HomePage() {
             {/* SearchBar */}
             <div className="mb-8">
               <SearchBar variant="hero" />
-            </div>
+              </div>
             
             {/* CTA */}
-            <Link to="/request">
-              <Button 
-                variant="secondary" 
-                size="lg" 
+              <Link to="/request">
+                <Button 
+                  variant="secondary" 
+                  size="lg" 
                 className="bg-white text-airbnb-rausch hover:bg-gray-50 font-semibold text-lg px-8 shadow-lg"
-              >
-                ✨ Заказать индивидуальную экскурсию
-              </Button>
-            </Link>
+                >
+                  ✨ Заказать индивидуальную экскурсию
+                </Button>
+              </Link>
           </motion.div>
         </div>
       </section>
@@ -417,17 +417,17 @@ export default function HomePage() {
                         />
                       ))}
                     </div>
-                  </div>
-                </div>
+                      </div>
+                        </div>
                 
                 <p className="text-gray-700 mb-3 line-clamp-4">{review.text}</p>
                 
                 <div className="text-sm text-gray-600 mb-1">
                   <span className="font-medium">{review.tour}</span>
-                </div>
+                      </div>
                 <div className="text-xs text-gray-500">
                   Опыт: {review.experience} экскурси{review.experience === 1 ? 'я' : 'й'}
-                </div>
+              </div>
               </motion.div>
             ))}
           </div>
@@ -454,7 +454,7 @@ export default function HomePage() {
               <Button className="bg-gray-900 hover:bg-gray-800 text-white px-6">
                 Подписаться
               </Button>
-            </div>
+                </div>
             <p className="text-xs text-white/70 mt-3">
               Нажимая «Подписаться», вы даёте согласие на получение рекламных сообщений
             </p>

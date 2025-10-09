@@ -223,3 +223,68 @@ html {
   font-weight: 600;
   color: #222222;
 }
+
+/* React Day Picker кастомизация */
+.rdp {
+  --rdp-cell-size: 40px;
+  --rdp-accent-color: #FF385C;
+  --rdp-background-color: #FF385C;
+  --rdp-accent-color-dark: #E31C5F;
+  --rdp-background-color-dark: #180094;
+  --rdp-outline: 2px solid var(--rdp-accent-color);
+  --rdp-outline-selected: 2px solid rgba(0, 0, 0, 0.75);
+}
+
+.rdp-button:hover:not([disabled]):not(.rdp-day_selected) {
+  background-color: rgba(255, 56, 92, 0.1);
+}
+
+.rdp-button:focus-visible:not([disabled]) {
+  background-color: rgba(255, 56, 92, 0.1);
+  border: 2px solid #FF385C;
+}
+
+.rdp-day_selected {
+  background-color: #FF385C;
+  color: white;
+  font-weight: 600;
+}
+
+.rdp-day_selected:hover {
+  background-color: #E31C5F;
+}
+
+.rdp-day_today {
+  font-weight: 700;
+  color: #FF385C;
+}
+
+.rdp-day_range_middle {
+  background-color: rgba(255, 56, 92, 0.1);
+  color: #222222;
+}
+
+/* Анимация blob для креативного фона */
+@keyframes blob {
+  0%, 100% { 
+    transform: translate(0, 0) scale(1); 
+  }
+  33% { 
+    transform: translate(30px, -50px) scale(1.1); 
+  }
+  66% { 
+    transform: translate(-20px, 20px) scale(0.9); 
+  }
+}
+
+.animate-blob {
+  animation: blob 7s infinite;
+}
+
+.animation-delay-2000 {
+  animation-delay: 2s;
+}
+
+.animation-delay-4000 {
+  animation-delay: 4s;
+}

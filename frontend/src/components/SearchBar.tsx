@@ -2,11 +2,16 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Search, MapPin, Minus, Plus } from 'lucide-react'
+import { Search, MapPin, Minus, Plus, Calendar as CalendarIcon } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
+import { DayPicker, DateRange } from 'react-day-picker'
+import { format } from 'date-fns'
+import { ru } from 'date-fns/locale'
 import { cn } from '@/lib/utils'
 import { api } from '@/lib/api'
+import 'react-day-picker/dist/style.css'
 
 type Tab = 'tours' | 'experiences'
 
@@ -21,11 +26,10 @@ export function SearchBar({ variant = 'hero', className }: SearchBarProps) {
   const [expandedField, setExpandedField] = useState<string | null>(null)
   const [searchData, setSearchData] = useState({
     where: '',
-    checkIn: '',
-    checkOut: '',
     adults: 1,
     children: 0,
   })
+  const [dateRange, setDateRange] = useState<DateRange | undefined>(undefined)
 
   // Загрузка городов из API
   const { data: destinationsData } = useQuery({
@@ -47,16 +51,17 @@ export function SearchBar({ variant = 'hero', className }: SearchBarProps) {
     if (searchData.where) {
       params.append('location', searchData.where)
     }
-    if (searchData.checkIn) {
-      params.append('date_from', searchData.checkIn)
+    if (dateRange?.from) {
+      params.append('date_start', format(dateRange.from, 'yyyy-MM-dd'))
     }
-    if (searchData.checkOut) {
-      params.append('date_to', searchData.checkOut)
+    if (dateRange?.to) {
+      params.append('date_end', format(dateRange.to, 'yyyy-MM-dd'))
     }
     const totalGuests = searchData.adults + searchData.children
     if (totalGuests > 1) {
       params.append('guests', totalGuests.toString())
     }
+    params.append('type', activeTab)
     
     navigate(`/tours${params.toString() ? '?' + params.toString() : ''}`)
     setExpandedField(null)
@@ -73,11 +78,9 @@ export function SearchBar({ variant = 'hero', className }: SearchBarProps) {
           className={cn(
             "px-6 py-2.5 text-base font-semibold transition-all rounded-full",
             activeTab === 'tours' 
-              ? isHero 
-                ? "bg-white text-gray-900 shadow-md" 
-                : "bg-airbnb-rausch text-white shadow-md"
-              : isHero
-                ? "bg-white/20 backdrop-blur-sm text-white border border-white/40 hover:bg-white/30"
+              ? "bg-white text-gray-900 shadow-md" 
+              : isHero 
+                ? "bg-white/20 backdrop-blur-sm text-white border border-white/40 hover:bg-white/30" 
                 : "bg-gray-100 text-gray-700 hover:bg-gray-200"
           )}
         >
@@ -89,11 +92,9 @@ export function SearchBar({ variant = 'hero', className }: SearchBarProps) {
           className={cn(
             "px-6 py-2.5 text-base font-semibold transition-all rounded-full",
             activeTab === 'experiences' 
-              ? isHero 
-                ? "bg-white text-gray-900 shadow-md" 
-                : "bg-airbnb-rausch text-white shadow-md"
-              : isHero
-                ? "bg-white/20 backdrop-blur-sm text-white border border-white/40 hover:bg-white/30"
+              ? "bg-white text-gray-900 shadow-md" 
+              : isHero 
+                ? "bg-white/20 backdrop-blur-sm text-white border border-white/40 hover:bg-white/30" 
                 : "bg-gray-100 text-gray-700 hover:bg-gray-200"
           )}
         >
@@ -176,23 +177,81 @@ export function SearchBar({ variant = 'hero', className }: SearchBarProps) {
         {/* Разделитель */}
         <div className="h-8 w-px bg-gray-300" />
 
-        {/* Поле "Даты" */}
-        <div className="flex-1">
-          <button
-            onClick={() => setExpandedField(expandedField === 'dates' ? null : 'dates')}
-            className={cn(
-              "w-full text-left px-4 py-3 rounded-full hover:bg-gray-100 transition-colors",
-              expandedField === 'dates' && "bg-white shadow-md"
-            )}
-          >
-            <div className="text-xs font-semibold text-gray-900">Даты</div>
-            <div className="text-sm text-gray-600">
-              {searchData.checkIn && searchData.checkOut 
-                ? `${new Date(searchData.checkIn).toLocaleDateString('ru')} - ${new Date(searchData.checkOut).toLocaleDateString('ru')}`
-                : 'Когда?'
-              }
-            </div>
-          </button>
+        {/* Поле "Даты" с календарём */}
+        <div className="flex-1 relative">
+          <Popover open={expandedField === 'dates'} onOpenChange={(open) => setExpandedField(open ? 'dates' : null)}>
+            <PopoverTrigger asChild>
+              <button
+                className={cn(
+                  "w-full text-left px-4 py-3 rounded-full hover:bg-gray-100 transition-colors",
+                  expandedField === 'dates' && "bg-white shadow-md"
+                )}
+              >
+                <div className="text-xs font-semibold text-gray-900 flex items-center gap-1">
+                  <CalendarIcon size={14} />
+                  Даты
+                </div>
+                <div className="text-sm text-gray-600">
+                  {dateRange?.from ? (
+                    dateRange.to ? (
+                      `${format(dateRange.from, 'd MMM', { locale: ru })} - ${format(dateRange.to, 'd MMM', { locale: ru })}`
+                    ) : (
+                      format(dateRange.from, 'd MMM yyyy', { locale: ru })
+                    )
+                  ) : (
+                    'Любые даты'
+                  )}
+                </div>
+              </button>
+            </PopoverTrigger>
+            <PopoverContent className="w-auto p-0 bg-white rounded-2xl shadow-airbnb-lg" align="start">
+              <DayPicker
+                mode="range"
+                selected={dateRange}
+                onSelect={setDateRange}
+                numberOfMonths={2}
+                locale={ru}
+                disabled={{ before: new Date() }}
+                className="p-4"
+              />
+              {/* Гибкие даты */}
+              <div className="border-t border-gray-200 p-4">
+                <div className="text-xs font-semibold text-gray-600 mb-2">Гибкие даты</div>
+                <div className="flex gap-2 flex-wrap">
+                  <button 
+                    onClick={() => {
+                      const today = new Date()
+                      const nextWeek = new Date(today)
+                      nextWeek.setDate(today.getDate() + 7)
+                      setDateRange({ from: today, to: nextWeek })
+                    }}
+                    className="px-3 py-1.5 text-xs border border-gray-300 rounded-full hover:border-gray-900 transition-colors"
+                  >
+                    Эта неделя
+                  </button>
+                  <button 
+                    onClick={() => {
+                      const today = new Date()
+                      const saturday = new Date(today)
+                      saturday.setDate(today.getDate() + (6 - today.getDay()))
+                      const sunday = new Date(saturday)
+                      sunday.setDate(saturday.getDate() + 1)
+                      setDateRange({ from: saturday, to: sunday })
+                    }}
+                    className="px-3 py-1.5 text-xs border border-gray-300 rounded-full hover:border-gray-900 transition-colors"
+                  >
+                    Выходные
+                  </button>
+                  <button 
+                    onClick={() => setDateRange(undefined)}
+                    className="px-3 py-1.5 text-xs border border-gray-300 rounded-full hover:border-gray-900 transition-colors"
+                  >
+                    Сбросить
+                  </button>
+                </div>
+              </div>
+            </PopoverContent>
+          </Popover>
         </div>
 
         {/* Разделитель */}
@@ -278,14 +337,12 @@ export function SearchBar({ variant = 'hero', className }: SearchBarProps) {
           </AnimatePresence>
         </div>
 
-        {/* Кнопка поиска - увеличенная с ripple */}
+        {/* Кнопка поиска - увеличенная, полупрозрачная */}
         <Button
           onClick={handleSearch}
-          className="rounded-full bg-airbnb-rausch hover:bg-airbnb-rausch/90 hover:scale-110 hover:shadow-2xl text-white flex items-center justify-center transition-all w-16 h-16 p-0 relative overflow-hidden group"
+          className="rounded-full bg-airbnb-rausch/90 backdrop-blur-sm hover:bg-airbnb-rausch hover:scale-110 hover:shadow-2xl text-white flex items-center justify-center transition-all w-16 h-16 p-0 ml-2"
         >
-          <Search size={28} strokeWidth={2.5} className="relative z-10" />
-          {/* Ripple effect */}
-          <span className="absolute inset-0 bg-white/20 scale-0 group-hover:scale-100 transition-transform duration-500 rounded-full" />
+          <Search size={28} strokeWidth={2.5} />
         </Button>
       </motion.div>
     </div>
