@@ -95,10 +95,10 @@ export function GuideCalendar({
               bookedHours={bookedHours}
               availableHours={schedule?.available_hours ?? (8 - bookedHours)}
               requests={requestsOnDay}
-              disabled={disabled}
-              isSelected={isSelected}
+              disabled={disabled || false}
+              isSelected={isSelected || false}
               isCurrentMonth={isCurrentMonth}
-              showHours={showHoursAvailability}
+              showHours={showHoursAvailability || false}
               onClick={() => mode === 'select' && !disabled && onDateSelect?.(day)}
             />
           )
