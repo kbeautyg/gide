@@ -8,20 +8,19 @@ export default function AboutPage() {
   return (
     <div className="min-h-screen bg-white">
       <PublicHeader />
-      {/* Hero Section */}
-      <section className="relative text-white py-24 overflow-hidden">
-        <div className="absolute inset-0 bg-airbnb-rausch" />
-        <div className="container mx-auto px-4 relative z-10">
+      {/* Hero Section - минималистичный */}
+      <section className="bg-white py-12 border-b">
+        <div className="container mx-auto px-4">
           <motion.div 
             className="max-w-4xl mx-auto text-center"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
           >
-            <h1 className="text-4xl md:text-6xl font-bold mb-6 text-white">
-              О ThaiGuide Pro
+            <h1 className="text-4xl md:text-6xl font-bold mb-6 text-gray-900">
+              О Turex Pro
             </h1>
-            <p className="text-xl md:text-2xl mb-8 text-white/95">
+            <p className="text-xl md:text-2xl mb-8 text-gray-600">
               Ваш надежный проводник в мир незабываемых путешествий по Азии
             </p>
           </motion.div>

@@ -82,13 +82,13 @@ export default function JournalPage() {
     <div className="min-h-screen bg-white">
       <PublicHeader />
 
-      {/* Hero */}
-      <section className="bg-gradient-to-r from-airbnb-rausch to-airbnb-arches text-white py-20">
+      {/* Hero - минималистичный */}
+      <section className="bg-white py-12 border-b">
         <div className="container mx-auto px-4 text-center">
-          <h1 className="text-5xl font-bold mb-4">
-            Журнал Трипстера
+          <h1 className="text-5xl font-bold mb-4 text-gray-900">
+            Журнал путешествий
           </h1>
-          <p className="text-xl text-white/90 max-w-2xl mx-auto">
+          <p className="text-xl text-gray-600 max-w-2xl mx-auto">
             Вдохновляем на путешествия: советы, гайды и истории от местных экспертов
           </p>
         </div>

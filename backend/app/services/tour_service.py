@@ -89,8 +89,9 @@ class TourService:
         # Фильтр по типу (tours vs experiences) - можно реализовать через категории
         if tour_type == 'experiences':
             # "Впечатления" - это категории типа Приключения, Экстрим, Необычное
-            experience_categories = ['Приключения', 'Экстрим', 'Фотосессия', 'Необычное']
-            query = query.where(Tour.category.in_(experience_categories))
+            experience_categories = ['Приключения', 'Экстрим', 'Фотосессия', 'Необычное', 'Для семей']
+            conditions = [Tour.category.ilike(f"%{cat}%") for cat in experience_categories]
+            query = query.where(or_(*conditions))
         
         # Подсчет общего количества
         count_result = await db.execute(query)
