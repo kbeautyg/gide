@@ -59,28 +59,12 @@ export function PublicHeader() {
             О нас
           </Link>
           <Link 
-            to="/faq" 
-            className={`hover:text-airbnb-rausch transition-colors ${
-              location.pathname === '/faq' ? 'text-airbnb-rausch font-semibold' : ''
-            }`}
-          >
-            FAQ
-          </Link>
-          <Link 
             to="/become-guide" 
             className={`hover:text-airbnb-rausch transition-colors ${
               location.pathname === '/become-guide' ? 'text-airbnb-rausch font-semibold' : ''
             }`}
           >
             Стать гидом
-          </Link>
-          <Link 
-            to="/contact" 
-            className={`hover:text-airbnb-rausch transition-colors ${
-              location.pathname === '/contact' ? 'text-airbnb-rausch font-semibold' : ''
-            }`}
-          >
-            Контакты
           </Link>
         </nav>
         <div className="flex items-center gap-3">
