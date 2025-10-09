@@ -1,6 +1,7 @@
 import { Routes, Route } from 'react-router-dom'
 import { ProtectedRoute } from './components/ProtectedRoute'
 import { RequestFloatingButton } from './components/RequestFloatingButton'
+import { ScrollToTop } from './components/ScrollToTop'
 
 // Публичные страницы
 import HomePage from './pages/public/HomePage'
@@ -36,6 +37,7 @@ function App() {
   return (
     <>
       <RequestFloatingButton />
+      <ScrollToTop />
       <Routes>
       {/* Публичные маршруты */}
       <Route path="/" element={<HomePage />} />
