@@ -58,7 +58,7 @@ export default function BecomeGuidePage() {
               Посмотреть демо
             </Button>
           </div>
-        </div>
+        </motion.div>
 
         {/* Dashboard Preview - ГЛАВНЫЙ КОЗЫРЬ */}
         <div className="mb-20">
