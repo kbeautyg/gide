@@ -7,8 +7,7 @@ import {
 } from 'date-fns'
 import { ru } from 'date-fns/locale'
 import { cn } from '@/lib/utils'
-import { DndContext, useDraggable, useDroppable, DragEndEvent } from '@dnd-kit/core'
-import { CSS } from '@dnd-kit/utilities'
+import { DndContext, DragEndEvent } from '@dnd-kit/core'
 
 interface GuideCalendarProps {
   schedules: Array<{ date: string, booked_hours: number, available_hours?: number }>
@@ -36,7 +35,6 @@ export function GuideCalendar({
   enableDragDrop = false
 }: GuideCalendarProps) {
   const [currentMonth, setCurrentMonth] = useState(new Date())
-  const [expandedDate, setExpandedDate] = useState<Date | null>(null)
   
   const handleDragEnd = (event: DragEndEvent) => {
     const { active, over } = event

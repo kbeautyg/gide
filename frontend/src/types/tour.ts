@@ -5,6 +5,7 @@
 export interface Tour {
   id: number
   guide_id: number
+  guide_name?: string
   title: string
   description: string
   price: number
@@ -19,6 +20,7 @@ export interface Tour {
   active: boolean
   is_public?: boolean
   share_code?: string
+  created_at?: string
   
   // Контентные блоки (Tripster-стиль)
   what_to_expect?: string

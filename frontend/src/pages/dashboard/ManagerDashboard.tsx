@@ -67,8 +67,8 @@ export default function ManagerDashboard() {
     })
     .reduce((sum: number, b: any) => sum + (b.total_price || 0), 0)
 
-  // Средний чек
-  const averageCheck = thisMonthBookings > 0 ? monthlyTurnover / thisMonthBookings : 0
+  // Средний чек (сохраняем для будущего использования)
+  // const averageCheck = thisMonthBookings > 0 ? monthlyTurnover / thisMonthBookings : 0
 
   // График доходов - 3% комиссия гида от выручки
   const revenueData = revenueStats.length > 0 

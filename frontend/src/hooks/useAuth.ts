@@ -73,14 +73,15 @@ export function useAuth() {
   // Получение профиля
   const { data: profileData } = useQuery({
     queryKey: ['user', 'me'],
-    queryFn: () => usersApi.getMe(),
-    enabled: isAuthenticated && !!token,
-    onSuccess: (response) => {
+    queryFn: async () => {
+      const response = await usersApi.getMe()
       // Обновляем store с актуальными данными пользователя
       if (response?.data && token) {
         setAuth(response.data, token)
       }
+      return response
     },
+    enabled: isAuthenticated && !!token,
   })
 
   // Выход

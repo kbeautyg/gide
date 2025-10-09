@@ -65,10 +65,12 @@ export function TourCard({ tour, className }: TourCardProps) {
       return <Badge variant="popular">🔥 Популярное</Badge>
     }
     // Новое - если создано менее 7 дней назад
-    const createdDate = new Date(tour.created_at)
-    const daysSinceCreation = Math.floor((Date.now() - createdDate.getTime()) / (1000 * 60 * 60 * 24))
-    if (daysSinceCreation < 7) {
-      return <Badge variant="new">🆕 Новое</Badge>
+    if (tour.created_at) {
+      const createdDate = new Date(tour.created_at)
+      const daysSinceCreation = Math.floor((Date.now() - createdDate.getTime()) / (1000 * 60 * 60 * 24))
+      if (daysSinceCreation < 7) {
+        return <Badge variant="new">🆕 Новое</Badge>
+      }
     }
     return null
   }

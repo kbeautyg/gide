@@ -26,7 +26,7 @@ export default function ToursPage() {
   })
 
   // Загрузка экскурсий с фильтрами
-  const { data: toursData, isLoading, error } = useQuery({
+  const { data: toursData, isLoading } = useQuery({
     queryKey: ['tours', selectedThemes, selectedPriceRanges, selectedDurations, selectedRatings],
     queryFn: async () => {
       // Преобразуем фильтры в параметры API
