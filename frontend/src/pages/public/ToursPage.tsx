@@ -10,6 +10,7 @@ import { SearchBar } from '@/components/SearchBar'
 import { CategoryChips } from '@/components/CategoryChips'
 import { FilterPanel } from '@/components/FilterPanel'
 import { TourCard } from '@/components/TourCard'
+import { TourCardSkeleton } from '@/components/TourCardSkeleton'
 
 // Азиатские страны и города
 const ASIAN_COUNTRIES = [
@@ -443,7 +444,7 @@ export default function ToursPage() {
           {isLoading ? (
             <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
               {Array.from({ length: 12 }).map((_, i) => (
-                <div key={i} className="skeleton rounded-xl h-[400px]" />
+                <TourCardSkeleton key={i} />
               ))}
             </div>
           ) : sortedTours.length === 0 ? (
