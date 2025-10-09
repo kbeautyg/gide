@@ -204,10 +204,8 @@ async def get_available_requests(
     db: AsyncSession = Depends(get_db),
     current_user: User = Depends(get_current_user)
 ):
-    """Получить список непринятых заявок (для гидов)"""
-    # Для гидов и админов
-    if current_user.role not in [UserRole.MANAGER, UserRole.SUPER_MANAGER, UserRole.SUPER_ADMIN, UserRole.ADMIN]:
-        raise HTTPException(status_code=403, detail="Только для гидов и админов")
+    """Получить список непринятых заявок (для всех авторизованных)"""
+    # Доступно для всех авторизованных пользователей
     
     # Заявки без назначенного гида
     query = select(Request).where(
@@ -232,9 +230,7 @@ async def take_request(
     from app.services.schedule_service import ScheduleService
     from datetime import datetime
     
-    # Для гидов и админов
-    if current_user.role not in [UserRole.MANAGER, UserRole.SUPER_MANAGER, UserRole.SUPER_ADMIN, UserRole.ADMIN]:
-        raise HTTPException(status_code=403, detail="Только для гидов и админов")
+    # Доступно для всех авторизованных (любая роль может быть гидом)
     
     # Находим заявку
     query = select(Request).where(Request.id == int(request_id))
