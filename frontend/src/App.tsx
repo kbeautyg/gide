@@ -2,6 +2,7 @@ import { Routes, Route } from 'react-router-dom'
 import { ProtectedRoute } from './components/ProtectedRoute'
 import { RequestFloatingButton } from './components/RequestFloatingButton'
 import { ScrollToTop } from './components/ScrollToTop'
+import { ScrollProgress } from './components/ScrollProgress'
 
 // Публичные страницы
 import HomePage from './pages/public/HomePage'
@@ -39,6 +40,7 @@ import RequestsPage from './pages/dashboard/RequestsPage'
 function App() {
   return (
     <>
+      <ScrollProgress />
       <RequestFloatingButton />
       <ScrollToTop />
       <Routes>

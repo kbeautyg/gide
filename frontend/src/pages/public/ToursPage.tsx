@@ -11,8 +11,31 @@ import { CategoryChips } from '@/components/CategoryChips'
 import { FilterPanel } from '@/components/FilterPanel'
 import { TourCard } from '@/components/TourCard'
 
+// Азиатские страны и города
+const ASIAN_COUNTRIES = [
+  { name: 'Таиланд', flag: '🇹🇭' },
+  { name: 'Грузия', flag: '🇬🇪' },
+  { name: 'Турция', flag: '🇹🇷' },
+  { name: 'ОАЭ', flag: '🇦🇪' },
+  { name: 'Япония', flag: '🇯🇵' },
+  { name: 'Корея', flag: '🇰🇷' },
+  { name: 'Китай', flag: '🇨🇳' },
+  { name: 'Индия', flag: '🇮🇳' },
+  { name: 'Индонезия', flag: '🇮🇩' },
+  { name: 'Вьетнам', flag: '🇻🇳' },
+  { name: 'Малайзия', flag: '🇲🇾' },
+  { name: 'Сингапур', flag: '🇸🇬' },
+]
+
+const ASIAN_CITIES = [
+  'Тбилиси', 'Стамбул', 'Бангкок', 'Пхукет', 'Дубай', 
+  'Токио', 'Сеул', 'Бали', 'Паттайя', 'Ханой', 'Куала-Лумпур',
+]
+
 export default function ToursPage() {
   const [selectedThemes, setSelectedThemes] = useState<string[]>([])
+  const [selectedCountries, setSelectedCountries] = useState<string[]>([])
+  const [selectedCities, setSelectedCities] = useState<string[]>([])
   const [selectedPriceRanges, setSelectedPriceRanges] = useState<string[]>([])
   const [selectedDurations, setSelectedDurations] = useState<string[]>([])
   const [selectedRatings, setSelectedRatings] = useState<string[]>([])
@@ -27,7 +50,7 @@ export default function ToursPage() {
 
   // Загрузка экскурсий с фильтрами
   const { data: toursData, isLoading } = useQuery({
-    queryKey: ['tours', selectedThemes, selectedPriceRanges, selectedDurations, selectedRatings],
+    queryKey: ['tours', selectedThemes, selectedCountries, selectedCities, selectedPriceRanges, selectedDurations, selectedRatings],
     queryFn: async () => {
       // Преобразуем фильтры в параметры API
       const params: any = {
@@ -51,8 +74,24 @@ export default function ToursPage() {
 
   const tours = toursData?.tours || []
   
-  // Клиентская фильтрация (длительность и рейтинг)
+  // Клиентская фильтрация (страны, города, длительность и рейтинг)
   const filteredTours = tours.filter((tour: any) => {
+    // Страны
+    if (selectedCountries.length > 0) {
+      const matchesCountry = selectedCountries.some(country => 
+        tour.country === country || tour.location?.includes(country)
+      )
+      if (!matchesCountry) return false
+    }
+
+    // Города
+    if (selectedCities.length > 0) {
+      const matchesCity = selectedCities.some(city => 
+        tour.location === city || tour.location?.includes(city)
+      )
+      if (!matchesCity) return false
+    }
+
     // Длительность
     if (selectedDurations.length > 0) {
       const matchesDuration = selectedDurations.some(dur => {
@@ -116,6 +155,25 @@ export default function ToursPage() {
   const handleFilterApply = (filters: any) => {
     console.log('Применить фильтры:', filters)
     // Здесь будет логика применения фильтров
+  }
+
+  // Подсчет активных фильтров
+  const activeFiltersCount = 
+    selectedCountries.length + 
+    selectedCities.length + 
+    selectedThemes.length + 
+    selectedPriceRanges.length + 
+    selectedDurations.length + 
+    selectedRatings.length
+
+  // Сброс всех фильтров
+  const handleResetFilters = () => {
+    setSelectedCountries([])
+    setSelectedCities([])
+    setSelectedThemes([])
+    setSelectedPriceRanges([])
+    setSelectedDurations([])
+    setSelectedRatings([])
   }
 
   return (
@@ -188,6 +246,75 @@ export default function ToursPage() {
       {/* Секция категорий (Рубрики) */}
       <div className="bg-white border-b">
         <div className="container mx-auto px-4 py-6 space-y-4">
+          {/* Заголовок с кнопкой сброса */}
+          {activeFiltersCount > 0 && (
+            <div className="flex items-center justify-between">
+              <p className="text-sm text-gray-600">
+                Активных фильтров: <span className="font-bold text-airbnb-rausch">{activeFiltersCount}</span>
+              </p>
+              <button
+                onClick={handleResetFilters}
+                className="text-sm text-airbnb-rausch hover:underline font-medium"
+              >
+                Сбросить всё
+              </button>
+            </div>
+          )}
+
+          {/* Фильтр по странам */}
+          <div>
+            <h3 className="text-sm font-semibold text-gray-700 mb-2">🌏 Страны</h3>
+            <div className="flex gap-2 overflow-x-auto scrollbar-hide pb-2">
+              {ASIAN_COUNTRIES.map((country, index) => (
+                <motion.button
+                  key={country.name}
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: index * 0.03 }}
+                  onClick={() => {
+                    setSelectedCountries(prev =>
+                      prev.includes(country.name) ? prev.filter(c => c !== country.name) : [...prev, country.name]
+                    )
+                  }}
+                  className={`px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-all ${
+                    selectedCountries.includes(country.name)
+                      ? 'bg-airbnb-rausch text-white shadow-md scale-105'
+                      : 'bg-gray-100 text-gray-700 hover:bg-gray-200 hover:scale-105'
+                  }`}
+                >
+                  {country.flag} {country.name}
+                </motion.button>
+              ))}
+            </div>
+          </div>
+
+          {/* Фильтр по городам */}
+          <div>
+            <h3 className="text-sm font-semibold text-gray-700 mb-2">📍 Города</h3>
+            <div className="flex gap-2 overflow-x-auto scrollbar-hide pb-2">
+              {ASIAN_CITIES.map((city, index) => (
+                <motion.button
+                  key={city}
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: index * 0.03 }}
+                  onClick={() => {
+                    setSelectedCities(prev =>
+                      prev.includes(city) ? prev.filter(c => c !== city) : [...prev, city]
+                    )
+                  }}
+                  className={`px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-all ${
+                    selectedCities.includes(city)
+                      ? 'bg-airbnb-rausch text-white shadow-md scale-105'
+                      : 'bg-gray-100 text-gray-700 hover:bg-gray-200 hover:scale-105'
+                  }`}
+                >
+                  {city}
+                </motion.button>
+              ))}
+            </div>
+          </div>
+
           <div>
             <h2 className="text-xl font-bold text-gray-900 mb-4">Категории</h2>
             <CategoryChips

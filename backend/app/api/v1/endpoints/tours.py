@@ -63,10 +63,17 @@ class TourList(BaseModel):
 @router.get("/", response_model=TourList)
 async def get_tours(
     db: AsyncSession = Depends(get_db),
-    location: Optional[str] = Query(None, description="Фильтр по локации"),
+    location: Optional[str] = Query(None, description="Фильтр по локации (город или страна)"),
     category: Optional[str] = Query(None, description="Фильтр по категории"),
     min_price: Optional[float] = Query(None, description="Минимальная цена"),
     max_price: Optional[float] = Query(None, description="Максимальная цена"),
+    date_start: Optional[str] = Query(None, description="Дата начала (yyyy-MM-dd)"),
+    date_end: Optional[str] = Query(None, description="Дата окончания (yyyy-MM-dd)"),
+    guests: Optional[int] = Query(None, description="Количество гостей"),
+    duration_min: Optional[int] = Query(None, description="Минимальная длительность (часы)"),
+    duration_max: Optional[int] = Query(None, description="Максимальная длительность (часы)"),
+    rating_min: Optional[float] = Query(None, description="Минимальный рейтинг"),
+    type: Optional[str] = Query(None, description="Тип: tours или experiences"),
     page: int = Query(1, ge=1, description="Номер страницы"),
     page_size: int = Query(12, ge=1, le=100, description="Размер страницы"),
     include_private: bool = Query(False, description="Включать ли приватные экскурсии (только по токену гида)"),
@@ -76,6 +83,7 @@ async def get_tours(
     Получение списка экскурсий с фильтрами
     
     Публичный эндпоинт - доступен без авторизации
+    Поддерживает полный набор параметров для поиска по типу Airbnb
     """
     # Проверяем авторизацию для приватных экскурсий
     if include_private and not current_user:
@@ -90,6 +98,13 @@ async def get_tours(
         category=category,
         min_price=min_price,
         max_price=max_price,
+        date_start=date_start,
+        date_end=date_end,
+        guests=guests,
+        duration_min=duration_min,
+        duration_max=duration_max,
+        rating_min=rating_min,
+        tour_type=type,
         page=page,
         page_size=page_size,
         include_private=include_private,

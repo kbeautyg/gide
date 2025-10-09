@@ -4,6 +4,7 @@ import { motion } from 'framer-motion'
 import { MapPin, Star, Heart, Clock, ChevronLeft, ChevronRight, User } from 'lucide-react'
 import { Card } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
+import { ViewersCount } from '@/components/ViewersCount'
 import { formatRUB } from '@/lib/utils'
 import { cn } from '@/lib/utils'
 import type { Tour } from '@/types/tour'
@@ -103,6 +104,11 @@ export function TourCard({ tour, className }: TourCardProps) {
               </div>
             )}
             
+            {/* Viewers Count */}
+            <div className="absolute bottom-3 left-3 z-10">
+              <ViewersCount tourId={tour.id} />
+            </div>
+
             {/* Heart иконка */}
             <button
               onClick={toggleFavorite}

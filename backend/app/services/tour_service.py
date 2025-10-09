@@ -22,6 +22,13 @@ class TourService:
         category: Optional[str] = None,
         min_price: Optional[float] = None,
         max_price: Optional[float] = None,
+        date_start: Optional[str] = None,
+        date_end: Optional[str] = None,
+        guests: Optional[int] = None,
+        duration_min: Optional[int] = None,
+        duration_max: Optional[int] = None,
+        rating_min: Optional[float] = None,
+        tour_type: Optional[str] = None,
         page: int = 1,
         page_size: int = 12,
         include_private: bool = False,
@@ -33,6 +40,8 @@ class TourService:
         Returns:
             tuple: (список экскурсий, общее количество)
         """
+        from sqlalchemy import and_, or_
+        
         # Базовый запрос с eager loading связанного гида
         query = select(Tour).where(Tour.active == True).options(selectinload(Tour.guide))
 
@@ -40,7 +49,6 @@ class TourService:
         if include_private and guide_id is not None:
             # Для приватного списка показываем только СВОИ экскурсии гида
             # Исключаем туры системного гида (phone: 00000000000)
-            from sqlalchemy import and_
             query = query.where(
                 and_(
                     Tour.guide_id == guide_id,
@@ -53,6 +61,7 @@ class TourService:
         
         # Применяем фильтры
         if location:
+            # Поиск по локации (город или страна)
             query = query.where(Tour.location.ilike(f"%{location}%"))
         
         if category:
@@ -63,6 +72,25 @@ class TourService:
         
         if max_price is not None:
             query = query.where(Tour.price <= max_price)
+        
+        if duration_min is not None:
+            query = query.where(Tour.duration >= duration_min)
+        
+        if duration_max is not None:
+            query = query.where(Tour.duration <= duration_max)
+        
+        if rating_min is not None:
+            query = query.where(Tour.rating >= rating_min)
+        
+        if guests is not None:
+            # Фильтруем только туры, которые могут вместить столько гостей
+            query = query.where(Tour.max_group_size >= guests)
+        
+        # Фильтр по типу (tours vs experiences) - можно реализовать через категории
+        if tour_type == 'experiences':
+            # "Впечатления" - это категории типа Приключения, Экстрим, Необычное
+            experience_categories = ['Приключения', 'Экстрим', 'Фотосессия', 'Необычное']
+            query = query.where(Tour.category.in_(experience_categories))
         
         # Подсчет общего количества
         count_result = await db.execute(query)
