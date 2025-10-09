@@ -17,6 +17,8 @@ import type { Tour } from '@/types/tour'
 import { formatRUB } from '@/lib/utils'
 import { PublicHeader } from '@/components/PublicHeader'
 import { PublicFooter } from '@/components/PublicFooter'
+import { TourCard } from '@/components/TourCard'
+import { TourCardSkeleton } from '@/components/TourCardSkeleton'
 
 export default function TourDetailPage() {
   const { id } = useParams<{ id: string }>()
@@ -45,8 +47,26 @@ export default function TourDetailPage() {
     enabled: !!id,
   })
 
+  // Загрузка похожих туров
+  const { data: relatedToursData, isLoading: relatedLoading } = useQuery({
+    queryKey: ['related-tours', tour?.category, tour?.location, id],
+    queryFn: async () => {
+      if (!tour) return { tours: [] }
+      const response = await toursApi.getList({
+        page: 1,
+        page_size: 4,
+        category: tour.category,
+      })
+      // Исключаем текущий тур
+      const filtered = response.data.tours?.filter((t: Tour) => t.id !== tour.id) || []
+      return { tours: filtered.slice(0, 3) }
+    },
+    enabled: !!tour,
+  })
+
   const tour = tourData?.data as Tour | undefined
   const reviews = reviewsData || []
+  const relatedTours = relatedToursData?.tours || []
 
   // Создание бронирования
   const bookingMutation = useMutation({
@@ -376,10 +396,19 @@ export default function TourDetailPage() {
             <div>
               <h2 className="text-2xl font-bold text-gray-900 mb-6">Вам также может понравиться</h2>
               <div className="grid md:grid-cols-3 gap-6">
-                {/* Mock похожих туров */}
-                {[1, 2, 3].map((i) => (
-                  <div key={i} className="skeleton rounded-xl h-[360px]" />
-                ))}
+                {relatedLoading ? (
+                  Array.from({ length: 3 }).map((_, i) => (
+                    <TourCardSkeleton key={i} />
+                  ))
+                ) : relatedTours.length > 0 ? (
+                  relatedTours.map((relatedTour: Tour) => (
+                    <TourCard key={relatedTour.id} tour={relatedTour} />
+                  ))
+                ) : (
+                  <div className="col-span-3 text-center py-12 text-gray-500">
+                    Похожие туры скоро появятся
+                  </div>
+                )}
               </div>
             </div>
 
