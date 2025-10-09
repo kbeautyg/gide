@@ -1,7 +1,7 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
-import { MapPin, Star, Heart, Clock, ChevronLeft, ChevronRight } from 'lucide-react'
+import { MapPin, Star, Heart, Clock, ChevronLeft, ChevronRight, User } from 'lucide-react'
 import { Card } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { formatRUB } from '@/lib/utils'
@@ -15,7 +15,21 @@ interface TourCardProps {
 
 export function TourCard({ tour, className }: TourCardProps) {
   const [currentPhotoIndex, setCurrentPhotoIndex] = useState(0)
-  const [isFavorite, setIsFavorite] = useState(false)
+  
+  // Избранное из localStorage
+  const [isFavorite, setIsFavorite] = useState(() => {
+    const favorites = JSON.parse(localStorage.getItem('tour_favorites') || '[]')
+    return favorites.includes(tour.id)
+  })
+  
+  useEffect(() => {
+    const favorites = JSON.parse(localStorage.getItem('tour_favorites') || '[]')
+    if (isFavorite && !favorites.includes(tour.id)) {
+      localStorage.setItem('tour_favorites', JSON.stringify([...favorites, tour.id]))
+    } else if (!isFavorite && favorites.includes(tour.id)) {
+      localStorage.setItem('tour_favorites', JSON.stringify(favorites.filter((id: number) => id !== tour.id)))
+    }
+  }, [isFavorite, tour.id])
   
   const photos = tour.photos?.length > 0 
     ? tour.photos 
@@ -39,19 +53,22 @@ export function TourCard({ tour, className }: TourCardProps) {
     setIsFavorite(!isFavorite)
   }
 
-  // Определяем бейдж
+  // Определяем бейдж (приоритет: скидка > хит > популярное > новое)
   const getBadge = () => {
-    if (tour.tags?.includes('Выбор гостей')) {
-      return <Badge variant="guestFavorite">Выбор гостей</Badge>
+    if (tour.has_discount && tour.discount_percentage) {
+      return <Badge variant="discount">💰 Скидка {tour.discount_percentage}%</Badge>
     }
-    if (tour.has_discount) {
-      return <Badge variant="discount">Скидка {tour.discount_percentage}%</Badge>
+    if (tour.total_bookings && tour.total_bookings > 100) {
+      return <Badge variant="popular">⭐ Хит продаж</Badge>
     }
-    if (tour.is_new) {
-      return <Badge variant="new">Новое</Badge>
+    if (tour.total_bookings && tour.total_bookings > 50) {
+      return <Badge variant="popular">🔥 Популярное</Badge>
     }
-    if (tour.rating >= 4.8) {
-      return <Badge variant="popular">Популярно</Badge>
+    // Новое - если создано менее 7 дней назад
+    const createdDate = new Date(tour.created_at)
+    const daysSinceCreation = Math.floor((Date.now() - createdDate.getTime()) / (1000 * 60 * 60 * 24))
+    if (daysSinceCreation < 7) {
+      return <Badge variant="new">🆕 Новое</Badge>
     }
     return null
   }
@@ -63,14 +80,14 @@ export function TourCard({ tour, className }: TourCardProps) {
         whileHover={{ y: -4 }}
         transition={{ duration: 0.2 }}
       >
-        <Card className="overflow-hidden border-0 shadow-airbnb-sm hover:shadow-airbnb transition-shadow duration-200">
+        <Card className="overflow-hidden border-0 shadow-airbnb-sm hover:shadow-2xl transition-all duration-300">
           {/* Галерея изображений */}
           <div className="relative aspect-[4/3] overflow-hidden bg-gray-100">
             <motion.img
               key={currentPhotoIndex}
               src={photos[currentPhotoIndex]}
               alt={tour.title}
-              className="w-full h-full object-cover"
+              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.3 }}
@@ -165,11 +182,21 @@ export function TourCard({ tour, className }: TourCardProps) {
               {tour.title}
             </h3>
 
-            {/* Рейтинг */}
-            <div className="flex items-center gap-1 mb-3">
-              <Star size={14} className="fill-gray-900 text-gray-900" />
-              <span className="font-semibold text-sm">{tour.rating.toFixed(2)}</span>
-              <span className="text-gray-600 text-sm">({tour.reviews_count})</span>
+            {/* Рейтинг и гид */}
+            <div className="flex items-center justify-between mb-3">
+              <div className="flex items-center gap-1">
+                <Star size={14} className="fill-gray-900 text-gray-900" />
+                <span className="font-semibold text-sm">{tour.rating.toFixed(2)}</span>
+                <span className="text-gray-600 text-sm">({tour.reviews_count})</span>
+              </div>
+              
+              {/* Гид */}
+              <div className="flex items-center gap-1.5 text-xs text-gray-600">
+                <div className="w-5 h-5 bg-airbnb-rausch/10 rounded-full flex items-center justify-center">
+                  <User size={12} className="text-airbnb-rausch" />
+                </div>
+                <span className="truncate max-w-[100px]">{tour.guide_name || 'Гид'}</span>
+              </div>
             </div>
 
             {/* Цена */}
