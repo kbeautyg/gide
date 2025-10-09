@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
-import { MapPin, CreditCard, TrendingUp, Users, CheckCircle, ArrowUpRight } from 'lucide-react'
+import { MapPin, CreditCard, TrendingUp, Users, CheckCircle, ArrowUpRight, DollarSign } from 'lucide-react'
 import { formatRUB } from '@/lib/utils'
 import { api, toursApi } from '@/lib/api'
 import { useAuthStore } from '@/lib/store'
@@ -56,6 +56,20 @@ export default function ManagerDashboard() {
     })
     .reduce((sum: number, b: any) => sum + ((b.total_price || 0) * 0.03), 0)  // 3% комиссия
 
+  // Оборот за месяц (полная стоимость)
+  const monthlyTurnover = bookings
+    .filter((b: any) => {
+      const bookingDate = new Date(b.created_at)
+      const now = new Date()
+      return bookingDate.getMonth() === now.getMonth() && 
+             bookingDate.getFullYear() === now.getFullYear() &&
+             b.payment_status === 'paid'
+    })
+    .reduce((sum: number, b: any) => sum + (b.total_price || 0), 0)
+
+  // Средний чек
+  const averageCheck = thisMonthBookings > 0 ? monthlyTurnover / thisMonthBookings : 0
+
   // График доходов - 3% комиссия гида от выручки
   const revenueData = revenueStats.length > 0 
     ? revenueStats.map((stat: any) => (stat.revenue || 0) * 0.03)
@@ -94,7 +108,7 @@ export default function ManagerDashboard() {
       </div>
 
       {/* Stats Cards */}
-      <div className="grid md:grid-cols-3 gap-6">
+      <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
         <Card className="border-green-200 hover:shadow-lg transition-shadow">
           <CardHeader className="pb-3">
             <CardTitle className="text-sm font-medium text-gray-600 flex items-center justify-between">
@@ -119,15 +133,29 @@ export default function ManagerDashboard() {
           </CardContent>
         </Card>
 
-        <Card className="border-tropical-ocean hover:shadow-lg transition-shadow">
+        <Card className="border-blue-300 hover:shadow-lg transition-shadow">
           <CardHeader className="pb-3">
             <CardTitle className="text-sm font-medium text-gray-600 flex items-center justify-between">
-              <span>Доход</span>
-              <TrendingUp size={32} className="text-tropical-ocean" />
+              <span>Оборот сделок</span>
+              <DollarSign size={32} className="text-blue-500" />
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <p className="text-4xl font-bold text-tropical-ocean">{formatRUB(monthlyIncome)}</p>
+            <p className="text-4xl font-bold text-blue-500">{formatRUB(monthlyIncome / 0.03)}</p>
+            <p className="text-xs text-gray-500 mt-1">Полная стоимость</p>
+          </CardContent>
+        </Card>
+
+        <Card className="border-airbnb-rausch/30 hover:shadow-lg transition-shadow">
+          <CardHeader className="pb-3">
+            <CardTitle className="text-sm font-medium text-gray-600 flex items-center justify-between">
+              <span>Ваш доход (3%)</span>
+              <TrendingUp size={32} className="text-airbnb-rausch" />
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <p className="text-4xl font-bold text-airbnb-rausch">{formatRUB(monthlyIncome)}</p>
+            <p className="text-xs text-gray-500 mt-1">Комиссия от оборота</p>
           </CardContent>
         </Card>
       </div>
