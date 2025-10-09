@@ -38,8 +38,15 @@ class TourService:
 
         # Фильтр публикации
         if include_private and guide_id is not None:
-            # Для приватного списка показываем все экскурсии гида
-            query = query.where(Tour.guide_id == guide_id)
+            # Для приватного списка показываем только СВОИ экскурсии гида
+            # Исключаем туры системного гида (phone: 00000000000)
+            from sqlalchemy import and_
+            query = query.where(
+                and_(
+                    Tour.guide_id == guide_id,
+                    User.phone != "00000000000"  # Исключаем системного гида
+                )
+            ).join(User, Tour.guide_id == User.id)
         else:
             # Для публичного списка показываем только опубликованные экскурсии
             query = query.where(Tour.is_public == True)
