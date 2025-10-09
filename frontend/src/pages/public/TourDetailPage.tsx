@@ -130,7 +130,6 @@ export default function TourDetailPage() {
             {/* Большое фото слева */}
             <div
               className="col-span-2 row-span-2 cursor-pointer relative group"
-              onClick={() => setShowAllPhotos(true)}
             >
               <img
                 src={photos[0]}
@@ -145,7 +144,6 @@ export default function TourDetailPage() {
               <div
                 key={i}
                 className="cursor-pointer relative group"
-                onClick={() => setShowAllPhotos(true)}
               >
                 <img
                   src={photo || `https://images.unsplash.com/photo-${1589394815804 + i}-964ed0be2eb5?w=400&h=250&fit=crop`}

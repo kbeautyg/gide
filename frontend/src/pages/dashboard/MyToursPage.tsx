@@ -88,12 +88,12 @@ export default function MyToursPage() {
                 {/* Мини-статистика */}
                 <div className="grid grid-cols-2 gap-2 mb-3">
                   <div className="bg-blue-50 p-2 rounded">
-                    <p className="text-xs text-gray-600">Оплат</p>
-                    <p className="text-lg font-bold text-blue-600">{tour.bookings_count || 0}</p>
+                    <p className="text-xs text-gray-600">Просмотры</p>
+                    <p className="text-lg font-bold text-blue-600">{tour.views_count || 0}</p>
                   </div>
                   <div className="bg-green-50 p-2 rounded">
-                    <p className="text-xs text-gray-600">Заработано</p>
-                    <p className="text-lg font-bold text-green-600">{formatRUB(tour.total_revenue || 0)}</p>
+                    <p className="text-xs text-gray-600">Брони</p>
+                    <p className="text-lg font-bold text-green-600">{tour.total_bookings || 0}</p>
                   </div>
                 </div>
 

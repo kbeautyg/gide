@@ -92,7 +92,7 @@ export default function DestinationPage() {
 
           <div className="relative">
             <div className="flex gap-4 overflow-x-auto scrollbar-hide pb-4">
-              {landmarks.slice(landmarkIndex, landmarkIndex + 6).map((landmark, i) => (
+              {landmarks.slice(0, 6).map((landmark, i) => (
                 <motion.div
                   key={i}
                   className="shrink-0 w-[200px]"
