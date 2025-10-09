@@ -45,47 +45,30 @@ export function SearchBar({ variant = 'hero', className }: SearchBarProps) {
 
   return (
     <div className={cn("relative", className)}>
-      {/* Табы */}
-      <div className="flex items-center gap-8 mb-4">
+      {/* Табы с фонами */}
+      <div className="flex items-center gap-4 mb-4">
         <button
           onClick={() => setActiveTab('tours')}
           className={cn(
-            "pb-3 px-1 text-base font-semibold transition-all relative",
+            "px-6 py-2.5 text-base font-semibold transition-all rounded-full",
             activeTab === 'tours' 
-              ? "text-gray-900" 
-              : "text-gray-500 hover:text-gray-700"
+              ? "bg-airbnb-rausch text-white shadow-md" 
+              : "bg-white/90 backdrop-blur-sm text-white/95 border border-white/40 hover:bg-white/95 hover:text-gray-900"
           )}
         >
           Экскурсии
-          {activeTab === 'tours' && (
-            <motion.div
-              layoutId="activeTab"
-              className="absolute bottom-0 left-0 right-0 h-0.5 bg-gray-900"
-              transition={{ type: "spring", stiffness: 500, damping: 30 }}
-            />
-          )}
         </button>
         
         <button
           onClick={() => setActiveTab('experiences')}
           className={cn(
-            "pb-3 px-1 text-base font-semibold transition-all relative flex items-center gap-2",
+            "px-6 py-2.5 text-base font-semibold transition-all rounded-full",
             activeTab === 'experiences' 
-              ? "text-gray-900" 
-              : "text-gray-500 hover:text-gray-700"
+              ? "bg-airbnb-rausch text-white shadow-md" 
+              : "bg-white/90 backdrop-blur-sm text-white/95 border border-white/40 hover:bg-white/95 hover:text-gray-900"
           )}
         >
           Впечатления
-          <span className="text-xs bg-gray-200 text-gray-700 px-2 py-0.5 rounded-full">
-            НОВОЕ
-          </span>
-          {activeTab === 'experiences' && (
-            <motion.div
-              layoutId="activeTab"
-              className="absolute bottom-0 left-0 right-0 h-0.5 bg-gray-900"
-              transition={{ type: "spring", stiffness: 500, damping: 30 }}
-            />
-          )}
         </button>
       </div>
 
@@ -230,14 +213,12 @@ export function SearchBar({ variant = 'hero', className }: SearchBarProps) {
           </AnimatePresence>
         </div>
 
-        {/* Кнопка поиска */}
+        {/* Кнопка поиска - только иконка, увеличенная */}
         <Button
           onClick={handleSearch}
-          className="rounded-full bg-airbnb-rausch hover:bg-airbnb-rausch/90 text-white flex items-center gap-2"
-          size={isHero ? "lg" : "default"}
+          className="rounded-full bg-airbnb-rausch hover:bg-airbnb-rausch/90 hover:scale-110 hover:shadow-xl text-white flex items-center justify-center transition-all w-14 h-14 p-0"
         >
-          <Search size={18} />
-          {isHero && <span>Искать</span>}
+          <Search size={24} />
         </Button>
       </motion.div>
     </div>
