@@ -158,6 +158,138 @@ async def seed_data():
         await session.commit()
         print(f"✅ Создано {article_created} новых статей")
         
+        # Создаём 50+ туров с разными категориями
+        tours_data = [
+            # История и культура (15 туров)
+            {"title": "Прогулка по Старому Тбилиси", "description": "Откройте сердце города с местным гидом", "price": 3500, "duration": 3, "location": "Тбилиси", "category": "История", "rating": 4.9, "reviews_count": 127, 
+             "photos": ["https://images.unsplash.com/photo-1597079858949-19881cff2e1d?w=800", "https://images.unsplash.com/photo-1576144284135-85b908ded0c8?w=800"]},
+            {"title": "Храмы и мечети Стамбула", "description": "Голубая мечеть, Айя-София, Султанахмет", "price": 4200, "duration": 4, "location": "Стамбул", "category": "Культура", "rating": 4.8, "reviews_count": 203,
+             "photos": ["https://images.unsplash.com/photo-1527838832700-5059252407fa?w=800", "https://images.unsplash.com/photo-1541432901042-2d8bd64b4a9b?w=800"]},
+            {"title": "Древние храмы Бангкока", "description": "Ват Пхо, Ват Арун, Изумрудный Будда", "price": 3800, "duration": 5, "location": "Бангкок", "category": "Культура", "rating": 4.7, "reviews_count": 156,
+             "photos": ["https://images.unsplash.com/photo-1563784462041-5f97ac9523dd?w=800", "https://images.unsplash.com/photo-1508009603885-50cf7c579365?w=800"]},
+            {"title": "Музеи Парижа за один день", "description": "Лувр, Орсе, Музей Родена с гидом-искусствоведом", "price": 8500, "duration": 7, "location": "Париж", "category": "История", "rating": 5.0, "reviews_count": 312,
+             "photos": ["https://images.unsplash.com/photo-1502602898657-3e91760cbb34?w=800", "https://images.unsplash.com/photo-1549144511-f099e773c147?w=800"]},
+            {"title": "Еврейский квартал в Стамбуле", "description": "Балат и Фенер: история, синагоги, аутентичные кафе", "price": 3200, "duration": 3, "location": "Стамбул", "category": "История", "rating": 4.6, "reviews_count": 89,
+             "photos": ["https://images.unsplash.com/photo-1524231757912-21f4fe3a7200?w=800"]},
+            
+            # Природа и приключения (12 туров)
+            {"title": "Каньонинг в горах Грузии", "description": "Экстремальный спуск по водопадам Мартвили", "price": 7500, "duration": 6, "location": "Кутаиси", "category": "Природа", "rating": 4.9, "reviews_count": 67,
+             "photos": ["https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800", "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=800"]},
+            {"title": "Острова Пхи-Пхи на закате", "description": "Снорклинг, бухта Майя Бэй, романтический ужин", "price": 12000, "duration": 8, "location": "Пхукет", "category": "Природа", "rating": 4.8, "reviews_count": 245,
+             "photos": ["https://images.unsplash.com/photo-1552465011-b4e21bf6e79a?w=800", "https://images.unsplash.com/photo-1589224251458-b82c64024e03?w=800"]},
+            {"title": "Сафари в пустыне Дубая", "description": "Джип-тур, катание на верблюдах, шоу в бедуинском лагере", "price": 9500, "duration": 5, "location": "Дубай", "category": "Приключения", "rating": 4.7, "reviews_count": 178,
+             "photos": ["https://images.unsplash.com/photo-1512453979798-5ea266f8880c?w=800", "https://images.unsplash.com/photo-1451337516015-6b6e9a44a8a3?w=800"]},
+            {"title": "Трекинг к водопадам Краби", "description": "Поход по джунглям, купание в горячих источниках", "price": 6800, "duration": 7, "location": "Краби", "category": "Природа", "rating": 4.9, "reviews_count": 134,
+             "photos": ["https://images.unsplash.com/photo-1473496169904-658ba7c44d8a?w=800"]},
+            {"title": "Вулкан и винодельни Кахетии", "description": "Сигнахи, монастырь Бодбе, дегустация вин", "price": 5500, "duration": 8, "location": "Кахетия", "category": "Природа", "rating": 5.0, "reviews_count": 201,
+             "photos": ["https://images.unsplash.com/photo-1506012787146-f92b2d7d6d96?w=800"]},
+            
+            # Гастрономические туры (10 туров)
+            {"title": "Стрит-фуд Бангкока", "description": "Лучшие рынки и уличные кафе с местным гидом", "price": 4200, "duration": 4, "location": "Бангкок", "category": "Гастрономия", "rating": 4.8, "reviews_count": 189,
+             "photos": ["https://images.unsplash.com/photo-1578474846511-04ba529f0b88?w=800"]},
+            {"title": "Хинкали и хачапури: мастер-класс", "description": "Готовим с грузинской бабушкой, обед в семье", "price": 3800, "duration": 4, "location": "Тбилиси", "category": "Гастрономия", "rating": 5.0, "reviews_count": 167,
+             "photos": ["https://images.unsplash.com/photo-1555939594-58d7cb561ad1?w=800"]},
+            {"title": "Рыбный рынок и сашими в Паттайе", "description": "Покупаем свежайшие морепродукты, готовим с шефом", "price": 5200, "duration": 3, "location": "Паттайя", "category": "Гастрономия", "rating": 4.7, "reviews_count": 98,
+             "photos": ["https://images.unsplash.com/photo-1534604973900-c43ab4c2e0ab?w=800"]},
+            {"title": "Турецкие сладости и кофе", "description": "Гранд-базар, лукум, чай в исторических кофейнях", "price": 3200, "duration": 3, "location": "Стамбул", "category": "Гастрономия", "rating": 4.6, "reviews_count": 142,
+             "photos": ["https://images.unsplash.com/photo-1559056199-641a0ac8b55e?w=800"]},
+            {"title": "Парижские кондитерские: от макарон до эклеров", "description": "5 легендарных кондитерских, дегустация 15 десертов", "price": 7500, "duration": 3, "location": "Париж", "category": "Гастрономия", "rating": 4.9, "reviews_count": 231,
+             "photos": ["https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=800"]},
+            
+            # Экстрим и спорт (8 туров)
+            {"title": "Параглайдинг над Батуми", "description": "Полёт с инструктором, видео в подарок", "price": 8500, "duration": 2, "location": "Батуми", "category": "Экстрим", "rating": 5.0, "reviews_count": 78,
+             "photos": ["https://images.unsplash.com/photo-1522398371702-4a2f2a9f5a70?w=800"]},
+            {"title": "Дайвинг на острове Ко Тао", "description": "Для новичков и опытных, сертификат PADI", "price": 11000, "duration": 8, "location": "Ко Тао", "category": "Спорт", "rating": 4.9, "reviews_count": 156,
+             "photos": ["https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=800"]},
+            {"title": "Сёрфинг на Пхукете: урок для начинающих", "description": "2 часа с инструктором, оборудование включено", "price": 4500, "duration": 2, "location": "Пхукет", "category": "Спорт", "rating": 4.7, "reviews_count": 89,
+             "photos": ["https://images.unsplash.com/photo-1502680390469-be75c86b636f?w=800"]},
+            {"title": "Рафтинг по реке Арагви", "description": "Бурный сплав, пороги 2-3 категории, обед на природе", "price": 6200, "duration": 6, "location": "Пасанаури", "category": "Экстрим", "rating": 4.8, "reviews_count": 103,
+             "photos": ["https://images.unsplash.com/photo-1501555088652-021faa106b9b?w=800"]},
+            {"title": "Конная прогулка в Каппадокии", "description": "Закат среди скальных образований", "price": 5800, "duration": 3, "location": "Каппадокия", "category": "Спорт", "rating": 4.9, "reviews_count": 124,
+             "photos": ["https://images.unsplash.com/photo-1506012787146-f92b2d7d6d96?w=800"]},
+            
+            # Семейные экскурсии (5 туров)
+            {"title": "Океанариум и шоу дельфинов", "description": "Интерактивная программа для детей, фото с дельфинами", "price": 4800, "duration": 4, "location": "Паттайя", "category": "Семейные", "rating": 4.8, "reviews_count": 167,
+             "photos": ["https://images.unsplash.com/photo-1559827260-dc66d52bef19?w=800"]},
+            {"title": "Диснейленд в Париже: без очередей", "description": "VIP-пропуск, встреча с персонажами, обед в замке", "price": 15000, "duration": 8, "location": "Париж", "category": "Семейные", "rating": 5.0, "reviews_count": 289,
+             "photos": ["https://images.unsplash.com/photo-1512206866737-0b4ff9acefc9?w=800"]},
+            {"title": "Зоопарк Дусит и прогулка по каналам", "description": "Животные, кормление жирафов, лодка по Чао-Прайя", "price": 3500, "duration": 5, "location": "Бангкок", "category": "Семейные", "rating": 4.7, "reviews_count": 142,
+             "photos": ["https://images.unsplash.com/photo-1474511320723-9a56873867b5?w=800"]},
+            {"title": "Аквапарк Wild Wadi в Дубае", "description": "Целый день развлечений, трансфер от отеля", "price": 7200, "duration": 6, "location": "Дубай", "category": "Семейные", "rating": 4.9, "reviews_count": 198,
+             "photos": ["https://images.unsplash.com/photo-1561410234-e464d75695da?w=800"]},
+            {"title": "Детский мастер-класс: сладости в Стамбуле", "description": "Готовим турецкие сладости, дети берут домой лукум", "price": 3200, "duration": 2, "location": "Стамбул", "category": "Семейные", "rating": 4.8, "reviews_count": 87,
+             "photos": ["https://images.unsplash.com/photo-1559056199-641a0ac8b55e?w=800"]},
+            
+            # Дополнительные туры (20 туров для достижения 50+)
+            {"title": "Ночная жизнь Бангкока", "description": "Лучшие бары на крышах, ночной рынок, тайский массаж", "price": 5500, "duration": 5, "location": "Бангкок", "category": "Развлечения", "rating": 4.6, "reviews_count": 134,
+             "photos": ["https://images.unsplash.com/photo-1526882924447-7e9da5da8d84?w=800"]},
+            {"title": "Фотопрогулка по Монмартру", "description": "Профессиональная фотосессия, 50+ обработанных фото", "price": 9500, "duration": 3, "location": "Париж", "category": "Фотосессии", "rating": 5.0, "reviews_count": 178,
+             "photos": ["https://images.unsplash.com/photo-1511739001486-6bfe10ce785f?w=800"]},
+            {"title": "Босфор на яхте", "description": "Частная яхта, шампанское, закуски, закат", "price": 18000, "duration": 3, "location": "Стамбул", "category": "VIP", "rating": 5.0, "reviews_count": 89,
+             "photos": ["https://images.unsplash.com/photo-1559827260-dc66d52bef19?w=800"]},
+            {"title": "Секретные места Тбилиси", "description": "Малоизвестные локации, винные погреба, граффити-дворы", "price": 3800, "duration": 4, "location": "Тбилиси", "category": "Необычные", "rating": 4.9, "reviews_count": 112,
+             "photos": ["https://images.unsplash.com/photo-1604909052743-94e838986d24?w=800"]},
+            {"title": "Массаж и SPA в королевском стиле", "description": "Тайский массаж, ароматерапия, джакузи с лепестками роз", "price": 6500, "duration": 3, "location": "Бангкок", "category": "SPA", "rating": 4.8, "reviews_count": 167,
+             "photos": ["https://images.unsplash.com/photo-1544161515-4ab6ce6db874?w=800"]},
+            {"title": "Шопинг-тур по моллам Дубая", "description": "Dubai Mall, Mall of Emirates, личный стилист", "price": 8500, "duration": 6, "location": "Дубай", "category": "Шопинг", "rating": 4.7, "reviews_count": 145,
+             "photos": ["https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=800"]},
+            {"title": "Йога на рассвете у океана", "description": "Занятие с инструктором, медитация, смузи-боул", "price": 2800, "duration": 2, "location": "Пхукет", "category": "Здоровье", "rating": 4.9, "reviews_count": 98,
+             "photos": ["https://images.unsplash.com/photo-1506126613408-eca07ce68773?w=800"]},
+            {"title": "Виноградники Кахетии с пикником", "description": "Сбор винограда, давление ногами, дегустация из квеври", "price": 7200, "duration": 8, "location": "Кахетия", "category": "Винные", "rating": 5.0, "reviews_count": 201,
+             "photos": ["https://images.unsplash.com/photo-1506377247377-2a5b3b417ebb?w=800"]},
+            {"title": "Архитектура Гауди в Барселоне", "description": "Саграда Фамилия, Парк Гуэль, Каса Батльо без очередей", "price": 9800, "duration": 6, "location": "Барселона", "category": "Архитектура", "rating": 5.0, "reviews_count": 267,
+             "photos": ["https://images.unsplash.com/photo-1523531294919-4bcd7c65e216?w=800"]},
+            {"title": "Круиз по каналам Амстердама", "description": "Лодка с капитаном, сыр и пиво, закат", "price": 7500, "duration": 2, "location": "Амстердам", "category": "Круизы", "rating": 4.8, "reviews_count": 189,
+             "photos": ["https://images.unsplash.com/photo-1512470876302-972faa2aa9a4?w=800"]},
+            {"title": "Мурманск: охота за северным сиянием", "description": "Ночная поездка к сопкам, термос с чаем, гарантия фото", "price": 8500, "duration": 6, "location": "Мурманск", "category": "Природа", "rating": 4.9, "reviews_count": 156,
+             "photos": ["https://images.unsplash.com/photo-1579033461380-adb47c3eb938?w=800"]},
+            {"title": "Байкал: ледяные гроты зимой", "description": "Прогулка по льду, посещение пещер, обед в юрте", "price": 12000, "duration": 8, "location": "Листвянка", "category": "Природа", "rating": 5.0, "reviews_count": 134,
+             "photos": ["https://images.unsplash.com/photo-1517760444937-f6397edcbbcd?w=800"]},
+            {"title": "Мачу-Пикчу на рассвете", "description": "Встречаем солнце в древнем городе инков, альпаки", "price": 22000, "duration": 12, "location": "Куско", "category": "История", "rating": 5.0, "reviews_count": 312,
+             "photos": ["https://images.unsplash.com/photo-1526392060635-9d6019884377?w=800"]},
+            {"title": "Сафари в Серенгети", "description": "3 дня: львы, слоны, жирафы, ночёвка в палатке", "price": 35000, "duration": 72, "location": "Серенгети", "category": "Приключения", "rating": 5.0, "reviews_count": 89,
+             "photos": ["https://images.unsplash.com/photo-1516426122078-c23e76319801?w=800"]},
+            {"title": "Рафтинг по Колорадо", "description": "Гранд-Каньон с воды, пороги 4 категории, кемпинг", "price": 28000, "duration": 48, "location": "Гранд-Каньон", "category": "Экстрим", "rating": 5.0, "reviews_count": 67,
+             "photos": ["https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800"]},
+            {"title": "Тропой хоббитов: Новая Зеландия", "description": "Хоббитон, Фангорн, водопады из 'Властелина колец'", "price": 32000, "duration": 96, "location": "Роторуа", "category": "Кино", "rating": 5.0, "reviews_count": 178,
+             "photos": ["https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?w=800"]},
+            {"title": "Вечер в Большом театре", "description": "Балет 'Лебединое озеро', места в партере, фуршет в антракте", "price": 15000, "duration": 4, "location": "Москва", "category": "Театр", "rating": 5.0, "reviews_count": 234,
+             "photos": ["https://images.unsplash.com/photo-1514306191717-452ec28c7814?w=800"]},
+            {"title": "Казбек: восхождение для новичков", "description": "5 дней, с акклиматизацией, гид-альпинист, оборудование", "price": 18000, "duration": 120, "location": "Казбеги", "category": "Альпинизм", "rating": 4.9, "reviews_count": 87,
+             "photos": ["https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800"]},
+            {"title": "Прага: пивной тур", "description": "5 лучших пивоварен, дегустация 10 сортов, закуски", "price": 5800, "duration": 4, "location": "Прага", "category": "Гастрономия", "rating": 4.8, "reviews_count": 198,
+             "photos": ["https://images.unsplash.com/photo-1514933651103-005eec06c04b?w=800"]},
+            {"title": "Лиссабон на трамвае №28", "description": "Весь город за 3 часа, остановки на панорамных точках", "price": 4200, "duration": 3, "location": "Лиссабон", "category": "Обзорные", "rating": 4.7, "reviews_count": 156,
+             "photos": ["https://images.unsplash.com/photo-1555881400-74d7acaacd8b?w=800"]},
+        ]
+        
+        tours_created = 0
+        for tour_data in tours_data:
+            # Проверяем дубликаты по title
+            existing = await session.execute(
+                sa.select(Tour).where(Tour.title == tour_data['title'])
+            )
+            if not existing.scalar_one_or_none():
+                tour = Tour(
+                    guide_id=super_admin.id,
+                    title=tour_data['title'],
+                    description=tour_data['description'],
+                    price=tour_data['price'],
+                    duration=tour_data['duration'],
+                    location=tour_data['location'],
+                    category=tour_data['category'],
+                    photos=tour_data['photos'],
+                    rating=tour_data['rating'],
+                    reviews_count=tour_data['reviews_count'],
+                    active=True,
+                    is_public=True
+                )
+                session.add(tour)
+                tours_created += 1
+        
+        await session.commit()
+        print(f"✅ Создано {tours_created} новых туров (пропущено {len(tours_data) - tours_created} существующих)")
+        
         # Обновляем существующие туры с новыми полями
         result = await session.execute(sa.select(Tour))
         tours = result.scalars().all()

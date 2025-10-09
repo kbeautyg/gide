@@ -11,7 +11,7 @@ from sqlalchemy import select, func
 from app.db.session import get_db
 from app.services.tour_service import TourService
 from app.models.booking import Booking
-from app.core.deps import get_current_user
+from app.core.deps import get_current_user, get_current_user_optional
 from app.models.user import User
 
 router = APIRouter()
@@ -70,7 +70,7 @@ async def get_tours(
     page: int = Query(1, ge=1, description="Номер страницы"),
     page_size: int = Query(12, ge=1, le=100, description="Размер страницы"),
     include_private: bool = Query(False, description="Включать ли приватные экскурсии (только по токену гида)"),
-    current_user: Optional[User] = Depends(get_current_user),
+    current_user: Optional[User] = Depends(get_current_user_optional),
 ):
     """
     Получение списка экскурсий с фильтрами

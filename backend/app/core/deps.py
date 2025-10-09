@@ -1,6 +1,7 @@
 """
 Dependencies для проверки прав доступа
 """
+from typing import Optional
 from fastapi import Depends, HTTPException, status, Request
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -35,6 +36,20 @@ async def get_current_user(
         )
     
     return user
+
+
+async def get_current_user_optional(
+    request: Request,
+    db: AsyncSession = Depends(get_db)
+) -> Optional[User]:
+    """Получение текущего пользователя из БД (опционально, без исключения)"""
+    try:
+        user_id_str = get_current_user_id(request)
+        user_id = int(user_id_str)
+        user = await UserService.get_user_by_id(db, user_id)
+        return user
+    except:
+        return None
 
 
 class RoleChecker:
