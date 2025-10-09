@@ -28,6 +28,7 @@ import MyToursPage from './pages/dashboard/MyToursPage'
 import CalendarPage from './pages/dashboard/CalendarPage'
 import BookingsPage from './pages/dashboard/BookingsPage'
 import SettingsPage from './pages/dashboard/SettingsPage'
+import RequestsPage from './pages/dashboard/RequestsPage'
 
 function App() {
   return (
@@ -63,6 +64,7 @@ function App() {
       >
         <Route index element={<ManagerDashboard />} />
         <Route path="my-tours" element={<MyToursPage />} />
+        <Route path="requests" element={<RequestsPage />} />
         <Route path="calendar" element={<CalendarPage />} />
         <Route path="bookings" element={<BookingsPage />} />
         <Route path="settings" element={<SettingsPage />} />

@@ -9,7 +9,8 @@ import {
   CreditCard,
   Settings, 
   LogOut,
-  Home
+  Home,
+  FileText
 } from 'lucide-react'
 
 export default function DashboardLayout() {
@@ -20,6 +21,7 @@ export default function DashboardLayout() {
   const menuItems = [
     { icon: LayoutDashboard, label: 'Дашборд', path: '/dashboard' },
     { icon: MapPin, label: 'Мои экскурсии', path: '/dashboard/my-tours' },
+    { icon: FileText, label: 'Заявки', path: '/dashboard/requests', badge: 'new' },
     { icon: Calendar, label: 'Календарь', path: '/dashboard/calendar' },
     { icon: CreditCard, label: 'Заказы', path: '/dashboard/bookings' },
     { icon: Settings, label: 'Настройки', path: '/dashboard/settings' },

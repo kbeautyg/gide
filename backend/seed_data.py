@@ -201,6 +201,77 @@ async def seed_data():
             await session.commit()
             print(f"✅ Создано {len(reviews_data)} отзывов")
         
+        # Создаём тестовые заявки
+        requests_data = [
+            {
+                "client_id": super_admin.id,
+                "title": "Романтическая прогулка по Пхукету",
+                "description": "Хотим увидеть красивые закаты, романтичные места, сделать фотосессию на фоне океана",
+                "duration_hours": 2,
+                "participants_count": 2,
+                "budget": 5000.0,
+                "location": "Пхукет",
+                "status": "pending"
+            },
+            {
+                "client_id": super_admin.id,
+                "title": "Полный день на островах Пхи-Пхи",
+                "description": "Снорклинг, пляжи, обед на острове, фотографии, посещение бухты Майя Бэй",
+                "duration_hours": 7,
+                "participants_count": 4,
+                "budget": 15000.0,
+                "location": "Пхукет",
+                "status": "pending"
+            },
+            {
+                "client_id": super_admin.id,
+                "title": "Обзорная экскурсия по Бангкоку",
+                "description": "Храмы Ват Пхо и Ват Арун, рынки, уличная еда, прогулка по каналам",
+                "duration_hours": 6,
+                "participants_count": 3,
+                "budget": 8000.0,
+                "location": "Бангкок",
+                "status": "pending"
+            },
+            {
+                "client_id": super_admin.id,
+                "title": "Утренний храмовый комплекс",
+                "description": "Посещение главных храмов Бангкока до наплыва туристов, в том числе Изумрудного Будды",
+                "duration_hours": 3,
+                "participants_count": 2,
+                "budget": 4000.0,
+                "location": "Бангкок",
+                "status": "pending"
+            },
+            {
+                "client_id": super_admin.id,
+                "title": "Вечерний закат на пляже Ката",
+                "description": "Романтический ужин на пляже с видом на закат, фотосессия",
+                "duration_hours": 2,
+                "participants_count": 2,
+                "budget": 4500.0,
+                "location": "Пхукет",
+                "status": "pending"
+            },
+            {
+                "client_id": super_admin.id,
+                "title": "Трекинг в джунглях Краби",
+                "description": "Поход по джунглям с посещением водопадов, купание в горячих источниках",
+                "duration_hours": 5,
+                "participants_count": 4,
+                "budget": 12000.0,
+                "location": "Краби",
+                "status": "pending"
+            },
+        ]
+        
+        for req_data in requests_data:
+            req = Request(**req_data)
+            session.add(req)
+        
+        await session.commit()
+        print(f"✅ Создано {len(requests_data)} тестовых заявок")
+        
         print("ℹ️ Пользователи могут создавать экскурсии сами через ЛК")
 
 
