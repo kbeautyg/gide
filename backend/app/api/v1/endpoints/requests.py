@@ -19,19 +19,21 @@ router = APIRouter()
 @router.post("/", response_model=RequestSchema)
 async def create_request(
     request_data: RequestCreate,
-    current_user: User = Depends(get_current_user),
     db: AsyncSession = Depends(get_db)
 ):
-    """Создать заявку на экскурсию (доступно всем авторизованным пользователям)"""
+    """Создать заявку на экскурсию (доступно всем, даже неавторизованным)"""
     
+    # Для неавторизованных пользователей используем client_id = 1 (супер-админ)
+    # В реальном проекте можно создать отдельную таблицу для анонимных заявок
     db_request = Request(
-        client_id=current_user.id,
+        client_id=1,  # Супер-админ как владелец анонимных заявок
         title=request_data.title,
         description=request_data.description,
         preferred_date=request_data.preferred_date,
         participants_count=request_data.participants_count,
         budget=request_data.budget,
         location=request_data.location,
+        duration_hours=request_data.duration_hours,
         status='pending'
     )
     

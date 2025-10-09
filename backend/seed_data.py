@@ -13,6 +13,7 @@ from app.models.destination import Destination
 from app.models.landmark import Landmark
 from app.models.review import Review
 from app.models.article import Article
+from app.models.request import Request
 
 # Async engine
 DATABASE_URL = settings.DATABASE_URL.replace("postgresql://", "postgresql+asyncpg://")
