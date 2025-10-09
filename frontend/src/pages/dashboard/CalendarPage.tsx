@@ -174,13 +174,13 @@ export default function CalendarPage() {
 
       {/* Modal переноса заявки */}
       <Dialog open={rescheduleModal} onOpenChange={setRescheduleModal}>
-        <DialogContent className="max-w-3xl">
+        <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto">
           <DialogHeader>
             <DialogTitle>Перенести заявку на другую дату</DialogTitle>
           </DialogHeader>
           
           {selectedRequest && (
-            <div className="space-y-4">
+            <div className="space-y-4 pb-4">
               <div>
                 <h3 className="font-bold text-lg text-gray-900">{selectedRequest.title}</h3>
                 <p className="text-gray-600">
