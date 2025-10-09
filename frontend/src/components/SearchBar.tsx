@@ -1,10 +1,12 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { useQuery } from '@tanstack/react-query'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Search, MapPin, Minus, Plus } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { cn } from '@/lib/utils'
+import { api } from '@/lib/api'
 
 type Tab = 'tours' | 'experiences'
 
@@ -21,23 +23,42 @@ export function SearchBar({ variant = 'hero', className }: SearchBarProps) {
     where: '',
     checkIn: '',
     checkOut: '',
-    guests: 1,
+    adults: 1,
+    children: 0,
   })
 
-  const locations = [
-    'Тбилиси, Грузия',
-    'Стамбул, Турция',
-    'Бангкок, Таиланд',
-    'Паттайя, Таиланд',
-    'Пхукет, Таиланд',
-  ]
+  // Загрузка городов из API
+  const { data: destinationsData } = useQuery({
+    queryKey: ['destinations'],
+    queryFn: () => api.get('/destinations/').then(res => res.data),
+  })
+
+  const destinations = destinationsData || []
+  
+  // Фильтрация городов по вводу
+  const filteredDestinations = destinations.filter((dest: any) => 
+    dest.name?.toLowerCase().includes(searchData.where.toLowerCase()) ||
+    dest.country?.toLowerCase().includes(searchData.where.toLowerCase())
+  ).slice(0, 5)
 
   const handleSearch = () => {
+    const params = new URLSearchParams()
+    
     if (searchData.where) {
-      navigate(`/tours?location=${encodeURIComponent(searchData.where)}`)
-    } else {
-      navigate('/tours')
+      params.append('location', searchData.where)
     }
+    if (searchData.checkIn) {
+      params.append('date_from', searchData.checkIn)
+    }
+    if (searchData.checkOut) {
+      params.append('date_to', searchData.checkOut)
+    }
+    const totalGuests = searchData.adults + searchData.children
+    if (totalGuests > 1) {
+      params.append('guests', totalGuests.toString())
+    }
+    
+    navigate(`/tours${params.toString() ? '?' + params.toString() : ''}`)
     setExpandedField(null)
   }
 
@@ -112,23 +133,32 @@ export function SearchBar({ variant = 'hero', className }: SearchBarProps) {
                   autoFocus
                 />
                 <div className="space-y-1">
-                  {locations
-                    .filter((loc) =>
-                      loc.toLowerCase().includes(searchData.where.toLowerCase())
-                    )
-                    .map((loc) => (
+                  {filteredDestinations.length > 0 ? (
+                    filteredDestinations.map((dest: any) => (
                       <button
-                        key={loc}
+                        key={dest.id}
                         onClick={() => {
-                          setSearchData({ ...searchData, where: loc })
+                          setSearchData({ ...searchData, where: dest.name })
                           setExpandedField(null)
                         }}
                         className="w-full text-left px-4 py-3 hover:bg-gray-50 rounded-lg flex items-center gap-3 transition-colors"
                       >
-                        <MapPin size={18} className="text-gray-400" />
-                        <span className="text-gray-900">{loc}</span>
+                        <MapPin size={18} className="text-airbnb-rausch" />
+                        <div>
+                          <div className="text-gray-900 font-medium">{dest.name}</div>
+                          <div className="text-xs text-gray-500">{dest.country}</div>
+                        </div>
                       </button>
-                    ))}
+                    ))
+                  ) : searchData.where ? (
+                    <div className="px-4 py-3 text-gray-500 text-sm">
+                      Нет результатов
+                    </div>
+                  ) : (
+                    <div className="px-4 py-3 text-gray-500 text-sm">
+                      Начните вводить название города
+                    </div>
+                  )}
                 </div>
               </motion.div>
             )}
@@ -171,7 +201,9 @@ export function SearchBar({ variant = 'hero', className }: SearchBarProps) {
           >
             <div className="text-xs font-semibold text-gray-900">Гости</div>
             <div className="text-sm text-gray-600">
-              {searchData.guests > 0 ? `${searchData.guests} гост${searchData.guests === 1 ? 'ь' : 'я'}` : 'Кто едет?'}
+              {searchData.adults + searchData.children > 0 
+                ? `${searchData.adults + searchData.children} гост${searchData.adults + searchData.children === 1 ? 'ь' : searchData.adults + searchData.children < 5 ? 'я' : 'ей'}` 
+                : 'Кто едет?'}
             </div>
           </button>
 
@@ -185,6 +217,7 @@ export function SearchBar({ variant = 'hero', className }: SearchBarProps) {
                 className="absolute top-full right-0 mt-2 bg-white rounded-2xl shadow-airbnb-lg p-6 z-50 min-w-[380px]"
               >
                 <div className="space-y-6">
+                  {/* Взрослые */}
                   <div className="flex items-center justify-between">
                     <div>
                       <div className="font-semibold text-gray-900">Взрослые</div>
@@ -192,15 +225,39 @@ export function SearchBar({ variant = 'hero', className }: SearchBarProps) {
                     </div>
                     <div className="flex items-center gap-3">
                       <button
-                        onClick={() => setSearchData({ ...searchData, guests: Math.max(0, searchData.guests - 1) })}
-                        disabled={searchData.guests === 0}
+                        onClick={() => setSearchData({ ...searchData, adults: Math.max(1, searchData.adults - 1) })}
+                        disabled={searchData.adults === 1}
                         className="w-8 h-8 rounded-full border border-gray-300 flex items-center justify-center hover:border-gray-900 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
                       >
                         <Minus size={16} />
                       </button>
-                      <span className="w-8 text-center font-medium">{searchData.guests}</span>
+                      <span className="w-8 text-center font-medium">{searchData.adults}</span>
                       <button
-                        onClick={() => setSearchData({ ...searchData, guests: searchData.guests + 1 })}
+                        onClick={() => setSearchData({ ...searchData, adults: searchData.adults + 1 })}
+                        className="w-8 h-8 rounded-full border border-gray-300 flex items-center justify-center hover:border-gray-900 transition-colors"
+                      >
+                        <Plus size={16} />
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* Дети */}
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <div className="font-semibold text-gray-900">Дети</div>
+                      <div className="text-sm text-gray-600">0-12 лет</div>
+                    </div>
+                    <div className="flex items-center gap-3">
+                      <button
+                        onClick={() => setSearchData({ ...searchData, children: Math.max(0, searchData.children - 1) })}
+                        disabled={searchData.children === 0}
+                        className="w-8 h-8 rounded-full border border-gray-300 flex items-center justify-center hover:border-gray-900 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+                      >
+                        <Minus size={16} />
+                      </button>
+                      <span className="w-8 text-center font-medium">{searchData.children}</span>
+                      <button
+                        onClick={() => setSearchData({ ...searchData, children: searchData.children + 1 })}
                         className="w-8 h-8 rounded-full border border-gray-300 flex items-center justify-center hover:border-gray-900 transition-colors"
                       >
                         <Plus size={16} />
