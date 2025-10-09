@@ -42,6 +42,30 @@ async def seed_data():
         
         print(f"✅ Супер-админ найден: {super_admin.phone} (ID: {super_admin.id})")
         
+        # Создаём системного гида для публичных туров (чтобы не показывать их обычным гидам)
+        system_guide_phone = "00000000000"  # Системный номер
+        result = await session.execute(
+            sa.select(User).where(User.phone == system_guide_phone)
+        )
+        system_guide = result.scalar_one_or_none()
+        
+        if not system_guide:
+            from app.core.security import get_password_hash
+            system_guide = User(
+                phone=system_guide_phone,
+                email="system@thaiguide.pro",
+                name="Каталог ThaiGuide",
+                hashed_password=get_password_hash("system_password_no_login"),
+                role=UserRole.MANAGER,
+                parent_id=super_admin.id
+            )
+            session.add(system_guide)
+            await session.commit()
+            await session.refresh(system_guide)
+            print(f"✅ Системный гид создан (ID: {system_guide.id})")
+        else:
+            print(f"✅ Системный гид найден (ID: {system_guide.id})")
+        
         # Создаём направления (проверяем на существование)
         destinations_data = [
             {"name": "Тбилиси", "country": "Грузия", "slug": "tbilisi", 
@@ -271,7 +295,7 @@ async def seed_data():
             )
             if not existing.scalar_one_or_none():
                 tour = Tour(
-                    guide_id=super_admin.id,
+                    guide_id=system_guide.id,  # Привязываем к системному гиду, не к супер-админу
                     title=tour_data['title'],
                     description=tour_data['description'],
                     price=tour_data['price'],
