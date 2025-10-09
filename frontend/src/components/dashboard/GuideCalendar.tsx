@@ -210,16 +210,19 @@ function DraggableRequestCard({ request, onCancel }: { request: any, onCancel?: 
     <div
       ref={setNodeRef}
       style={style}
+      {...attributes}
+      {...listeners}
       className={cn(
         "bg-white rounded px-2 py-1 text-xs shadow-sm group/card relative",
-        isDragging && "opacity-50"
+        "cursor-grab active:cursor-grabbing hover:shadow-md transition-all hover:scale-[1.02]",
+        isDragging && "opacity-50 scale-95 shadow-xl cursor-grabbing"
       )}
     >
       <div className="flex items-center gap-1">
-        <div {...attributes} {...listeners} className="cursor-grab active:cursor-grabbing p-0.5">
+        <div className="flex-shrink-0">
           <GripVertical size={12} className="text-gray-400" />
         </div>
-        <div className="flex-1">
+        <div className="flex-1 pointer-events-none">
           <div className="font-semibold line-clamp-1 text-gray-900">{request.title}</div>
           <div className="flex items-center justify-between">
             <div className="text-gray-500">{request.duration_hours}ч</div>
@@ -233,7 +236,7 @@ function DraggableRequestCard({ request, onCancel }: { request: any, onCancel?: 
                 onCancel(request.id)
               }
             }}
-            className="opacity-0 group-hover/card:opacity-100 text-red-600 hover:text-red-700 p-0.5"
+            className="opacity-0 group-hover/card:opacity-100 text-red-600 hover:text-red-700 p-0.5 pointer-events-auto"
           >
             <X size={12} />
           </button>

@@ -18,18 +18,32 @@ export function Logo({ size = 'md', linkTo = '/', className = '' }: LogoProps) {
   }
 
   const logo = (
-    <div className={`font-bold ${sizeClasses[size]} ${className}`}>
-      {/* Диагональный градиент: черный → малиновый */}
-      <span 
-        className="bg-gradient-to-br from-black via-black via-50% to-airbnb-rausch bg-clip-text text-transparent"
+    <div className={`font-bold ${sizeClasses[size]} ${className} relative inline-block`}>
+      {/* Текст */}
+      <div className="flex items-center gap-0">
+        <span className="text-airbnb-rausch">Turex</span>
+        <span className="text-black">Pro</span>
+      </div>
+      
+      {/* Диагональная линия через текст */}
+      <div 
+        className="absolute inset-0 pointer-events-none overflow-hidden"
         style={{ 
-          backgroundSize: '200% 200%',
-          backgroundPosition: '0% 0%'
+          transform: 'translateZ(0)' // GPU acceleration
         }}
       >
-        Turex
-      </span>
-      <span className="text-airbnb-rausch"> Pro</span>
+        <div 
+          className="absolute bg-airbnb-rausch"
+          style={{
+            width: '150%',
+            height: '3px',
+            top: '50%',
+            left: '-25%',
+            transform: 'rotate(-15deg) translateY(-50%)',
+            boxShadow: '0 0 8px rgba(255, 56, 92, 0.5)'
+          }}
+        />
+      </div>
     </div>
   )
 
