@@ -67,14 +67,14 @@ export default function HomePage() {
     },
   ]
 
-  // Mock данные для направлений
+  // Направления (только Азия!)
   const destinations = [
     { name: 'Тбилиси', count: 480, image: 'https://images.unsplash.com/photo-1597079858949-19881cff2e1d?w=500&h=500&fit=crop', country: 'Грузия' },
     { name: 'Стамбул', count: 1240, image: 'https://images.unsplash.com/photo-1527838832700-5059252407fa?w=500&h=500&fit=crop', country: 'Турция' },
     { name: 'Бангкок', count: 890, image: 'https://images.unsplash.com/photo-1563784462041-5f97ac9523dd?w=500&h=500&fit=crop', country: 'Таиланд' },
     { name: 'Дубай', count: 650, image: 'https://images.unsplash.com/photo-1512453979798-5ea266f8880c?w=500&h=500&fit=crop', country: 'ОАЭ' },
-    { name: 'Париж', count: 1150, image: 'https://images.unsplash.com/photo-1502602898657-3e91760cbb34?w=500&h=500&fit=crop', country: 'Франция' },
-    { name: 'Рим', count: 920, image: 'https://images.unsplash.com/photo-1552832230-c0197dd311b5?w=500&h=500&fit=crop', country: 'Италия' },
+    { name: 'Пхукет', count: 720, image: 'https://images.unsplash.com/photo-1589394815804-964ed0be2eb5?w=500&h=500&fit=crop', country: 'Таиланд' },
+    { name: 'Токио', count: 1050, image: 'https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?w=500&h=500&fit=crop', country: 'Япония' },
   ]
 
   // Mock данные для отзывов
@@ -109,17 +109,25 @@ export default function HomePage() {
     <div className="min-h-screen bg-white">
       <PublicHeader />
 
-      {/* Hero Section */}
-      <section className="relative text-white py-24 md:py-32 overflow-hidden">
+      {/* Hero Section - Креативный дизайн с анимированными кругами */}
+      <section className="relative text-white py-24 md:py-32 overflow-hidden min-h-[90vh] flex items-center">
         {/* Фоновое изображение */}
         <div className="absolute inset-0">
           <img 
-            src="https://images.unsplash.com/photo-1488646953014-85cb44e25828?w=1920&h=1080&fit=crop"
+            src="https://images.unsplash.com/photo-1488646953014-85cb44e25828?w=1920&h=1080&fit=crop&q=85"
             alt="Путешествия"
             className="w-full h-full object-cover"
+            loading="eager"
           />
-          {/* Затемнение для читаемости - только малиновый */}
-          <div className="absolute inset-0 bg-airbnb-rausch/60" />
+          {/* Затемнение для читаемости */}
+          <div className="absolute inset-0 bg-black/50" />
+        </div>
+
+        {/* Анимированные круги (blob эффект) */}
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+          <div className="absolute top-0 -left-40 w-96 h-96 bg-airbnb-rausch/40 rounded-full blur-3xl animate-blob" />
+          <div className="absolute top-0 -right-40 w-96 h-96 bg-purple-500/30 rounded-full blur-3xl animate-blob animation-delay-2000" />
+          <div className="absolute -bottom-40 left-1/3 w-96 h-96 bg-blue-500/25 rounded-full blur-3xl animate-blob animation-delay-4000" />
         </div>
         
         <div className="container mx-auto px-4 relative z-10">
@@ -129,28 +137,49 @@ export default function HomePage() {
             transition={{ duration: 0.8 }}
             className="max-w-4xl mx-auto text-center"
           >
-            <h1 className="text-5xl md:text-6xl font-bold mb-6 leading-tight text-white drop-shadow-2xl">
+            <motion.h1 
+              className="text-5xl md:text-7xl font-bold mb-6 leading-tight text-white drop-shadow-2xl"
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+            >
               Откройте незабываемые экскурсии
-            </h1>
-            <p className="text-xl md:text-2xl mb-10 text-white/95 max-w-2xl mx-auto drop-shadow-md">
-              Более 500 уникальных экскурсий с местными гидами по всему миру
-            </p>
+            </motion.h1>
+            <motion.p 
+              className="text-xl md:text-2xl mb-10 text-white/95 max-w-2xl mx-auto drop-shadow-md"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.6, delay: 0.4 }}
+            >
+              Более 500 уникальных экскурсий с местными гидами по Азии
+            </motion.p>
             
             {/* SearchBar */}
-            <div className="mb-8">
+            <motion.div 
+              className="mb-8"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.6 }}
+            >
               <SearchBar variant="hero" />
-              </div>
+            </motion.div>
             
             {/* CTA */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.6, delay: 0.8 }}
+            >
               <Link to="/request">
                 <Button 
                   variant="secondary" 
                   size="lg" 
-                className="bg-white text-airbnb-rausch hover:bg-gray-50 font-semibold text-lg px-8 shadow-lg"
+                  className="bg-white text-airbnb-rausch hover:bg-gray-50 hover:scale-105 font-semibold text-lg px-8 shadow-lg transition-transform"
                 >
                   ✨ Заказать индивидуальную экскурсию
                 </Button>
               </Link>
+            </motion.div>
           </motion.div>
         </div>
       </section>
