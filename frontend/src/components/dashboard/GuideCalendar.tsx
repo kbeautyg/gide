@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { ChevronLeft, ChevronRight } from 'lucide-react'
+import { ChevronLeft, ChevronRight, X } from 'lucide-react'
 import { 
   format, startOfMonth, endOfMonth, eachDayOfInterval, 
   isSameDay, addMonths, subMonths, isSameMonth, isPast,
@@ -7,28 +7,47 @@ import {
 } from 'date-fns'
 import { ru } from 'date-fns/locale'
 import { cn } from '@/lib/utils'
+import { DndContext, useDraggable, useDroppable, DragEndEvent } from '@dnd-kit/core'
+import { CSS } from '@dnd-kit/utilities'
 
 interface GuideCalendarProps {
   schedules: Array<{ date: string, booked_hours: number, available_hours?: number }>
   requests: Array<any>
   onReschedule?: (requestId: number, newDate: string) => void
+  onCancel?: (requestId: number) => void
   mode?: 'view' | 'select'
   onDateSelect?: (date: Date) => void
   showHoursAvailability?: boolean
   disabledDates?: Date[]
   selectedDate?: Date | null
+  enableDragDrop?: boolean
 }
 
 export function GuideCalendar({ 
   schedules, 
-  requests, 
+  requests,
+  onReschedule,
+  onCancel,
   mode = 'view',
   onDateSelect,
   showHoursAvailability = false,
   disabledDates = [],
-  selectedDate
+  selectedDate,
+  enableDragDrop = false
 }: GuideCalendarProps) {
   const [currentMonth, setCurrentMonth] = useState(new Date())
+  const [expandedDate, setExpandedDate] = useState<Date | null>(null)
+  
+  const handleDragEnd = (event: DragEndEvent) => {
+    const { active, over } = event
+    
+    if (!over || !onReschedule) return
+    
+    const requestId = Number(active.id)
+    const newDate = over.id as string
+    
+    onReschedule(requestId, newDate)
+  }
   
   const monthStart = startOfMonth(currentMonth)
   const monthEnd = endOfMonth(currentMonth)
@@ -49,7 +68,7 @@ export function GuideCalendar({
     return disabledDates.some(d => isSameDay(d, date))
   }
   
-  return (
+  const calendarContent = (
     <div className="bg-white rounded-xl shadow-airbnb p-6">
       {/* Навигация по месяцам */}
       <div className="flex items-center justify-between mb-6">
@@ -100,12 +119,24 @@ export function GuideCalendar({
               isCurrentMonth={isCurrentMonth}
               showHours={showHoursAvailability || false}
               onClick={() => mode === 'select' && !disabled && onDateSelect?.(day)}
+              onCancel={onCancel}
             />
           )
         })}
       </div>
     </div>
   )
+  
+  // Оборачиваем в DndContext если включен Drag & Drop
+  if (enableDragDrop && mode === 'view') {
+    return (
+      <DndContext onDragEnd={handleDragEnd}>
+        {calendarContent}
+      </DndContext>
+    )
+  }
+  
+  return calendarContent
 }
 
 interface DayCellProps {
@@ -118,6 +149,7 @@ interface DayCellProps {
   isCurrentMonth?: boolean
   showHours?: boolean
   onClick: () => void
+  onCancel?: (requestId: number) => void
 }
 
 function DayCell({ 
@@ -129,7 +161,8 @@ function DayCell({
   isSelected, 
   isCurrentMonth,
   showHours, 
-  onClick 
+  onClick,
+  onCancel
 }: DayCellProps) {
   const bgColor = 
     disabled ? 'bg-gray-100 text-gray-400 cursor-not-allowed' :
@@ -199,9 +232,24 @@ function DayCell({
       {isCurrentMonth && requests.length > 0 && !showHours && (
         <div className="space-y-1 mt-1">
           {requests.slice(0, 2).map(req => (
-            <div key={req.id} className="bg-white rounded px-1 py-0.5 text-xs shadow-sm">
+            <div key={req.id} className="bg-white rounded px-2 py-1 text-xs shadow-sm group/card relative">
               <div className="font-semibold line-clamp-1 text-gray-900">{req.title}</div>
-              <div className="text-gray-500">{req.duration_hours}ч</div>
+              <div className="flex items-center justify-between">
+                <div className="text-gray-500">{req.duration_hours}ч</div>
+                {onCancel && (
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation()
+                      if (confirm(`Отменить "${req.title}"? Это освободит ${req.duration_hours}ч`)) {
+                        onCancel(req.id)
+                      }
+                    }}
+                    className="opacity-0 group-hover/card:opacity-100 text-red-600 hover:text-red-700 p-0.5"
+                  >
+                    <X size={12} />
+                  </button>
+                )}
+              </div>
             </div>
           ))}
           {requests.length > 2 && (

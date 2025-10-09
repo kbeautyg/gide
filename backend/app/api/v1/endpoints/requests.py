@@ -354,3 +354,43 @@ async def reschedule_request(
     await db.refresh(request)
     
     return request
+
+
+@router.put("/{request_id}/cancel")
+async def cancel_request(
+    request_id: str,
+    db: AsyncSession = Depends(get_db),
+    current_user: User = Depends(get_current_user)
+):
+    """Отменить заявку и освободить часы"""
+    from app.services.schedule_service import ScheduleService
+    
+    # Находим заявку
+    query = select(Request).where(Request.id == int(request_id))
+    result = await db.execute(query)
+    request = result.scalar_one_or_none()
+    
+    if not request:
+        raise HTTPException(status_code=404, detail="Заявка не найдена")
+    
+    if request.guide_id != current_user.id:
+        raise HTTPException(status_code=403, detail="Можно отменять только свои заявки")
+    
+    # Освобождаем часы если заявка была на дату
+    if request.assigned_date and request.guide_id:
+        await ScheduleService.free_hours(
+            db, 
+            request.guide_id, 
+            request.assigned_date, 
+            request.duration_hours
+        )
+    
+    # Обновляем статус и убираем гида
+    request.status = 'cancelled'
+    request.guide_id = None
+    request.assigned_date = None
+    
+    await db.commit()
+    await db.refresh(request)
+    
+    return {"message": f"Заявка отменена, освобождено {request.duration_hours}ч", "request": request}

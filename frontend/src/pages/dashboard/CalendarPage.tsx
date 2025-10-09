@@ -48,6 +48,19 @@ export default function CalendarPage() {
     }
   })
 
+  // Отмена заявки
+  const cancelMutation = useMutation({
+    mutationFn: (requestId: number) =>
+      api.put(`/requests/${requestId}/cancel`),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['my-schedule'] })
+      alert('✅ Заявка отменена, часы освобождены!')
+    },
+    onError: (error: any) => {
+      alert(`❌ ${error.response?.data?.detail || 'Ошибка при отмене'}`)
+    }
+  })
+
   const schedules = scheduleData?.schedules || []
   const requests = scheduleData?.requests || []
 
@@ -115,6 +128,7 @@ export default function CalendarPage() {
             schedules={schedules}
             requests={requests}
             mode="view"
+            onCancel={(requestId) => cancelMutation.mutate(requestId)}
           />
           
           {/* Легенда */}
