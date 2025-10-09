@@ -14,6 +14,7 @@ class RequestBase(BaseModel):
     participants_count: int
     budget: Optional[float] = None
     location: Optional[str] = None
+    duration_hours: int  # 1-8 часов
 
 
 class RequestCreate(RequestBase):
@@ -29,8 +30,11 @@ class RequestUpdate(BaseModel):
     participants_count: Optional[int] = None
     budget: Optional[float] = None
     location: Optional[str] = None
+    duration_hours: Optional[int] = None
     status: Optional[str] = None
     assigned_to: Optional[int] = None
+    guide_id: Optional[int] = None
+    assigned_date: Optional[date] = None
 
 
 class Request(RequestBase):
@@ -39,9 +43,21 @@ class Request(RequestBase):
     client_id: int
     status: str
     assigned_to: Optional[int] = None
+    guide_id: Optional[int] = None
+    assigned_date: Optional[date] = None
     
     class Config:
         from_attributes = True
+
+
+class RequestTake(BaseModel):
+    """Схема для взятия заявки гидом"""
+    assigned_date: date  # Дата назначения
+
+
+class RequestReschedule(BaseModel):
+    """Схема для переноса заявки"""
+    new_date: date  # Новая дата
 
 
 class RequestList(BaseModel):

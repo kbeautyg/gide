@@ -9,5 +9,6 @@ from app.models.destination import Destination
 from app.models.landmark import Landmark
 from app.models.review import Review
 from app.models.article import Article
+from app.models.guide_schedule import GuideSchedule
 
-__all__ = ["User", "Tour", "Booking", "Request", "Destination", "Landmark", "Review", "Article"]
+__all__ = ["User", "Tour", "Booking", "Request", "Destination", "Landmark", "Review", "Article", "GuideSchedule"]

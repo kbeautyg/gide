@@ -197,3 +197,162 @@ async def delete_request(
     await db.commit()
     
     return {"message": "Заявка удалена"}
+
+
+@router.get("/available")
+async def get_available_requests(
+    db: AsyncSession = Depends(get_db),
+    current_user: User = Depends(get_current_user)
+):
+    """Получить список непринятых заявок (для гидов)"""
+    # Только для гидов
+    if current_user.role not in [UserRole.MANAGER, UserRole.SUPER_MANAGER]:
+        raise HTTPException(status_code=403, detail="Только для гидов")
+    
+    # Заявки без назначенного гида
+    query = select(Request).where(
+        Request.guide_id.is_(None),
+        Request.status == 'pending'
+    ).order_by(Request.created_at.desc())
+    
+    result = await db.execute(query)
+    requests = result.scalars().all()
+    
+    return {"requests": requests, "total": len(requests)}
+
+
+@router.post("/{request_id}/take")
+async def take_request(
+    request_id: str,
+    data: dict,  # {"assigned_date": "2025-10-15"}
+    db: AsyncSession = Depends(get_db),
+    current_user: User = Depends(get_current_user)
+):
+    """Взять заявку на дату"""
+    from app.services.schedule_service import ScheduleService
+    from datetime import datetime
+    
+    # Только для гидов
+    if current_user.role not in [UserRole.MANAGER, UserRole.SUPER_MANAGER]:
+        raise HTTPException(status_code=403, detail="Только для гидов")
+    
+    # Находим заявку
+    query = select(Request).where(Request.id == int(request_id))
+    result = await db.execute(query)
+    request = result.scalar_one_or_none()
+    
+    if not request:
+        raise HTTPException(status_code=404, detail="Заявка не найдена")
+    
+    if request.guide_id is not None:
+        raise HTTPException(status_code=400, detail="Заявка уже взята другим гидом")
+    
+    # Парсим дату
+    assigned_date = datetime.strptime(data.get("assigned_date"), "%Y-%m-%d").date()
+    
+    # Проверяем доступность гида на эту дату
+    available = await ScheduleService.check_availability(
+        db, current_user.id, assigned_date, request.duration_hours
+    )
+    
+    if not available:
+        schedule = await ScheduleService.get_or_create_schedule(db, current_user.id, assigned_date)
+        raise HTTPException(
+            status_code=400,
+            detail=f"Недостаточно времени на {assigned_date}. Занято: {schedule.booked_hours}/8ч, требуется: {request.duration_hours}ч"
+        )
+    
+    # Бронируем время
+    await ScheduleService.book_hours(db, current_user.id, assigned_date, request.duration_hours)
+    
+    # Назначаем заявку гиду
+    request.guide_id = current_user.id
+    request.assigned_date = assigned_date
+    request.status = 'assigned'
+    
+    await db.commit()
+    await db.refresh(request)
+    
+    return request
+
+
+@router.get("/my-schedule")
+async def get_my_schedule(
+    start_date: str,
+    end_date: str,
+    db: AsyncSession = Depends(get_db),
+    current_user: User = Depends(get_current_user)
+):
+    """Получить расписание гида с заявками"""
+    from app.services.schedule_service import ScheduleService
+    from datetime import datetime
+    
+    start = datetime.strptime(start_date, "%Y-%m-%d").date()
+    end = datetime.strptime(end_date, "%Y-%m-%d").date()
+    
+    schedules = await ScheduleService.get_schedule_range(db, current_user.id, start, end)
+    requests = await ScheduleService.get_requests_for_date_range(db, current_user.id, start, end)
+    
+    return {
+        "schedules": [
+            {
+                "date": str(s.date),
+                "booked_hours": s.booked_hours,
+                "available_hours": s.available_hours
+            } for s in schedules
+        ],
+        "requests": requests
+    }
+
+
+@router.put("/{request_id}/reschedule")
+async def reschedule_request(
+    request_id: str,
+    data: dict,  # {"new_date": "2025-10-22"}
+    db: AsyncSession = Depends(get_db),
+    current_user: User = Depends(get_current_user)
+):
+    """Перенести заявку на другую дату"""
+    from app.services.schedule_service import ScheduleService
+    from datetime import datetime
+    
+    # Находим заявку
+    query = select(Request).where(Request.id == int(request_id))
+    result = await db.execute(query)
+    request = result.scalar_one_or_none()
+    
+    if not request:
+        raise HTTPException(status_code=404, detail="Заявка не найдена")
+    
+    if request.guide_id != current_user.id:
+        raise HTTPException(status_code=403, detail="Можно переносить только свои заявки")
+    
+    old_date = request.assigned_date
+    new_date = datetime.strptime(data.get("new_date"), "%Y-%m-%d").date()
+    
+    # Проверяем новую дату
+    available = await ScheduleService.check_availability(
+        db, current_user.id, new_date, request.duration_hours
+    )
+    
+    if not available:
+        schedule = await ScheduleService.get_or_create_schedule(db, current_user.id, new_date)
+        raise HTTPException(
+            status_code=400,
+            detail=f"Недостаточно времени на {new_date}. Занято: {schedule.booked_hours}/8ч"
+        )
+    
+    # Освобождаем старое время
+    if old_date:
+        await ScheduleService.free_hours(db, current_user.id, old_date, request.duration_hours)
+    
+    # Бронируем новое время
+    await ScheduleService.book_hours(db, current_user.id, new_date, request.duration_hours)
+    
+    # Обновляем дату заявки
+    request.assigned_date = new_date
+    
+    await db.commit()
+    await db.refresh(request)
+    
+    return request

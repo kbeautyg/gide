@@ -18,6 +18,7 @@ export default function CreateRequestPage() {
     participants_count: '',
     budget: '',
     location: '',
+    duration_hours: '',
   })
 
   const createMutation = useMutation({
@@ -31,6 +32,7 @@ export default function CreateRequestPage() {
         participants_count: '',
         budget: '',
         location: '',
+        duration_hours: '',
       })
     },
     onError: () => {
@@ -48,20 +50,22 @@ export default function CreateRequestPage() {
       participants_count: parseInt(formData.participants_count),
       budget: formData.budget ? parseFloat(formData.budget) : null,
       location: formData.location || null,
+      duration_hours: parseInt(formData.duration_hours),
     })
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-white">
       <PublicHeader />
       {/* Hero Section */}
-      <section className="bg-gradient-to-r from-tropical-turquoise to-tropical-ocean text-white py-20">
-        <div className="container mx-auto px-4">
+      <section className="relative text-white py-20 overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-r from-airbnb-rausch to-airbnb-arches" />
+        <div className="container mx-auto px-4 relative z-10">
           <div className="max-w-4xl mx-auto text-center">
-            <h1 className="text-4xl md:text-6xl font-bold mb-6">
+            <h1 className="text-4xl md:text-6xl font-bold mb-6 text-white">
               Не нашли подходящую экскурсию?
             </h1>
-            <p className="text-xl md:text-2xl mb-8 text-white/90">
+            <p className="text-xl md:text-2xl mb-8 text-white/95">
               Оставьте заявку, и мы создадим для вас индивидуальную программу
             </p>
           </div>
@@ -101,6 +105,31 @@ export default function CreateRequestPage() {
                     />
                   </div>
 
+                  <div>
+                    <Label htmlFor="duration_hours">Длительность экскурсии (часов) *</Label>
+                    <select
+                      id="duration_hours"
+                      required
+                      value={formData.duration_hours}
+                      onChange={(e) => setFormData({ ...formData, duration_hours: e.target.value })}
+                      className="w-full rounded-lg border border-gray-300 px-4 py-3 text-gray-900 bg-white focus:outline-none focus:ring-2 focus:ring-airbnb-rausch"
+                    >
+                      <option value="">Выберите длительность</option>
+                      {[1, 2, 3, 4, 5, 6, 7, 8].map(h => (
+                        <option key={h} value={h}>
+                          {h} час{h === 1 ? '' : h < 5 ? 'а' : 'ов'}
+                        </option>
+                      ))}
+                    </select>
+                    {formData.duration_hours && (
+                      <p className="text-sm text-gray-600 mt-2">
+                        {parseInt(formData.duration_hours) <= 2 && '⚡ Короткая экскурсия (до 2 часов)'}
+                        {parseInt(formData.duration_hours) >= 3 && parseInt(formData.duration_hours) <= 4 && '📋 Средняя экскурсия (3-4 часа)'}
+                        {parseInt(formData.duration_hours) >= 5 && '🌟 Длинная экскурсия (от 5 часов)'}
+                      </p>
+                    )}
+                  </div>
+
                   <div className="grid grid-cols-2 gap-4">
                     <div>
                       <Label htmlFor="preferred_date">Предпочтительная дата</Label>
@@ -109,6 +138,7 @@ export default function CreateRequestPage() {
                         type="date"
                         value={formData.preferred_date}
                         onChange={(e) => setFormData({ ...formData, preferred_date: e.target.value })}
+                        className="rounded-lg"
                       />
                     </div>
                     
@@ -122,6 +152,7 @@ export default function CreateRequestPage() {
                         onChange={(e) => setFormData({ ...formData, participants_count: e.target.value })}
                         placeholder="2"
                         required
+                        className="rounded-lg"
                       />
                     </div>
                   </div>
@@ -162,7 +193,7 @@ export default function CreateRequestPage() {
 
                   <Button 
                     type="submit" 
-                    className="w-full bg-tropical-turquoise hover:bg-tropical-turquoise/90"
+                    className="w-full bg-airbnb-rausch hover:bg-airbnb-rausch/90"
                     disabled={createMutation.isPending}
                   >
                     <Send className="mr-2" size={18} />
@@ -177,7 +208,7 @@ export default function CreateRequestPage() {
               <Card className="text-center">
                 <CardHeader>
                   <div className="w-12 h-12 bg-tropical-turquoise/10 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <Calendar className="text-tropical-turquoise" size={24} />
+                    <Calendar className="text-airbnb-babu" size={24} />
                   </div>
                   <CardTitle className="text-lg">Быстрый ответ</CardTitle>
                 </CardHeader>
@@ -191,7 +222,7 @@ export default function CreateRequestPage() {
               <Card className="text-center">
                 <CardHeader>
                   <div className="w-12 h-12 bg-tropical-coral/10 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <Users className="text-tropical-coral" size={24} />
+                    <Users className="text-airbnb-rausch" size={24} />
                   </div>
                   <CardTitle className="text-lg">Индивидуальный подход</CardTitle>
                 </CardHeader>
@@ -205,7 +236,7 @@ export default function CreateRequestPage() {
               <Card className="text-center">
                 <CardHeader>
                   <div className="w-12 h-12 bg-tropical-gold/10 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <DollarSign className="text-tropical-gold" size={24} />
+                    <DollarSign className="text-airbnb-arches" size={24} />
                   </div>
                   <CardTitle className="text-lg">Прозрачные цены</CardTitle>
                 </CardHeader>

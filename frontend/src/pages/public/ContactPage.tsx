@@ -9,16 +9,17 @@ import { PublicFooter } from '@/components/PublicFooter'
 
 export default function ContactPage() {
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-white">
       <PublicHeader />
       {/* Hero Section */}
-      <section className="bg-gradient-to-r from-tropical-turquoise to-tropical-ocean text-white py-20">
-        <div className="container mx-auto px-4">
+      <section className="relative text-white py-20 overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-r from-airbnb-rausch to-airbnb-arches" />
+        <div className="container mx-auto px-4 relative z-10">
           <div className="max-w-4xl mx-auto text-center">
-            <h1 className="text-4xl md:text-6xl font-bold mb-6">
+            <h1 className="text-4xl md:text-6xl font-bold mb-6 text-white">
               Свяжитесь с нами
             </h1>
-            <p className="text-xl md:text-2xl mb-8 text-white/90">
+            <p className="text-xl md:text-2xl mb-8 text-white/95">
               Мы всегда готовы помочь вам спланировать идеальное путешествие
             </p>
           </div>
@@ -36,7 +37,7 @@ export default function ContactPage() {
               <div className="space-y-6">
                 <div className="flex items-start gap-4">
                   <div className="w-12 h-12 bg-tropical-turquoise/10 rounded-full flex items-center justify-center flex-shrink-0">
-                    <Phone className="text-tropical-turquoise" size={24} />
+                    <Phone className="text-airbnb-babu" size={24} />
                   </div>
                   <div>
                     <h3 className="text-xl font-semibold mb-2">Телефон</h3>
@@ -47,7 +48,7 @@ export default function ContactPage() {
 
                 <div className="flex items-start gap-4">
                   <div className="w-12 h-12 bg-tropical-coral/10 rounded-full flex items-center justify-center flex-shrink-0">
-                    <Mail className="text-tropical-coral" size={24} />
+                    <Mail className="text-airbnb-rausch" size={24} />
                   </div>
                   <div>
                     <h3 className="text-xl font-semibold mb-2">Email</h3>
@@ -58,7 +59,7 @@ export default function ContactPage() {
 
                 <div className="flex items-start gap-4">
                   <div className="w-12 h-12 bg-tropical-gold/10 rounded-full flex items-center justify-center flex-shrink-0">
-                    <MapPin className="text-tropical-gold" size={24} />
+                    <MapPin className="text-airbnb-arches" size={24} />
                   </div>
                   <div>
                     <h3 className="text-xl font-semibold mb-2">Офисы</h3>
@@ -70,7 +71,7 @@ export default function ContactPage() {
 
                 <div className="flex items-start gap-4">
                   <div className="w-12 h-12 bg-tropical-ocean/10 rounded-full flex items-center justify-center flex-shrink-0">
-                    <Clock className="text-tropical-ocean" size={24} />
+                    <Clock className="text-airbnb-rausch" size={24} />
                   </div>
                   <div>
                     <h3 className="text-xl font-semibold mb-2">Время работы</h3>
@@ -121,7 +122,7 @@ export default function ContactPage() {
                       />
                     </div>
                     
-                    <Button type="submit" className="w-full bg-tropical-turquoise hover:bg-tropical-turquoise/90">
+                    <Button type="submit" className="w-full bg-airbnb-rausch hover:bg-airbnb-rausch/90">
                       <MessageCircle className="mr-2" size={18} />
                       Отправить сообщение
                     </Button>

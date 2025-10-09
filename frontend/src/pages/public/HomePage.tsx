@@ -105,9 +105,17 @@ export default function HomePage() {
       <PublicHeader />
 
       {/* Hero Section */}
-      <section className="relative hero-gradient text-white py-24 md:py-32 overflow-hidden">
-        {/* Parallax фон */}
-        <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1488646953014-85cb44e25828?w=1920&h=1080&fit=crop')] bg-cover bg-center opacity-20" />
+      <section className="relative text-white py-24 md:py-32 overflow-hidden">
+        {/* Фоновое изображение */}
+        <div className="absolute inset-0">
+          <img 
+            src="https://images.unsplash.com/photo-1488646953014-85cb44e25828?w=1920&h=1080&fit=crop"
+            alt="Путешествия"
+            className="w-full h-full object-cover"
+          />
+          {/* Затемнение для читаемости */}
+          <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-black/40 to-black/50" />
+        </div>
         
         <div className="container mx-auto px-4 relative z-10">
           <motion.div
@@ -116,10 +124,10 @@ export default function HomePage() {
             transition={{ duration: 0.8 }}
             className="max-w-4xl mx-auto text-center"
           >
-            <h1 className="text-5xl md:text-6xl font-bold mb-6 leading-tight">
+            <h1 className="text-5xl md:text-6xl font-bold mb-6 leading-tight text-white drop-shadow-lg">
               Откройте незабываемые экскурсии
             </h1>
-            <p className="text-xl md:text-2xl mb-10 text-white/90 max-w-2xl mx-auto">
+            <p className="text-xl md:text-2xl mb-10 text-white/95 max-w-2xl mx-auto drop-shadow-md">
               Более 500 уникальных экскурсий с местными гидами по всему миру
             </p>
             

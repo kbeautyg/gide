@@ -24,10 +24,19 @@ class Request(Base):
     budget = Column(Float, nullable=True)
     location = Column(String, nullable=True)
     
-    # Статус заявки
-    status = Column(String, nullable=True, default='pending')  # pending, in_progress, completed, cancelled
+    # Длительность экскурсии (1-8 часов)
+    duration_hours = Column(Integer, nullable=False, default=2)
     
-    # Кому назначена заявка
+    # Статус заявки
+    status = Column(String, nullable=True, default='pending')  # pending, assigned, in_progress, completed, cancelled
+    
+    # Гид, который взял заявку
+    guide_id = Column(Integer, ForeignKey("users.id"), nullable=True, index=True)
+    
+    # Дата назначения гидом
+    assigned_date = Column(Date, nullable=True, index=True)
+    
+    # Кому назначена заявка (устаревшее, используется guide_id)
     assigned_to = Column(Integer, ForeignKey("users.id"), nullable=True)
     
     # Временные метки
@@ -36,7 +45,23 @@ class Request(Base):
     
     # Relationships
     client = relationship("User", foreign_keys=[client_id], back_populates="requests")
+    guide = relationship("User", foreign_keys=[guide_id])
     assigned_user = relationship("User", foreign_keys=[assigned_to])
     
     def __repr__(self):
-        return f"<Request {self.title} by {self.client_id}>"
+        return f"<Request {self.title} ({self.duration_hours}h) by client#{self.client_id}>"
+    
+    @property
+    def is_available(self):
+        """Доступна ли заявка для взятия"""
+        return self.guide_id is None and self.status == 'pending'
+    
+    @property
+    def is_short(self):
+        """Короткая экскурсия (до 2ч)"""
+        return self.duration_hours <= 2
+    
+    @property
+    def is_long(self):
+        """Длинная экскурсия (5+ часов)"""
+        return self.duration_hours >= 5

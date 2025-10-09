@@ -114,14 +114,14 @@ export default function FAQPage() {
     : faqData.filter((item) => item.category === selectedCategory)
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-green-50">
+    <div className="min-h-screen bg-white">
       <PublicHeader />
       
       <main className="container mx-auto px-4 py-12">
         {/* Hero Section */}
         <div className="text-center mb-12">
-          <div className="inline-block p-3 bg-tropical-ocean/10 rounded-full mb-4">
-            <MessageCircle size={48} className="text-tropical-ocean" />
+          <div className="inline-block p-3 bg-airbnb-rausch/10 rounded-full mb-4">
+            <MessageCircle size={48} className="text-airbnb-rausch" />
           </div>
           <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
             Часто задаваемые вопросы
@@ -139,8 +139,8 @@ export default function FAQPage() {
               onClick={() => setSelectedCategory(category)}
               className={`px-4 py-2 rounded-full font-medium transition-all ${
                 selectedCategory === category
-                  ? 'bg-tropical-ocean text-white shadow-lg'
-                  : 'bg-white text-gray-700 hover:bg-gray-100 border border-gray-200'
+                  ? 'bg-airbnb-rausch text-white shadow-airbnb'
+                  : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
               }`}
             >
               {category}
@@ -153,22 +153,22 @@ export default function FAQPage() {
           {filteredFAQ.map((item, index) => (
             <Card 
               key={index}
-              className={`border-2 transition-all cursor-pointer ${
-                openIndex === index ? 'border-tropical-ocean shadow-lg' : 'border-gray-200 hover:border-gray-300'
+              className={`border-2 transition-all cursor-pointer shadow-airbnb-sm hover:shadow-airbnb ${
+                openIndex === index ? 'border-airbnb-rausch' : 'border-gray-200 hover:border-gray-300'
               }`}
               onClick={() => setOpenIndex(openIndex === index ? null : index)}
             >
               <CardHeader className="pb-3">
                 <div className="flex items-center justify-between">
                   <div className="flex-1">
-                    <span className="text-xs font-semibold text-tropical-ocean mb-2 block">
+                    <span className="text-xs font-semibold text-airbnb-rausch mb-2 block">
                       {item.category}
                     </span>
-                    <CardTitle className="text-lg">{item.question}</CardTitle>
+                    <CardTitle className="text-lg text-gray-900">{item.question}</CardTitle>
                   </div>
                   <div className="ml-4">
                     {openIndex === index ? (
-                      <ChevronUp className="text-tropical-ocean" size={24} />
+                      <ChevronUp className="text-airbnb-rausch" size={24} />
                     ) : (
                       <ChevronDown className="text-gray-400" size={24} />
                     )}
@@ -185,13 +185,15 @@ export default function FAQPage() {
         </div>
 
         {/* Contact Section */}
-        <Card className="max-w-4xl mx-auto bg-gradient-to-br from-tropical-ocean to-tropical-turquoise text-white">
-          <CardHeader>
-            <CardTitle className="text-2xl text-white">Не нашли ответ на свой вопрос?</CardTitle>
-            <CardDescription className="text-white/90">
-              Свяжитесь с нами любым удобным способом
-            </CardDescription>
-          </CardHeader>
+        <div className="max-w-4xl mx-auto relative overflow-hidden rounded-xl">
+          <div className="absolute inset-0 bg-gradient-to-r from-airbnb-rausch to-airbnb-arches" />
+          <Card className="relative z-10 border-0 bg-transparent text-white">
+            <CardHeader>
+              <CardTitle className="text-2xl text-white">Не нашли ответ на свой вопрос?</CardTitle>
+              <CardDescription className="text-white/95">
+                Свяжитесь с нами любым удобным способом
+              </CardDescription>
+            </CardHeader>
           <CardContent>
             <div className="grid md:grid-cols-3 gap-6">
               <div className="flex items-start gap-3">
@@ -220,7 +222,8 @@ export default function FAQPage() {
               </div>
             </div>
           </CardContent>
-        </Card>
+          </Card>
+        </div>
       </main>
 
       <PublicFooter />

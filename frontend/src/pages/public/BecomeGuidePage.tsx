@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { motion } from 'framer-motion'
 import { UserPlus, MapPin, DollarSign, Users, Trophy, CheckCircle, Send, Calendar, CreditCard, TrendingUp, QrCode, Wallet, BarChart3, Clock, Star } from 'lucide-react'
 import { PublicHeader } from '@/components/PublicHeader'
 import { PublicFooter } from '@/components/PublicFooter'
@@ -27,18 +28,23 @@ export default function BecomeGuidePage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-orange-50 via-white to-tropical-turquoise/20">
+    <div className="min-h-screen bg-white">
       <PublicHeader />
       
       <main className="container mx-auto px-4 py-12">
         {/* Hero Section */}
-        <div className="text-center mb-16">
-          <div className="inline-block p-3 bg-tropical-ocean/10 rounded-full mb-4">
-            <UserPlus size={48} className="text-tropical-ocean" />
+        <motion.div 
+          className="text-center mb-16"
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+        >
+          <div className="inline-block p-3 bg-airbnb-rausch/10 rounded-full mb-4">
+            <UserPlus size={48} className="text-airbnb-rausch" />
           </div>
           <h1 className="text-4xl md:text-6xl font-bold text-gray-900 mb-4">
             Подключитесь к платформе<br />
-            <span className="text-tropical-ocean">и начните зарабатывать уже сегодня</span>
+            <span className="text-airbnb-rausch">и начните зарабатывать уже сегодня</span>
           </h1>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
             ThaiGuide Pro — это не просто площадка для экскурсий. Это полноценная система управления 
@@ -66,8 +72,8 @@ export default function BecomeGuidePage() {
           </div>
 
           {/* Mockup Dashboard */}
-          <Card className="max-w-6xl mx-auto border-4 border-tropical-ocean shadow-2xl overflow-hidden">
-            <div className="bg-gradient-to-r from-tropical-ocean to-tropical-turquoise p-4 text-white">
+          <Card className="max-w-6xl mx-auto border-4 border-airbnb-rausch shadow-airbnb-lg overflow-hidden">
+            <div className="bg-gradient-to-r from-airbnb-rausch to-airbnb-arches p-4 text-white">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center">
@@ -83,7 +89,7 @@ export default function BecomeGuidePage() {
                     <p className="text-xs opacity-90">Доход за месяц</p>
                     <p className="text-xl font-bold">187,500 ₽</p>
                   </div>
-                  <Button size="sm" className="bg-white text-tropical-ocean hover:bg-white/90">
+                  <Button size="sm" className="bg-white text-airbnb-rausch hover:bg-white/90">
                     Выставить счет
                   </Button>
                 </div>
@@ -93,7 +99,7 @@ export default function BecomeGuidePage() {
             <div className="flex">
               {/* Sidebar Menu */}
               <div className="w-64 bg-gray-50 border-r p-4 space-y-2">
-                <div className="flex items-center gap-3 px-3 py-2 bg-tropical-ocean/10 text-tropical-ocean rounded-lg font-semibold">
+                <div className="flex items-center gap-3 px-3 py-2 bg-airbnb-rausch/10 text-airbnb-rausch rounded-lg font-semibold">
                   <BarChart3 size={18} />
                   <span>Дашборд</span>
                 </div>
@@ -148,9 +154,9 @@ export default function BecomeGuidePage() {
                       <div className="flex items-center justify-between">
                         <div>
                           <p className="text-sm text-gray-600">Доход</p>
-                          <p className="text-3xl font-bold text-tropical-ocean">187,500 ₽</p>
+                          <p className="text-3xl font-bold text-airbnb-rausch">187,500 ₽</p>
                         </div>
-                        <TrendingUp size={32} className="text-tropical-ocean" />
+                        <TrendingUp size={32} className="text-airbnb-rausch" />
                       </div>
                     </CardContent>
                   </Card>
@@ -167,7 +173,7 @@ export default function BecomeGuidePage() {
                       {[65, 45, 80, 55, 90, 70, 100, 85, 75, 95, 110, 88, 92, 105].map((height, i) => (
                         <div
                           key={i}
-                          className="flex-1 bg-gradient-to-t from-tropical-ocean to-tropical-turquoise rounded-t-lg relative group"
+                          className="flex-1 bg-gradient-to-t from-airbnb-rausch to-airbnb-arches rounded-t-lg relative group"
                           style={{ height: `${height}%` }}
                         >
                           <div className="absolute -top-8 left-1/2 transform -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity bg-gray-900 text-white text-xs px-2 py-1 rounded">
@@ -200,7 +206,7 @@ export default function BecomeGuidePage() {
                         <div key={i} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
                           <div className="flex items-center gap-3">
                             <div className="w-10 h-10 bg-tropical-ocean/10 rounded-full flex items-center justify-center">
-                              <Users size={18} className="text-tropical-ocean" />
+                              <Users size={18} className="text-airbnb-rausch" />
                             </div>
                             <div>
                               <p className="font-semibold text-sm">{order.client}</p>
@@ -208,7 +214,7 @@ export default function BecomeGuidePage() {
                             </div>
                           </div>
                           <div className="text-right">
-                            <p className="font-bold text-tropical-ocean">{order.amount}</p>
+                            <p className="font-bold text-airbnb-rausch">{order.amount}</p>
                             <p className="text-xs text-green-600 flex items-center gap-1">
                               <CheckCircle size={12} />
                               {order.status}
@@ -239,7 +245,7 @@ export default function BecomeGuidePage() {
             {/* Left - Process */}
             <div className="space-y-6">
               <div className="flex items-start gap-4">
-                <div className="w-12 h-12 bg-gradient-to-br from-tropical-ocean to-tropical-turquoise rounded-full flex items-center justify-center text-white font-bold text-xl flex-shrink-0">
+                <div className="w-12 h-12 bg-gradient-to-br from-airbnb-rausch to-airbnb-arches rounded-full flex items-center justify-center text-white font-bold text-xl flex-shrink-0">
                   1
                 </div>
                 <div>
@@ -251,7 +257,7 @@ export default function BecomeGuidePage() {
               </div>
 
               <div className="flex items-start gap-4">
-                <div className="w-12 h-12 bg-gradient-to-br from-tropical-ocean to-tropical-turquoise rounded-full flex items-center justify-center text-white font-bold text-xl flex-shrink-0">
+                <div className="w-12 h-12 bg-gradient-to-br from-airbnb-rausch to-airbnb-arches rounded-full flex items-center justify-center text-white font-bold text-xl flex-shrink-0">
                   2
                 </div>
                 <div>
@@ -263,7 +269,7 @@ export default function BecomeGuidePage() {
               </div>
 
               <div className="flex items-start gap-4">
-                <div className="w-12 h-12 bg-gradient-to-br from-tropical-ocean to-tropical-turquoise rounded-full flex items-center justify-center text-white font-bold text-xl flex-shrink-0">
+                <div className="w-12 h-12 bg-gradient-to-br from-airbnb-rausch to-airbnb-arches rounded-full flex items-center justify-center text-white font-bold text-xl flex-shrink-0">
                   3
                 </div>
                 <div>
@@ -289,14 +295,14 @@ export default function BecomeGuidePage() {
 
             {/* Right - QR Code Mockup */}
             <Card className="bg-gradient-to-br from-gray-50 to-white border-2 border-gray-200 shadow-xl">
-              <CardHeader className="bg-gradient-to-r from-tropical-ocean to-tropical-turquoise text-white">
+              <CardHeader className="bg-gradient-to-r from-airbnb-rausch to-airbnb-arches text-white">
                 <CardTitle>Счет на оплату</CardTitle>
                 <CardDescription className="text-white/90">Заказ #12847 • Обзорная экскурсия</CardDescription>
               </CardHeader>
               <CardContent className="pt-6">
                 <div className="text-center mb-6">
                   <p className="text-sm text-gray-600 mb-2">К оплате</p>
-                  <p className="text-4xl font-bold text-tropical-ocean mb-1">2,500 ₽</p>
+                  <p className="text-4xl font-bold text-airbnb-rausch mb-1">2,500 ₽</p>
                   <p className="text-xs text-gray-500">≈ 900 THB • ≈ $27</p>
                 </div>
 
@@ -311,7 +317,7 @@ export default function BecomeGuidePage() {
                   Отсканируйте QR-код или нажмите кнопку ниже
                 </div>
 
-                <Button className="w-full bg-gradient-to-r from-tropical-ocean to-tropical-turquoise hover:opacity-90" size="lg">
+                <Button className="w-full bg-gradient-to-r from-airbnb-rausch to-airbnb-arches hover:opacity-90" size="lg">
                   <CreditCard size={18} className="mr-2" />
                   Оплатить картой
                 </Button>
@@ -339,10 +345,10 @@ export default function BecomeGuidePage() {
           </div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-            <Card className="border-t-4 border-t-tropical-ocean hover:shadow-lg transition-shadow">
+            <Card className="border-t-4 border-t-airbnb-rausch hover:shadow-lg transition-shadow">
               <CardHeader>
                 <div className="w-12 h-12 bg-tropical-ocean/10 rounded-full flex items-center justify-center mb-3">
-                  <DollarSign className="text-tropical-ocean" size={24} />
+                  <DollarSign className="text-airbnb-rausch" size={24} />
                 </div>
                 <CardTitle>Высокий доход</CardTitle>
               </CardHeader>
@@ -469,7 +475,7 @@ export default function BecomeGuidePage() {
               <div className="absolute top-0 right-0 w-20 h-20 bg-gradient-to-br from-tropical-ocean/20 to-transparent rounded-bl-full"></div>
               <CardHeader>
                 <div className="flex items-center gap-4 mb-3">
-                  <div className="w-16 h-16 bg-gradient-to-br from-tropical-ocean to-tropical-turquoise rounded-full flex items-center justify-center text-white font-bold text-2xl">
+                  <div className="w-16 h-16 bg-gradient-to-br from-airbnb-rausch to-airbnb-arches rounded-full flex items-center justify-center text-white font-bold text-2xl">
                     1
                   </div>
                   <CardTitle className="text-2xl">Регистрация</CardTitle>
@@ -522,8 +528,8 @@ export default function BecomeGuidePage() {
                   При поступлении заказа нажмите "Выставить счет" → система создаст QR-код и платежную форму. 
                   Отправьте клиенту.
                 </p>
-                <div className="bg-gradient-to-r from-tropical-ocean/10 to-tropical-turquoise/10 p-3 rounded-lg">
-                  <div className="flex items-center gap-2 text-tropical-ocean font-semibold">
+                <div className="bg-gradient-to-r from-tropical-ocean/10 to-airbnb-arches/10 p-3 rounded-lg">
+                  <div className="flex items-center gap-2 text-airbnb-rausch font-semibold">
                     <QrCode size={20} />
                     QR-код генерируется автоматически
                   </div>
@@ -565,7 +571,7 @@ export default function BecomeGuidePage() {
           <div className="grid md:grid-cols-3 gap-6">
             <Card className="hover:shadow-lg transition-shadow">
               <CardHeader>
-                <Calendar className="text-tropical-ocean mb-3" size={32} />
+                <Calendar className="text-airbnb-rausch mb-3" size={32} />
                 <CardTitle>Календарь и расписание</CardTitle>
               </CardHeader>
               <CardContent className="text-gray-600">
@@ -580,7 +586,7 @@ export default function BecomeGuidePage() {
 
             <Card className="hover:shadow-lg transition-shadow">
               <CardHeader>
-                <BarChart3 className="text-tropical-ocean mb-3" size={32} />
+                <BarChart3 className="text-airbnb-rausch mb-3" size={32} />
                 <CardTitle>Аналитика и статистика</CardTitle>
               </CardHeader>
               <CardContent className="text-gray-600">
@@ -595,7 +601,7 @@ export default function BecomeGuidePage() {
 
             <Card className="hover:shadow-lg transition-shadow">
               <CardHeader>
-                <Star className="text-tropical-ocean mb-3" size={32} />
+                <Star className="text-airbnb-rausch mb-3" size={32} />
                 <CardTitle>Рейтинг и отзывы</CardTitle>
               </CardHeader>
               <CardContent className="text-gray-600">
@@ -610,7 +616,7 @@ export default function BecomeGuidePage() {
 
             <Card className="hover:shadow-lg transition-shadow">
               <CardHeader>
-                <CreditCard className="text-tropical-ocean mb-3" size={32} />
+                <CreditCard className="text-airbnb-rausch mb-3" size={32} />
                 <CardTitle>Приём платежей</CardTitle>
               </CardHeader>
               <CardContent className="text-gray-600">
@@ -625,7 +631,7 @@ export default function BecomeGuidePage() {
 
             <Card className="hover:shadow-lg transition-shadow">
               <CardHeader>
-                <Wallet className="text-tropical-ocean mb-3" size={32} />
+                <Wallet className="text-airbnb-rausch mb-3" size={32} />
                 <CardTitle>Финансовый учет</CardTitle>
               </CardHeader>
               <CardContent className="text-gray-600">
@@ -640,7 +646,7 @@ export default function BecomeGuidePage() {
 
             <Card className="hover:shadow-lg transition-shadow">
               <CardHeader>
-                <Users className="text-tropical-ocean mb-3" size={32} />
+                <Users className="text-airbnb-rausch mb-3" size={32} />
                 <CardTitle>CRM для клиентов</CardTitle>
               </CardHeader>
               <CardContent className="text-gray-600">
@@ -761,7 +767,7 @@ export default function BecomeGuidePage() {
 
                 <p className="text-xs text-gray-500 text-center">
                   Нажимая кнопку, вы соглашаетесь с{' '}
-                  <a href="/privacy" className="text-tropical-ocean hover:underline">
+                  <a href="/privacy" className="text-airbnb-rausch hover:underline">
                     Политикой конфиденциальности
                   </a>
                 </p>
@@ -769,7 +775,7 @@ export default function BecomeGuidePage() {
             </CardContent>
           </Card>
         ) : (
-          <Card className="max-w-2xl mx-auto mb-16 bg-gradient-to-br from-green-50 to-tropical-turquoise/10 border-2 border-green-200">
+          <Card className="max-w-2xl mx-auto mb-16 bg-gradient-to-br from-green-50 to-airbnb-arches/10 border-2 border-green-200">
             <CardContent className="py-12 text-center">
               <div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
                 <CheckCircle className="text-green-600" size={40} />
@@ -805,7 +811,7 @@ export default function BecomeGuidePage() {
             <Card className="bg-gradient-to-br from-blue-50 to-white">
               <CardContent className="pt-6">
                 <div className="flex items-center gap-3 mb-4">
-                  <div className="w-12 h-12 bg-gradient-to-br from-tropical-ocean to-tropical-turquoise rounded-full flex items-center justify-center text-white font-bold">
+                  <div className="w-12 h-12 bg-gradient-to-br from-airbnb-rausch to-airbnb-arches rounded-full flex items-center justify-center text-white font-bold">
                     АК
                   </div>
                   <div>
@@ -919,13 +925,13 @@ export default function BecomeGuidePage() {
         </Card>
 
         {/* CTA */}
-        <div className="text-center bg-gradient-to-r from-tropical-ocean to-tropical-turquoise text-white rounded-3xl p-12 max-w-5xl mx-auto">
+        <div className="text-center bg-gradient-to-r from-airbnb-rausch to-airbnb-arches text-white rounded-3xl p-12 max-w-5xl mx-auto">
           <h2 className="text-4xl font-bold mb-4">Готовы начать зарабатывать?</h2>
           <p className="text-xl mb-8 opacity-90">
             Присоединяйтесь к 500+ гидам, которые уже работают с ThaiGuide Pro
           </p>
           <div className="flex justify-center gap-4">
-            <Button size="lg" className="bg-white text-tropical-ocean hover:bg-gray-100 text-lg px-8 py-6">
+            <Button size="lg" className="bg-white text-airbnb-rausch hover:bg-gray-100 text-lg px-8 py-6">
               Заполнить заявку
             </Button>
             <Button size="lg" variant="outline" className="border-white text-white hover:bg-white/10 text-lg px-8 py-6">
