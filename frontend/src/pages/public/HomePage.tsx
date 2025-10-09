@@ -10,6 +10,10 @@ import { PublicFooter } from '@/components/PublicFooter'
 import { SearchBar } from '@/components/SearchBar'
 import { TourCard } from '@/components/TourCard'
 import { TourCardSkeleton } from '@/components/TourCardSkeleton'
+import { LiveStats } from '@/components/LiveStats'
+import { WorldMap } from '@/components/WorldMap'
+import { AnimatedFeatures } from '@/components/AnimatedFeatures'
+import { TypewriterHero } from '@/components/TypewriterHero'
 
 // Анимационные варианты
 const containerVariants = {
@@ -138,22 +142,7 @@ export default function HomePage() {
             transition={{ duration: 0.8 }}
             className="max-w-4xl mx-auto text-center"
           >
-            <motion.h1 
-              className="text-5xl md:text-7xl font-bold mb-6 leading-tight text-white drop-shadow-2xl"
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-            >
-              Откройте незабываемые экскурсии
-            </motion.h1>
-            <motion.p 
-              className="text-xl md:text-2xl mb-10 text-white/95 max-w-2xl mx-auto drop-shadow-md"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.6, delay: 0.4 }}
-            >
-              Более 500 уникальных экскурсий с местными гидами по Азии
-            </motion.p>
+            <TypewriterHero />
             
             {/* SearchBar */}
             <motion.div 
@@ -303,6 +292,15 @@ export default function HomePage() {
           </motion.div>
         </div>
       </section>
+
+      {/* LiveStats - Живая статистика */}
+      <LiveStats />
+
+      {/* WorldMap - Карта городов Азии */}
+      <WorldMap />
+
+      {/* AnimatedFeatures - Преимущества */}
+      <AnimatedFeatures />
 
       {/* CTA блок: Индивидуальные туры */}
       <section className="py-20 bg-airbnb-rausch">
