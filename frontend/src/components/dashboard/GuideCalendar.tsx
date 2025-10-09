@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { ChevronLeft, ChevronRight, X } from 'lucide-react'
+import { ChevronLeft, ChevronRight, X, GripVertical } from 'lucide-react'
 import { 
   format, startOfMonth, endOfMonth, eachDayOfInterval, 
   isSameDay, addMonths, subMonths, isSameMonth, isPast,
@@ -7,7 +7,17 @@ import {
 } from 'date-fns'
 import { ru } from 'date-fns/locale'
 import { cn } from '@/lib/utils'
-import { DndContext, DragEndEvent } from '@dnd-kit/core'
+import { 
+  DndContext, 
+  DragEndEvent,
+  useDraggable,
+  useDroppable,
+  DragStartEvent,
+  DragOverlay,
+  closestCenter
+} from '@dnd-kit/core'
+import { CSS } from '@dnd-kit/utilities'
+import { motion, AnimatePresence } from 'framer-motion'
 
 interface GuideCalendarProps {
   schedules: Array<{ date: string, booked_hours: number, available_hours?: number }>
@@ -35,9 +45,17 @@ export function GuideCalendar({
   enableDragDrop = false
 }: GuideCalendarProps) {
   const [currentMonth, setCurrentMonth] = useState(new Date())
+  const [activeId, setActiveId] = useState<number | null>(null)
+  const [expandedDate, setExpandedDate] = useState<Date | null>(null)
+  
+  const handleDragStart = (event: DragStartEvent) => {
+    setActiveId(Number(event.active.id))
+  }
   
   const handleDragEnd = (event: DragEndEvent) => {
     const { active, over } = event
+    
+    setActiveId(null)
     
     if (!over || !onReschedule) return
     
@@ -46,6 +64,8 @@ export function GuideCalendar({
     
     onReschedule(requestId, newDate)
   }
+  
+  const activeRequest = activeId ? requests.find(r => r.id === activeId) : null
   
   const monthStart = startOfMonth(currentMonth)
   const monthEnd = endOfMonth(currentMonth)
@@ -116,8 +136,17 @@ export function GuideCalendar({
               isSelected={isSelected || false}
               isCurrentMonth={isCurrentMonth}
               showHours={showHoursAvailability || false}
-              onClick={() => mode === 'select' && !disabled && onDateSelect?.(day)}
+              onClick={() => {
+                if (mode === 'select' && !disabled) {
+                  onDateSelect?.(day)
+                } else if (requestsOnDay.length > 1 && enableDragDrop) {
+                  // Разворачиваем список если несколько заявок
+                  setExpandedDate(expandedDate && isSameDay(expandedDate, day) ? null : day)
+                }
+              }}
               onCancel={onCancel}
+              enableDragDrop={enableDragDrop}
+              isExpanded={expandedDate ? isSameDay(expandedDate, day) : false}
             />
           )
         })}
@@ -128,8 +157,22 @@ export function GuideCalendar({
   // Оборачиваем в DndContext если включен Drag & Drop
   if (enableDragDrop && mode === 'view') {
     return (
-      <DndContext onDragEnd={handleDragEnd}>
+      <DndContext 
+        onDragStart={handleDragStart}
+        onDragEnd={handleDragEnd}
+        collisionDetection={closestCenter}
+      >
         {calendarContent}
+        
+        {/* DragOverlay для ghost эффекта */}
+        <DragOverlay>
+          {activeRequest ? (
+            <div className="bg-white rounded px-3 py-2 shadow-2xl border-2 border-airbnb-rausch opacity-80 cursor-grabbing">
+              <div className="font-semibold text-sm text-gray-900">{activeRequest.title}</div>
+              <div className="text-xs text-gray-500">{activeRequest.duration_hours}ч</div>
+            </div>
+          ) : null}
+        </DragOverlay>
       </DndContext>
     )
   }
@@ -148,6 +191,56 @@ interface DayCellProps {
   showHours?: boolean
   onClick: () => void
   onCancel?: (requestId: number) => void
+  enableDragDrop?: boolean
+  isExpanded?: boolean
+}
+
+// Компонент перетаскиваемой карточки заявки
+function DraggableRequestCard({ request, onCancel }: { request: any, onCancel?: (id: number) => void }) {
+  const { attributes, listeners, setNodeRef, transform, isDragging } = useDraggable({
+    id: request.id,
+    data: request
+  })
+  
+  const style = transform ? {
+    transform: CSS.Translate.toString(transform),
+  } : undefined
+  
+  return (
+    <div
+      ref={setNodeRef}
+      style={style}
+      className={cn(
+        "bg-white rounded px-2 py-1 text-xs shadow-sm group/card relative",
+        isDragging && "opacity-50"
+      )}
+    >
+      <div className="flex items-center gap-1">
+        <div {...attributes} {...listeners} className="cursor-grab active:cursor-grabbing p-0.5">
+          <GripVertical size={12} className="text-gray-400" />
+        </div>
+        <div className="flex-1">
+          <div className="font-semibold line-clamp-1 text-gray-900">{request.title}</div>
+          <div className="flex items-center justify-between">
+            <div className="text-gray-500">{request.duration_hours}ч</div>
+          </div>
+        </div>
+        {onCancel && (
+          <button
+            onClick={(e) => {
+              e.stopPropagation()
+              if (confirm(`Отменить "${request.title}"? Это освободит ${request.duration_hours}ч`)) {
+                onCancel(request.id)
+              }
+            }}
+            className="opacity-0 group-hover/card:opacity-100 text-red-600 hover:text-red-700 p-0.5"
+          >
+            <X size={12} />
+          </button>
+        )}
+      </div>
+    </div>
+  )
 }
 
 function DayCell({ 
@@ -160,8 +253,16 @@ function DayCell({
   isCurrentMonth,
   showHours, 
   onClick,
-  onCancel
+  onCancel,
+  enableDragDrop = false,
+  isExpanded = false
 }: DayCellProps) {
+  // Делаем дату droppable зоной
+  const { setNodeRef, isOver } = useDroppable({
+    id: format(day, 'yyyy-MM-dd'),
+    disabled: disabled || bookedHours >= 8
+  })
+  
   const bgColor = 
     disabled ? 'bg-gray-100 text-gray-400 cursor-not-allowed' :
     isSelected ? 'bg-airbnb-rausch text-white border-airbnb-rausch' :
@@ -175,10 +276,14 @@ function DayCell({
   
   return (
     <div 
+      ref={setNodeRef}
       className={cn(
-        "min-h-[100px] p-2 border rounded-lg cursor-pointer transition-all",
+        "min-h-[100px] p-2 border rounded-lg transition-all",
         bgColor,
-        !disabled && isCurrentMonth && "hover:shadow-sm"
+        !disabled && isCurrentMonth && "hover:shadow-sm cursor-pointer",
+        disabled && "cursor-not-allowed",
+        isOver && availableHours > 0 && "ring-2 ring-green-500 ring-offset-2 bg-green-100/50",
+        isOver && availableHours === 0 && "ring-2 ring-red-500 ring-offset-2 animate-shake"
       )}
       onClick={!disabled ? onClick : undefined}
     >
@@ -226,34 +331,58 @@ function DayCell({
         </div>
       )}
       
-      {/* Мини-список заявок (только в режиме view) */}
+      {/* Список заявок с Drag & Drop или обычный */}
       {isCurrentMonth && requests.length > 0 && !showHours && (
-        <div className="space-y-1 mt-1">
-          {requests.slice(0, 2).map(req => (
-            <div key={req.id} className="bg-white rounded px-2 py-1 text-xs shadow-sm group/card relative">
-              <div className="font-semibold line-clamp-1 text-gray-900">{req.title}</div>
-              <div className="flex items-center justify-between">
-                <div className="text-gray-500">{req.duration_hours}ч</div>
-                {onCancel && (
-                  <button
-                    onClick={(e) => {
-                      e.stopPropagation()
-                      if (confirm(`Отменить "${req.title}"? Это освободит ${req.duration_hours}ч`)) {
-                        onCancel(req.id)
-                      }
-                    }}
-                    className="opacity-0 group-hover/card:opacity-100 text-red-600 hover:text-red-700 p-0.5"
-                  >
-                    <X size={12} />
-                  </button>
+        <AnimatePresence>
+          <motion.div 
+            className="space-y-1 mt-1"
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: 'auto' }}
+            exit={{ opacity: 0, height: 0 }}
+          >
+            {enableDragDrop ? (
+              // С Drag & Drop
+              <>
+                {(isExpanded ? requests : requests.slice(0, 2)).map(req => (
+                  <DraggableRequestCard key={req.id} request={req} onCancel={onCancel} />
+                ))}
+                {!isExpanded && requests.length > 2 && (
+                  <div className="text-xs text-gray-500 text-center cursor-pointer hover:text-gray-700" onClick={onClick}>
+                    +{requests.length - 2} (клик для раскрытия)
+                  </div>
                 )}
-              </div>
-            </div>
-          ))}
-          {requests.length > 2 && (
-            <div className="text-xs text-gray-500 text-center">+{requests.length - 2}</div>
-          )}
-        </div>
+              </>
+            ) : (
+              // Без Drag & Drop (старая версия)
+              <>
+                {requests.slice(0, 2).map(req => (
+                  <div key={req.id} className="bg-white rounded px-2 py-1 text-xs shadow-sm group/card relative">
+                    <div className="font-semibold line-clamp-1 text-gray-900">{req.title}</div>
+                    <div className="flex items-center justify-between">
+                      <div className="text-gray-500">{req.duration_hours}ч</div>
+                      {onCancel && (
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation()
+                            if (confirm(`Отменить "${req.title}"? Это освободит ${req.duration_hours}ч`)) {
+                              onCancel(req.id)
+                            }
+                          }}
+                          className="opacity-0 group-hover/card:opacity-100 text-red-600 hover:text-red-700 p-0.5"
+                        >
+                          <X size={12} />
+                        </button>
+                      )}
+                    </div>
+                  </div>
+                ))}
+                {requests.length > 2 && (
+                  <div className="text-xs text-gray-500 text-center">+{requests.length - 2}</div>
+                )}
+              </>
+            )}
+          </motion.div>
+        </AnimatePresence>
       )}
     </div>
   )

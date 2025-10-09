@@ -128,6 +128,10 @@ export default function CalendarPage() {
             schedules={schedules}
             requests={requests}
             mode="view"
+            enableDragDrop={true}
+            onReschedule={(requestId, newDate) => {
+              rescheduleMutation.mutate({ requestId, new_date: newDate })
+            }}
             onCancel={(requestId) => cancelMutation.mutate(requestId)}
           />
           
