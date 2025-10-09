@@ -33,10 +33,15 @@ export default function HomePage() {
   // Загрузка популярных экскурсий
   const { data: toursData } = useQuery({
     queryKey: ['tours', 'popular'],
-    queryFn: () => toursApi.getList({ page: 1, page_size: 6 }),
+    queryFn: async () => {
+      const response = await toursApi.getList({ page: 1, page_size: 6 })
+      console.log('Popular tours API response:', response.data)
+      return response.data
+    },
   })
 
-  const popularTours = toursData?.data?.tours || []
+  const popularTours = toursData?.tours || []
+  console.log('Popular tours array:', popularTours, 'Length:', popularTours.length)
 
   // Mock данные для сезонных идей
   const seasonalIdeas = [

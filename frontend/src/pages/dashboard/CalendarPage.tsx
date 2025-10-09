@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button'
 import { Calendar as CalendarIcon } from 'lucide-react'
 import { GuideCalendar } from '@/components/dashboard/GuideCalendar'
 import { api } from '@/lib/api'
+import { format } from 'date-fns'
 
 export default function CalendarPage() {
   const queryClient = useQueryClient()
@@ -22,8 +23,8 @@ export default function CalendarPage() {
       const end = new Date(today.getFullYear(), today.getMonth() + 2, 0)
       return api.get('/requests/my-schedule', {
         params: {
-          start_date: start.toISOString().split('T')[0],
-          end_date: end.toISOString().split('T')[0]
+          start_date: format(start, 'yyyy-MM-dd'),
+          end_date: format(end, 'yyyy-MM-dd')
         }
       }).then(res => res.data)
     },
@@ -66,7 +67,7 @@ export default function CalendarPage() {
     
     rescheduleMutation.mutate({
       requestId: selectedRequest.id,
-      new_date: newDate.toISOString().split('T')[0]
+      new_date: format(newDate, 'yyyy-MM-dd')
     })
   }
 

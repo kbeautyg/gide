@@ -75,6 +75,12 @@ export function useAuth() {
     queryKey: ['user', 'me'],
     queryFn: () => usersApi.getMe(),
     enabled: isAuthenticated && !!token,
+    onSuccess: (response) => {
+      // Обновляем store с актуальными данными пользователя
+      if (response?.data && token) {
+        setAuth(response.data, token)
+      }
+    },
   })
 
   // Выход

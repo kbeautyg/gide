@@ -23,16 +23,20 @@ export default function ToursPage() {
   })
 
   // Загрузка экскурсий
-  const { data: toursData, isLoading } = useQuery({
+  const { data: toursData, isLoading, error } = useQuery({
     queryKey: ['tours', selectedThemes],
-    queryFn: () => toursApi.getList({
-      page: 1,
-      page_size: 50,
-      // Добавим фильтрацию по темам и форматам когда бэк будет готов
-    }),
+    queryFn: async () => {
+      const response = await toursApi.getList({
+        page: 1,
+        page_size: 50,
+      })
+      console.log('Tours API response:', response.data)
+      return response.data
+    },
   })
 
-  const tours = toursData?.data?.tours || []
+  const tours = toursData?.tours || []
+  console.log('Tours array:', tours, 'Length:', tours.length)
 
   // Формируем список категорий для чипсов
   const themeCategories = categoriesData?.themes 

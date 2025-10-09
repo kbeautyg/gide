@@ -7,6 +7,7 @@ import { Card, CardContent } from '@/components/ui/card'
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog'
 import { RequestCard } from '@/components/dashboard/RequestCard'
 import { GuideCalendar } from '@/components/dashboard/GuideCalendar'
+import { format } from 'date-fns'
 import { api } from '@/lib/api'
 
 type FilterType = 'all' | 'short' | 'long'
@@ -33,8 +34,8 @@ export default function RequestsPage() {
       const end = new Date(today.getFullYear(), today.getMonth() + 3, 0)
       return api.get('/requests/my-schedule', {
         params: {
-          start_date: start.toISOString().split('T')[0],
-          end_date: end.toISOString().split('T')[0]
+          start_date: format(start, 'yyyy-MM-dd'),
+          end_date: format(end, 'yyyy-MM-dd')
         }
       }).then(res => res.data)
     },
@@ -86,7 +87,7 @@ export default function RequestsPage() {
     
     takeMutation.mutate({
       requestId: selectedRequest.id,
-      assigned_date: selectedDate.toISOString().split('T')[0]
+      assigned_date: format(selectedDate, 'yyyy-MM-dd')
     })
   }
 
