@@ -10,7 +10,7 @@ export default function AboutPage() {
       <PublicHeader />
       {/* Hero Section */}
       <section className="relative text-white py-24 overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-r from-airbnb-rausch to-airbnb-arches" />
+        <div className="absolute inset-0 bg-airbnb-rausch" />
         <div className="container mx-auto px-4 relative z-10">
           <motion.div 
             className="max-w-4xl mx-auto text-center"
@@ -203,7 +203,7 @@ export default function AboutPage() {
 
       {/* CTA Section */}
       <section className="relative py-20 overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-r from-airbnb-rausch to-airbnb-arches" />
+        <div className="absolute inset-0 bg-airbnb-rausch" />
         <div className="container mx-auto px-4 text-center relative z-10">
           <motion.div
             initial={{ opacity: 0, y: 20 }}

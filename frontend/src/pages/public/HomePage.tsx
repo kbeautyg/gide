@@ -118,8 +118,8 @@ export default function HomePage() {
             alt="Путешествия"
             className="w-full h-full object-cover"
           />
-          {/* Затемнение для читаемости */}
-          <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-black/70" />
+          {/* Затемнение для читаемости - только малиновый */}
+          <div className="absolute inset-0 bg-airbnb-rausch/60" />
         </div>
         
         <div className="container mx-auto px-4 relative z-10">
@@ -193,7 +193,7 @@ export default function HomePage() {
                       alt={idea.title}
                       className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+                    <div className="absolute inset-0 bg-black/40" />
                     <div className="absolute bottom-0 left-0 right-0 p-6">
                       <h3 className="text-xl font-bold text-white">{idea.title}</h3>
                     </div>
@@ -226,7 +226,7 @@ export default function HomePage() {
                       alt={dest.name}
                       className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent group-hover:from-black/80 transition-all" />
+                    <div className="absolute inset-0 bg-black/50 group-hover:bg-black/60 transition-all" />
                     <div className="absolute bottom-0 left-0 right-0 p-4 text-white">
                       <div className="font-bold text-lg">{dest.name}</div>
                       <div className="text-sm text-white/90">{dest.count} экскурсий</div>
@@ -404,7 +404,7 @@ export default function HomePage() {
       </section>
 
       {/* Email подписка */}
-      <section className="py-16 bg-gradient-to-r from-airbnb-rausch to-airbnb-arches text-white">
+      <section className="py-16 bg-airbnb-rausch text-white">
         <div className="container mx-auto px-4">
           <div className="max-w-2xl mx-auto text-center">
             <h3 className="text-2xl font-bold mb-3">

@@ -98,10 +98,10 @@ export default function MyToursPage() {
                 </div>
 
                 {/* Ссылка на экскурсию */}
-                <div className="bg-gradient-to-r from-tropical-ocean/10 to-tropical-turquoise/10 p-3 rounded-lg border-2 border-tropical-ocean/30">
+                <div className="bg-airbnb-rausch/10 p-3 rounded-lg border-2 border-airbnb-rausch/30">
                   <div className="flex items-center gap-2 mb-2">
-                    <LinkIcon size={14} className="text-tropical-ocean" />
-                    <span className="text-xs font-semibold text-tropical-ocean">Платёжная ссылка</span>
+                    <LinkIcon size={14} className="text-airbnb-rausch" />
+                    <span className="text-xs font-semibold text-airbnb-rausch">Платёжная ссылка</span>
                   </div>
                   <div className="text-xs text-gray-700 break-all mb-2 bg-white p-2 rounded font-mono">
                     {window.location.origin}/t/{tour.share_code || tour.id}

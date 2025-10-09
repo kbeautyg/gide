@@ -73,7 +73,7 @@ export default function BecomeGuidePage() {
 
           {/* Mockup Dashboard */}
           <Card className="max-w-6xl mx-auto border-4 border-airbnb-rausch shadow-airbnb-lg overflow-hidden">
-            <div className="bg-gradient-to-r from-airbnb-rausch to-airbnb-arches p-4 text-white">
+            <div className="bg-airbnb-rausch p-4 text-white">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center">
@@ -173,7 +173,7 @@ export default function BecomeGuidePage() {
                       {[65, 45, 80, 55, 90, 70, 100, 85, 75, 95, 110, 88, 92, 105].map((height, i) => (
                         <div
                           key={i}
-                          className="flex-1 bg-gradient-to-t from-airbnb-rausch to-airbnb-arches rounded-t-lg relative group"
+                          className="flex-1 bg-airbnb-rausch rounded-t-lg relative group"
                           style={{ height: `${height}%` }}
                         >
                           <div className="absolute -top-8 left-1/2 transform -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity bg-gray-900 text-white text-xs px-2 py-1 rounded">
@@ -245,7 +245,7 @@ export default function BecomeGuidePage() {
             {/* Left - Process */}
             <div className="space-y-6">
               <div className="flex items-start gap-4">
-                <div className="w-12 h-12 bg-gradient-to-br from-airbnb-rausch to-airbnb-arches rounded-full flex items-center justify-center text-white font-bold text-xl flex-shrink-0">
+                <div className="w-12 h-12 bg-airbnb-rausch rounded-full flex items-center justify-center text-white font-bold text-xl flex-shrink-0">
                   1
                 </div>
                 <div>
@@ -257,7 +257,7 @@ export default function BecomeGuidePage() {
               </div>
 
               <div className="flex items-start gap-4">
-                <div className="w-12 h-12 bg-gradient-to-br from-airbnb-rausch to-airbnb-arches rounded-full flex items-center justify-center text-white font-bold text-xl flex-shrink-0">
+                <div className="w-12 h-12 bg-airbnb-rausch rounded-full flex items-center justify-center text-white font-bold text-xl flex-shrink-0">
                   2
                 </div>
                 <div>
@@ -269,7 +269,7 @@ export default function BecomeGuidePage() {
               </div>
 
               <div className="flex items-start gap-4">
-                <div className="w-12 h-12 bg-gradient-to-br from-airbnb-rausch to-airbnb-arches rounded-full flex items-center justify-center text-white font-bold text-xl flex-shrink-0">
+                <div className="w-12 h-12 bg-airbnb-rausch rounded-full flex items-center justify-center text-white font-bold text-xl flex-shrink-0">
                   3
                 </div>
                 <div>
@@ -281,7 +281,7 @@ export default function BecomeGuidePage() {
               </div>
 
               <div className="flex items-start gap-4">
-                <div className="w-12 h-12 bg-gradient-to-br from-green-500 to-green-600 rounded-full flex items-center justify-center text-white font-bold text-xl flex-shrink-0">
+                <div className="w-12 h-12 bg-green-500 rounded-full flex items-center justify-center text-white font-bold text-xl flex-shrink-0">
                   ✓
                 </div>
                 <div>
@@ -294,8 +294,8 @@ export default function BecomeGuidePage() {
             </div>
 
             {/* Right - QR Code Mockup */}
-            <Card className="bg-gradient-to-br from-gray-50 to-white border-2 border-gray-200 shadow-xl">
-              <CardHeader className="bg-gradient-to-r from-airbnb-rausch to-airbnb-arches text-white">
+            <Card className="bg-white border-2 border-gray-200 shadow-xl">
+              <CardHeader className="bg-airbnb-rausch text-white">
                 <CardTitle>Счет на оплату</CardTitle>
                 <CardDescription className="text-white/90">Заказ #12847 • Обзорная экскурсия</CardDescription>
               </CardHeader>
@@ -309,7 +309,7 @@ export default function BecomeGuidePage() {
                 <div className="flex justify-center mb-6">
                   <div className="w-48 h-48 bg-white border-4 border-gray-200 rounded-xl flex items-center justify-center relative overflow-hidden">
                     <QrCode size={120} className="text-gray-300" />
-                    <div className="absolute inset-0 bg-gradient-to-br from-tropical-ocean/5 to-tropical-turquoise/5"></div>
+                    <div className="absolute inset-0 bg-gray-50"></div>
                   </div>
                 </div>
 
@@ -317,7 +317,7 @@ export default function BecomeGuidePage() {
                   Отсканируйте QR-код или нажмите кнопку ниже
                 </div>
 
-                <Button className="w-full bg-gradient-to-r from-airbnb-rausch to-airbnb-arches hover:opacity-90" size="lg">
+                <Button className="w-full bg-airbnb-rausch hover:opacity-90" size="lg">
                   <CreditCard size={18} className="mr-2" />
                   Оплатить картой
                 </Button>
@@ -475,7 +475,7 @@ export default function BecomeGuidePage() {
               <div className="absolute top-0 right-0 w-20 h-20 bg-gradient-to-br from-tropical-ocean/20 to-transparent rounded-bl-full"></div>
               <CardHeader>
                 <div className="flex items-center gap-4 mb-3">
-                  <div className="w-16 h-16 bg-gradient-to-br from-airbnb-rausch to-airbnb-arches rounded-full flex items-center justify-center text-white font-bold text-2xl">
+                  <div className="w-16 h-16 bg-airbnb-rausch rounded-full flex items-center justify-center text-white font-bold text-2xl">
                     1
                   </div>
                   <CardTitle className="text-2xl">Регистрация</CardTitle>
@@ -493,10 +493,10 @@ export default function BecomeGuidePage() {
             </Card>
 
             <Card className="relative overflow-hidden">
-              <div className="absolute top-0 right-0 w-20 h-20 bg-gradient-to-br from-green-500/20 to-transparent rounded-bl-full"></div>
+              <div className="absolute top-0 right-0 w-20 h-20 bg-green-500/10 rounded-bl-full"></div>
               <CardHeader>
                 <div className="flex items-center gap-4 mb-3">
-                  <div className="w-16 h-16 bg-gradient-to-br from-green-500 to-green-600 rounded-full flex items-center justify-center text-white font-bold text-2xl">
+                  <div className="w-16 h-16 bg-green-500 rounded-full flex items-center justify-center text-white font-bold text-2xl">
                     2
                   </div>
                   <CardTitle className="text-2xl">Создайте экскурсии</CardTitle>
@@ -514,10 +514,10 @@ export default function BecomeGuidePage() {
             </Card>
 
             <Card className="relative overflow-hidden">
-              <div className="absolute top-0 right-0 w-20 h-20 bg-gradient-to-br from-blue-500/20 to-transparent rounded-bl-full"></div>
+              <div className="absolute top-0 right-0 w-20 h-20 bg-blue-500/10 rounded-bl-full"></div>
               <CardHeader>
                 <div className="flex items-center gap-4 mb-3">
-                  <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-blue-600 rounded-full flex items-center justify-center text-white font-bold text-2xl">
+                  <div className="w-16 h-16 bg-blue-500 rounded-full flex items-center justify-center text-white font-bold text-2xl">
                     3
                   </div>
                   <CardTitle className="text-2xl">Выставляйте счета</CardTitle>
@@ -528,7 +528,7 @@ export default function BecomeGuidePage() {
                   При поступлении заказа нажмите "Выставить счет" → система создаст QR-код и платежную форму. 
                   Отправьте клиенту.
                 </p>
-                <div className="bg-gradient-to-r from-tropical-ocean/10 to-airbnb-arches/10 p-3 rounded-lg">
+                <div className="bg-airbnb-rausch/10 p-3 rounded-lg">
                   <div className="flex items-center gap-2 text-airbnb-rausch font-semibold">
                     <QrCode size={20} />
                     QR-код генерируется автоматически
@@ -538,10 +538,10 @@ export default function BecomeGuidePage() {
             </Card>
 
             <Card className="relative overflow-hidden">
-              <div className="absolute top-0 right-0 w-20 h-20 bg-gradient-to-br from-purple-500/20 to-transparent rounded-bl-full"></div>
+              <div className="absolute top-0 right-0 w-20 h-20 bg-purple-500/10 rounded-bl-full"></div>
               <CardHeader>
                 <div className="flex items-center gap-4 mb-3">
-                  <div className="w-16 h-16 bg-gradient-to-br from-purple-500 to-purple-600 rounded-full flex items-center justify-center text-white font-bold text-2xl">
+                  <div className="w-16 h-16 bg-purple-500 rounded-full flex items-center justify-center text-white font-bold text-2xl">
                     4
                   </div>
                   <CardTitle className="text-2xl">Получайте выплаты</CardTitle>
@@ -775,7 +775,7 @@ export default function BecomeGuidePage() {
             </CardContent>
           </Card>
         ) : (
-          <Card className="max-w-2xl mx-auto mb-16 bg-gradient-to-br from-green-50 to-airbnb-arches/10 border-2 border-green-200">
+          <Card className="max-w-2xl mx-auto mb-16 bg-green-50 border-2 border-green-200">
             <CardContent className="py-12 text-center">
               <div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
                 <CheckCircle className="text-green-600" size={40} />
@@ -808,10 +808,10 @@ export default function BecomeGuidePage() {
           </div>
 
           <div className="grid md:grid-cols-3 gap-6">
-            <Card className="bg-gradient-to-br from-blue-50 to-white">
+            <Card className="bg-blue-50">
               <CardContent className="pt-6">
                 <div className="flex items-center gap-3 mb-4">
-                  <div className="w-12 h-12 bg-gradient-to-br from-airbnb-rausch to-airbnb-arches rounded-full flex items-center justify-center text-white font-bold">
+                  <div className="w-12 h-12 bg-airbnb-rausch rounded-full flex items-center justify-center text-white font-bold">
                     АК
                   </div>
                   <div>
@@ -835,7 +835,7 @@ export default function BecomeGuidePage() {
             <Card className="bg-gradient-to-br from-green-50 to-white">
               <CardContent className="pt-6">
                 <div className="flex items-center gap-3 mb-4">
-                  <div className="w-12 h-12 bg-gradient-to-br from-green-500 to-green-600 rounded-full flex items-center justify-center text-white font-bold">
+                  <div className="w-12 h-12 bg-green-500 rounded-full flex items-center justify-center text-white font-bold">
                     ДС
                   </div>
                   <div>
@@ -855,10 +855,10 @@ export default function BecomeGuidePage() {
               </CardContent>
             </Card>
 
-            <Card className="bg-gradient-to-br from-purple-50 to-white">
+            <Card className="bg-purple-50">
               <CardContent className="pt-6">
                 <div className="flex items-center gap-3 mb-4">
-                  <div className="w-12 h-12 bg-gradient-to-br from-purple-500 to-purple-600 rounded-full flex items-center justify-center text-white font-bold">
+                  <div className="w-12 h-12 bg-purple-500 rounded-full flex items-center justify-center text-white font-bold">
                     МИ
                   </div>
                   <div>
@@ -925,7 +925,7 @@ export default function BecomeGuidePage() {
         </Card>
 
         {/* CTA */}
-        <div className="text-center bg-gradient-to-r from-airbnb-rausch to-airbnb-arches text-white rounded-3xl p-12 max-w-5xl mx-auto">
+        <div className="text-center bg-airbnb-rausch text-white rounded-3xl p-12 max-w-5xl mx-auto">
           <h2 className="text-4xl font-bold mb-4">Готовы начать зарабатывать?</h2>
           <p className="text-xl mb-8 opacity-90">
             Присоединяйтесь к 500+ гидам, которые уже работают с ThaiGuide Pro

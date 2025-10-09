@@ -207,7 +207,7 @@ export default function CreateRequestPage() {
             <div className="grid md:grid-cols-3 gap-6 mt-12">
               <Card className="text-center">
                 <CardHeader>
-                  <div className="w-12 h-12 bg-tropical-turquoise/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <div className="w-12 h-12 bg-airbnb-babu/10 rounded-full flex items-center justify-center mx-auto mb-4">
                     <Calendar className="text-airbnb-babu" size={24} />
                   </div>
                   <CardTitle className="text-lg">Быстрый ответ</CardTitle>
@@ -221,7 +221,7 @@ export default function CreateRequestPage() {
 
               <Card className="text-center">
                 <CardHeader>
-                  <div className="w-12 h-12 bg-tropical-coral/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <div className="w-12 h-12 bg-airbnb-arches/10 rounded-full flex items-center justify-center mx-auto mb-4">
                     <Users className="text-airbnb-rausch" size={24} />
                   </div>
                   <CardTitle className="text-lg">Индивидуальный подход</CardTitle>

@@ -67,7 +67,7 @@ export default function ManagerDashboard() {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="bg-gradient-to-r from-tropical-ocean to-tropical-turquoise rounded-xl p-6 text-white shadow-lg">
+      <div className="bg-airbnb-rausch rounded-xl p-6 text-white shadow-lg">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-4">
             <div className="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center text-2xl font-bold">
@@ -147,7 +147,7 @@ export default function ManagerDashboard() {
               return (
                 <div
                   key={i}
-                  className="flex-1 bg-gradient-to-t from-tropical-ocean to-tropical-turquoise rounded-t-lg relative group cursor-pointer"
+                  className="flex-1 bg-airbnb-rausch rounded-t-lg relative group cursor-pointer"
                   style={{ height: `${Math.max(heightPercent, 2)}%` }}
                 >
                   <div className="absolute -top-8 left-1/2 transform -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity bg-gray-900 text-white text-xs px-2 py-1 rounded whitespace-nowrap">

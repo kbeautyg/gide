@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button'
 import { UserCircle, Menu } from 'lucide-react'
 import { useAuthStore } from '@/lib/store'
 import { MobileMenu } from '@/components/MobileMenu'
+import { Logo } from '@/components/Logo'
 
 export function PublicHeader() {
   const { isAuthenticated, user } = useAuthStore()
@@ -22,9 +23,7 @@ export function PublicHeader() {
           <Menu size={24} />
         </button>
 
-        <Link to="/" className="text-2xl font-bold text-gradient">
-          ThaiGuide Pro
-        </Link>
+        <Logo size="md" linkTo="/" />
         <nav className="hidden md:flex items-center gap-6">
           <Link 
             to="/" 

@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom'
+import { Logo } from '@/components/Logo'
 
 export function PublicFooter() {
   return (
@@ -6,9 +7,11 @@ export function PublicFooter() {
       <div className="container mx-auto px-4">
         <div className="grid md:grid-cols-4 gap-8">
           <div>
-            <h3 className="text-xl font-bold mb-4">ThaiGuide Pro</h3>
+            <div className="mb-4">
+              <Logo size="lg" linkTo="/" className="text-white" />
+            </div>
             <p className="text-gray-400">
-              Лучшие экскурсии по всей Азии с русскоязычными гидами
+              Лучшие экскурсии по всему миру с местными гидами
             </p>
           </div>
           
@@ -43,7 +46,7 @@ export function PublicFooter() {
         </div>
         
         <div className="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400">
-          <p>© 2025 ThaiGuide Pro. Все права защищены.</p>
+          <p>© 2025 Turex Pro. Все права защищены.</p>
         </div>
       </div>
     </footer>

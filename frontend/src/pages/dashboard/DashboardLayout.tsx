@@ -2,6 +2,7 @@ import { Outlet, Link, useLocation } from 'react-router-dom'
 import { useAuthStore } from '@/lib/store'
 import { useAuth } from '@/hooks/useAuth'
 import { Button } from '@/components/ui/button'
+import { Logo } from '@/components/Logo'
 import { 
   LayoutDashboard, 
   MapPin, 
@@ -43,9 +44,7 @@ export default function DashboardLayout() {
       {/* Header */}
       <header className="bg-white border-b sticky top-0 z-40">
         <div className="container mx-auto px-4 py-4 flex items-center justify-between">
-          <Link to="/" className="text-2xl font-bold bg-gradient-to-r from-tropical-ocean to-tropical-turquoise bg-clip-text text-transparent">
-            ThaiGuide Pro
-          </Link>
+          <Logo size="md" linkTo="/" />
           
           <div className="flex items-center gap-4">
             <Link to="/">
@@ -56,7 +55,7 @@ export default function DashboardLayout() {
             </Link>
 
             <div className="flex items-center gap-3 px-4 py-2 bg-gray-50 rounded-lg">
-              <div className="w-8 h-8 bg-gradient-to-br from-tropical-ocean to-tropical-turquoise rounded-full flex items-center justify-center text-white font-bold text-sm">
+              <div className="w-8 h-8 bg-airbnb-rausch rounded-full flex items-center justify-center text-white font-bold text-sm">
                 {user?.name?.[0] || user?.phone?.[0] || 'Г'}
               </div>
               <div>
@@ -94,7 +93,7 @@ export default function DashboardLayout() {
                   to={item.path}
                   className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-all ${
                     active
-                      ? 'bg-tropical-ocean text-white shadow-md'
+                      ? 'bg-airbnb-rausch text-white shadow-md'
                       : 'text-gray-700 hover:bg-gray-100'
                   }`}
                 >
