@@ -87,6 +87,7 @@ export function TourCard({ tour, className }: TourCardProps) {
               key={currentPhotoIndex}
               src={photos[currentPhotoIndex]}
               alt={tour.title}
+              loading="lazy"
               className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}

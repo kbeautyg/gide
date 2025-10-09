@@ -23,6 +23,9 @@ import ArticlePage from './pages/public/ArticlePage'
 import LoginPage from './pages/auth/LoginPage'
 import RegisterPage from './pages/auth/RegisterPage'
 
+// Служебные страницы
+import NotFoundPage from './pages/NotFoundPage'
+
 // Личные кабинеты
 import DashboardLayout from './pages/dashboard/DashboardLayout'
 import ManagerDashboard from './pages/dashboard/ManagerDashboard'
@@ -76,6 +79,9 @@ function App() {
         <Route path="bookings" element={<BookingsPage />} />
         <Route path="settings" element={<SettingsPage />} />
       </Route>
+      
+      {/* 404 - должен быть последним */}
+      <Route path="*" element={<NotFoundPage />} />
     </Routes>
     </>
   )
