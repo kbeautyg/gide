@@ -61,7 +61,11 @@ export default function DashboardLayout() {
               </div>
               <div>
                 <p className="text-sm font-semibold">{user?.name || user?.phone}</p>
-                <p className="text-xs text-gray-500">Гид</p>
+                <p className="text-xs text-gray-500">
+                  {user?.role === 'super_admin' ? 'Супер-админ' : 
+                   user?.role === 'admin' ? 'Администратор' : 
+                   user?.role === 'super_manager' ? 'Супер-менеджер' : 'Гид'}
+                </p>
               </div>
             </div>
 

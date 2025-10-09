@@ -45,7 +45,7 @@ export default function ManagerDashboard() {
     return bookingDate.getMonth() === now.getMonth() && bookingDate.getFullYear() === now.getFullYear()
   }).length
 
-  // Доход за месяц (реальный из бронирований)
+  // Доход за месяц (3% комиссия гида от стоимости)
   const monthlyIncome = bookings
     .filter((b: any) => {
       const bookingDate = new Date(b.created_at)
@@ -54,11 +54,11 @@ export default function ManagerDashboard() {
              bookingDate.getFullYear() === now.getFullYear() &&
              b.payment_status === 'paid'
     })
-    .reduce((sum: number, b: any) => sum + (b.total_price || 0), 0)
+    .reduce((sum: number, b: any) => sum + ((b.total_price || 0) * 0.03), 0)  // 3% комиссия
 
-  // График доходов - реальные данные из API или нули
+  // График доходов - 3% комиссия гида от выручки
   const revenueData = revenueStats.length > 0 
-    ? revenueStats.map((stat: any) => stat.revenue)
+    ? revenueStats.map((stat: any) => (stat.revenue || 0) * 0.03)
     : Array(14).fill(0)
 
   // Последние заказы (последние 3)
@@ -75,11 +75,15 @@ export default function ManagerDashboard() {
             </div>
             <div>
               <p className="text-2xl font-bold">{user?.name || 'Гид'}</p>
-              <p className="text-white/90">Гид • ThaiGuide Pro</p>
+              <p className="text-white/90">
+                {user?.role === 'super_admin' ? 'Супер-админ' : 
+                 user?.role === 'admin' ? 'Администратор' : 
+                 user?.role === 'super_manager' ? 'Супер-менеджер' : 'Гид'} • ThaiGuide Pro
+              </p>
             </div>
           </div>
           <div className="text-right space-y-3">
-            <p className="text-white/90 text-sm mb-1">Доход за месяц</p>
+            <p className="text-white/90 text-sm mb-1">Доход за месяц (3% комиссия)</p>
             <p className="text-3xl font-bold">{formatRUB(monthlyIncome)}</p>
             <Button
               className="gap-2 bg-white text-tropical-ocean hover:bg-white/90"
@@ -133,8 +137,8 @@ export default function ManagerDashboard() {
       {/* Revenue Chart */}
       <Card>
         <CardHeader>
-          <CardTitle>График доходов</CardTitle>
-          <CardDescription>За последние 30 дней</CardDescription>
+          <CardTitle>График доходов (3% комиссия)</CardTitle>
+          <CardDescription>За последние 30 дней • Ваш доход от бронирований</CardDescription>
         </CardHeader>
         <CardContent>
           <div className="flex items-end justify-between h-48 gap-2">
