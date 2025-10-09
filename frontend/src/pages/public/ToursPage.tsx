@@ -78,7 +78,27 @@ export default function ToursPage() {
     return true
   })
 
-  console.log('Filtered tours:', filteredTours.length)
+  // Сортировка
+  const sortedTours = [...filteredTours].sort((a: any, b: any) => {
+    switch (sortBy) {
+      case 'price_asc':
+        return a.price - b.price
+      case 'price_desc':
+        return b.price - a.price
+      case 'rating':
+        return b.rating - a.rating
+      case 'new':
+        return new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
+      case 'popular':
+      default:
+        // Формула популярности: бронирования * 2 + просмотры * 0.1 + рейтинг * 10
+        const scoreA = (a.total_bookings || 0) * 2 + (a.views_count || 0) * 0.1 + (a.rating || 0) * 10
+        const scoreB = (b.total_bookings || 0) * 2 + (b.views_count || 0) * 0.1 + (b.rating || 0) * 10
+        return scoreB - scoreA
+    }
+  })
+
+  console.log('Sorted tours:', sortedTours.length, 'Sort by:', sortBy)
 
   // Формируем список категорий для чипсов
   const themeCategories = categoriesData?.themes 
@@ -275,7 +295,7 @@ export default function ToursPage() {
             <div>
               <h2 className="text-2xl font-bold text-gray-900 mb-1">Все туры</h2>
               <p className="text-gray-600">
-                {filteredTours.length} предложени{filteredTours.length === 1 ? 'е' : filteredTours.length < 5 ? 'я' : 'й'}
+                {sortedTours.length} предложени{sortedTours.length === 1 ? 'е' : sortedTours.length < 5 ? 'я' : 'й'}
               </p>
             </div>
             
@@ -299,7 +319,7 @@ export default function ToursPage() {
                 <div key={i} className="skeleton rounded-xl h-[400px]" />
               ))}
             </div>
-          ) : filteredTours.length === 0 ? (
+          ) : sortedTours.length === 0 ? (
             <div className="text-center py-20">
               <p className="text-gray-600 text-lg">Экскурсии не найдены</p>
               <p className="text-gray-500 mt-2">Попробуйте изменить фильтры</p>
@@ -319,7 +339,7 @@ export default function ToursPage() {
                 }
               }}
             >
-              {filteredTours.map((tour) => (
+              {sortedTours.map((tour) => (
                 <motion.div
                   key={tour.id}
                   variants={{
