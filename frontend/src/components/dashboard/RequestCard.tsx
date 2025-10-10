@@ -1,7 +1,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
-import { Users, DollarSign, Calendar, MapPin, Clock, MessageCircle, CheckCircle } from 'lucide-react'
+import { Users, DollarSign, Calendar, MapPin, Clock, MessageCircle, CheckCircle, Link2, ExternalLink } from 'lucide-react'
 import { formatRUB } from '@/lib/utils'
 
 interface RequestCardProps {
@@ -16,12 +16,40 @@ interface RequestCardProps {
     preferred_date?: string
     telegram_username?: string
     status?: string
+    generated_tour_id?: number
   }
   onTake?: () => void
   onAccept?: () => void
+  onViewTour?: (tourId: number) => void
 }
 
-export function RequestCard({ request, onTake, onAccept }: RequestCardProps) {
+export function RequestCard({ request, onTake, onAccept, onViewTour }: RequestCardProps) {
+  const getStatusBadge = () => {
+    if (request.status === 'pending') {
+      return (
+        <Badge className="bg-yellow-100 text-yellow-800 border-yellow-300">
+          Новая заявка
+        </Badge>
+      )
+    }
+    if (request.status === 'in_progress') {
+      return (
+        <Badge className="bg-blue-100 text-blue-800 border-blue-300 gap-1">
+          <Link2 size={12} />
+          Тур создан
+        </Badge>
+      )
+    }
+    if (request.status === 'completed') {
+      return (
+        <Badge className="bg-green-100 text-green-800 border-green-300 gap-1">
+          <CheckCircle size={12} />
+          Завершена
+        </Badge>
+      )
+    }
+    return null
+  }
   // Определяем тип по длительности
   const getDurationBadge = () => {
     if (request.duration_hours <= 2) {
@@ -51,8 +79,11 @@ export function RequestCard({ request, onTake, onAccept }: RequestCardProps) {
   return (
     <Card className="hover:shadow-airbnb transition-all duration-200 h-full flex flex-col">
       <CardHeader>
-        <div className="flex items-start justify-between mb-3">
-          {getDurationBadge()}
+        <div className="flex items-start justify-between mb-3 flex-wrap gap-2">
+          <div className="flex gap-2">
+            {getStatusBadge()}
+            {getDurationBadge()}
+          </div>
           <div className="flex items-center gap-1 text-sm text-gray-600">
             <Users size={14} />
             <span>{request.participants_count} чел.</span>
@@ -112,6 +143,23 @@ export function RequestCard({ request, onTake, onAccept }: RequestCardProps) {
             <CheckCircle size={16} />
             Принять и создать тур
           </Button>
+        )}
+
+        {request.status === 'in_progress' && request.generated_tour_id && onViewTour && (
+          <Button 
+            onClick={() => onViewTour(request.generated_tour_id!)}
+            variant="outline"
+            className="w-full flex items-center gap-2 border-blue-300 text-blue-700 hover:bg-blue-50"
+          >
+            <ExternalLink size={16} />
+            Посмотреть тур
+          </Button>
+        )}
+
+        {request.status === 'completed' && (
+          <div className="text-sm text-gray-500 text-center py-2">
+            ✓ Заявка выполнена
+          </div>
         )}
       </CardContent>
     </Card>

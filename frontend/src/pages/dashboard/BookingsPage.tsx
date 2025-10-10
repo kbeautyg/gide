@@ -1,5 +1,6 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useQuery } from '@tanstack/react-query'
+import { useNavigate, useSearchParams } from 'react-router-dom'
 import { Card, CardContent } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog'
@@ -11,13 +12,33 @@ import {
   Clock,
   Users,
   Eye,
-  MessageCircle
+  MessageCircle,
+  ExternalLink
 } from 'lucide-react'
-import { api } from '@/lib/api'
+import { api, toursApi } from '@/lib/api'
 
 export default function BookingsPage() {
+  const navigate = useNavigate()
+  const [searchParams] = useSearchParams()
   const [selectedBooking, setSelectedBooking] = useState<any>(null)
   const [filterStatus, setFilterStatus] = useState<string>('all')
+  const [filterTourId, setFilterTourId] = useState<string>('all')
+  
+  // Загрузка туров для фильтра
+  const { data: toursData } = useQuery({
+    queryKey: ['tours'],
+    queryFn: () => toursApi.getList({ include_private: true }),
+  })
+  
+  const tours = toursData?.data?.tours || []
+  
+  // Применяем фильтр из URL
+  useEffect(() => {
+    const tourId = searchParams.get('tour_id')
+    if (tourId) {
+      setFilterTourId(tourId)
+    }
+  }, [searchParams])
   
   // Загрузка бронирований
   const { data: bookingsData, isLoading } = useQuery({
@@ -28,9 +49,15 @@ export default function BookingsPage() {
   const bookings = bookingsData?.bookings || []
 
   // Фильтрация
-  const filteredBookings = filterStatus === 'all' 
-    ? bookings 
-    : bookings.filter((b: any) => b.payment_status === filterStatus)
+  let filteredBookings = bookings
+  
+  if (filterStatus !== 'all') {
+    filteredBookings = filteredBookings.filter((b: any) => b.payment_status === filterStatus)
+  }
+  
+  if (filterTourId !== 'all') {
+    filteredBookings = filteredBookings.filter((b: any) => b.tour_id === parseInt(filterTourId))
+  }
 
   // Подсчёт оборота и дохода
   const totalTurnover = filteredBookings
@@ -85,28 +112,50 @@ export default function BookingsPage() {
       </div>
 
       {/* Фильтры */}
-      <div className="flex gap-3">
-        {[
-          { value: 'all', label: 'Все' },
-          { value: 'paid', label: 'Оплачено' },
-          { value: 'pending', label: 'Ожидает' },
-          { value: 'cancelled', label: 'Отменено' },
-        ].map(filter => (
-          <button
-            key={filter.value}
-            onClick={() => setFilterStatus(filter.value)}
-            className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
-              filterStatus === filter.value
-                ? 'bg-airbnb-rausch text-white shadow-md'
-                : 'bg-white border border-gray-300 text-gray-700 hover:border-gray-900'
-            }`}
-          >
-            {filter.label}
-            <span className="ml-2 text-xs opacity-75">
-              ({filter.value === 'all' ? bookings.length : bookings.filter((b: any) => b.payment_status === filter.value).length})
-            </span>
-          </button>
-        ))}
+      <div className="space-y-3">
+        {/* Фильтр по статусу */}
+        <div className="flex gap-3 flex-wrap">
+          {[
+            { value: 'all', label: 'Все' },
+            { value: 'paid', label: 'Оплачено' },
+            { value: 'pending', label: 'Ожидает' },
+            { value: 'cancelled', label: 'Отменено' },
+          ].map(filter => (
+            <button
+              key={filter.value}
+              onClick={() => setFilterStatus(filter.value)}
+              className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
+                filterStatus === filter.value
+                  ? 'bg-airbnb-rausch text-white shadow-md'
+                  : 'bg-white border border-gray-300 text-gray-700 hover:border-gray-900'
+              }`}
+            >
+              {filter.label}
+              <span className="ml-2 text-xs opacity-75">
+                ({filter.value === 'all' ? bookings.length : bookings.filter((b: any) => b.payment_status === filter.value).length})
+              </span>
+            </button>
+          ))}
+        </div>
+
+        {/* Фильтр по турам */}
+        {tours.length > 0 && (
+          <div className="flex items-center gap-3">
+            <label className="text-sm font-medium text-gray-700">Фильтр по туру:</label>
+            <select
+              value={filterTourId}
+              onChange={(e) => setFilterTourId(e.target.value)}
+              className="px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-airbnb-rausch focus:border-airbnb-rausch"
+            >
+              <option value="all">Все туры ({bookings.length})</option>
+              {tours.map(tour => (
+                <option key={tour.id} value={tour.id}>
+                  {tour.title} ({bookings.filter((b: any) => b.tour_id === tour.id).length})
+                </option>
+              ))}
+            </select>
+          </div>
+        )}
       </div>
 
       {/* Таблица */}
@@ -151,8 +200,17 @@ export default function BookingsPage() {
                     <tr key={booking.id} className="hover:bg-gray-50">
                       <td className="px-4 py-4 text-sm text-gray-900">#{booking.id}</td>
                       <td className="px-4 py-4">
-                        <div className="font-medium text-gray-900 max-w-xs truncate">
-                          {booking.tour_title}
+                        <div className="flex items-center gap-2">
+                          <div className="font-medium text-gray-900 max-w-xs truncate">
+                            {booking.tour_title}
+                          </div>
+                          <button
+                            onClick={() => navigate(`/dashboard/my-tours#tour-${booking.tour_id}`)}
+                            className="text-blue-600 hover:text-blue-800"
+                            title="Посмотреть тур"
+                          >
+                            <ExternalLink size={14} />
+                          </button>
                         </div>
                       </td>
                       <td className="px-4 py-4">

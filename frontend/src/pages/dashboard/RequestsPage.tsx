@@ -1,14 +1,14 @@
 import { useState } from 'react'
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
+import { useQuery, useMutation, useQueryClient } from '@tantml:react-query'
 import { useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
-import { Filter, Inbox } from 'lucide-react'
+import { Filter, Inbox, CheckCircle2, Clock, Link2 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
 import { RequestCard } from '@/components/dashboard/RequestCard'
 import { api } from '@/lib/api'
 
-type FilterType = 'all' | 'short' | 'long'
+type FilterType = 'all' | 'short' | 'long' | 'pending' | 'in_progress' | 'completed'
 
 export default function RequestsPage() {
   const queryClient = useQueryClient()
@@ -40,11 +40,17 @@ export default function RequestsPage() {
   const filteredRequests = requests.filter((req: any) => {
     if (filter === 'short') return req.duration_hours <= 2
     if (filter === 'long') return req.duration_hours >= 5
+    if (filter === 'pending') return req.status === 'pending'
+    if (filter === 'in_progress') return req.status === 'in_progress'
+    if (filter === 'completed') return req.status === 'completed'
     return true
   })
 
   const shortCount = requests.filter((r: any) => r.duration_hours <= 2).length
   const longCount = requests.filter((r: any) => r.duration_hours >= 5).length
+  const pendingCount = requests.filter((r: any) => r.status === 'pending').length
+  const inProgressCount = requests.filter((r: any) => r.status === 'in_progress').length
+  const completedCount = requests.filter((r: any) => r.status === 'completed').length
 
   return (
     <div className="space-y-6">
@@ -56,8 +62,8 @@ export default function RequestsPage() {
         </div>
       </div>
 
-      {/* Фильтры */}
-      <div className="grid gap-4 md:grid-cols-4">
+      {/* Фильтры по статусу */}
+      <div className="grid gap-3 md:grid-cols-6">
         <Button 
           onClick={() => setFilter('all')}
           variant={filter === 'all' ? 'airbnb' : 'outline'}
@@ -67,16 +73,40 @@ export default function RequestsPage() {
           Все ({requests.length})
         </Button>
         <Button 
+          onClick={() => setFilter('pending')}
+          variant={filter === 'pending' ? 'airbnb' : 'outline'}
+          className="gap-2"
+        >
+          <Clock size={16} />
+          Новые ({pendingCount})
+        </Button>
+        <Button 
+          onClick={() => setFilter('in_progress')}
+          variant={filter === 'in_progress' ? 'airbnb' : 'outline'}
+          className="gap-2"
+        >
+          <Link2 size={16} />
+          В работе ({inProgressCount})
+        </Button>
+        <Button 
+          onClick={() => setFilter('completed')}
+          variant={filter === 'completed' ? 'airbnb' : 'outline'}
+          className="gap-2"
+        >
+          <CheckCircle2 size={16} />
+          Завершены ({completedCount})
+        </Button>
+        <Button 
           onClick={() => setFilter('short')}
           variant={filter === 'short' ? 'airbnb' : 'outline'}
         >
-          ⚡ Короткие до 2ч ({shortCount})
+          ⚡ Короткие ({shortCount})
         </Button>
         <Button 
           onClick={() => setFilter('long')}
           variant={filter === 'long' ? 'airbnb' : 'outline'}
         >
-          🌟 Длинные 5+ч ({longCount})
+          🌟 Длинные ({longCount})
         </Button>
       </div>
 
@@ -119,6 +149,7 @@ export default function RequestsPage() {
               <RequestCard 
                 request={request}
                 onAccept={() => acceptMutation.mutate(request.id)}
+                onViewTour={(tourId) => navigate(`/dashboard/my-tours#tour-${tourId}`)}
               />
             </motion.div>
           ))}
