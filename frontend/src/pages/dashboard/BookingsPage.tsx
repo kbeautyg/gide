@@ -248,6 +248,14 @@ export default function BookingsPage() {
                           <Button
                             variant="outline"
                             size="sm"
+                            onClick={() => navigate(`/dashboard/calendar`)}
+                            title="Посмотреть в календаре"
+                          >
+                            <Calendar size={14} />
+                          </Button>
+                          <Button
+                            variant="outline"
+                            size="sm"
                             onClick={() => setSelectedBooking(booking)}
                           >
                             <Eye size={14} className="mr-1" />

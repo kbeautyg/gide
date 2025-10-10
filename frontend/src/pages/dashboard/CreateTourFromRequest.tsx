@@ -183,16 +183,25 @@ export default function CreateTourFromRequest() {
                   </Button>
                 </div>
 
-                <div className="mt-4 flex gap-3">
-                  <Button
-                    onClick={() => navigate('/dashboard/my-tours')}
-                    className="bg-airbnb-rausch hover:bg-airbnb-rausch/90"
-                  >
-                    Перейти к моим турам
-                  </Button>
+                <div className="mt-4 space-y-2">
+                  <div className="flex gap-3">
+                    <Button
+                      onClick={() => navigate('/dashboard/my-tours')}
+                      className="flex-1 bg-airbnb-rausch hover:bg-airbnb-rausch/90"
+                    >
+                      Перейти к моим турам
+                    </Button>
+                    <Button
+                      onClick={() => navigate('/dashboard/calendar')}
+                      className="flex-1 bg-green-600 hover:bg-green-700"
+                    >
+                      Открыть календарь
+                    </Button>
+                  </div>
                   <Button
                     onClick={() => navigate('/dashboard/requests')}
                     variant="outline"
+                    className="w-full"
                   >
                     Вернуться к заявкам
                   </Button>
