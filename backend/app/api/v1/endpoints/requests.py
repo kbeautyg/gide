@@ -286,7 +286,7 @@ async def accept_request(
     Меняет статус на 'in_progress', назначает guide_id
     """
     # Проверяем что пользователь - гид
-    if current_user.role not in [UserRole.GUIDE, UserRole.MANAGER]:
+    if current_user.role not in [UserRole.MANAGER, UserRole.ADMIN]:
         raise HTTPException(status_code=403, detail="Only guides can accept requests")
     
     # Получаем заявку
