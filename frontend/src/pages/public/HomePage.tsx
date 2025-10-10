@@ -115,7 +115,7 @@ export default function HomePage() {
       <PublicHeader />
 
       {/* Hero Section - 3D объекты фон */}
-      <section className="relative text-white py-24 md:py-32 overflow-hidden min-h-[90vh] flex items-center bg-gradient-to-br from-gray-900 via-gray-800 to-black">
+      <section className="relative text-white overflow-hidden h-screen flex items-center bg-gradient-to-br from-gray-900 via-gray-800 to-black">
         {/* Анимированные blob градиенты */}
         <div className="absolute inset-0 overflow-hidden">
           <motion.div
@@ -159,35 +159,46 @@ export default function HomePage() {
           />
         </div>
 
-        {/* 3D объекты слева */}
-        <div className="absolute left-10 top-1/2 -translate-y-1/2 space-y-20 hidden lg:block pointer-events-none">
-          {['🗿', '🍜', '🗺️'].map((emoji, i) => (
+        {/* 3D объекты разбросаны по экрану */}
+        <div className="absolute inset-0 hidden lg:block pointer-events-none">
+          {[
+            { emoji: '🗿', x: '5%', y: '15%' },
+            { emoji: '🍜', x: '15%', y: '70%' },
+            { emoji: '🗺️', x: '85%', y: '20%' },
+            { emoji: '🏯', x: '90%', y: '65%' },
+            { emoji: '🎭', x: '10%', y: '45%' },
+            { emoji: '🏔️', x: '80%', y: '85%' },
+          ].map((obj, i) => (
             <motion.div
               key={i}
               initial={{ opacity: 0, scale: 0, rotate: -180 }}
               animate={{ 
-                opacity: 0.8, 
+                opacity: 0.7, 
                 scale: 1, 
                 rotate: 0,
-                y: [0, -20, 0]
+                y: [0, -30, 0],
+                rotate: [0, 10, -10, 0]
               }}
               transition={{ 
-                opacity: { duration: 1, delay: i * 0.2 },
-                scale: { duration: 1, delay: i * 0.2 },
-                rotate: { duration: 1, delay: i * 0.2 },
-                y: { duration: 4 + i, repeat: Infinity, ease: 'easeInOut' }
+                opacity: { duration: 1, delay: i * 0.15 },
+                scale: { duration: 1, delay: i * 0.15 },
+                rotate: { duration: 1, delay: i * 0.15 },
+                y: { duration: 5 + i, repeat: Infinity, ease: 'easeInOut' }
               }}
               whileHover={{
-                scale: 1.3,
-                rotate: 15,
+                scale: 1.5,
+                rotate: 25,
+                opacity: 1,
                 transition: { duration: 0.3 }
               }}
-              className="text-8xl cursor-pointer pointer-events-auto"
+              className="absolute text-7xl md:text-9xl cursor-pointer pointer-events-auto"
               style={{
-                filter: 'drop-shadow(0 10px 30px rgba(0,0,0,0.5))'
+                left: obj.x,
+                top: obj.y,
+                filter: 'drop-shadow(0 10px 40px rgba(0,0,0,0.6))'
               }}
             >
-              {emoji}
+              {obj.emoji}
             </motion.div>
           ))}
         </div>
@@ -213,6 +224,26 @@ export default function HomePage() {
             </motion.div>
           </motion.div>
         </div>
+
+        {/* Scroll indicator */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1, y: [0, 10, 0] }}
+          transition={{ 
+            opacity: { delay: 2 },
+            y: { duration: 1.5, repeat: Infinity }
+          }}
+          className="absolute bottom-10 left-1/2 -translate-x-1/2 text-white/60 text-sm flex flex-col items-center gap-2"
+        >
+          <div>Прокрутите вниз</div>
+          <div className="w-6 h-10 border-2 border-white/40 rounded-full p-1">
+            <motion.div
+              animate={{ y: [0, 12, 0] }}
+              transition={{ duration: 1.5, repeat: Infinity }}
+              className="w-1 h-2 bg-white/60 rounded-full mx-auto"
+            />
+          </div>
+        </motion.div>
       </section>
 
       {/* Блок "Планы на сезон" */}
