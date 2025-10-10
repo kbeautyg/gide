@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { Star, Users, Shield, Clock, ChevronLeft, ChevronRight, ArrowRight } from 'lucide-react'
@@ -34,6 +34,16 @@ const itemVariants = {
 export default function HomePage() {
   const [seasonalIndex, setSeasonalIndex] = useState(0)
   const [reviewIndex, setReviewIndex] = useState(0)
+  const [showStickySearch, setShowStickySearch] = useState(false)
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const heroHeight = window.innerHeight
+      setShowStickySearch(window.scrollY > heroHeight * 0.8)
+    }
+    window.addEventListener('scroll', handleScroll)
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [])
   
   // Загрузка популярных экскурсий
   const { data: toursData } = useQuery({
@@ -114,6 +124,15 @@ export default function HomePage() {
     <div className="min-h-screen bg-white">
       <PublicHeader />
 
+      {/* Sticky Search Bar */}
+      {showStickySearch && (
+        <div className="fixed top-0 left-0 right-0 z-50 bg-white border-b shadow-md">
+          <div className="container mx-auto px-4 py-3">
+            <SearchBar variant="sticky" />
+          </div>
+        </div>
+      )}
+
       {/* Hero Section - 3D объекты фон */}
       <section className="relative text-white overflow-hidden h-screen flex items-center bg-gradient-to-br from-gray-900 via-gray-800 to-black">
         {/* Анимированные blob градиенты */}
@@ -175,14 +194,11 @@ export default function HomePage() {
               animate={{ 
                 opacity: 0.7, 
                 scale: 1, 
-                rotate: 0,
                 y: [0, -30, 0],
-                rotate: [0, 10, -10, 0]
               }}
               transition={{ 
                 opacity: { duration: 1, delay: i * 0.15 },
                 scale: { duration: 1, delay: i * 0.15 },
-                rotate: { duration: 1, delay: i * 0.15 },
                 y: { duration: 5 + i, repeat: Infinity, ease: 'easeInOut' }
               }}
               whileHover={{
