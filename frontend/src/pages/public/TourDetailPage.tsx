@@ -40,6 +40,8 @@ export default function TourDetailPage() {
     enabled: !!id,
   })
 
+  const tour = tourData?.data as Tour | undefined
+  
   // Загрузка отзывов
   const { data: reviewsData } = useQuery({
     queryKey: ['reviews', id],
@@ -64,7 +66,6 @@ export default function TourDetailPage() {
     enabled: !!tour,
   })
 
-  const tour = tourData?.data as Tour | undefined
   const reviews = reviewsData || []
   const relatedTours = relatedToursData?.tours || []
 

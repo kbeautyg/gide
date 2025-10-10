@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
-import { TypewriterHero } from './TypewriterHero'
 import { SearchBar } from './SearchBar'
 
 // 3D объекты для случайного выбора
