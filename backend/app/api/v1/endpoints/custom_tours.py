@@ -33,11 +33,8 @@ async def create_tour_from_request(
     
     Только гид, который принял заявку, может создать тур
     """
-    # Проверяем права (любой авторизованный может создать, если принял заявку)
-    # Админы и менеджеры тоже могут создавать туры
-    if current_user.role not in [UserRole.MANAGER, UserRole.ADMIN, UserRole.SUPER_ADMIN, UserRole.SUPER_MANAGER]:
-        # Обычные пользователи тоже могут, если они приняли заявку
-        pass
+    # Любой авторизованный пользователь может создать тур из принятой заявки
+    # Основная проверка - это guide_id == current_user.id ниже
     
     # Получаем заявку
     result = await db.execute(select(Request).where(Request.id == request_id))
