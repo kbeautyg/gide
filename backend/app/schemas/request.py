@@ -3,7 +3,7 @@
 """
 from pydantic import BaseModel
 from typing import Optional
-from datetime import date
+from datetime import date, datetime
 
 
 class RequestBase(BaseModel):
@@ -45,6 +45,11 @@ class Request(RequestBase):
     assigned_to: Optional[int] = None
     guide_id: Optional[int] = None
     assigned_date: Optional[date] = None
+    telegram_username: Optional[str] = None
+    booking_id: Optional[int] = None
+    generated_tour_id: Optional[int] = None
+    created_at: datetime
+    updated_at: datetime
     
     class Config:
         from_attributes = True
