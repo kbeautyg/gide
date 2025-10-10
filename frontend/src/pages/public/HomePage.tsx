@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
-import { motion, AnimatePresence } from 'framer-motion'
+import { motion } from 'framer-motion'
+import { cn } from '@/lib/utils'
 import { Star, Users, Shield, Clock, ChevronLeft, ChevronRight, ArrowRight } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { useQuery } from '@tanstack/react-query'

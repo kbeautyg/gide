@@ -136,6 +136,7 @@ export const bookingsApi = {
     client_name: string
     client_phone: string
     client_email?: string
+    telegram_username?: string
   }) => api.post<Booking>('/bookings/', booking),
   
   getById: (id: number | string) => api.get<Booking>(`/bookings/${id}`),

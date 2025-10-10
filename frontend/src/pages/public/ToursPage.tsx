@@ -1,8 +1,6 @@
 import { useState } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import { motion } from 'framer-motion'
-import { SlidersHorizontal, ChevronDown } from 'lucide-react'
-import { Button } from '@/components/ui/button'
 import { toursApi } from '@/lib/api'
 import { PublicHeader } from '@/components/PublicHeader'
 import { PublicFooter } from '@/components/PublicFooter'
