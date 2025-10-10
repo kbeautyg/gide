@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
-import { motion, AnimatePresence } from 'framer-motion'
+import { motion } from 'framer-motion'
 import { Search, MapPin, Minus, Plus, Calendar as CalendarIcon } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -111,67 +111,59 @@ export function SearchBar({ variant = 'hero', className }: SearchBarProps) {
         layout
       >
         {/* Поле "Куда" */}
-        <div className="flex-1 relative">
-          <button
-            onClick={() => setExpandedField(expandedField === 'where' ? null : 'where')}
-            className={cn(
-              "w-full text-left px-4 py-3 rounded-full hover:bg-gray-100 transition-colors",
-              expandedField === 'where' && "bg-white shadow-md"
-            )}
-          >
-            <div className="text-xs font-semibold text-gray-900">Куда</div>
-            <div className="text-sm text-gray-600 truncate">
-              {searchData.where || 'Поиск направлений'}
-            </div>
-          </button>
-
-          {/* Dropdown с подсказками */}
-          <AnimatePresence>
-            {expandedField === 'where' && (
-              <motion.div
-                initial={{ opacity: 0, y: -10 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -10 }}
-                className="absolute top-full left-0 right-0 mt-2 bg-white rounded-2xl shadow-airbnb-lg p-4 z-50 min-w-[400px]"
+        <div className="flex-1">
+          <Popover open={expandedField === 'where'} onOpenChange={(open) => setExpandedField(open ? 'where' : null)}>
+            <PopoverTrigger asChild>
+              <button
+                className={cn(
+                  "w-full text-left px-4 py-3 rounded-full hover:bg-gray-100 transition-colors",
+                  expandedField === 'where' && "bg-white shadow-md"
+                )}
               >
-                <Input
-                  placeholder="Введите город или страну"
-                  value={searchData.where}
-                  onChange={(e) => setSearchData({ ...searchData, where: e.target.value })}
-                  className="mb-3 border-gray-300"
-                  autoFocus
-                />
-                <div className="space-y-1">
-                  {filteredDestinations.length > 0 ? (
-                    filteredDestinations.map((dest: any) => (
-                      <button
-                        key={dest.id}
-                        onClick={() => {
-                          setSearchData({ ...searchData, where: dest.name })
-                          setExpandedField(null)
-                        }}
-                        className="w-full text-left px-4 py-3 hover:bg-gray-50 rounded-lg flex items-center gap-3 transition-colors"
-                      >
-                        <MapPin size={18} className="text-airbnb-rausch" />
-                        <div>
-                          <div className="text-gray-900 font-medium">{dest.name}</div>
-                          <div className="text-xs text-gray-500">{dest.country}</div>
-                        </div>
-                      </button>
-                    ))
-                  ) : searchData.where ? (
-                    <div className="px-4 py-3 text-gray-500 text-sm">
-                      Нет результатов
-                    </div>
-                  ) : (
-                    <div className="px-4 py-3 text-gray-500 text-sm">
-                      Начните вводить название города
-                    </div>
-                  )}
+                <div className="text-xs font-semibold text-gray-900">Куда</div>
+                <div className="text-sm text-gray-600 truncate">
+                  {searchData.where || 'Поиск направлений'}
                 </div>
-              </motion.div>
-            )}
-          </AnimatePresence>
+              </button>
+            </PopoverTrigger>
+            <PopoverContent className="w-[400px] p-4 bg-white rounded-2xl shadow-airbnb-lg" align="start">
+              <Input
+                placeholder="Введите город или страну"
+                value={searchData.where}
+                onChange={(e) => setSearchData({ ...searchData, where: e.target.value })}
+                className="mb-3 border-gray-300"
+                autoFocus
+              />
+              <div className="space-y-1 max-h-[300px] overflow-y-auto">
+                {filteredDestinations.length > 0 ? (
+                  filteredDestinations.map((dest: any) => (
+                    <button
+                      key={dest.id}
+                      onClick={() => {
+                        setSearchData({ ...searchData, where: dest.name })
+                        setExpandedField(null)
+                      }}
+                      className="w-full text-left px-4 py-3 hover:bg-gray-50 rounded-lg flex items-center gap-3 transition-colors"
+                    >
+                      <MapPin size={18} className="text-airbnb-rausch" />
+                      <div>
+                        <div className="text-gray-900 font-medium">{dest.name}</div>
+                        <div className="text-xs text-gray-500">{dest.country}</div>
+                      </div>
+                    </button>
+                  ))
+                ) : searchData.where ? (
+                  <div className="px-4 py-3 text-gray-500 text-sm">
+                    Нет результатов
+                  </div>
+                ) : (
+                  <div className="px-4 py-3 text-gray-500 text-sm">
+                    Начните вводить название города
+                  </div>
+                )}
+              </div>
+            </PopoverContent>
+          </Popover>
         </div>
 
         {/* Разделитель */}
@@ -259,82 +251,74 @@ export function SearchBar({ variant = 'hero', className }: SearchBarProps) {
 
         {/* Поле "Гости" */}
         <div className="flex-1">
-          <button
-            onClick={() => setExpandedField(expandedField === 'guests' ? null : 'guests')}
-            className={cn(
-              "w-full text-left px-4 py-3 rounded-full hover:bg-gray-100 transition-colors",
-              expandedField === 'guests' && "bg-white shadow-md"
-            )}
-          >
-            <div className="text-xs font-semibold text-gray-900">Гости</div>
-            <div className="text-sm text-gray-600">
-              {searchData.adults + searchData.children > 0 
-                ? `${searchData.adults + searchData.children} гост${searchData.adults + searchData.children === 1 ? 'ь' : searchData.adults + searchData.children < 5 ? 'я' : 'ей'}` 
-                : 'Кто едет?'}
-            </div>
-          </button>
-
-          {/* Dropdown с степпером */}
-          <AnimatePresence>
-            {expandedField === 'guests' && (
-              <motion.div
-                initial={{ opacity: 0, y: -10 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -10 }}
-                className="absolute top-full right-0 mt-2 bg-white rounded-2xl shadow-airbnb-lg p-6 z-50 min-w-[380px]"
+          <Popover open={expandedField === 'guests'} onOpenChange={(open) => setExpandedField(open ? 'guests' : null)}>
+            <PopoverTrigger asChild>
+              <button
+                className={cn(
+                  "w-full text-left px-4 py-3 rounded-full hover:bg-gray-100 transition-colors",
+                  expandedField === 'guests' && "bg-white shadow-md"
+                )}
               >
-                <div className="space-y-6">
-                  {/* Взрослые */}
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <div className="font-semibold text-gray-900">Взрослые</div>
-                      <div className="text-sm text-gray-600">От 13 лет</div>
-                    </div>
-                    <div className="flex items-center gap-3">
-                      <button
-                        onClick={() => setSearchData({ ...searchData, adults: Math.max(1, searchData.adults - 1) })}
-                        disabled={searchData.adults === 1}
-                        className="w-8 h-8 rounded-full border border-gray-300 flex items-center justify-center hover:border-gray-900 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
-                      >
-                        <Minus size={16} />
-                      </button>
-                      <span className="w-8 text-center font-medium">{searchData.adults}</span>
-                      <button
-                        onClick={() => setSearchData({ ...searchData, adults: searchData.adults + 1 })}
-                        className="w-8 h-8 rounded-full border border-gray-300 flex items-center justify-center hover:border-gray-900 transition-colors"
-                      >
-                        <Plus size={16} />
-                      </button>
-                    </div>
+                <div className="text-xs font-semibold text-gray-900">Гости</div>
+                <div className="text-sm text-gray-600">
+                  {searchData.adults + searchData.children > 0 
+                    ? `${searchData.adults + searchData.children} гост${searchData.adults + searchData.children === 1 ? 'ь' : searchData.adults + searchData.children < 5 ? 'я' : 'ей'}` 
+                    : 'Кто едет?'}
+                </div>
+              </button>
+            </PopoverTrigger>
+            <PopoverContent className="w-[380px] p-6 bg-white rounded-2xl shadow-airbnb-lg" align="end">
+              <div className="space-y-6">
+                {/* Взрослые */}
+                <div className="flex items-center justify-between">
+                  <div>
+                    <div className="font-semibold text-gray-900">Взрослые</div>
+                    <div className="text-sm text-gray-600">От 13 лет</div>
                   </div>
-
-                  {/* Дети */}
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <div className="font-semibold text-gray-900">Дети</div>
-                      <div className="text-sm text-gray-600">0-12 лет</div>
-                    </div>
-                    <div className="flex items-center gap-3">
-                      <button
-                        onClick={() => setSearchData({ ...searchData, children: Math.max(0, searchData.children - 1) })}
-                        disabled={searchData.children === 0}
-                        className="w-8 h-8 rounded-full border border-gray-300 flex items-center justify-center hover:border-gray-900 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
-                      >
-                        <Minus size={16} />
-                      </button>
-                      <span className="w-8 text-center font-medium">{searchData.children}</span>
-                      <button
-                        onClick={() => setSearchData({ ...searchData, children: searchData.children + 1 })}
-                        className="w-8 h-8 rounded-full border border-gray-300 flex items-center justify-center hover:border-gray-900 transition-colors"
-                      >
-                        <Plus size={16} />
-                      </button>
-                    </div>
+                  <div className="flex items-center gap-3">
+                    <button
+                      onClick={() => setSearchData({ ...searchData, adults: Math.max(1, searchData.adults - 1) })}
+                      disabled={searchData.adults === 1}
+                      className="w-8 h-8 rounded-full border border-gray-300 flex items-center justify-center hover:border-gray-900 disabled:opacity-30 disabled:cursor-not-allowed transition-colors text-gray-900"
+                    >
+                      <Minus size={16} />
+                    </button>
+                    <span className="w-8 text-center font-medium text-gray-900">{searchData.adults}</span>
+                    <button
+                      onClick={() => setSearchData({ ...searchData, adults: searchData.adults + 1 })}
+                      className="w-8 h-8 rounded-full border border-gray-300 flex items-center justify-center hover:border-gray-900 transition-colors text-gray-900"
+                    >
+                      <Plus size={16} />
+                    </button>
                   </div>
                 </div>
-              </motion.div>
-            )}
-          </AnimatePresence>
+
+                {/* Дети */}
+                <div className="flex items-center justify-between">
+                  <div>
+                    <div className="font-semibold text-gray-900">Дети</div>
+                    <div className="text-sm text-gray-600">0-12 лет</div>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <button
+                      onClick={() => setSearchData({ ...searchData, children: Math.max(0, searchData.children - 1) })}
+                      disabled={searchData.children === 0}
+                      className="w-8 h-8 rounded-full border border-gray-300 flex items-center justify-center hover:border-gray-900 disabled:opacity-30 disabled:cursor-not-allowed transition-colors text-gray-900"
+                    >
+                      <Minus size={16} />
+                    </button>
+                    <span className="w-8 text-center font-medium text-gray-900">{searchData.children}</span>
+                    <button
+                      onClick={() => setSearchData({ ...searchData, children: searchData.children + 1 })}
+                      className="w-8 h-8 rounded-full border border-gray-300 flex items-center justify-center hover:border-gray-900 transition-colors text-gray-900"
+                    >
+                      <Plus size={16} />
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </PopoverContent>
+          </Popover>
         </div>
 
         {/* Кнопка поиска - увеличенная, полупрозрачная */}

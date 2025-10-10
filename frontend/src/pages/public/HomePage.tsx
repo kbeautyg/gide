@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
-import { motion } from 'framer-motion'
+import { motion, AnimatePresence } from 'framer-motion'
 import { Star, Users, Shield, Clock, ChevronLeft, ChevronRight, ArrowRight } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { useQuery } from '@tanstack/react-query'
@@ -125,16 +125,24 @@ export default function HomePage() {
       <PublicHeader />
 
       {/* Sticky Search Bar */}
-      {showStickySearch && (
-        <div className="fixed top-0 left-0 right-0 z-50 bg-white border-b shadow-md">
-          <div className="container mx-auto px-4 py-3">
-            <SearchBar variant="sticky" />
-          </div>
-        </div>
-      )}
+      <AnimatePresence>
+        {showStickySearch && (
+          <motion.div 
+            initial={{ y: -100, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            exit={{ y: -100, opacity: 0 }}
+            transition={{ duration: 0.3, ease: 'easeOut' }}
+            className="fixed top-0 left-0 right-0 z-50 bg-white border-b shadow-md"
+          >
+            <div className="container mx-auto px-4 py-3">
+              <SearchBar variant="sticky" />
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* Hero Section - 3D объекты фон */}
-      <section className="relative text-white overflow-hidden h-screen flex items-center bg-gradient-to-br from-gray-900 via-gray-800 to-black">
+      <section className="relative text-white overflow-hidden h-[85vh] flex items-center bg-gradient-to-br from-gray-900 via-gray-800 to-black">
         {/* Анимированные blob градиенты */}
         <div className="absolute inset-0 overflow-hidden">
           <motion.div
@@ -190,7 +198,7 @@ export default function HomePage() {
           ].map((obj, i) => (
             <motion.div
               key={i}
-              initial={{ opacity: 0, scale: 0, rotate: -180 }}
+              initial={{ opacity: 0, scale: 0 }}
               animate={{ 
                 opacity: 0.7, 
                 scale: 1, 
