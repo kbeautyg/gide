@@ -1,17 +1,26 @@
 import { useState } from 'react'
-import { useQuery } from '@tanstack/react-query'
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
+import { useNavigate } from 'react-router-dom'
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
+import { Textarea } from '@/components/ui/textarea'
 import { CreateTourDialog } from '@/components/CreateTourDialog'
 import { MarkAsPaidDialog } from '@/components/MarkAsPaidDialog'
-import { MapPin, Clock, Star, Edit, Trash2, Link as LinkIcon, Copy, CheckCircle, ExternalLink } from 'lucide-react'
+import { MapPin, Clock, Star, Edit, Trash2, Link as LinkIcon, Copy, CheckCircle, ExternalLink, Calendar as CalendarIcon, ShoppingBag } from 'lucide-react'
 import { toursApi } from '@/lib/api'
 import { formatRUB } from '@/lib/utils'
 
 export default function MyToursPage() {
+  const queryClient = useQueryClient()
+  const navigate = useNavigate()
   const [copiedId, setCopiedId] = useState<number | null>(null)
   const [markPaidOpen, setMarkPaidOpen] = useState(false)
   const [selectedTour, setSelectedTour] = useState<any>(null)
+  const [editOpen, setEditOpen] = useState(false)
+  const [editData, setEditData] = useState<any>(null)
   
   const { data: toursData, isLoading } = useQuery({
     queryKey: ['tours'],
@@ -19,6 +28,32 @@ export default function MyToursPage() {
   })
 
   const tours = toursData?.data?.tours || []
+
+  // Mutation для удаления тура
+  const deleteMutation = useMutation({
+    mutationFn: (tourId: number) => toursApi.delete(tourId),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['tours'] })
+      alert('✅ Экскурсия удалена')
+    },
+    onError: (error: any) => {
+      alert(`❌ ${error.response?.data?.detail || 'Ошибка при удалении'}`)
+    }
+  })
+
+  // Mutation для обновления тура
+  const updateMutation = useMutation({
+    mutationFn: ({ id, data }: { id: number, data: any }) => toursApi.update(id, data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['tours'] })
+      setEditOpen(false)
+      setEditData(null)
+      alert('✅ Экскурсия обновлена')
+    },
+    onError: (error: any) => {
+      alert(`❌ ${error.response?.data?.detail || 'Ошибка при обновлении'}`)
+    }
+  })
 
   const copyTourLink = (tourId: number, shareCode: string | number) => {
     const link = `${window.location.origin}/t/${shareCode}`
@@ -30,6 +65,33 @@ export default function MyToursPage() {
   const handleMarkAsPaid = (tour: any) => {
     setSelectedTour(tour)
     setMarkPaidOpen(true)
+  }
+
+  const handleEdit = (tour: any) => {
+    setEditData({
+      id: tour.id,
+      title: tour.title,
+      description: tour.description,
+      price: tour.price,
+      duration: tour.duration,
+      location: tour.location,
+      category: tour.category,
+      photos: tour.photos || [],
+      start_date: tour.start_date || null,
+      end_date: tour.end_date || null,
+    })
+    setEditOpen(true)
+  }
+
+  const handleDelete = (tourId: number, title: string) => {
+    if (confirm(`Вы уверены, что хотите удалить экскурсию "${title}"?`)) {
+      deleteMutation.mutate(tourId)
+    }
+  }
+
+  const handleUpdate = () => {
+    if (!editData) return
+    updateMutation.mutate({ id: editData.id, data: editData })
   }
 
   return (
@@ -137,22 +199,60 @@ export default function MyToursPage() {
                 </div>
               </CardContent>
 
-              <CardFooter className="flex gap-2">
+              <CardFooter className="flex flex-col gap-2 pt-4">
+                {/* Навигационные кнопки */}
+                <div className="flex gap-2 w-full text-xs">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="flex-1"
+                    onClick={() => navigate('/dashboard/calendar')}
+                  >
+                    <CalendarIcon size={14} className="mr-1" />
+                    Календарь
+                  </Button>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="flex-1"
+                    onClick={() => navigate(`/dashboard/bookings?tour_id=${tour.id}`)}
+                  >
+                    <ShoppingBag size={14} className="mr-1" />
+                    Заказы
+                  </Button>
+                </div>
+                
+                {/* Основные кнопки */}
+                <div className="flex gap-2 w-full">
+                  <Button 
+                    variant="default" 
+                    size="sm" 
+                    className="flex-1 bg-green-600 hover:bg-green-700"
+                    onClick={() => handleMarkAsPaid(tour)}
+                  >
+                    <CheckCircle size={16} className="mr-1" />
+                    Оплачено
+                  </Button>
+                  <Button 
+                    variant="outline" 
+                    size="sm" 
+                    className="flex-1"
+                    onClick={() => handleEdit(tour)}
+                  >
+                    <Edit size={16} className="mr-1" />
+                    Редактировать
+                  </Button>
+                </div>
+                
+                {/* Кнопка удаления */}
                 <Button 
-                  variant="default" 
-                  size="sm" 
-                  className="flex-1 bg-green-600 hover:bg-green-700"
-                  onClick={() => handleMarkAsPaid(tour)}
+                  variant="destructive" 
+                  size="sm"
+                  className="w-full"
+                  onClick={() => handleDelete(tour.id, tour.title)}
                 >
-                  <CheckCircle size={16} className="mr-1" />
-                  Оплачено
-                </Button>
-                <Button variant="outline" size="sm" className="flex-1">
-                  <Edit size={16} className="mr-1" />
-                  Редактировать
-                </Button>
-                <Button variant="destructive" size="sm">
-                  <Trash2 size={16} />
+                  <Trash2 size={16} className="mr-1" />
+                  Удалить
                 </Button>
               </CardFooter>
             </Card>
@@ -168,6 +268,97 @@ export default function MyToursPage() {
           tour={selectedTour}
         />
       )}
+
+      {/* Edit Tour Dialog */}
+      <Dialog open={editOpen} onOpenChange={setEditOpen}>
+        <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle>Редактировать экскурсию</DialogTitle>
+          </DialogHeader>
+          
+          {editData && (
+            <div className="space-y-4">
+              <div>
+                <Label htmlFor="title">Название</Label>
+                <Input
+                  id="title"
+                  value={editData.title}
+                  onChange={(e) => setEditData({ ...editData, title: e.target.value })}
+                />
+              </div>
+
+              <div>
+                <Label htmlFor="description">Описание</Label>
+                <Textarea
+                  id="description"
+                  value={editData.description}
+                  onChange={(e) => setEditData({ ...editData, description: e.target.value })}
+                  rows={4}
+                />
+              </div>
+
+              <div className="grid md:grid-cols-2 gap-4">
+                <div>
+                  <Label htmlFor="price">Цена (₽)</Label>
+                  <Input
+                    id="price"
+                    type="number"
+                    value={editData.price}
+                    onChange={(e) => setEditData({ ...editData, price: parseFloat(e.target.value) })}
+                  />
+                </div>
+
+                <div>
+                  <Label htmlFor="duration">Длительность (часы)</Label>
+                  <Input
+                    id="duration"
+                    type="number"
+                    value={editData.duration}
+                    onChange={(e) => setEditData({ ...editData, duration: parseInt(e.target.value) })}
+                  />
+                </div>
+              </div>
+
+              <div className="grid md:grid-cols-2 gap-4">
+                <div>
+                  <Label htmlFor="location">Локация</Label>
+                  <Input
+                    id="location"
+                    value={editData.location}
+                    onChange={(e) => setEditData({ ...editData, location: e.target.value })}
+                  />
+                </div>
+
+                <div>
+                  <Label htmlFor="category">Категория</Label>
+                  <Input
+                    id="category"
+                    value={editData.category}
+                    onChange={(e) => setEditData({ ...editData, category: e.target.value })}
+                  />
+                </div>
+              </div>
+
+              <div className="flex gap-3 pt-4">
+                <Button
+                  variant="outline"
+                  onClick={() => setEditOpen(false)}
+                  className="flex-1"
+                >
+                  Отмена
+                </Button>
+                <Button
+                  onClick={handleUpdate}
+                  disabled={updateMutation.isPending}
+                  className="flex-1 bg-airbnb-rausch hover:bg-airbnb-rausch/90"
+                >
+                  {updateMutation.isPending ? 'Сохранение...' : 'Сохранить'}
+                </Button>
+              </div>
+            </div>
+          )}
+        </DialogContent>
+      </Dialog>
     </div>
   )
 }

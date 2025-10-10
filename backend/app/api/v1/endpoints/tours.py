@@ -300,6 +300,113 @@ async def create_tour(
     )
 
 
+@router.put("/{tour_id}", response_model=Tour)
+async def update_tour(
+    tour_id: int,
+    tour_data: TourCreate,
+    db: AsyncSession = Depends(get_db),
+    current_user: User = Depends(get_current_user)
+):
+    """Обновить экскурсию"""
+    # Получаем тур
+    tour = await TourService.get_tour_by_id(db, tour_id)
+    
+    if not tour:
+        raise HTTPException(status_code=404, detail="Tour not found")
+    
+    # Проверяем права
+    if tour.guide_id != current_user.id and current_user.role != UserRole.ADMIN:
+        raise HTTPException(status_code=403, detail="You can only edit your own tours")
+    
+    # Обновляем поля
+    updated_tour = await TourService.update_tour(
+        db=db,
+        tour_id=tour_id,
+        title=tour_data.title,
+        description=tour_data.description,
+        price=tour_data.price,
+        duration=tour_data.duration,
+        location=tour_data.location,
+        category=tour_data.category,
+        photos=tour_data.photos,
+        start_date=tour_data.start_date,
+        end_date=tour_data.end_date,
+    )
+    
+    if not updated_tour:
+        raise HTTPException(status_code=500, detail="Failed to update tour")
+    
+    return Tour(
+        id=updated_tour.id,
+        share_code=updated_tour.share_code,
+        title=updated_tour.title,
+        description=updated_tour.description,
+        price=updated_tour.price,
+        duration=updated_tour.duration,
+        location=updated_tour.location,
+        category=updated_tour.category,
+        photos=updated_tour.photos or [],
+        rating=updated_tour.rating,
+        reviews_count=updated_tour.reviews_count,
+        guide_name=updated_tour.guide.name if updated_tour.guide else "Гид",
+        guide_id=updated_tour.guide_id,
+        bookings_count=0,
+        total_revenue=0.0,
+        active=updated_tour.active,
+        created_at=updated_tour.created_at,
+        is_public=updated_tour.is_public,
+    )
+
+
+@router.put("/{tour_id}/dates")
+async def update_tour_dates(
+    tour_id: int,
+    dates: dict,
+    db: AsyncSession = Depends(get_db),
+    current_user: User = Depends(get_current_user)
+):
+    """Обновить даты экскурсии"""
+    tour = await TourService.get_tour_by_id(db, tour_id)
+    
+    if not tour:
+        raise HTTPException(status_code=404, detail="Tour not found")
+    
+    if tour.guide_id != current_user.id and current_user.role != UserRole.ADMIN:
+        raise HTTPException(status_code=403, detail="You can only edit your own tours")
+    
+    updated_tour = await TourService.update_tour(
+        db=db,
+        tour_id=tour_id,
+        start_date=dates.get('start_date'),
+        end_date=dates.get('end_date'),
+    )
+    
+    return {"success": True, "start_date": str(updated_tour.start_date), "end_date": str(updated_tour.end_date)}
+
+
+@router.delete("/{tour_id}")
+async def delete_tour(
+    tour_id: int,
+    db: AsyncSession = Depends(get_db),
+    current_user: User = Depends(get_current_user)
+):
+    """Удалить экскурсию (мягкое удаление)"""
+    tour = await TourService.get_tour_by_id(db, tour_id)
+    
+    if not tour:
+        raise HTTPException(status_code=404, detail="Tour not found")
+    
+    if tour.guide_id != current_user.id and current_user.role != UserRole.ADMIN:
+        raise HTTPException(status_code=403, detail="You can only delete your own tours")
+    
+    success = await TourService.delete_tour(db, tour_id)
+    
+    if not success:
+        raise HTTPException(status_code=500, detail="Failed to delete tour")
+    
+    return {"success": True, "message": "Tour deleted successfully"}
+
+
 @router.get("/categories")
 async def get_categories(db: AsyncSession = Depends(get_db)):
     """Получить список категорий с количеством туров"""

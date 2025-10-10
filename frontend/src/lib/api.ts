@@ -125,6 +125,25 @@ export const toursApi = {
     start_date?: string | null
     end_date?: string | null
   }) => api.post<Tour>('/tours/', tour),
+  
+  update: (id: number, tour: {
+    title: string
+    description: string
+    price: number
+    duration: number
+    location: string
+    category: string
+    photos?: string[]
+    start_date?: string | null
+    end_date?: string | null
+  }) => api.put<Tour>(`/tours/${id}`, tour),
+  
+  updateDates: (id: number, dates: {
+    start_date: string
+    end_date: string
+  }) => api.put(`/tours/${id}/dates`, dates),
+  
+  delete: (id: number) => api.delete(`/tours/${id}`),
 }
 
 // Бронирования

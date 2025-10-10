@@ -198,8 +198,9 @@ async def get_my_schedule(
     db: AsyncSession = Depends(get_db),
     current_user: User = Depends(get_current_user)
 ):
-    """Получить расписание гида с заявками"""
+    """Получить расписание гида с заявками и турами"""
     from app.services.schedule_service import ScheduleService
+    from app.models.tour import Tour
     from datetime import datetime
     
     start = datetime.strptime(start_date, "%Y-%m-%d").date()
@@ -207,6 +208,37 @@ async def get_my_schedule(
     
     schedules = await ScheduleService.get_schedule_range(db, current_user.id, start, end)
     requests = await ScheduleService.get_requests_for_date_range(db, current_user.id, start, end)
+    
+    # Загружаем туры гида в заданном диапазоне дат
+    tours_result = await db.execute(
+        select(Tour).where(
+            Tour.guide_id == current_user.id,
+            Tour.active == True,
+            or_(
+                and_(Tour.start_date >= start, Tour.start_date <= end),
+                and_(Tour.end_date >= start, Tour.end_date <= end),
+                and_(Tour.start_date <= start, Tour.end_date >= end)
+            )
+        )
+    )
+    tours = tours_result.scalars().all()
+    
+    # Преобразуем туры в словари
+    tours_dicts = []
+    for tour in tours:
+        tours_dicts.append({
+            "id": tour.id,
+            "title": tour.title,
+            "description": tour.description,
+            "start_date": tour.start_date.isoformat() if tour.start_date else None,
+            "end_date": tour.end_date.isoformat() if tour.end_date else None,
+            "duration": tour.duration,
+            "price": tour.price,
+            "location": tour.location,
+            "category": tour.category,
+            "is_custom": tour.is_custom,
+            "share_code": tour.share_code,
+        })
     
     return {
         "schedules": [
@@ -216,7 +248,8 @@ async def get_my_schedule(
                 "available_hours": s.available_hours
             } for s in schedules
         ],
-        "requests": requests
+        "requests": requests,
+        "tours": tours_dicts
     }
 
 
