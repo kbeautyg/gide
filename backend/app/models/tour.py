@@ -19,6 +19,10 @@ class Tour(Base):
     # Уникальный код для шаринга (короткая ссылка)
     share_code = Column(String(8), unique=True, index=True, nullable=True)
     
+    # Кастомная экскурсия (создана из заявки)
+    is_custom = Column(Boolean, default=False)
+    request_id = Column(Integer, ForeignKey("requests.id"), nullable=True)
+    
     # Основная информация
     title = Column(String, nullable=False)
     description = Column(Text, nullable=False)

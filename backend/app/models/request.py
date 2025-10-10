@@ -27,6 +27,9 @@ class Request(Base):
     # Длительность экскурсии (1-8 часов)
     duration_hours = Column(Integer, nullable=False, default=2)
     
+    # Telegram для связи
+    telegram_username = Column(String, nullable=True)
+    
     # Статус заявки
     status = Column(String, nullable=True, default='pending')  # pending, assigned, in_progress, completed, cancelled
     
@@ -35,6 +38,10 @@ class Request(Base):
     
     # Дата назначения гидом
     assigned_date = Column(Date, nullable=True, index=True)
+    
+    # Связь с бронированием и созданным туром
+    booking_id = Column(Integer, ForeignKey("bookings.id"), nullable=True)
+    generated_tour_id = Column(Integer, ForeignKey("tours.id"), nullable=True)
     
     # Кому назначена заявка (устаревшее, используется guide_id)
     assigned_to = Column(Integer, ForeignKey("users.id"), nullable=True)

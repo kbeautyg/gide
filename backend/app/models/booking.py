@@ -46,6 +46,10 @@ class Booking(Base):
     client_name = Column(String, nullable=False)
     client_phone = Column(String, nullable=False)
     client_email = Column(String, nullable=True)
+    telegram_username = Column(String, nullable=True)
+    
+    # Связь с заявкой
+    request_id = Column(Integer, ForeignKey("requests.id"), nullable=True)
     
     # Временные метки
     created_at = Column(DateTime, default=datetime.utcnow)
