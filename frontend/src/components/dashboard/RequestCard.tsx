@@ -1,7 +1,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
-import { Users, DollarSign, Calendar, MapPin, Clock } from 'lucide-react'
+import { Users, DollarSign, Calendar, MapPin, Clock, MessageCircle, CheckCircle } from 'lucide-react'
 import { formatRUB } from '@/lib/utils'
 
 interface RequestCardProps {
@@ -14,11 +14,14 @@ interface RequestCardProps {
     budget?: number
     location?: string
     preferred_date?: string
+    telegram_username?: string
+    status?: string
   }
-  onTake: () => void
+  onTake?: () => void
+  onAccept?: () => void
 }
 
-export function RequestCard({ request, onTake }: RequestCardProps) {
+export function RequestCard({ request, onTake, onAccept }: RequestCardProps) {
   // Определяем тип по длительности
   const getDurationBadge = () => {
     if (request.duration_hours <= 2) {
@@ -83,14 +86,33 @@ export function RequestCard({ request, onTake }: RequestCardProps) {
               <span>до {formatRUB(request.budget)}</span>
             </div>
           )}
+          
+          {request.telegram_username && (
+            <div className="flex items-center gap-1 text-gray-600">
+              <MessageCircle size={14} />
+              <span>{request.telegram_username}</span>
+            </div>
+          )}
         </div>
         
-        <Button 
-          onClick={onTake}
-          className="w-full bg-airbnb-rausch hover:bg-airbnb-rausch/90"
-        >
-          Взять заявку
-        </Button>
+        {request.status === 'pending' && onTake && (
+          <Button 
+            onClick={onTake}
+            className="w-full bg-airbnb-rausch hover:bg-airbnb-rausch/90"
+          >
+            Взять заявку
+          </Button>
+        )}
+        
+        {request.status === 'pending' && onAccept && (
+          <Button 
+            onClick={onAccept}
+            className="w-full bg-green-600 hover:bg-green-700 flex items-center gap-2"
+          >
+            <CheckCircle size={16} />
+            Принять и создать тур
+          </Button>
+        )}
       </CardContent>
     </Card>
   )

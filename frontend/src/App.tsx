@@ -38,6 +38,7 @@ import MyToursPage from './pages/dashboard/MyToursPage'
 import CalendarPage from './pages/dashboard/CalendarPage'
 import BookingsPage from './pages/dashboard/BookingsPage'
 import SettingsPage from './pages/dashboard/SettingsPage'
+import CreateTourFromRequest from './pages/dashboard/CreateTourFromRequest'
 import RequestsPage from './pages/dashboard/RequestsPage'
 
 function App() {
@@ -90,6 +91,7 @@ function App() {
         <Route path="admin" element={<AdminDashboard />} />
         <Route path="my-tours" element={<MyToursPage />} />
         <Route path="requests" element={<RequestsPage />} />
+        <Route path="tours/create-from-request/:requestId" element={<CreateTourFromRequest />} />
         <Route path="calendar" element={<CalendarPage />} />
         <Route path="bookings" element={<BookingsPage />} />
         <Route path="settings" element={<SettingsPage />} />

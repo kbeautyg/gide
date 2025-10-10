@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
+import { useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { Filter, Inbox } from 'lucide-react'
 import { Button } from '@/components/ui/button'
@@ -14,6 +15,7 @@ type FilterType = 'all' | 'short' | 'long'
 
 export default function RequestsPage() {
   const queryClient = useQueryClient()
+  const navigate = useNavigate()
   const [filter, setFilter] = useState<FilterType>('all')
   const [showTakeModal, setShowTakeModal] = useState(false)
   const [selectedRequest, setSelectedRequest] = useState<any>(null)
@@ -57,6 +59,19 @@ export default function RequestsPage() {
     },
     onError: (error: any) => {
       alert(`❌ ${error.response?.data?.detail || 'Ошибка при взятии заявки'}`)
+    }
+  })
+
+  // Принять заявку и перейти к созданию тура
+  const acceptMutation = useMutation({
+    mutationFn: (requestId: number) => 
+      api.post(`/requests/${requestId}/accept`),
+    onSuccess: (_, requestId) => {
+      queryClient.invalidateQueries({ queryKey: ['requests', 'available'] })
+      navigate(`/dashboard/tours/create-from-request/${requestId}`)
+    },
+    onError: (error: any) => {
+      alert(`❌ ${error.response?.data?.detail || 'Ошибка при принятии заявки'}`)
     }
   })
 
@@ -188,7 +203,7 @@ export default function RequestsPage() {
             >
               <RequestCard 
                 request={request}
-                onTake={() => handleTakeRequest(request)}
+                onAccept={() => acceptMutation.mutate(request.id)}
               />
             </motion.div>
           ))}
