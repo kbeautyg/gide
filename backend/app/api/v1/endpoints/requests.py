@@ -243,9 +243,13 @@ async def get_available_requests(
     ).order_by(Request.created_at.desc())
     
     result = await db.execute(query)
-    requests = result.scalars().all()
+    requests_list = result.scalars().all()
     
-    return {"requests": requests, "total": len(requests)}
+    # Преобразуем в схемы для правильной сериализации
+    return {
+        "requests": [RequestSchema.model_validate(req) for req in requests_list],
+        "total": len(requests_list)
+    }
 
 
 @router.post("/{request_id}/take")
