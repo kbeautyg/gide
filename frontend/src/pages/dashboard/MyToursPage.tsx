@@ -131,12 +131,22 @@ export default function MyToursPage() {
               </div>
 
               <CardHeader>
-                <div className="flex items-center gap-2 text-sm text-gray-600 mb-2">
+                <div className="flex items-center gap-2 text-sm text-gray-600 mb-2 flex-wrap">
                   <MapPin size={16} />
                   <span>{tour.location}</span>
                   <Clock size={16} className="ml-auto" />
                   <span>{tour.duration} ч</span>
                 </div>
+                {(tour.start_date || tour.end_date) && (
+                  <div className="flex items-center gap-1 text-xs text-blue-600 mb-2">
+                    <CalendarIcon size={14} />
+                    <span>
+                      {tour.start_date && new Date(tour.start_date).toLocaleDateString('ru')}
+                      {tour.start_date && tour.end_date && ' — '}
+                      {tour.end_date && tour.start_date !== tour.end_date && new Date(tour.end_date).toLocaleDateString('ru')}
+                    </span>
+                  </div>
+                )}
                 <CardTitle className="text-lg">{tour.title}</CardTitle>
               </CardHeader>
 
