@@ -185,7 +185,7 @@ export default function CreateTourFromRequest() {
 
                 <div className="mt-4 flex gap-3">
                   <Button
-                    onClick={() => navigate('/dashboard/tours')}
+                    onClick={() => navigate('/dashboard/my-tours')}
                     className="bg-airbnb-rausch hover:bg-airbnb-rausch/90"
                   >
                     Перейти к моим турам
