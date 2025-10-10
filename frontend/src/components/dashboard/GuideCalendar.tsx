@@ -136,6 +136,7 @@ export function GuideCalendar({
           const schedule = getScheduleForDate(day)
           const bookedHours = schedule?.booked_hours || 0
           const requestsOnDay = getRequestsForDate(day)
+          const toursOnDay = getToursForDate(day)
           const disabled = isDateDisabled(day)
           const isSelected = selectedDate && isSameDay(day, selectedDate)
           const isCurrentMonth = isSameMonth(day, currentMonth)
@@ -147,6 +148,7 @@ export function GuideCalendar({
               bookedHours={bookedHours}
               availableHours={schedule?.available_hours ?? (8 - bookedHours)}
               requests={requestsOnDay}
+              tours={toursOnDay}
               disabled={disabled || false}
               isSelected={isSelected || false}
               isCurrentMonth={isCurrentMonth}
@@ -154,8 +156,8 @@ export function GuideCalendar({
               onClick={() => {
                 if (mode === 'select' && !disabled) {
                   onDateSelect?.(day)
-                } else if (requestsOnDay.length > 1 && enableDragDrop) {
-                  // Разворачиваем список если несколько заявок
+                } else if ((requestsOnDay.length + toursOnDay.length) > 1 && enableDragDrop) {
+                  // Разворачиваем список если несколько элементов
                   setExpandedDate(expandedDate && isSameDay(expandedDate, day) ? null : day)
                 }
               }}
@@ -200,6 +202,7 @@ interface DayCellProps {
   bookedHours: number
   availableHours: number
   requests: any[]
+  tours?: any[]
   disabled?: boolean
   isSelected?: boolean
   isCurrentMonth?: boolean
@@ -266,6 +269,7 @@ function DayCell({
   bookedHours, 
   availableHours,
   requests, 
+  tours = [],
   disabled, 
   isSelected, 
   isCurrentMonth,
@@ -398,6 +402,28 @@ function DayCell({
                   <div className="text-xs text-gray-500 text-center">+{requests.length - 2}</div>
                 )}
               </>
+            )}
+          </motion.div>
+        </AnimatePresence>
+      )}
+      
+      {/* Список туров */}
+      {isCurrentMonth && tours.length > 0 && !showHours && (
+        <AnimatePresence>
+          <motion.div 
+            className="space-y-1 mt-1"
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: 'auto' }}
+            exit={{ opacity: 0, height: 0 }}
+          >
+            {tours.slice(0, 2).map(tour => (
+              <div key={tour.id} className="bg-blue-50 border border-blue-200 rounded px-2 py-1 text-xs shadow-sm group/tour relative">
+                <div className="font-semibold line-clamp-1 text-blue-900">{tour.title}</div>
+                <div className="text-blue-600 text-[10px]">Тур • {tour.duration}ч</div>
+              </div>
+            ))}
+            {tours.length > 2 && (
+              <div className="text-xs text-blue-500 text-center">+{tours.length - 2} туров</div>
             )}
           </motion.div>
         </AnimatePresence>
