@@ -2,7 +2,8 @@
 API эндпоинты для направлений и достопримечательностей
 """
 from fastapi import APIRouter, Depends, HTTPException
-from sqlalchemy.orm import Session
+from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy import select
 from typing import List
 
 from app.core.deps import get_db
@@ -19,28 +20,34 @@ router = APIRouter()
 
 
 @router.get("/", response_model=List[DestinationSchema])
-def get_destinations(
+async def get_destinations(
     skip: int = 0,
     limit: int = 100,
-    db: Session = Depends(get_db)
+    db: AsyncSession = Depends(get_db)
 ):
     """Получить список всех направлений"""
-    destinations = db.query(Destination).offset(skip).limit(limit).all()
+    stmt = select(Destination).offset(skip).limit(limit)
+    result = await db.execute(stmt)
+    destinations = result.scalars().all()
     return destinations
 
 
 @router.get("/{slug}", response_model=DestinationSchema)
-def get_destination(slug: str, db: Session = Depends(get_db)):
+async def get_destination(slug: str, db: AsyncSession = Depends(get_db)):
     """Получить направление по slug"""
-    destination = db.query(Destination).filter(Destination.slug == slug).first()
+    stmt = select(Destination).where(Destination.slug == slug)
+    result = await db.execute(stmt)
+    destination = result.scalar_one_or_none()
     if not destination:
         raise HTTPException(status_code=404, detail="Направление не найдено")
     return destination
 
 
 @router.get("/{destination_id}/landmarks", response_model=List[LandmarkSchema])
-def get_landmarks(destination_id: int, db: Session = Depends(get_db)):
+async def get_landmarks(destination_id: int, db: AsyncSession = Depends(get_db)):
     """Получить достопримечательности направления"""
-    landmarks = db.query(Landmark).filter(Landmark.destination_id == destination_id).all()
+    stmt = select(Landmark).where(Landmark.destination_id == destination_id)
+    result = await db.execute(stmt)
+    landmarks = result.scalars().all()
     return landmarks
 
