@@ -1,290 +1,432 @@
-<!-- 4be23b34-7ca4-458b-bae0-733937e402ed e01c001d-edae-44ee-8854-3eba6f9d2da0 -->
-# План исправлений критических проблем
+<!-- 4be23b34-7ca4-458b-bae0-733937e402ed 2c2830e4-6b37-4285-a104-87243b0b5305 -->
+# Mobile Search & Booking System Redesign
 
-## 1. Календарь - увеличить область drag (5 мин)
+## 1. Мобильная версия поиска (Airbnb-style)
 
-**Проблема:** Маленькая область для перетаскивания
-
-**Решение:** Увеличить draggable area на весь блок даты
+**Задача:** Создать модальное окно на весь экран для мобильных устройств
 
 **Файлы:**
 
-- `frontend/src/components/dashboard/GuideCalendar.tsx`
+- `frontend/src/components/SearchBar.tsx` - добавить мобильную версию
+- Новый: `frontend/src/components/MobileSearchModal.tsx`
 
-**Изменения:**
-
-- Изменить `useDraggable` чтобы обернуть весь блок карточки, а не только иконку
-- Добавить `cursor-grab` на весь день календаря при hover
-
-## 2. Поиск - полное исправление (30 мин)
-
-**Проблемы:**
-
-- Поиск в hero не работает (ломается при вводе)
-- Tabs "Экскурсии/Впечатления" не фильтруют
-- Autocomplete не функционирует
-
-**Решение:**
-
-- Исправить SearchBar state management
-- Добавить реальную фильтрацию по типу (tours vs experiences)
-- Починить автодополнение городов
-- Сделать одинаковый размер для hero и sticky вариантов
-
-**Файлы:**
-
-- `frontend/src/components/SearchBar.tsx` - полная переработка
-
-**Изменения:**
-
-```typescript
-// Добавить query параметр type
-const [tourType, setTourType] = useState<'tours' | 'experiences'>('tours')
-
-// При клике на tab:
-setTourType('experiences') 
-navigate(`/tours?type=experiences`)
-
-// Backend filter:
-backend/app/services/tour_service.py - фильтр по categories
-```
-
-## 3. Главная страница - полный редизайн (90 мин)
-
-**Требования:**
-
-- Убрать кнопку "Заказать индивидуальную экскурсию"
-- Переместить поиск под header (sticky)
-- Текст справа ("Путешествуйте как местный житель...")
-- Динамический фон вместо фото
-- Слева 3D объекты (Еда, статуя, карта) с hover интерактивностью
-- 3D объекты меняются при обновлении страницы
-
-**Файлы:**
-
-- `frontend/src/pages/public/HomePage.tsx` - полная переработка hero
-- Новый: `frontend/src/components/Hero3D.tsx`
-
-**Технологии:**
-
-- CSS 3D transforms для объектов
-- `@react-three/fiber` (если нужно) или чистый CSS
-- Random selection объектов из массива
-- Animated gradient background
-
-**Структура:**
+**Реализация:**
 
 ```tsx
-<Hero>
-  <SearchBar sticky под header />
-  <Container flex>
-    <Left>
-      <3D Objects - rotate, hover, scale />
-    </Left>
-    <Right>
-      <TypewriterText />
-      <Description />
-    </Right>
-  </Container>
-  <AnimatedGradientBG />
-</Hero>
+// Определить мобильный режим
+const isMobile = useMediaQuery('(max-width: 768px)')
+
+// При клике на поиск в мобильной - открыть модал
+<MobileSearchModal>
+  <Tabs: Жильё / Впечатления / Услуги />
+  <Field: Куда - input с autocomplete />
+  <Field: Когда - календарь />
+  <Field: Кто - счётчик гостей />
+  <Button: Искать (fixed bottom) />
+</MobileSearchModal>
 ```
 
-## 4. Убрать плохие блоки под header (10 мин)
+## 2. Sticky Search на главной (как в /tours)
+
+**Проблема:** На главной появляется новый SearchBar, а не трансформируется существующий
+
+**Решение:** Убрать дублирующий sticky, использовать тот же SearchBar из hero
 
 **Файлы:**
 
-- `frontend/src/pages/public/JournalPage.tsx` - убрать gradient hero
-- `frontend/src/pages/public/AboutPage.tsx` - убрать малиновый блок
+- `frontend/src/pages/public/HomePage.tsx`
 
-## 5. Переработать "О нас" (60 мин)
+**Изменения:**
 
-**Требования:**
+```tsx
+// Убрать отдельный sticky SearchBar (строки 128-142)
+// Обернуть SearchBar в hero в motion.div с layoutId
+<motion.div layoutId="search-bar" className="...">
+  <SearchBar variant={showStickySearch ? 'sticky' : 'hero'} />
+</motion.div>
 
-- Полная переработка дизайна
-- Анимации, креатив, "не как все"
-- Добавить жизни и динамики
+// При скролле - переместить блок наверх через CSS position sticky
+```
 
-**Идеи:**
+## 3. Система бронирования через заявки
 
-- Timeline с этапами развития компании (анимированная)
-- Animated counter для статистики
-- 3D tilt карточки команды
-- Parallax эффекты при скролле
-- Видео-секция с отзывами
-- Interactive map с офисами/направлениями
+**Архитектура:**
+
+- Клиент бронирует тур → создаётся Booking
+- Booking попадает в "Заявки" гида как Request
+- Гид принимает заявку → создаёт Tour на её основе (1 заявка = 1 тур)
+- Tour публикуется с уникальной ссылкой только для этого клиента
+
+**Backend изменения:**
+
+### 3.1. Модели
 
 **Файлы:**
 
-- `frontend/src/pages/public/AboutPage.tsx` - полная переработка
+- `backend/app/models/booking.py` - добавить поле `request_id`
+- `backend/app/models/request.py` - добавить `booking_id`, `generated_tour_id`
+- `backend/app/models/tour.py` - добавить `is_custom`, `request_id`, `share_code`
+```python
+# booking.py
+request_id = Column(Integer, ForeignKey("requests.id"), nullable=True)
+telegram_username = Column(String, nullable=True)
 
-## 6. Переработать "Стать гидом" (45 мин)
+# request.py
+booking_id = Column(Integer, ForeignKey("bookings.id"), nullable=True)
+generated_tour_id = Column(Integer, ForeignKey("tours.id"), nullable=True)
+telegram_username = Column(String, nullable=True)
 
-**Требования:**
+# tour.py
+is_custom = Column(Boolean, default=False)  # Создан для заявки
+request_id = Column(Integer, ForeignKey("requests.id"), nullable=True)
+share_code = Column(String, unique=True, index=True)  # Уникальная ссылка
+```
 
-- Обновить только дизайн
-- Сохранить mockup личного кабинета
-- Добавить живости и анимаций
+
+### 3.2. API Endpoints
+
+**Файлы:**
+
+- `backend/app/api/v1/endpoints/bookings.py` - расширить
+- `backend/app/api/v1/endpoints/requests.py` - добавить методы
+- Новый: `backend/app/api/v1/endpoints/custom_tours.py`
+
+**Новые эндпоинты:**
+
+```python
+# bookings.py
+POST /bookings/ - создать бронирование
+  → автоматически создаёт Request для гида
+  → отправить в Telegram гиду
+
+# requests.py
+GET /requests/my - заявки текущего гида
+POST /requests/{id}/accept - принять заявку
+  → открыть форму создания тура
+  
+# custom_tours.py
+POST /custom-tours/from-request/{request_id}
+  → создать Tour с is_custom=True
+  → заполнить данными из Request
+  → сгенерировать share_code
+  → вернуть ссылку
+```
+
+### 3.3. Логика создания тура из заявки
+
+**Файл:** `backend/app/services/tour_service.py`
+
+```python
+async def create_tour_from_request(request_id: int, guide_id: int):
+    request = await get_request(request_id)
+    
+    # Авто-заполнение из заявки
+    tour = Tour(
+        title=request.title,
+        description=request.description,
+        location=request.location,
+        duration=request.duration_hours,
+        price=request.budget or 0,
+        guide_id=guide_id,
+        is_custom=True,
+        request_id=request_id,
+        share_code=generate_unique_code()
+    )
+    
+    # Предупреждение: "Не рекомендуется менять данные"
+    return tour
+```
+
+**Frontend изменения:**
+
+### 3.4. Карточка тура - кнопка "Забронировать"
+
+**Файл:** `frontend/src/components/TourCard.tsx`
+
+```tsx
+// Добавить telegram в форму бронирования
+<Input 
+  name="telegram"
+  placeholder="@username (для связи с гидом)"
+/>
+
+// При submit
+await bookingsApi.create({
+  tour_id,
+  date,
+  participants_count,
+  telegram_username,
+  ...
+})
+```
+
+### 3.5. Гид - раздел "Заявки"
+
+**Файл:** `frontend/src/pages/dashboard/RequestsPage.tsx`
+
+```tsx
+<RequestsList>
+  {requests.map(req => (
+    <RequestCard>
+      <Info: title, description, date, guests, budget, telegram />
+      <Button onClick={acceptRequest}>
+        Принять заявку
+      </Button>
+    </RequestCard>
+  ))}
+</RequestsList>
+
+// При принятии
+const handleAccept = async (requestId) => {
+  await requestsApi.accept(requestId)
+  navigate(`/dashboard/tours/create?requestId=${requestId}`)
+}
+```
+
+### 3.6. Создание тура из заявки
+
+**Файл:** `frontend/src/pages/dashboard/CreateTourFromRequest.tsx`
+
+```tsx
+// Получить данные заявки
+const { data: request } = useQuery(['request', requestId])
+
+// Форма с предзаполненными полями
+<Form initialValues={request}>
+  <Alert type="warning">
+    Данные заполнены автоматически из заявки.
+    Не рекомендуется менять цену, дату и описание.
+  </Alert>
+  
+  <Input name="title" disabled />
+  <Textarea name="description" disabled />
+  <Input name="location" disabled />
+  <DatePicker name="date" disabled />
+  <Input name="price" disabled />
+  
+  <Button type="submit">Создать тур</Button>
+</Form>
+
+// При создании
+const tour = await toursApi.createFromRequest(requestId)
+// Скопировать share_code ссылку
+const link = `${window.location.origin}/tours/${tour.share_code}`
+```
+
+### 3.7. Календарь - отображение заявок
+
+**Файл:** `frontend/src/components/dashboard/GuideCalendar.tsx`
+
+```tsx
+// При клике на заявку в календаре
+<RequestModal request={selectedRequest}>
+  <Field: Название />
+  <Field: Описание />
+  <Field: Дата />
+  <Field: Гости />
+  <Field: Бюджет />
+  <Field: Telegram: @username />
+  <Button onClick={openTelegram}>
+    Написать в Telegram
+  </Button>
+</RequestModal>
+```
+
+## 4. UI улучшения
+
+### 4.1. Календарь в TourDetailPage
+
+**Файл:** `frontend/src/pages/public/TourDetailPage.tsx`
 
 **Улучшения:**
 
-- Steps визуализация (animated progress)
-- Before/After сравнение
-- Animated testimonials carousel
-- Benefits cards с hover эффектами
-- FAQ accordion
-- Sticky CTA кнопка
+- Увеличить размер календаря
+- Добавить hover эффекты на доступные даты
+- Выделить выбранную дату цветом
+- Добавить поле "Telegram" в форму бронирования
+```tsx
+<DayPicker
+  className="text-lg"  // Увеличить шрифт
+  modifiers={{
+    available: availableDates,
+    booked: bookedDates
+  }}
+  modifiersStyles={{
+    available: { 
+      backgroundColor: '#FFE5EC',
+      cursor: 'pointer',
+      fontWeight: 'bold'
+    }
+  }}
+/>
 
-**Файлы:**
-
-- `frontend/src/pages/public/BecomeGuidePage.tsx` - обновить дизайн
-
-## 7. Исправить loading artifacts (20 мин)
-
-**Проблема:** Неприглядная анимация при загрузке (skeleton loaders двигаются)
-
-**Решение:**
-
-- Улучшить TourCardSkeleton без движения
-- Добавить fade-in transition вместо skeleton
-- Использовать `AnimatePresence` для smooth transitions
-
-**Файлы:**
-
-- `frontend/src/components/TourCardSkeleton.tsx`
-- Все страницы с loading states
-
-## 8. Обновить логотип (15 мин)
-
-**Требования:**
-
-- Использовать дизайн из фото (диагональная линия через текст)
-- Если возможно кодом - сделать CSS
-- Если нет - использовать картинку из frontend
-
-**Файлы:**
-
-- `frontend/src/components/Logo.tsx`
-- Проверить наличие изображения в frontend
-
-**CSS вариант:**
-
-```css
-position: relative
-::before - diagonal line (transform: rotate)
+<Input
+  label="Telegram для связи"
+  placeholder="@username"
+  name="telegram"
+/>
 ```
 
-## 9. Починить "Вам также может понравиться" (20 мин)
 
-**Проблема:** Секция не показывает похожие туры
+### 4.2. Цвет календаря - малиновый
+
+**Файл:** `frontend/src/index.css`
+
+```css
+/* Изменить цвет react-day-picker */
+.rdp-day_selected {
+  background-color: #FF385C !important;
+}
+
+.rdp-day_range_middle {
+  background-color: #FFE5EC !important;
+}
+```
+
+### 4.3. Анимированный текст - фиксированная высота
+
+**Файл:** `frontend/src/components/TypewriterHero.tsx`
+
+**Проблема:** Текст стирается → блоки двигаются
 
 **Решение:**
 
-- Проверить TourDetailPage загрузку related tours
-- Добавить API endpoint `/tours/{id}/related`
-- Backend логика: same category OR same location
-- Limit 4 tours
+```tsx
+<div className="h-[120px] flex items-center">
+  {/* Фиксированная высота для текста */}
+  <TypeAnimation ... />
+</div>
+```
 
-**Файлы:**
+## 5. Фильтры на странице туров
 
-- `frontend/src/pages/public/TourDetailPage.tsx`
-- `backend/app/api/v1/endpoints/tours.py`
-- `backend/app/services/tour_service.py`
+### 5.1. Убрать чипы категорий
 
-## 10. Алгоритмы для релиза (30 мин)
+**Файл:** `frontend/src/pages/public/ToursPage.tsx`
 
-**Требования:**
+Удалить:
 
-- Popularity algorithm (bookings * 2 + views * 0.1 + rating * 10)
-- Trending algorithm (last 7 days bookings)
-- Recommendation algorithm (category + location match)
-- Related tours logic
+- Категории (Культура, Природа...)
+- Длительность (1-3 часа...)
+- Цена (До 5000₽...)
+- Рейтинг (4.5+ звёзд...)
 
-**Файлы:**
+### 5.2. Сделать рабочими списки
 
-- `backend/app/models/tour.py` - добавить computed properties
-- `backend/app/services/tour_service.py` - методы для алгоритмов
+**Оставить только:**
 
----
+```tsx
+<Select name="dateRange">
+  <option>Любые даты</option>
+  <option>Сегодня</option>
+  <option>Завтра</option>
+  <option>Эти выходные</option>
+  <option>На этой неделе</option>
+</Select>
 
-## Порядок выполнения:
+<Select name="duration">
+  <option>Любая длительность</option>
+  <option>До 2 часов</option>
+  <option>2-4 часа</option>
+  <option>4-8 часов</option>
+  <option>Полный день</option>
+</Select>
 
-1. Календарь drag area (быстро)
-2. Логотип (быстро)
-3. Поиск - полное исправление (критично)
-4. Убрать плохие блоки (быстро)
-5. Loading artifacts (быстро)
-6. "Вам также может понравиться" (важно)
-7. Алгоритмы (важно)
-8. Главная страница 3D редизайн (долго, креативно)
-9. "О нас" переработка (долго)
-10. "Стать гидом" обновление (средне)
+<Select name="price">
+  <option>Любая цена</option>
+  <option>До 3000₽</option>
+  <option>3000-7000₽</option>
+  <option>7000-15000₽</option>
+  <option>15000+₽</option>
+</Select>
+```
 
-**Общее время:** ~5-6 часов
+## 6. Заполнение карточек данными
 
-**Критичность:**
+**Файл:** `backend/seed_data.py`
 
-- Поиск - HIGHEST (ломается)
-- 3D Hero - HIGH (wow-эффект)
-- Страницы О нас/Стать гидом - MEDIUM
-- Остальное - LOW-MEDIUM
+### Расширить данные:
+
+**Tours:**
+
+- Увеличить description до 800-1200 символов
+- Добавить 5-8 изображений на тур (Unsplash API)
+- Добавить included/excluded списки (8-12 пунктов)
+- Добавить meeting_point с координатами
+- Добавить cancellation_policy
+
+**Отзывы:**
+
+- Создать 8-15 отзывов на популярный тур
+- 3-5 отзывов на обычный тур
+- Подробные тексты 150-300 символов
+- Разные рейтинги (4.2 - 5.0)
+
+**Гиды:**
+
+- Добавить bio 200-400 символов
+- Добавить specialties []
+- Добавить languages []
+- Добавить avatar_url
+```python
+tours = [
+  {
+    "title": "Храмы Бангкока: духовное путешествие",
+    "description": "Погрузитесь в атмосферу древних храмов Бангкока...[800+ символов с деталями маршрута, что увидите, что узнаете, почему это уникально]",
+    "images": [
+      "https://images.unsplash.com/...",
+      # 5-8 фото
+    ],
+    "included": [
+      "Профессиональный гид-историк",
+      "Входные билеты во все храмы",
+      "Традиционный тайский обед",
+      "Трансфер на комфортабельном автомобиле",
+      ...
+    ],
+    "reviews": [
+      {
+        "rating": 5,
+        "text": "Невероятный опыт! Гид Сомчай рассказал столько интересного...[200 символов]",
+        "author": "Мария К.",
+        "date": "2025-09-15"
+      },
+      # 8-15 отзывов
+    ]
+  }
+]
+```
+
+
+## Порядок выполнения
+
+1. Sticky search на главной (20 мин)
+2. Цвет календаря малиновый (5 мин)
+3. Фиксированная высота текста (5 мин)
+4. Улучшение календаря TourDetailPage + Telegram (15 мин)
+5. Убрать чипы, сделать рабочие списки (20 мин)
+6. Backend: модели + миграция (30 мин)
+7. Backend: API endpoints (45 мин)
+8. Frontend: бронирование → заявка (30 мин)
+9. Frontend: заявки гида (30 мин)
+10. Frontend: создание тура из заявки (40 мин)
+11. Мобильный поиск Airbnb-style (60 мин)
+12. Заполнение seed_data.py (45 мин)
+
+**Общее время:** ~6 часов
 
 ### To-dos
 
-- [ ] Исправить пустую страницу /tours - проверить маппинг данных
-- [ ] Исправить пустую секцию 'Популярные экскурсии' на главной
-- [ ] Исправить баг переноса даты в календаре (-1 день)
-- [ ] Показать пункт 'Админ-панель' для роли admin
-- [ ] Создать логотип Turex Pro с диагональным градиентом
-- [ ] Заменить ThaiGuide Pro на Turex Pro везде
-- [ ] Убрать все градиенты, оставить только малиновый цвет
-- [ ] Добавить фоны на табы поиска, убрать слово НОВОЕ
-- [ ] Убрать слово Искать, увеличить кнопку с лупой
-- [ ] Реализовать автодополнение для поля Куда
-- [ ] Календарь с выбором диапазона дат
-- [ ] Счётчик гостей (взрослые/дети) с кнопками +/-
-- [ ] Категории и фильтры горизонтальными чипсами
-- [ ] Галерея фото в карточках со стрелками и точками
-- [ ] Иконка сердца для избранного (localStorage)
-- [ ] Бейджи: Популярное, Хит продаж, Новое, Скидка
-- [ ] Hover-эффекты: поднятие, тень, масштабирование фото
-- [ ] Заполнить все поля туров детальным контентом (500+ символов)
-- [ ] Привязать seed-туры к админу 79177445182
-- [ ] Расширить статьи журнала до 2000+ символов
-- [ ] Показывать гида в карточке тура (аватар, имя, рейтинг)
-- [ ] Установить @dnd-kit/core для Drag & Drop
-- [ ] Сделать карточки экскурсий перетаскиваемыми
-- [ ] Сделать даты droppable зонами с подсветкой
-- [ ] При drop вызывать API переноса с оптимистичным обновлением
-- [ ] Выпадающий список при клике на дату с несколькими экскурсиями
-- [ ] Кнопка Отказаться от заявки с освобождением часов
-- [ ] Детальная таблица заказов с оборотом и доходом
-- [ ] Фильтры для заказов по статусу, дате, клиенту
-- [ ] Модальное окно с полной информацией о заказе
-- [ ] Экспорт заказов в Excel
-- [ ] Карточка Оборот сделок (полная стоимость)
-- [ ] Разделить отображение Оборот (100%) и Доход (3%)
-- [ ] График с двумя линиями: оборот и доход
-- [ ] Карточка Средний чек с трендом
-- [ ] Отдельный CTA блок Индивидуальные туры на главной
-- [ ] Sticky notification снизу слева с закрытием
-- [ ] Hover-эффекты на всех интерактивных элементах
-- [ ] Skeleton loaders для всех загрузок
-- [ ] Fade-in при скролле для секций
-- [ ] Переходы между страницами (AnimatePresence)
-- [ ] Алгоритм популярности (формула scoring)
-- [ ] Бейджи Популярное и Часто берут
-- [ ] Детальные описания туров (500-1000 символов)
-- [ ] Расширенные статьи журнала (2000-3000 символов)
-- [ ] Добавить 10+ новых статей в разные категории
-- [ ] Валидация всех форм с real-time ошибками
-- [ ] Error boundaries для всех страниц
-- [ ] Красивые страницы 404, 500, 403
-- [ ] Lazy loading для изображений
-- [ ] Code splitting для страниц
-- [ ] Уникальные meta-теги для всех страниц
-- [ ] Генерация sitemap.xml
-- [ ] Добавить Google Font Inter
-- [ ] Проверить адаптив на всех устройствах
-- [ ] Полное ручное тестирование всех сценариев
-- [ ] Проверка во всех браузерах
+- [ ] Создать мобильный поиск как в Airbnb с модальным окном
+- [ ] Исправить sticky search на главной - использовать layoutId
+- [ ] Изменить цвета календаря на малиновые
+- [ ] Фиксированная высота для TypewriterHero
+- [ ] Улучшить календарь в TourDetailPage + поле Telegram
+- [ ] Убрать чипы категорий, оставить 3 select списка
+- [ ] Backend: расширить модели Booking/Request/Tour
+- [ ] Создать миграцию для новых полей
+- [ ] Backend: API для бронирования через заявки
+- [ ] Frontend: кнопка Забронировать создаёт заявку
+- [ ] Frontend: страница Заявки для гида
+- [ ] Frontend: создание тура из заявки с предзаполнением
+- [ ] Заполнить seed_data.py подробными данными

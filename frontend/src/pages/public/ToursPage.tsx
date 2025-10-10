@@ -42,6 +42,9 @@ export default function ToursPage() {
   const [selectedRatings, setSelectedRatings] = useState<string[]>([])
   const [showFilters, setShowFilters] = useState(false)
   const [sortBy, setSortBy] = useState('popular')
+  const [dateFilter, setDateFilter] = useState('any')
+  const [durationFilter, setDurationFilter] = useState('any')
+  const [priceFilter, setPriceFilter] = useState('any')
 
   // Загрузка категорий
   const { data: categoriesData } = useQuery({
@@ -75,7 +78,7 @@ export default function ToursPage() {
 
   const tours = toursData?.tours || []
   
-  // Клиентская фильтрация (страны, города, длительность и рейтинг)
+  // Клиентская фильтрация (страны, города, select фильтры)
   const filteredTours = tours.filter((tour: any) => {
     // Страны
     if (selectedCountries.length > 0) {
@@ -93,26 +96,20 @@ export default function ToursPage() {
       if (!matchesCity) return false
     }
 
-    // Длительность
-    if (selectedDurations.length > 0) {
-      const matchesDuration = selectedDurations.some(dur => {
-        if (dur === '1-3 часа') return tour.duration >= 1 && tour.duration <= 3
-        if (dur === '4-6 часов') return tour.duration >= 4 && tour.duration <= 6
-        if (dur === 'Полный день (7+ч)') return tour.duration >= 7
-        return false
-      })
-      if (!matchesDuration) return false
+    // Фильтр длительности из select
+    if (durationFilter !== 'any') {
+      if (durationFilter === 'short' && tour.duration > 2) return false
+      if (durationFilter === 'medium' && (tour.duration < 2 || tour.duration > 4)) return false
+      if (durationFilter === 'long' && (tour.duration < 4 || tour.duration > 8)) return false
+      if (durationFilter === 'fullday' && tour.duration < 7) return false
     }
 
-    // Рейтинг
-    if (selectedRatings.length > 0) {
-      const matchesRating = selectedRatings.some(rating => {
-        if (rating === '4.5+ звёзд') return tour.rating >= 4.5
-        if (rating === '4.7+') return tour.rating >= 4.7
-        if (rating === '4.9+ (топ)') return tour.rating >= 4.9
-        return false
-      })
-      if (!matchesRating) return false
+    // Фильтр цены из select
+    if (priceFilter !== 'any') {
+      if (priceFilter === 'cheap' && tour.price > 3000) return false
+      if (priceFilter === 'medium' && (tour.price < 3000 || tour.price > 7000)) return false
+      if (priceFilter === 'expensive' && (tour.price < 7000 || tour.price > 15000)) return false
+      if (priceFilter === 'luxury' && tour.price < 15000) return false
     }
 
     return true
@@ -214,32 +211,45 @@ export default function ToursPage() {
       {/* Фильтры и сортировка */}
       <div className="bg-white border-b sticky top-[72px] z-20">
         <div className="container mx-auto px-4 py-4">
-          <div className="flex items-center justify-between gap-4">
-            {/* Быстрые фильтры */}
+          <div className="flex items-center justify-between gap-4 flex-wrap">
+            {/* Быстрые фильтры в виде select */}
             <div className="flex items-center gap-3 flex-wrap">
-              <button className="px-4 py-2 rounded-lg border border-gray-300 hover:border-gray-900 transition-colors flex items-center gap-2">
-                Любые даты
-                <ChevronDown size={16} />
-              </button>
-              <button className="px-4 py-2 rounded-lg border border-gray-300 hover:border-gray-900 transition-colors flex items-center gap-2">
-                Длительность
-                <ChevronDown size={16} />
-              </button>
-              <button className="px-4 py-2 rounded-lg border border-gray-300 hover:border-gray-900 transition-colors flex items-center gap-2">
-                Цена
-                <ChevronDown size={16} />
-              </button>
-            </div>
+              <select 
+                value={dateFilter} 
+                onChange={(e) => setDateFilter(e.target.value)}
+                className="px-4 py-2 rounded-lg border border-gray-300 hover:border-gray-900 transition-colors bg-white cursor-pointer"
+              >
+                <option value="any">Любые даты</option>
+                <option value="today">Сегодня</option>
+                <option value="tomorrow">Завтра</option>
+                <option value="weekend">Эти выходные</option>
+                <option value="thisweek">На этой неделе</option>
+              </select>
 
-            {/* Кнопка фильтров */}
-            <Button
-              variant="outline"
-              onClick={() => setShowFilters(true)}
-              className="rounded-lg flex items-center gap-2"
-            >
-              <SlidersHorizontal size={18} />
-              Фильтры
-            </Button>
+              <select 
+                value={durationFilter} 
+                onChange={(e) => setDurationFilter(e.target.value)}
+                className="px-4 py-2 rounded-lg border border-gray-300 hover:border-gray-900 transition-colors bg-white cursor-pointer"
+              >
+                <option value="any">Любая длительность</option>
+                <option value="short">До 2 часов</option>
+                <option value="medium">2-4 часа</option>
+                <option value="long">4-8 часов</option>
+                <option value="fullday">Полный день</option>
+              </select>
+
+              <select 
+                value={priceFilter} 
+                onChange={(e) => setPriceFilter(e.target.value)}
+                className="px-4 py-2 rounded-lg border border-gray-300 hover:border-gray-900 transition-colors bg-white cursor-pointer"
+              >
+                <option value="any">Любая цена</option>
+                <option value="cheap">До 3000₽</option>
+                <option value="medium">3000-7000₽</option>
+                <option value="expensive">7000-15000₽</option>
+                <option value="luxury">15000+₽</option>
+              </select>
+            </div>
           </div>
         </div>
       </div>

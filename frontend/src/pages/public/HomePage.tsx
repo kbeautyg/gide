@@ -124,23 +124,6 @@ export default function HomePage() {
     <div className="min-h-screen bg-white">
       <PublicHeader />
 
-      {/* Sticky Search Bar */}
-      <AnimatePresence>
-        {showStickySearch && (
-          <motion.div 
-            initial={{ y: -100, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            exit={{ y: -100, opacity: 0 }}
-            transition={{ duration: 0.3, ease: 'easeOut' }}
-            className="fixed top-0 left-0 right-0 z-50 bg-white border-b shadow-md"
-          >
-            <div className="container mx-auto px-4 py-3">
-              <SearchBar variant="sticky" />
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-
       {/* Hero Section - 3D объекты фон */}
       <section className="relative text-white overflow-hidden h-[85vh] flex items-center bg-gradient-to-br from-gray-900 via-gray-800 to-black">
         {/* Анимированные blob градиенты */}
@@ -237,15 +220,17 @@ export default function HomePage() {
             {/* TypewriterHero - анимированный текст */}
             <TypewriterHero />
             
-            {/* SearchBar */}
-            <motion.div 
-              className="mb-8 mt-10"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.6 }}
-            >
-              <SearchBar variant="hero" />
-            </motion.div>
+            {/* SearchBar с sticky позиционированием */}
+            <div className={cn(
+              "mb-8 mt-10 transition-all duration-300",
+              showStickySearch && "fixed top-16 left-0 right-0 z-50 bg-white shadow-md border-b"
+            )}>
+              <div className={cn(
+                showStickySearch && "container mx-auto px-4 py-3"
+              )}>
+                <SearchBar variant={showStickySearch ? "sticky" : "hero"} />
+              </div>
+            </div>
           </motion.div>
         </div>
 

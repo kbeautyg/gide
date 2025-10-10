@@ -29,6 +29,7 @@ export default function TourDetailPage() {
     clientName: '',
     clientPhone: '',
     clientEmail: '',
+    telegram: '',
   })
   const [showSuccess, setShowSuccess] = useState(false)
   const [expandedReviews, setExpandedReviews] = useState<number[]>([])
@@ -78,6 +79,7 @@ export default function TourDetailPage() {
       client_name: bookingData.clientName,
       client_phone: bookingData.clientPhone,
       client_email: bookingData.clientEmail || undefined,
+      telegram_username: bookingData.telegram || undefined,
     }),
     onSuccess: () => {
       setShowSuccess(true)
@@ -87,6 +89,7 @@ export default function TourDetailPage() {
         clientName: '',
         clientPhone: '',
         clientEmail: '',
+        telegram: '',
       })
       setTimeout(() => setShowSuccess(false), 5000)
     },
@@ -511,6 +514,13 @@ export default function TourDetailPage() {
                       placeholder="Email (необязательно)"
                       value={bookingData.clientEmail}
                       onChange={(e) => setBookingData({ ...bookingData, clientEmail: e.target.value })}
+                      className="rounded-lg"
+                    />
+                    <Input
+                      type="text"
+                      placeholder="Telegram @username (для связи)"
+                      value={bookingData.telegram}
+                      onChange={(e) => setBookingData({ ...bookingData, telegram: e.target.value })}
                       className="rounded-lg"
                     />
                   </div>
