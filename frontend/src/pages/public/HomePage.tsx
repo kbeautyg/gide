@@ -12,7 +12,8 @@ import { TourCardSkeleton } from '@/components/TourCardSkeleton'
 import { LiveStats } from '@/components/LiveStats'
 import { WorldMap } from '@/components/WorldMap'
 import { AnimatedFeatures } from '@/components/AnimatedFeatures'
-import { Hero3D } from '@/components/Hero3D'
+import { TypewriterHero } from '@/components/TypewriterHero'
+import { SearchBar } from '@/components/SearchBar'
 
 // Анимационные варианты
 const containerVariants = {
@@ -113,8 +114,48 @@ export default function HomePage() {
     <div className="min-h-screen bg-white">
       <PublicHeader />
 
-      {/* Hero Section - 3D креативный дизайн */}
-      <Hero3D />
+      {/* Hero Section - Креативный дизайн с анимированными кругами */}
+      <section className="relative text-white py-24 md:py-32 overflow-hidden min-h-[90vh] flex items-center">
+        {/* Фоновое изображение */}
+        <div className="absolute inset-0">
+          <img 
+            src="https://images.unsplash.com/photo-1488646953014-85cb44e25828?w=1920&h=1080&fit=crop&q=85"
+            alt="Путешествия"
+            className="w-full h-full object-cover"
+            loading="eager"
+          />
+          {/* Затемнение для читаемости */}
+          <div className="absolute inset-0 bg-black/50" />
+        </div>
+
+        {/* Анимированные круги (blob эффект) */}
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+          <div className="absolute top-0 -left-40 w-96 h-96 bg-airbnb-rausch/40 rounded-full blur-3xl animate-blob" />
+          <div className="absolute top-0 -right-40 w-96 h-96 bg-purple-500/30 rounded-full blur-3xl animate-blob animation-delay-2000" />
+          <div className="absolute -bottom-40 left-1/3 w-96 h-96 bg-blue-500/25 rounded-full blur-3xl animate-blob animation-delay-4000" />
+        </div>
+        
+        <div className="container mx-auto px-4 relative z-10">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            className="max-w-4xl mx-auto text-center"
+          >
+            <TypewriterHero />
+            
+            {/* SearchBar */}
+            <motion.div 
+              className="mb-8 mt-10"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.6 }}
+            >
+              <SearchBar variant="hero" />
+            </motion.div>
+          </motion.div>
+        </div>
+      </section>
 
       {/* Блок "Планы на сезон" */}
       <section className="py-20 bg-white">
