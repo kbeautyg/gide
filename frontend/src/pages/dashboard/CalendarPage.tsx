@@ -66,6 +66,20 @@ export default function CalendarPage() {
     }
   })
 
+  // Обновление дат тура
+  const updateTourDatesMutation = useMutation({
+    mutationFn: ({ tourId, start_date, end_date }: { tourId: number, start_date: string, end_date: string }) =>
+      toursApi.updateDates(tourId, { start_date, end_date }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['my-schedule'] })
+      queryClient.invalidateQueries({ queryKey: ['tours'] })
+      alert('✅ Даты тура обновлены!')
+    },
+    onError: (error: any) => {
+      alert(`❌ ${error.response?.data?.detail || 'Ошибка при обновлении дат'}`)
+    }
+  })
+
   const schedules = scheduleData?.schedules || []
   const requests = scheduleData?.requests || []
   const tours = scheduleData?.tours || []
@@ -172,24 +186,37 @@ export default function CalendarPage() {
             onReschedule={(requestId, newDate) => {
               rescheduleMutation.mutate({ requestId, new_date: newDate })
             }}
+            onTourReschedule={(tourId, newStartDate, newEndDate) => {
+              if (autoUpdateDates) {
+                updateTourDatesMutation.mutate({ tourId, start_date: newStartDate, end_date: newEndDate })
+              }
+            }}
             onCancel={(requestId) => cancelMutation.mutate(requestId)}
           />
           
           {/* Легенда */}
           <Card className="bg-gray-50">
             <CardContent className="py-4">
-              <div className="flex items-center justify-center gap-8 flex-wrap">
+              <div className="flex items-center justify-center gap-6 flex-wrap text-sm">
                 <div className="flex items-center gap-2">
                   <div className="w-6 h-6 bg-green-50 border border-green-200 rounded" />
-                  <span className="text-sm text-gray-700">🟢 Свободно (0-3ч)</span>
+                  <span className="text-gray-700">🟢 Свободно (0-3ч)</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <div className="w-6 h-6 bg-yellow-50 border border-yellow-200 rounded" />
-                  <span className="text-sm text-gray-700">🟡 Частично (4-7ч)</span>
+                  <span className="text-gray-700">🟡 Частично (4-7ч)</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <div className="w-6 h-6 bg-red-50 border border-red-200 rounded" />
-                  <span className="text-sm text-gray-700">🔴 Полностью занято (8ч)</span>
+                  <span className="text-gray-700">🔴 Полностью (8ч)</span>
+                </div>
+                <div className="flex items-center gap-2 border-l pl-6">
+                  <div className="w-6 h-6 bg-white border border-gray-300 rounded" />
+                  <span className="text-gray-700">Заявка</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <div className="w-6 h-6 bg-blue-50 border border-blue-200 rounded" />
+                  <span className="text-blue-700">Тур</span>
                 </div>
               </div>
             </CardContent>

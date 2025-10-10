@@ -118,7 +118,7 @@ export default function MyToursPage() {
       ) : (
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
           {tours.map((tour) => (
-            <Card key={tour.id} className="flex flex-col">
+            <Card key={tour.id} id={`tour-${tour.id}`} className="flex flex-col scroll-mt-24">
               <div className="relative">
                 <img
                   src={tour.photos[0] || 'https://images.unsplash.com/photo-1589394815804-964ed0be2eb5?w=800'}

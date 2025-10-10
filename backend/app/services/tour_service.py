@@ -198,9 +198,26 @@ class TourService:
         if not tour:
             return None
         
+        # Обрабатываем даты отдельно
+        if 'start_date' in updates and updates['start_date']:
+            if isinstance(updates['start_date'], str):
+                try:
+                    updates['start_date'] = datetime.strptime(updates['start_date'], '%Y-%m-%d').date()
+                except ValueError:
+                    pass
+        
+        if 'end_date' in updates and updates['end_date']:
+            if isinstance(updates['end_date'], str):
+                try:
+                    updates['end_date'] = datetime.strptime(updates['end_date'], '%Y-%m-%d').date()
+                except ValueError:
+                    pass
+        
         for key, value in updates.items():
-            if hasattr(tour, key):
+            if hasattr(tour, key) and value is not None:
                 setattr(tour, key, value)
+        
+        tour.updated_at = datetime.utcnow()
         
         await db.commit()
         await db.refresh(tour)
