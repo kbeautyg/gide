@@ -71,3 +71,9 @@ class RequestList(BaseModel):
     total: int
     page: int
     per_page: int
+
+
+class RequestAvailableList(BaseModel):
+    """Схема списка доступных заявок"""
+    requests: list[Request]
+    total: int

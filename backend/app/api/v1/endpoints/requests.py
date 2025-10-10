@@ -15,7 +15,8 @@ from app.schemas.request import (
     RequestUpdate,
     RequestTake,
     Request as RequestSchema,
-    RequestList
+    RequestList,
+    RequestAvailableList
 )
 from app.core.deps import get_current_user
 
@@ -228,7 +229,7 @@ async def delete_request(
     return {"message": "Заявка удалена"}
 
 
-@router.get("/available")
+@router.get("/available", response_model=RequestAvailableList)
 async def get_available_requests(
     db: AsyncSession = Depends(get_db),
     current_user: User = Depends(get_current_user)
@@ -245,11 +246,10 @@ async def get_available_requests(
     result = await db.execute(query)
     requests_list = result.scalars().all()
     
-    # Преобразуем в схемы для правильной сериализации
-    return {
-        "requests": [RequestSchema.model_validate(req) for req in requests_list],
-        "total": len(requests_list)
-    }
+    return RequestAvailableList(
+        requests=requests_list,
+        total=len(requests_list)
+    )
 
 
 @router.post("/{request_id}/take")
