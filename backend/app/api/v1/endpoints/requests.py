@@ -10,7 +10,13 @@ from datetime import datetime
 from app.db.session import get_db
 from app.models.request import Request
 from app.models.user import User, UserRole
-from app.schemas.request import RequestCreate, RequestUpdate, Request as RequestSchema, RequestList
+from app.schemas.request import (
+    RequestCreate,
+    RequestUpdate,
+    RequestTake,
+    Request as RequestSchema,
+    RequestList
+)
 from app.core.deps import get_current_user
 
 router = APIRouter()
@@ -244,8 +250,8 @@ async def get_available_requests(
 
 @router.post("/{request_id}/take")
 async def take_request(
-    request_id: str,
-    data: dict,  # {"assigned_date": "2025-10-15"}
+    request_id: int,
+    data: RequestTake,
     db: AsyncSession = Depends(get_db),
     current_user: User = Depends(get_current_user)
 ):
@@ -256,7 +262,7 @@ async def take_request(
     # Доступно для всех авторизованных (любая роль может быть гидом)
     
     # Находим заявку
-    query = select(Request).where(Request.id == int(request_id))
+    query = select(Request).where(Request.id == request_id)
     result = await db.execute(query)
     request = result.scalar_one_or_none()
     
@@ -267,7 +273,7 @@ async def take_request(
         raise HTTPException(status_code=400, detail="Заявка уже взята другим гидом")
     
     # Парсим дату
-    assigned_date = datetime.strptime(data.get("assigned_date"), "%Y-%m-%d").date()
+    assigned_date = data.assigned_date
     
     # Проверяем доступность гида на эту дату
     available = await ScheduleService.check_availability(
