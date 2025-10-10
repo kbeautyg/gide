@@ -229,7 +229,7 @@ async def delete_request(
     return {"message": "Заявка удалена"}
 
 
-@router.get("/available", response_model=RequestAvailableList)
+@router.get("/available")
 async def get_available_requests(
     db: AsyncSession = Depends(get_db),
     current_user: User = Depends(get_current_user)
@@ -246,10 +246,31 @@ async def get_available_requests(
     result = await db.execute(query)
     requests_list = result.scalars().all()
     
-    return RequestAvailableList(
-        requests=requests_list,
-        total=len(requests_list)
-    )
+    # Преобразуем в словари вручную для обхода проблем с сериализацией
+    requests_dicts = []
+    for req in requests_list:
+        requests_dicts.append({
+            "id": req.id,
+            "client_id": req.client_id,
+            "title": req.title,
+            "description": req.description,
+            "preferred_date": req.preferred_date.isoformat() if req.preferred_date else None,
+            "participants_count": req.participants_count,
+            "budget": req.budget,
+            "location": req.location,
+            "duration_hours": req.duration_hours,
+            "telegram_username": req.telegram_username,
+            "status": req.status,
+            "guide_id": req.guide_id,
+            "assigned_date": req.assigned_date.isoformat() if req.assigned_date else None,
+            "assigned_to": req.assigned_to,
+            "booking_id": req.booking_id,
+            "generated_tour_id": req.generated_tour_id,
+            "created_at": req.created_at.isoformat() if req.created_at else None,
+            "updated_at": req.updated_at.isoformat() if req.updated_at else None,
+        })
+    
+    return {"requests": requests_dicts, "total": len(requests_dicts)}
 
 
 @router.post("/{request_id}/take")
