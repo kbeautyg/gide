@@ -140,16 +140,37 @@ async def get_my_requests(
     )
 
 
+@router.get("/{request_id}", response_model=RequestSchema)
+async def get_request_by_id(
+    request_id: int,
+    current_user: User = Depends(get_current_user),
+    db: AsyncSession = Depends(get_db)
+):
+    """Получить заявку по ID"""
+    stmt = select(Request).where(Request.id == request_id)
+    result = await db.execute(stmt)
+    request = result.scalar_one_or_none()
+
+    if not request:
+        raise HTTPException(status_code=404, detail="Заявка не найдена")
+
+    # Проверяем права
+    if current_user.role == UserRole.CLIENT and request.client_id != current_user.id:
+        raise HTTPException(status_code=403, detail="Недостаточно прав")
+
+    return request
+
+
 @router.put("/{request_id}", response_model=RequestSchema)
 async def update_request(
-    request_id: str,
+    request_id: int,
     request_data: RequestUpdate,
     current_user: User = Depends(get_current_user),
     db: AsyncSession = Depends(get_db)
 ):
     """Обновить заявку"""
-    query = select(Request).where(Request.id == request_id)
-    result = await db.execute(query)
+    stmt = select(Request).where(Request.id == request_id)
+    result = await db.execute(stmt)
     request = result.scalar_one_or_none()
     
     if not request:
@@ -176,13 +197,13 @@ async def update_request(
 
 @router.delete("/{request_id}")
 async def delete_request(
-    request_id: str,
+    request_id: int,
     current_user: User = Depends(get_current_user),
     db: AsyncSession = Depends(get_db)
 ):
     """Удалить заявку"""
-    query = select(Request).where(Request.id == request_id)
-    result = await db.execute(query)
+    stmt = select(Request).where(Request.id == request_id)
+    result = await db.execute(stmt)
     request = result.scalar_one_or_none()
     
     if not request:
