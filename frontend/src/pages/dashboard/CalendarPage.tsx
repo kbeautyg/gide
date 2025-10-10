@@ -13,7 +13,6 @@ import { format } from 'date-fns'
 
 export default function CalendarPage() {
   const queryClient = useQueryClient()
-  const navigate = useNavigate()
   const [rescheduleModal, setRescheduleModal] = useState(false)
   const [selectedRequest, setSelectedRequest] = useState<any>(null)
   const [newDate, setNewDate] = useState<Date | null>(null)
