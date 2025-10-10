@@ -19,7 +19,7 @@ export function Logo({ size = 'md', linkTo = '/', className = '' }: LogoProps) {
 
   const logo = (
     <img
-      src="/1760049644299-0199cb22-01c2-7f61-89e3-555384ad83b4 (1).png"
+      src="/logo.png"
       alt="Turex Pro"
       className={`${sizeClasses[size]} ${className} object-contain`}
       style={{ width: 'auto' }}

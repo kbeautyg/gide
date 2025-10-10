@@ -114,25 +114,82 @@ export default function HomePage() {
     <div className="min-h-screen bg-white">
       <PublicHeader />
 
-      {/* Hero Section - с TypewriterHero и blob анимацией */}
-      <section className="relative text-white py-24 md:py-32 overflow-hidden min-h-[90vh] flex items-center">
-        {/* Фоновое изображение */}
-        <div className="absolute inset-0">
-          <img 
-            src="https://images.unsplash.com/photo-1488646953014-85cb44e25828?w=1920&h=1080&fit=crop&q=85"
-            alt="Путешествия"
-            className="w-full h-full object-cover"
-            loading="eager"
+      {/* Hero Section - 3D объекты фон */}
+      <section className="relative text-white py-24 md:py-32 overflow-hidden min-h-[90vh] flex items-center bg-gradient-to-br from-gray-900 via-gray-800 to-black">
+        {/* Анимированные blob градиенты */}
+        <div className="absolute inset-0 overflow-hidden">
+          <motion.div
+            animate={{
+              scale: [1, 1.2, 1],
+              rotate: [0, 90, 0],
+              borderRadius: ['30%', '50%', '30%']
+            }}
+            transition={{
+              duration: 20,
+              repeat: Infinity,
+              ease: 'linear'
+            }}
+            className="absolute -top-40 -left-40 w-96 h-96 bg-gradient-to-br from-airbnb-rausch/30 to-purple-500/30 blur-3xl"
           />
-          {/* Затемнение для читаемости */}
-          <div className="absolute inset-0 bg-black/50" />
+          <motion.div
+            animate={{
+              scale: [1.2, 1, 1.2],
+              rotate: [90, 0, 90],
+              borderRadius: ['50%', '30%', '50%']
+            }}
+            transition={{
+              duration: 15,
+              repeat: Infinity,
+              ease: 'linear'
+            }}
+            className="absolute -bottom-40 -right-40 w-96 h-96 bg-gradient-to-br from-blue-500/30 to-cyan-500/30 blur-3xl"
+          />
+          <motion.div
+            animate={{
+              scale: [1, 1.3, 1],
+              x: [0, 100, 0],
+              y: [0, -100, 0]
+            }}
+            transition={{
+              duration: 25,
+              repeat: Infinity,
+              ease: 'easeInOut'
+            }}
+            className="absolute top-1/2 left-1/2 w-96 h-96 bg-gradient-to-br from-pink-500/20 to-orange-500/20 blur-3xl"
+          />
         </div>
 
-        {/* Анимированные круги (blob эффект) */}
-        <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <div className="absolute top-0 -left-40 w-96 h-96 bg-airbnb-rausch/40 rounded-full blur-3xl animate-blob" />
-          <div className="absolute top-0 -right-40 w-96 h-96 bg-purple-500/30 rounded-full blur-3xl animate-blob animation-delay-2000" />
-          <div className="absolute -bottom-40 left-1/3 w-96 h-96 bg-blue-500/25 rounded-full blur-3xl animate-blob animation-delay-4000" />
+        {/* 3D объекты слева */}
+        <div className="absolute left-10 top-1/2 -translate-y-1/2 space-y-20 hidden lg:block pointer-events-none">
+          {['🗿', '🍜', '🗺️'].map((emoji, i) => (
+            <motion.div
+              key={i}
+              initial={{ opacity: 0, scale: 0, rotate: -180 }}
+              animate={{ 
+                opacity: 0.8, 
+                scale: 1, 
+                rotate: 0,
+                y: [0, -20, 0]
+              }}
+              transition={{ 
+                opacity: { duration: 1, delay: i * 0.2 },
+                scale: { duration: 1, delay: i * 0.2 },
+                rotate: { duration: 1, delay: i * 0.2 },
+                y: { duration: 4 + i, repeat: Infinity, ease: 'easeInOut' }
+              }}
+              whileHover={{
+                scale: 1.3,
+                rotate: 15,
+                transition: { duration: 0.3 }
+              }}
+              className="text-8xl cursor-pointer pointer-events-auto"
+              style={{
+                filter: 'drop-shadow(0 10px 30px rgba(0,0,0,0.5))'
+              }}
+            >
+              {emoji}
+            </motion.div>
+          ))}
         </div>
         
         <div className="container mx-auto px-4 relative z-10">
