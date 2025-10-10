@@ -12,6 +12,7 @@ from app.db.session import get_db
 from app.models.booking import Booking as BookingModel, BookingStatus, PaymentStatus
 from app.models.tour import Tour
 from app.models.user import User
+from app.models.request import Request as RequestModel
 from app.core.deps import get_current_user
 
 router = APIRouter()
@@ -25,6 +26,7 @@ class BookingCreate(BaseModel):
     client_name: str = Field(..., description="Имя клиента")
     client_phone: str = Field(..., description="Телефон клиента")
     client_email: Optional[str] = Field(None, description="Email клиента")
+    telegram_username: Optional[str] = Field(None, description="Telegram username")
 
 
 class OfflinePaymentRequest(BaseModel):
@@ -226,3 +228,81 @@ async def get_bookings(
     ]
     
     return BookingList(bookings=bookings_list, total=len(bookings_list))
+
+
+@router.post("/", response_model=Booking)
+async def create_booking(
+    booking_data: BookingCreate,
+    db: AsyncSession = Depends(get_db),
+    current_user: Optional[User] = Depends(get_current_user)
+):
+    """
+    Создать бронирование (публичный endpoint)
+    
+    Автоматически создаёт Request для гида тура
+    """
+    # Получаем тур
+    tour_result = await db.execute(select(Tour).where(Tour.id == booking_data.tour_id))
+    tour = tour_result.scalar_one_or_none()
+    
+    if not tour:
+        raise HTTPException(status_code=404, detail="Tour not found")
+    
+    # Рассчитываем цену
+    total_price = tour.price * booking_data.participants_count
+    
+    # Создаём бронирование
+    booking = BookingModel(
+        tour_id=booking_data.tour_id,
+        client_id=current_user.id if current_user else None,
+        date=booking_data.date,
+        participants_count=booking_data.participants_count,
+        total_price=total_price,
+        client_name=booking_data.client_name,
+        client_phone=booking_data.client_phone,
+        client_email=booking_data.client_email,
+        telegram_username=booking_data.telegram_username,
+        status=BookingStatus.PENDING,
+        payment_status=PaymentStatus.AWAITING_PAYMENT,
+    )
+    
+    db.add(booking)
+    await db.flush()  # Получить ID бронирования
+    
+    # Создаём заявку для гида
+    request = RequestModel(
+        client_id=current_user.id if current_user else None,
+        title=tour.title,
+        description=tour.description,
+        preferred_date=booking_data.date,
+        participants_count=booking_data.participants_count,
+        budget=total_price,
+        location=tour.location,
+        duration_hours=tour.duration,
+        telegram_username=booking_data.telegram_username,
+        status='pending',
+        booking_id=booking.id,
+    )
+    
+    db.add(request)
+    
+    # Связываем бронирование с заявкой
+    booking.request_id = request.id
+    
+    await db.commit()
+    await db.refresh(booking)
+    
+    return Booking(
+        id=booking.id,
+        tour_id=booking.tour_id,
+        client_id=booking.client_id,
+        client_name=booking.client_name,
+        client_phone=booking.client_phone,
+        client_email=booking.client_email,
+        date=booking.date,
+        participants_count=booking.participants_count,
+        total_price=booking.total_price,
+        status=booking.status.value,
+        payment_status=booking.payment_status.value,
+        created_at=booking.created_at,
+    )

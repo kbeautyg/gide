@@ -274,6 +274,41 @@ async def take_request(
     return request
 
 
+@router.post("/{request_id}/accept", response_model=RequestSchema)
+async def accept_request(
+    request_id: int,
+    current_user: User = Depends(get_current_user),
+    db: AsyncSession = Depends(get_db)
+):
+    """
+    Гид принимает заявку
+    
+    Меняет статус на 'in_progress', назначает guide_id
+    """
+    # Проверяем что пользователь - гид
+    if current_user.role not in [UserRole.GUIDE, UserRole.MANAGER]:
+        raise HTTPException(status_code=403, detail="Only guides can accept requests")
+    
+    # Получаем заявку
+    result = await db.execute(select(Request).where(Request.id == request_id))
+    request = result.scalar_one_or_none()
+    
+    if not request:
+        raise HTTPException(status_code=404, detail="Request not found")
+    
+    if request.status != 'pending':
+        raise HTTPException(status_code=400, detail="Request is already processed")
+    
+    # Назначаем гида и меняем статус
+    request.guide_id = current_user.id
+    request.status = 'in_progress'
+    
+    await db.commit()
+    await db.refresh(request)
+    
+    return request
+
+
 @router.get("/my-schedule")
 async def get_my_schedule(
     start_date: str,
