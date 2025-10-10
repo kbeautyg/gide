@@ -6,8 +6,6 @@ import { Filter, Inbox } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
 import { RequestCard } from '@/components/dashboard/RequestCard'
-import { GuideCalendar } from '@/components/dashboard/GuideCalendar'
-import { format } from 'date-fns'
 import { api } from '@/lib/api'
 
 type FilterType = 'all' | 'short' | 'long'
