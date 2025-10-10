@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
 import { motion } from 'framer-motion'
@@ -11,6 +11,7 @@ import { format } from 'date-fns'
 import { ru } from 'date-fns/locale'
 import { cn } from '@/lib/utils'
 import { api } from '@/lib/api'
+import { MobileSearchModal } from './MobileSearchModal'
 import 'react-day-picker/dist/style.css'
 
 type Tab = 'tours' | 'experiences'
@@ -30,6 +31,17 @@ export function SearchBar({ variant = 'hero', className }: SearchBarProps) {
     children: 0,
   })
   const [dateRange, setDateRange] = useState<DateRange | undefined>(undefined)
+  const [showMobileModal, setShowMobileModal] = useState(false)
+  const [isMobile, setIsMobile] = useState(false)
+
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768)
+    }
+    checkMobile()
+    window.addEventListener('resize', checkMobile)
+    return () => window.removeEventListener('resize', checkMobile)
+  }, [])
 
   // Загрузка городов из API
   const { data: destinationsData } = useQuery({
@@ -68,6 +80,32 @@ export function SearchBar({ variant = 'hero', className }: SearchBarProps) {
   }
 
   const isHero = variant === 'hero'
+
+  // Мобильная версия - показать упрощённый поиск
+  if (isMobile) {
+    return (
+      <>
+        <button
+          onClick={() => setShowMobileModal(true)}
+          className={cn(
+            "w-full bg-white border border-gray-300 rounded-full shadow-md flex items-center gap-3 transition-all hover:shadow-lg",
+            isHero ? "px-6 py-4" : "px-4 py-3"
+          )}
+        >
+          <Search size={20} className="text-gray-600" />
+          <div className="flex-1 text-left">
+            <div className="text-sm font-semibold text-gray-900">
+              {searchData.where || 'Куда вы хотите?'}
+            </div>
+            <div className="text-xs text-gray-500">
+              {dateRange?.from ? format(dateRange.from, 'd MMM', { locale: ru }) : 'Любые даты'} • {searchData.adults + searchData.children} гост.
+            </div>
+          </div>
+        </button>
+        <MobileSearchModal isOpen={showMobileModal} onClose={() => setShowMobileModal(false)} />
+      </>
+    )
+  }
 
   return (
     <div className={cn("relative", className)}>
