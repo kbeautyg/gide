@@ -40,7 +40,8 @@ export function GuideCalendar({
   requests,
   tours = [],
   onReschedule,
-  onTourReschedule, // eslint-disable-line @typescript-eslint/no-unused-vars
+  // @ts-ignore - будет использоваться позже для drag&drop туров
+  onTourReschedule,
   onCancel,
   mode = 'view',
   onDateSelect,
@@ -48,7 +49,8 @@ export function GuideCalendar({
   disabledDates = [],
   selectedDate,
   enableDragDrop = false,
-  autoUpdateDates = false // eslint-disable-line @typescript-eslint/no-unused-vars
+  // @ts-ignore - будет использоваться позже для drag&drop туров
+  autoUpdateDates = false
 }: GuideCalendarProps) {
   const [currentMonth, setCurrentMonth] = useState(new Date())
   const [activeId, setActiveId] = useState<number | null>(null)
