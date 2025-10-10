@@ -114,7 +114,7 @@ export default function HomePage() {
     <div className="min-h-screen bg-white">
       <PublicHeader />
 
-      {/* Hero Section - Креативный дизайн с анимированными кругами */}
+      {/* Hero Section - с TypewriterHero и blob анимацией */}
       <section className="relative text-white py-24 md:py-32 overflow-hidden min-h-[90vh] flex items-center">
         {/* Фоновое изображение */}
         <div className="absolute inset-0">
@@ -142,6 +142,7 @@ export default function HomePage() {
             transition={{ duration: 0.8 }}
             className="max-w-4xl mx-auto text-center"
           >
+            {/* TypewriterHero - анимированный текст */}
             <TypewriterHero />
             
             {/* SearchBar */}
