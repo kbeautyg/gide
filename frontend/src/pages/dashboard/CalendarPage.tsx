@@ -1,18 +1,23 @@
 import { useState } from 'react'
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
+import { useQuery, useMutation, useQueryClient } from '@antml:react-query'
+import { useNavigate } from 'react-router-dom'
 import { Card, CardContent } from '@/components/ui/card'
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog'
 import { Button } from '@/components/ui/button'
-import { Calendar as CalendarIcon } from 'lucide-react'
+import { Switch } from '@/components/ui/switch'
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
+import { Calendar as CalendarIcon, HelpCircle } from 'lucide-react'
 import { GuideCalendar } from '@/components/dashboard/GuideCalendar'
-import { api } from '@/lib/api'
+import { api, toursApi } from '@/lib/api'
 import { format } from 'date-fns'
 
 export default function CalendarPage() {
   const queryClient = useQueryClient()
+  const navigate = useNavigate()
   const [rescheduleModal, setRescheduleModal] = useState(false)
   const [selectedRequest, setSelectedRequest] = useState<any>(null)
   const [newDate, setNewDate] = useState<Date | null>(null)
+  const [autoUpdateDates, setAutoUpdateDates] = useState(true)
 
   // Загрузка расписания
   const { data: scheduleData, isLoading } = useQuery({
@@ -63,6 +68,7 @@ export default function CalendarPage() {
 
   const schedules = scheduleData?.schedules || []
   const requests = scheduleData?.requests || []
+  const tours = scheduleData?.tours || []
 
   // Статистика
   const totalBookedHours = schedules.reduce((sum: number, s: any) => sum + s.booked_hours, 0)
@@ -116,6 +122,38 @@ export default function CalendarPage() {
         </div>
       </div>
 
+      {/* Автопереключение дат */}
+      <Card className="bg-blue-50 border-blue-200">
+        <CardContent className="py-4">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <Switch
+                checked={autoUpdateDates}
+                onCheckedChange={setAutoUpdateDates}
+              />
+              <label className="text-sm font-medium text-gray-900">
+                Автопереключение дат на ссылке
+              </label>
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <button className="text-gray-500 hover:text-gray-700">
+                      <HelpCircle size={16} />
+                    </button>
+                  </TooltipTrigger>
+                  <TooltipContent className="max-w-xs">
+                    <p>При переносе экскурсии в календаре дата автоматически обновится в ссылке тура (start_date/end_date)</p>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+            </div>
+            {autoUpdateDates && (
+              <span className="text-xs text-green-600 font-medium">✓ Включено</span>
+            )}
+          </div>
+        </CardContent>
+      </Card>
+
       {isLoading ? (
         <Card>
           <CardContent className="py-12">
@@ -127,8 +165,10 @@ export default function CalendarPage() {
           <GuideCalendar
             schedules={schedules}
             requests={requests}
+            tours={tours}
             mode="view"
             enableDragDrop={true}
+            autoUpdateDates={autoUpdateDates}
             onReschedule={(requestId, newDate) => {
               rescheduleMutation.mutate({ requestId, new_date: newDate })
             }}

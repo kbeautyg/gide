@@ -22,7 +22,9 @@ import { motion, AnimatePresence } from 'framer-motion'
 interface GuideCalendarProps {
   schedules: Array<{ date: string, booked_hours: number, available_hours?: number }>
   requests: Array<any>
+  tours?: Array<any>
   onReschedule?: (requestId: number, newDate: string) => void
+  onTourReschedule?: (tourId: number, newStartDate: string, newEndDate: string) => void
   onCancel?: (requestId: number) => void
   mode?: 'view' | 'select'
   onDateSelect?: (date: Date) => void
@@ -30,19 +32,23 @@ interface GuideCalendarProps {
   disabledDates?: Date[]
   selectedDate?: Date | null
   enableDragDrop?: boolean
+  autoUpdateDates?: boolean
 }
 
 export function GuideCalendar({ 
   schedules, 
   requests,
+  tours = [],
   onReschedule,
+  onTourReschedule,
   onCancel,
   mode = 'view',
   onDateSelect,
   showHoursAvailability = false,
   disabledDates = [],
   selectedDate,
-  enableDragDrop = false
+  enableDragDrop = false,
+  autoUpdateDates = false
 }: GuideCalendarProps) {
   const [currentMonth, setCurrentMonth] = useState(new Date())
   const [activeId, setActiveId] = useState<number | null>(null)
@@ -79,6 +85,15 @@ export function GuideCalendar({
   
   const getRequestsForDate = (date: Date) => {
     return requests.filter(r => r.assigned_date && isSameDay(new Date(r.assigned_date), date))
+  }
+
+  const getToursForDate = (date: Date) => {
+    return tours.filter(t => {
+      if (!t.start_date || !t.end_date) return false
+      const start = new Date(t.start_date)
+      const end = new Date(t.end_date)
+      return date >= start && date <= end
+    })
   }
   
   const isDateDisabled = (date: Date) => {
