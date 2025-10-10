@@ -147,6 +147,79 @@ async def get_my_requests(
     )
 
 
+@router.get("/available")
+async def get_available_requests(
+    db: AsyncSession = Depends(get_db),
+    current_user: User = Depends(get_current_user)
+):
+    """Получить список непринятых заявок (для всех авторизованных)"""
+    # Доступно для всех авторизованных пользователей
+    
+    # Заявки без назначенного гида
+    query = select(Request).where(
+        Request.guide_id.is_(None),
+        Request.status == 'pending'
+    ).order_by(Request.created_at.desc())
+    
+    result = await db.execute(query)
+    requests_list = result.scalars().all()
+    
+    # Преобразуем в словари вручную для обхода проблем с сериализацией
+    requests_dicts = []
+    for req in requests_list:
+        requests_dicts.append({
+            "id": req.id,
+            "client_id": req.client_id,
+            "title": req.title,
+            "description": req.description,
+            "preferred_date": req.preferred_date.isoformat() if req.preferred_date else None,
+            "participants_count": req.participants_count,
+            "budget": req.budget,
+            "location": req.location,
+            "duration_hours": req.duration_hours,
+            "telegram_username": req.telegram_username,
+            "status": req.status,
+            "guide_id": req.guide_id,
+            "assigned_date": req.assigned_date.isoformat() if req.assigned_date else None,
+            "assigned_to": req.assigned_to,
+            "booking_id": req.booking_id,
+            "generated_tour_id": req.generated_tour_id,
+            "created_at": req.created_at.isoformat() if req.created_at else None,
+            "updated_at": req.updated_at.isoformat() if req.updated_at else None,
+        })
+    
+    return {"requests": requests_dicts, "total": len(requests_dicts)}
+
+
+@router.get("/my-schedule")
+async def get_my_schedule(
+    start_date: str,
+    end_date: str,
+    db: AsyncSession = Depends(get_db),
+    current_user: User = Depends(get_current_user)
+):
+    """Получить расписание гида с заявками"""
+    from app.services.schedule_service import ScheduleService
+    from datetime import datetime
+    
+    start = datetime.strptime(start_date, "%Y-%m-%d").date()
+    end = datetime.strptime(end_date, "%Y-%m-%d").date()
+    
+    schedules = await ScheduleService.get_schedule_range(db, current_user.id, start, end)
+    requests = await ScheduleService.get_requests_for_date_range(db, current_user.id, start, end)
+    
+    return {
+        "schedules": [
+            {
+                "date": str(s.date),
+                "booked_hours": s.booked_hours,
+                "available_hours": s.available_hours
+            } for s in schedules
+        ],
+        "requests": requests
+    }
+
+
 @router.get("/{request_id}", response_model=RequestSchema)
 async def get_request_by_id(
     request_id: int,
@@ -227,50 +300,6 @@ async def delete_request(
     await db.commit()
     
     return {"message": "Заявка удалена"}
-
-
-@router.get("/available")
-async def get_available_requests(
-    db: AsyncSession = Depends(get_db),
-    current_user: User = Depends(get_current_user)
-):
-    """Получить список непринятых заявок (для всех авторизованных)"""
-    # Доступно для всех авторизованных пользователей
-    
-    # Заявки без назначенного гида
-    query = select(Request).where(
-        Request.guide_id.is_(None),
-        Request.status == 'pending'
-    ).order_by(Request.created_at.desc())
-    
-    result = await db.execute(query)
-    requests_list = result.scalars().all()
-    
-    # Преобразуем в словари вручную для обхода проблем с сериализацией
-    requests_dicts = []
-    for req in requests_list:
-        requests_dicts.append({
-            "id": req.id,
-            "client_id": req.client_id,
-            "title": req.title,
-            "description": req.description,
-            "preferred_date": req.preferred_date.isoformat() if req.preferred_date else None,
-            "participants_count": req.participants_count,
-            "budget": req.budget,
-            "location": req.location,
-            "duration_hours": req.duration_hours,
-            "telegram_username": req.telegram_username,
-            "status": req.status,
-            "guide_id": req.guide_id,
-            "assigned_date": req.assigned_date.isoformat() if req.assigned_date else None,
-            "assigned_to": req.assigned_to,
-            "booking_id": req.booking_id,
-            "generated_tour_id": req.generated_tour_id,
-            "created_at": req.created_at.isoformat() if req.created_at else None,
-            "updated_at": req.updated_at.isoformat() if req.updated_at else None,
-        })
-    
-    return {"requests": requests_dicts, "total": len(requests_dicts)}
 
 
 @router.post("/{request_id}/take")
@@ -359,35 +388,6 @@ async def accept_request(
     await db.refresh(request)
     
     return request
-
-
-@router.get("/my-schedule")
-async def get_my_schedule(
-    start_date: str,
-    end_date: str,
-    db: AsyncSession = Depends(get_db),
-    current_user: User = Depends(get_current_user)
-):
-    """Получить расписание гида с заявками"""
-    from app.services.schedule_service import ScheduleService
-    from datetime import datetime
-    
-    start = datetime.strptime(start_date, "%Y-%m-%d").date()
-    end = datetime.strptime(end_date, "%Y-%m-%d").date()
-    
-    schedules = await ScheduleService.get_schedule_range(db, current_user.id, start, end)
-    requests = await ScheduleService.get_requests_for_date_range(db, current_user.id, start, end)
-    
-    return {
-        "schedules": [
-            {
-                "date": str(s.date),
-                "booked_hours": s.booked_hours,
-                "available_hours": s.available_hours
-            } for s in schedules
-        ],
-        "requests": requests
-    }
 
 
 @router.put("/{request_id}/reschedule")
