@@ -246,7 +246,7 @@ export default function TourDetailPage() {
                   <span className="font-semibold text-lg">{tour.rating.toFixed(2)}</span>
                 </div>
                 <a href="#reviews" className="text-gray-900 underline hover:text-gray-700">
-                  {tour.reviews_count} отзыв{tour.reviews_count === 1 ? '' : tour.reviews_count < 5 ? 'а' : 'ов'}
+                  {reviews.length} отзыв{reviews.length === 1 ? '' : reviews.length < 5 ? 'а' : 'ов'}
                 </a>
               </div>
             </div>
