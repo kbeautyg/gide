@@ -1,5 +1,6 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useQuery } from '@tanstack/react-query'
+import { useSearchParams } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { toursApi } from '@/lib/api'
 import { PublicHeader } from '@/components/PublicHeader'
@@ -32,6 +33,7 @@ const ASIAN_CITIES = [
 ]
 
 export default function ToursPage() {
+  const [searchParams] = useSearchParams()
   const [selectedThemes, setSelectedThemes] = useState<string[]>([])
   const [selectedCountries, setSelectedCountries] = useState<string[]>([])
   const [selectedCities, setSelectedCities] = useState<string[]>([])
@@ -43,6 +45,12 @@ export default function ToursPage() {
   const [dateFilter, setDateFilter] = useState('any')
   const [durationFilter, setDurationFilter] = useState('any')
   const [priceFilter, setPriceFilter] = useState('any')
+  
+  // Читаем параметры из URL при загрузке
+  const locationParam = searchParams.get('location')
+  const guestsParam = searchParams.get('guests')
+  const dateStartParam = searchParams.get('date_start')
+  const dateEndParam = searchParams.get('date_end')
 
   // Загрузка категорий
   const { data: categoriesData } = useQuery({
@@ -76,8 +84,24 @@ export default function ToursPage() {
 
   const tours = toursData?.tours || []
   
-  // Клиентская фильтрация (страны, города, select фильтры)
+  // Клиентская фильтрация (страны, города, select фильтры + URL параметры)
   const filteredTours = tours.filter((tour: any) => {
+    // Фильтр по location из URL
+    if (locationParam) {
+      const locationLower = tour.location?.toLowerCase() || ''
+      if (!locationLower.includes(locationParam.toLowerCase())) {
+        return false
+      }
+    }
+    
+    // Фильтр по guests из URL
+    if (guestsParam) {
+      const guests = parseInt(guestsParam)
+      if (tour.max_group_size && tour.max_group_size < guests) {
+        return false
+      }
+    }
+    
     // Страны
     if (selectedCountries.length > 0) {
       const matchesCountry = selectedCountries.some(country => 

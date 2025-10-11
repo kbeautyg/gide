@@ -19,6 +19,7 @@ import { PublicHeader } from '@/components/PublicHeader'
 import { PublicFooter } from '@/components/PublicFooter'
 import { TourCard } from '@/components/TourCard'
 import { TourCardSkeleton } from '@/components/TourCardSkeleton'
+import { RecommendedTours } from '@/components/RecommendedTours'
 
 export default function TourDetailPage() {
   const { id } = useParams<{ id: string }>()
@@ -602,6 +603,13 @@ export default function TourDetailPage() {
           </div>
         </div>
       </div>
+
+      {/* Рекомендуемые туры */}
+      <RecommendedTours 
+        currentTourId={tour.id}
+        location={tour.location}
+        category={tour.category}
+      />
 
       <PublicFooter />
     </div>

@@ -5,7 +5,7 @@ import { cn } from '@/lib/utils'
 import { Star, Users, Shield, Clock, ChevronLeft, ChevronRight, ArrowRight } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { useQuery } from '@tanstack/react-query'
-import { toursApi } from '@/lib/api'
+import { toursApi, api } from '@/lib/api'
 import { PublicHeader } from '@/components/PublicHeader'
 import { PublicFooter } from '@/components/PublicFooter'
 import { TourCard } from '@/components/TourCard'
@@ -83,15 +83,34 @@ export default function HomePage() {
     },
   ]
 
-  // Направления (только Азия!)
-  const destinations = [
-    { name: 'Тбилиси', count: 480, image: 'https://images.unsplash.com/photo-1597079858949-19881cff2e1d?w=500&h=500&fit=crop', country: 'Грузия' },
-    { name: 'Стамбул', count: 1240, image: 'https://images.unsplash.com/photo-1527838832700-5059252407fa?w=500&h=500&fit=crop', country: 'Турция' },
-    { name: 'Бангкок', count: 890, image: 'https://images.unsplash.com/photo-1563784462041-5f97ac9523dd?w=500&h=500&fit=crop', country: 'Таиланд' },
-    { name: 'Дубай', count: 650, image: 'https://images.unsplash.com/photo-1512453979798-5ea266f8880c?w=500&h=500&fit=crop', country: 'ОАЭ' },
-    { name: 'Пхукет', count: 720, image: 'https://images.unsplash.com/photo-1589394815804-964ed0be2eb5?w=500&h=500&fit=crop', country: 'Таиланд' },
-    { name: 'Токио', count: 1050, image: 'https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?w=500&h=500&fit=crop', country: 'Япония' },
-  ]
+  // Загружаем направления с реальным подсчетом туров из API
+  const { data: destinationsData } = useQuery({
+    queryKey: ['destinations-with-counts'],
+    queryFn: () => api.get('/destinations/with-counts').then(res => res.data),
+  })
+
+  // Маппинг городов на изображения
+  const cityImages: Record<string, string> = {
+    'Бангкок': 'https://images.unsplash.com/photo-1563784462041-5f97ac9523dd?w=500&h=500&fit=crop',
+    'Пхукет': 'https://images.unsplash.com/photo-1589394815804-964ed0be2eb5?w=500&h=500&fit=crop',
+    'Токио': 'https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?w=500&h=500&fit=crop',
+    'Дубай': 'https://images.unsplash.com/photo-1512453979798-5ea266f8880c?w=500&h=500&fit=crop',
+    'Киото': 'https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?w=500&h=500&fit=crop',
+    'Сеул': 'https://images.unsplash.com/photo-1517154421773-0529f29ea451?w=500&h=500&fit=crop',
+    'Убуд': 'https://images.unsplash.com/photo-1537996194471-e657df975ab4?w=500&h=500&fit=crop',
+    'Ханой': 'https://images.unsplash.com/photo-1583417319070-4a69db38a482?w=500&h=500&fit=crop',
+    'Сингапур': 'https://images.unsplash.com/photo-1525625293386-3f8f99389edd?w=500&h=500&fit=crop',
+  }
+
+  // Формируем массив направлений из API с изображениями
+  const destinations = (destinationsData?.destinations || [])
+    .slice(0, 6)  // Берём топ-6 по количеству туров
+    .map((dest: any) => ({
+      name: dest.city,
+      count: dest.tours_count,
+      image: cityImages[dest.city] || 'https://images.unsplash.com/photo-1488646953014-85cb44e24d5e?w=500&h=500&fit=crop',
+      country: dest.country
+    }))
 
   // Mock данные для отзывов
   const reviews = [
@@ -212,18 +231,13 @@ export default function HomePage() {
         </div>
         
         <div className="container mx-auto px-4 relative z-10">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            className="max-w-4xl mx-auto text-center"
-          >
+          <div className="max-w-4xl mx-auto text-center">
             {/* TypewriterHero - анимированный текст */}
             <TypewriterHero />
             
-            {/* SearchBar с sticky позиционированием */}
+            {/* SearchBar с простым sticky БЕЗ анимации */}
             <div className={cn(
-              "mb-8 mt-10 transition-all duration-300",
+              "mb-8 mt-10",
               showStickySearch && "fixed top-16 left-0 right-0 z-50 bg-white shadow-md border-b"
             )}>
               <div className={cn(
@@ -232,7 +246,7 @@ export default function HomePage() {
                 <SearchBar variant={showStickySearch ? "sticky" : "hero"} />
               </div>
             </div>
-          </motion.div>
+          </div>
         </div>
 
         {/* Scroll indicator */}
@@ -337,7 +351,7 @@ export default function HomePage() {
               </motion.div>
             ))}
           </motion.div>
-        </div>
+              </div>
       </section>
 
       {/* Популярные экскурсии */}
@@ -403,14 +417,14 @@ export default function HomePage() {
             <p className="text-xl text-white/90 mb-8 max-w-2xl mx-auto">
               Опишите что хотите увидеть, и мы создадим индивидуальный тур специально для вас
             </p>
-            <Link to="/request">
-              <Button 
-                size="lg"
+              <Link to="/request">
+                <Button 
+                  size="lg" 
                 className="bg-white text-airbnb-rausch hover:bg-gray-50 font-semibold text-lg px-8 py-6 rounded-full shadow-xl hover:scale-105 transition-transform"
-              >
+                >
                 Оставить заявку на индивидуальный тур
-              </Button>
-            </Link>
+                </Button>
+              </Link>
           </motion.div>
         </div>
       </section>
