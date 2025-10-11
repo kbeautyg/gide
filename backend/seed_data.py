@@ -481,9 +481,7 @@ async def seed_data():
                 "budget": 5000.0,
                 "location": "Пхукет",
                 "preferred_date": today + timedelta(days=3),
-                "guide_id": admin.id,
-                "assigned_date": today + timedelta(days=3),
-                "status": "assigned"
+                "status": "pending"
             },
             {
                 "client_id": admin.id,
@@ -494,9 +492,7 @@ async def seed_data():
                 "budget": 15000.0,
                 "location": "Пхукет",
                 "preferred_date": today + timedelta(days=7),
-                "guide_id": admin.id,
-                "assigned_date": today + timedelta(days=7),
-                "status": "assigned"
+                "status": "pending"
             },
             {
                 "client_id": admin.id,
@@ -507,9 +503,7 @@ async def seed_data():
                 "budget": 8000.0,
                 "location": "Бангкок",
                 "preferred_date": today + timedelta(days=10),
-                "guide_id": admin.id,
-                "assigned_date": today + timedelta(days=10),
-                "status": "assigned"
+                "status": "pending"
             },
             {
                 "client_id": admin.id,
@@ -520,9 +514,7 @@ async def seed_data():
                 "budget": 4000.0,
                 "location": "Бангкок",
                 "preferred_date": today + timedelta(days=14),
-                "guide_id": admin.id,
-                "assigned_date": today + timedelta(days=14),
-                "status": "assigned"
+                "status": "pending"
             },
             {
                 "client_id": admin.id,
@@ -533,22 +525,18 @@ async def seed_data():
                 "budget": 4500.0,
                 "location": "Пхукет",
                 "preferred_date": today + timedelta(days=5),
-                "guide_id": admin.id,
-                "assigned_date": today + timedelta(days=5),
-                "status": "assigned"
+                "status": "pending"
             },
             {
                 "client_id": admin.id,
                 "title": "Трекинг в джунглях Краби",
-                "description": "Поход по джунглям с посещением водопадов, купание в горячих источниках",
+                "description": "Поход по джунглях с посещением водопадов, купание в горячих источниках",
                 "duration_hours": 5,
                 "participants_count": 4,
                 "budget": 12000.0,
                 "location": "Краби",
                 "preferred_date": today + timedelta(days=12),
-                "guide_id": admin.id,
-                "assigned_date": today + timedelta(days=12),
-                "status": "assigned"
+                "status": "pending"
             },
         ]
         
