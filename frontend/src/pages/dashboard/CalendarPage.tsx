@@ -82,6 +82,11 @@ export default function CalendarPage() {
   const requests = scheduleData?.requests || []
   const tours = scheduleData?.tours || []
 
+  // Debug: проверяем что пришло
+  console.log('Calendar data:', { schedules: schedules.length, requests: requests.length, tours: tours.length })
+  console.log('Tours:', tours)
+  console.log('Requests:', requests)
+
   // Статистика
   const totalBookedHours = schedules.reduce((sum: number, s: any) => sum + s.booked_hours, 0)
   const requestsThisMonth = requests.length
