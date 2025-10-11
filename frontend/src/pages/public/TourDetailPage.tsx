@@ -349,7 +349,7 @@ export default function TourDetailPage() {
             <div id="reviews">
               <div className="flex items-center justify-between mb-6">
                 <h2 className="text-2xl font-bold text-gray-900">
-                  Отзывы <span className="text-gray-600 font-normal">({reviews.length})</span>
+                  Отзывы <span className="text-gray-600 font-normal">({tour.reviews_count})</span>
                 </h2>
                 <div className="flex items-center gap-2">
                   <Star size={20} className="fill-gray-900 text-gray-900" />
