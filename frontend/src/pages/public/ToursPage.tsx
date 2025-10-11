@@ -1,7 +1,8 @@
 import { useState } from 'react'
 import { useQuery } from '@tanstack/react-query'
-import { useSearchParams } from 'react-router-dom'
+import { useSearchParams, Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
+import { X } from 'lucide-react'
 import { toursApi } from '@/lib/api'
 import { PublicHeader } from '@/components/PublicHeader'
 import { PublicFooter } from '@/components/PublicFooter'
@@ -10,6 +11,8 @@ import { CategoryChips } from '@/components/CategoryChips'
 import { FilterPanel } from '@/components/FilterPanel'
 import { TourCard } from '@/components/TourCard'
 import { TourCardSkeleton } from '@/components/TourCardSkeleton'
+import { CityHero } from '@/components/CityHero'
+import { LandmarksSection } from '@/components/LandmarksSection'
 
 // Азиатские страны и города (ТОЛЬКО АЗИЯ!)
 const ASIAN_COUNTRIES = [
@@ -49,6 +52,7 @@ export default function ToursPage() {
   // Читаем параметры из URL при загрузке
   const locationParam = searchParams.get('location')
   const guestsParam = searchParams.get('guests')
+  const landmarksParam = searchParams.get('landmarks')
   // const dateStartParam = searchParams.get('date_start')  // TODO: использовать для фильтрации по датам
   // const dateEndParam = searchParams.get('date_end')  // TODO: использовать для фильтрации по датам
 
@@ -60,12 +64,17 @@ export default function ToursPage() {
 
   // Загрузка экскурсий с фильтрами
   const { data: toursData, isLoading } = useQuery({
-    queryKey: ['tours', selectedThemes, selectedCountries, selectedCities, selectedPriceRanges, selectedDurations, selectedRatings, currentPage],
+    queryKey: ['tours', selectedThemes, selectedCountries, selectedCities, selectedPriceRanges, selectedDurations, selectedRatings, currentPage, landmarksParam],
     queryFn: async () => {
       // Преобразуем фильтры в параметры API
       const params: any = {
         page: currentPage,
         page_size: 100,  // Увеличено с 50 до 100
+      }
+
+      // Добавляем landmarks параметр если есть
+      if (landmarksParam) {
+        params.landmarks = landmarksParam
       }
 
       // Цена
@@ -196,6 +205,28 @@ export default function ToursPage() {
     setSelectedRatings([])
   }
 
+  // Определяем город и страну из первого тура (если есть locationParam)
+  const cityInfo = locationParam && sortedTours.length > 0 ? (() => {
+    const firstTour = sortedTours[0]
+    const parts = firstTour.location?.split(', ')
+    if (parts && parts.length === 2) {
+      return {
+        city: parts[0].trim(),
+        country: parts[1].trim(),
+        toursCount: sortedTours.length
+      }
+    }
+    return null
+  })() : null
+
+  // Функция для удаления landmarks фильтра
+  const removeLandmarksFilter = () => {
+    const newParams = new URLSearchParams(searchParams.toString())
+    newParams.delete('landmarks')
+    window.history.pushState({}, '', `?${newParams.toString()}`)
+    window.location.reload()
+  }
+
   return (
     <div className="min-h-screen bg-white">
       <PublicHeader />
@@ -207,28 +238,72 @@ export default function ToursPage() {
         </div>
       </div>
 
+      {/* CityHero - показываем только если есть locationParam */}
+      {cityInfo && (
+        <CityHero 
+          city={cityInfo.city} 
+          country={cityInfo.country} 
+          toursCount={cityInfo.toursCount}
+        />
+      )}
+
       {/* Breadcrumbs */}
       <div className="bg-gray-50 border-b">
         <div className="container mx-auto px-4 py-3">
           <div className="text-sm text-gray-600">
-            <span className="hover:underline cursor-pointer">Главная</span>
-            {' > '}
-            <span className="text-gray-900 font-medium">Все туры</span>
+            <Link to="/" className="hover:underline">Главная</Link>
+            {cityInfo ? (
+              <>
+                {' > '}
+                <span className="text-gray-700">{cityInfo.country}</span>
+                {' > '}
+                <span className="text-gray-900 font-medium">{cityInfo.city}</span>
+              </>
+            ) : (
+              <>
+                {' > '}
+                <span className="text-gray-900 font-medium">Все туры</span>
+              </>
+            )}
           </div>
         </div>
       </div>
 
-      {/* Заголовок страницы */}
-      <section className="bg-white py-12 border-b">
-        <div className="container mx-auto px-4">
-          <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-3">
-            Авторские туры по всему миру
-          </h1>
-          <p className="text-xl text-gray-600">
-            Необычные туры от местных жителей
-          </p>
+      {/* Активный фильтр по достопримечательности */}
+      {landmarksParam && (
+        <div className="bg-blue-50 border-b border-blue-100">
+          <div className="container mx-auto px-4 py-3">
+            <div className="flex items-center gap-2">
+              <span className="text-sm text-gray-700">Фильтр по достопримечательности:</span>
+              <div className="flex items-center gap-2 bg-airbnb-rausch text-white px-3 py-1 rounded-full text-sm font-medium">
+                {landmarksParam}
+                <button onClick={removeLandmarksFilter} className="hover:opacity-80">
+                  <X size={16} />
+                </button>
+              </div>
+            </div>
+          </div>
         </div>
-      </section>
+      )}
+
+      {/* Landmarks Section - показываем только если есть locationParam и нет активного фильтра по landmarks */}
+      {locationParam && !landmarksParam && (
+        <LandmarksSection location={locationParam} />
+      )}
+
+      {/* Заголовок страницы - показываем только если НЕТ cityInfo */}
+      {!cityInfo && (
+        <section className="bg-white py-12 border-b">
+          <div className="container mx-auto px-4">
+            <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-3">
+              Авторские туры по всему миру
+            </h1>
+            <p className="text-xl text-gray-600">
+              Необычные туры от местных жителей
+            </p>
+          </div>
+        </section>
+      )}
 
       {/* Фильтры и сортировка */}
       <div className="bg-white border-b sticky top-[72px] z-20">

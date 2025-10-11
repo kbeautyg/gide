@@ -1,10 +1,11 @@
 """
 API эндпоинты для направлений и достопримечательностей
 """
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, Query
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select, func
-from typing import List
+from typing import List, Optional
+from collections import Counter
 
 from app.core.deps import get_db
 from app.models.destination import Destination
@@ -91,4 +92,80 @@ async def get_landmarks(destination_id: int, db: AsyncSession = Depends(get_db))
     result = await db.execute(stmt)
     landmarks = result.scalars().all()
     return landmarks
+
+
+@router.get("/landmarks-with-counts")
+async def get_landmarks_with_counts(
+    location: Optional[str] = Query(None, description="Город для фильтрации"),
+    db: AsyncSession = Depends(get_db)
+):
+    """
+    Получить список достопримечательностей с реальным подсчетом туров
+    Извлекает landmarks из JSON поля Tour.landmarks и считает количество туров
+    """
+    # Получаем все активные туры для указанного города
+    query = select(Tour.landmarks).where(Tour.active == True)
+    
+    if location:
+        # Фильтруем по городу (поиск в строке location)
+        query = query.where(Tour.location.ilike(f'%{location}%'))
+    
+    result = await db.execute(query)
+    all_landmarks_lists = result.scalars().all()
+    
+    # Собираем все landmarks и считаем их количество
+    landmarks_counter = Counter()
+    for landmarks_list in all_landmarks_lists:
+        if landmarks_list:  # Если список не пустой
+            for landmark in landmarks_list:
+                landmarks_counter[landmark] += 1
+    
+    # Формируем результат
+    landmarks_data = [
+        {
+            "name": landmark,
+            "tours_count": count
+        }
+        for landmark, count in landmarks_counter.most_common()  # Сортируем по популярности
+    ]
+    
+    return {
+        "landmarks": landmarks_data,
+        "total": len(landmarks_data),
+        "location": location
+    }
+
+
+@router.get("/countries-with-counts")
+async def get_countries_with_counts(db: AsyncSession = Depends(get_db)):
+    """
+    Получить список стран с реальным подсчетом количества туров
+    Парсит страну из поля Tour.location ("Город, Страна")
+    """
+    # Получить все активные туры
+    stmt = select(Tour.location).where(Tour.active == True)
+    result = await db.execute(stmt)
+    locations = result.scalars().all()
+    
+    # Парсим страны и считаем туры
+    countries_counter = Counter()
+    for location in locations:
+        parts = location.split(', ')
+        if len(parts) == 2:
+            country = parts[1].strip()
+            countries_counter[country] += 1
+    
+    # Формируем результат
+    countries_data = [
+        {
+            "country": country,
+            "tours_count": count
+        }
+        for country, count in countries_counter.most_common()
+    ]
+    
+    return {
+        "countries": countries_data,
+        "total": len(countries_data)
+    }
 

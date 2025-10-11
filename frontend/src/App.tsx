@@ -19,7 +19,6 @@ import FAQPage from './pages/public/FAQPage'
 import TermsPage from './pages/public/TermsPage'
 import PrivacyPage from './pages/public/PrivacyPage'
 import BecomeGuidePage from './pages/public/BecomeGuidePage'
-import DestinationPage from './pages/public/DestinationPage'
 import JournalPage from './pages/public/JournalPage'
 import ArticlePage from './pages/public/ArticlePage'
 
