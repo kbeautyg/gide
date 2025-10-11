@@ -1,8 +1,7 @@
-import { useMemo } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import { motion } from 'framer-motion'
 import { TourCard } from './TourCard'
-import { toursApi } from '@/lib/api'
+import { api } from '@/lib/api'
 
 interface RecommendedToursProps {
   currentTourId: number
@@ -10,11 +9,11 @@ interface RecommendedToursProps {
   category: string
 }
 
-export function RecommendedTours({ currentTourId, location, category }: RecommendedToursProps) {
+export function RecommendedTours({ currentTourId }: RecommendedToursProps) {
   // Используем новый endpoint для получения похожих туров
   const { data: recommendationsData } = useQuery({
     queryKey: ['tour-recommendations', currentTourId],
-    queryFn: () => toursApi.get(`/tours/${currentTourId}/recommendations`).then(res => res.data),
+    queryFn: () => api.get(`/tours/${currentTourId}/recommendations`).then((res: any) => res.data),
   })
 
   const recommended = recommendationsData?.tours || []

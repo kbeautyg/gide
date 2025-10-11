@@ -44,7 +44,7 @@ export default function ToursPage() {
   const [dateFilter, setDateFilter] = useState('any')
   const [durationFilter, setDurationFilter] = useState('any')
   const [priceFilter, setPriceFilter] = useState('any')
-  const [currentPage, setCurrentPage] = useState(1)
+  const currentPage = 1  // TODO: добавить пагинацию позже
   
   // Читаем параметры из URL при загрузке
   const locationParam = searchParams.get('location')
