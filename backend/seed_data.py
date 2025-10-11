@@ -55,7 +55,7 @@ async def seed_data():
                 phone=system_guide_phone,
                 email="system@thaiguide.pro",
                 name="Каталог ThaiGuide",
-                hashed_password=get_password_hash("system_password_no_login"),
+                hashed_password=get_password_hash("SystemPass123"),
                 role=UserRole.MANAGER,
                 parent_id=admin.id
             )

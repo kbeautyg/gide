@@ -74,6 +74,10 @@ async def get_tours(
     duration_max: Optional[int] = Query(None, description="Максимальная длительность (часы)"),
     rating_min: Optional[float] = Query(None, description="Минимальный рейтинг"),
     type: Optional[str] = Query(None, description="Тип: tours или experiences"),
+    search: Optional[str] = Query(None, description="Полнотекстовый поиск"),
+    themes: Optional[str] = Query(None, description="Фильтр по темам (через запятую)"),
+    tags: Optional[str] = Query(None, description="Фильтр по тегам (через запятую)"),
+    landmarks: Optional[str] = Query(None, description="Фильтр по достопримечательностям (через запятую)"),
     page: int = Query(1, ge=1, description="Номер страницы"),
     page_size: int = Query(12, ge=1, le=100, description="Размер страницы"),
     include_private: bool = Query(False, description="Включать ли приватные экскурсии (только по токену гида)"),
@@ -105,6 +109,10 @@ async def get_tours(
         duration_max=duration_max,
         rating_min=rating_min,
         tour_type=type,
+        search=search,
+        themes=themes,
+        tags=tags,
+        landmarks=landmarks,
         page=page,
         page_size=page_size,
         include_private=include_private,
@@ -405,6 +413,56 @@ async def delete_tour(
         raise HTTPException(status_code=500, detail="Failed to delete tour")
     
     return {"success": True, "message": "Tour deleted successfully"}
+
+
+@router.get("/{tour_id}/recommendations")
+async def get_tour_recommendations(
+    tour_id: int,
+    db: AsyncSession = Depends(get_db)
+):
+    """
+    Получение похожих экскурсий (рекомендации)
+    
+    Возвращает туры с той же категорией или локацией,
+    отсортированные по популярности
+    """
+    similar_tours = await TourService.get_similar_tours(db, tour_id, limit=6)
+    
+    tours_list = []
+    for tour_db in similar_tours:
+        # Получаем статистику
+        bookings_result = await db.execute(
+            select(
+                func.count(Booking.id).label('count'),
+                func.sum(Booking.total_price).label('revenue')
+            ).where(Booking.tour_id == tour_db.id, Booking.payment_status == 'paid')
+        )
+        stats = bookings_result.first()
+        bookings_count = stats.count if stats.count else 0
+        total_revenue = float(stats.revenue) if stats.revenue else 0.0
+        
+        tours_list.append(Tour(
+            id=tour_db.id,
+            share_code=tour_db.share_code,
+            title=tour_db.title,
+            description=tour_db.description,
+            price=tour_db.price,
+            duration=tour_db.duration,
+            location=tour_db.location,
+            category=tour_db.category,
+            photos=tour_db.photos or [],
+            rating=tour_db.rating,
+            reviews_count=tour_db.reviews_count,
+            guide_name=tour_db.guide.name or "Гид",
+            guide_id=tour_db.guide_id,
+            active=tour_db.active,
+            created_at=tour_db.created_at,
+            bookings_count=bookings_count,
+            total_revenue=total_revenue,
+            is_public=tour_db.is_public,
+        ))
+    
+    return {"tours": tours_list, "total": len(tours_list)}
 
 
 @router.get("/categories")

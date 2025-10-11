@@ -35,16 +35,6 @@ const itemVariants = {
 export default function HomePage() {
   const [seasonalIndex, setSeasonalIndex] = useState(0)
   const [reviewIndex, setReviewIndex] = useState(0)
-  const [showStickySearch, setShowStickySearch] = useState(false)
-
-  useEffect(() => {
-    const handleScroll = () => {
-      const heroHeight = window.innerHeight
-      setShowStickySearch(window.scrollY > heroHeight * 0.8)
-    }
-    window.addEventListener('scroll', handleScroll)
-    return () => window.removeEventListener('scroll', handleScroll)
-  }, [])
   
   // Загрузка популярных экскурсий
   const { data: toursData } = useQuery({
@@ -144,6 +134,13 @@ export default function HomePage() {
     <div className="min-h-screen bg-white">
       <PublicHeader />
 
+      {/* Sticky Search Bar - как на странице /tours */}
+      <div className="sticky top-0 z-30 bg-white border-b shadow-sm">
+        <div className="container mx-auto px-4 py-3">
+          <SearchBar variant="sticky" />
+        </div>
+      </div>
+
       {/* Hero Section - 3D объекты фон */}
       <section className="relative text-white overflow-hidden h-[85vh] flex items-center bg-gradient-to-br from-gray-900 via-gray-800 to-black">
         {/* Анимированные blob градиенты */}
@@ -235,16 +232,9 @@ export default function HomePage() {
             {/* TypewriterHero - анимированный текст */}
             <TypewriterHero />
             
-            {/* SearchBar с простым sticky БЕЗ анимации */}
-            <div className={cn(
-              "mb-8 mt-10",
-              showStickySearch && "fixed top-16 left-0 right-0 z-50 bg-white shadow-md border-b"
-            )}>
-              <div className={cn(
-                showStickySearch && "container mx-auto px-4 py-3"
-              )}>
-                <SearchBar variant={showStickySearch ? "sticky" : "hero"} />
-              </div>
+            {/* SearchBar - статичный в hero секции */}
+            <div className="mb-8 mt-10">
+              <SearchBar variant="hero" />
             </div>
           </div>
         </div>
@@ -274,7 +264,7 @@ export default function HomePage() {
       <section className="py-20 bg-white">
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-between mb-8">
-            <h2 className="text-3xl font-bold text-gray-900">Планы на яркую осень 🍁</h2>
+            <h2 className="text-3xl font-bold text-gray-900">Популярные направления 🌏</h2>
             <div className="flex gap-2">
               <button
                 onClick={() => setSeasonalIndex(Math.max(0, seasonalIndex - 1))}

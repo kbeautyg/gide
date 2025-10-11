@@ -44,6 +44,7 @@ export default function ToursPage() {
   const [dateFilter, setDateFilter] = useState('any')
   const [durationFilter, setDurationFilter] = useState('any')
   const [priceFilter, setPriceFilter] = useState('any')
+  const [currentPage, setCurrentPage] = useState(1)
   
   // Читаем параметры из URL при загрузке
   const locationParam = searchParams.get('location')
@@ -59,12 +60,12 @@ export default function ToursPage() {
 
   // Загрузка экскурсий с фильтрами
   const { data: toursData, isLoading } = useQuery({
-    queryKey: ['tours', selectedThemes, selectedCountries, selectedCities, selectedPriceRanges, selectedDurations, selectedRatings],
+    queryKey: ['tours', selectedThemes, selectedCountries, selectedCities, selectedPriceRanges, selectedDurations, selectedRatings, currentPage],
     queryFn: async () => {
       // Преобразуем фильтры в параметры API
       const params: any = {
-        page: 1,
-        page_size: 50,
+        page: currentPage,
+        page_size: 100,  // Увеличено с 50 до 100
       }
 
       // Цена

@@ -29,6 +29,10 @@ class TourService:
         duration_max: Optional[int] = None,
         rating_min: Optional[float] = None,
         tour_type: Optional[str] = None,
+        search: Optional[str] = None,
+        themes: Optional[str] = None,
+        tags: Optional[str] = None,
+        landmarks: Optional[str] = None,
         page: int = 1,
         page_size: int = 12,
         include_private: bool = False,
@@ -93,6 +97,46 @@ class TourService:
             conditions = [Tour.category.ilike(f"%{cat}%") for cat in experience_categories]
             query = query.where(or_(*conditions))
         
+        # Полнотекстовый поиск по нескольким полям
+        if search:
+            search_conditions = [
+                Tour.title.ilike(f"%{search}%"),
+                Tour.description.ilike(f"%{search}%"),
+                Tour.location.ilike(f"%{search}%"),
+                Tour.category.ilike(f"%{search}%"),
+            ]
+            query = query.where(or_(*search_conditions))
+        
+        # Поиск по темам (JSON массив)
+        if themes:
+            themes_list = [t.strip() for t in themes.split(',')]
+            for theme in themes_list:
+                from sqlalchemy.dialects.postgresql import JSONB
+                from sqlalchemy import cast
+                query = query.where(
+                    cast(Tour.themes, JSONB).contains([theme])
+                )
+        
+        # Поиск по тегам (JSON массив)
+        if tags:
+            tags_list = [t.strip() for t in tags.split(',')]
+            for tag in tags_list:
+                from sqlalchemy.dialects.postgresql import JSONB
+                from sqlalchemy import cast
+                query = query.where(
+                    cast(Tour.tags, JSONB).contains([tag])
+                )
+        
+        # Поиск по достопримечательностям
+        if landmarks:
+            landmarks_list = [l.strip() for l in landmarks.split(',')]
+            for landmark in landmarks_list:
+                from sqlalchemy.dialects.postgresql import JSONB
+                from sqlalchemy import cast
+                query = query.where(
+                    cast(Tour.landmarks, JSONB).contains([landmark])
+                )
+        
         # Подсчет общего количества
         count_result = await db.execute(query)
         total = len(count_result.scalars().all())
@@ -122,6 +166,42 @@ class TourService:
             select(Tour).where(Tour.share_code == share_code).options(selectinload(Tour.guide))
         )
         return result.scalar_one_or_none()
+    
+    @staticmethod
+    async def get_similar_tours(
+        db: AsyncSession,
+        tour_id: int,
+        limit: int = 6
+    ) -> List[Tour]:
+        """Получение похожих экскурсий"""
+        from sqlalchemy import and_, or_, func
+        
+        # Получаем текущий тур
+        current_tour = await TourService.get_tour_by_id(db, tour_id)
+        
+        if not current_tour:
+            return []
+        
+        # Ищем туры с той же категорией ИЛИ той же локацией
+        query = select(Tour).where(
+            and_(
+                Tour.active == True,
+                Tour.is_public == True,
+                Tour.id != tour_id,  # Исключаем текущий тур
+                Tour.rating >= 4.5,  # Только высокорейтинговые
+                or_(
+                    Tour.category == current_tour.category,
+                    Tour.location == current_tour.location
+                )
+            )
+        ).options(selectinload(Tour.guide))
+        
+        # Сортируем по популярности (total_bookings)
+        query = query.order_by(Tour.total_bookings.desc(), Tour.rating.desc())
+        query = query.limit(limit)
+        
+        result = await db.execute(query)
+        return result.scalars().all()
     
     @staticmethod
     async def create_tour(

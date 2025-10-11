@@ -5,13 +5,17 @@ import { motion } from 'framer-motion'
 import { 
   MapPin, Clock, Star, Users,
   Heart, Share2, CheckCircle, XCircle, Image as ImageIcon,
-  Shield
+  Shield, Calendar as CalendarIcon
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Badge } from '@/components/ui/badge'
+import { DayPicker } from 'react-day-picker'
+import { format } from 'date-fns'
+import { ru } from 'date-fns/locale'
+import 'react-day-picker/dist/style.css'
 import { toursApi, bookingsApi } from '@/lib/api'
 import type { Tour } from '@/types/tour'
 import { formatRUB } from '@/lib/utils'
@@ -24,6 +28,8 @@ import { RecommendedTours } from '@/components/RecommendedTours'
 export default function TourDetailPage() {
   const { id } = useParams<{ id: string }>()
   const [isFavorite, setIsFavorite] = useState(false)
+  const [selectedDate, setSelectedDate] = useState<Date | undefined>(undefined)
+  const [showCalendar, setShowCalendar] = useState(false)
   const [bookingData, setBookingData] = useState({
     date: '',
     participants: 1,
@@ -158,6 +164,13 @@ export default function TourDetailPage() {
             >
               <img
                 src={photos[0]}
+                srcSet={`
+                  ${photos[0].replace('?w=1200', '?w=400')} 400w,
+                  ${photos[0].replace('?w=1200', '?w=800')} 800w,
+                  ${photos[0]} 1200w,
+                  ${photos[0].replace('?w=1200', '?w=1600')} 1600w
+                `}
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 600px"
                 alt={tour.title}
                 className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
               />
@@ -172,6 +185,12 @@ export default function TourDetailPage() {
               >
                 <img
                   src={photo || `https://images.unsplash.com/photo-${1589394815804 + i}-964ed0be2eb5?w=400&h=250&fit=crop`}
+                  srcSet={photo ? `
+                    ${photo.replace('?w=1200', '?w=300')} 300w,
+                    ${photo.replace('?w=1200', '?w=600')} 600w,
+                    ${photo} 1200w
+                  ` : undefined}
+                  sizes="(max-width: 768px) 50vw, 300px"
                   alt={`${tour.title} ${i + 2}`}
                   className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
                 />
@@ -464,15 +483,55 @@ export default function TourDetailPage() {
                   {/* Форма бронирования */}
                   <div className="space-y-4">
                     <div>
-                      <Label htmlFor="date" className="text-sm font-semibold">Дата экскурсии</Label>
-                      <Input
-                        id="date"
-                        type="date"
-                        className="mt-2 rounded-lg"
-                        value={bookingData.date}
-                        onChange={(e) => setBookingData({ ...bookingData, date: e.target.value })}
-                        min={new Date().toISOString().split('T')[0]}
-                      />
+                      <Label className="text-sm font-semibold">Дата экскурсии</Label>
+                      <div className="relative">
+                        <button
+                          type="button"
+                          onClick={() => setShowCalendar(!showCalendar)}
+                          className="mt-2 w-full flex items-center gap-2 px-4 py-3 border border-gray-300 rounded-lg hover:border-gray-900 transition-colors text-left"
+                        >
+                          <CalendarIcon size={20} className="text-gray-600" />
+                          <span className={selectedDate ? "text-gray-900" : "text-gray-500"}>
+                            {selectedDate ? format(selectedDate, 'dd MMMM yyyy', { locale: ru }) : 'Выберите дату'}
+                          </span>
+                        </button>
+                        
+                        {showCalendar && (
+                          <div className="absolute top-full left-0 mt-2 bg-white border border-gray-200 rounded-lg shadow-xl z-50 p-4">
+                            <DayPicker
+                              mode="single"
+                              selected={selectedDate}
+                              onSelect={(date) => {
+                                setSelectedDate(date)
+                                setBookingData({ ...bookingData, date: date ? format(date, 'yyyy-MM-dd') : '' })
+                                setShowCalendar(false)
+                              }}
+                              disabled={{ before: new Date() }}
+                              locale={ru}
+                              className="rdp"
+                              classNames={{
+                                months: "flex gap-4",
+                                month: "space-y-4",
+                                caption: "flex justify-center pt-1 relative items-center",
+                                caption_label: "text-lg font-semibold",
+                                nav: "space-x-1 flex items-center",
+                                nav_button: "h-8 w-8 bg-transparent p-0 opacity-50 hover:opacity-100 inline-flex items-center justify-center rounded-md border border-gray-300 hover:bg-gray-100",
+                                nav_button_previous: "absolute left-1",
+                                nav_button_next: "absolute right-1",
+                                table: "w-full border-collapse space-y-1",
+                                head_row: "flex",
+                                head_cell: "text-gray-500 rounded-md w-10 font-normal text-sm",
+                                row: "flex w-full mt-2",
+                                cell: "text-center text-sm p-0 relative",
+                                day: "h-10 w-10 p-0 font-normal rounded-md hover:bg-gray-100 inline-flex items-center justify-center",
+                                day_selected: "bg-tropical-ocean text-white hover:bg-tropical-ocean hover:text-white focus:bg-tropical-ocean focus:text-white",
+                                day_today: "bg-gray-100 text-gray-900 font-semibold",
+                                day_disabled: "text-gray-300 opacity-50",
+                              }}
+                            />
+                          </div>
+                        )}
+                      </div>
                     </div>
 
                     <div>
