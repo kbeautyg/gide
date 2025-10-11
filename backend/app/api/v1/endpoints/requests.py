@@ -207,7 +207,35 @@ async def get_my_schedule(
     end = datetime.strptime(end_date, "%Y-%m-%d").date()
     
     schedules = await ScheduleService.get_schedule_range(db, current_user.id, start, end)
-    requests = await ScheduleService.get_requests_for_date_range(db, current_user.id, start, end)
+    
+    # Получаем заявки текущего гида с assigned_date в диапазоне
+    requests_result = await db.execute(
+        select(Request).where(
+            Request.guide_id == current_user.id,
+            Request.assigned_date.isnot(None),
+            Request.assigned_date >= start,
+            Request.assigned_date <= end
+        )
+    )
+    requests_list = requests_result.scalars().all()
+    
+    # Преобразуем в словари
+    requests = []
+    for req in requests_list:
+        requests.append({
+            "id": req.id,
+            "title": req.title,
+            "description": req.description,
+            "assigned_date": req.assigned_date.isoformat() if req.assigned_date else None,
+            "preferred_date": req.preferred_date.isoformat() if req.preferred_date else None,
+            "duration_hours": req.duration_hours,
+            "participants_count": req.participants_count,
+            "budget": req.budget,
+            "location": req.location,
+            "status": req.status,
+            "telegram_username": req.telegram_username,
+            "generated_tour_id": req.generated_tour_id,
+        })
     
     # Загружаем туры гида в заданном диапазоне дат
     tours_result = await db.execute(
@@ -397,7 +425,7 @@ async def accept_request(
     """
     Гид принимает заявку
     
-    Меняет статус на 'in_progress', назначает guide_id
+    Назначает guide_id, assigned_date, статус остаётся 'pending' до создания тура
     """
     # Проверяем что пользователь - гид
     if current_user.role not in [UserRole.MANAGER, UserRole.ADMIN]:
@@ -410,12 +438,13 @@ async def accept_request(
     if not request:
         raise HTTPException(status_code=404, detail="Request not found")
     
-    if request.status != 'pending':
-        raise HTTPException(status_code=400, detail="Request is already processed")
+    if request.guide_id is not None:
+        raise HTTPException(status_code=400, detail="Request is already taken by another guide")
     
-    # Назначаем гида и меняем статус
+    # Назначаем гида и дату, статус остаётся pending
     request.guide_id = current_user.id
-    request.status = 'in_progress'
+    request.assigned_date = request.preferred_date  # Используем preferred_date
+    # Статус остаётся 'pending' - изменится на 'in_progress' при создании тура
     
     await db.commit()
     await db.refresh(request)

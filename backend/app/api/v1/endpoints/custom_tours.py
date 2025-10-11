@@ -78,9 +78,9 @@ async def create_tour_from_request(
     db.add(tour)
     await db.flush()
     
-    # Обновляем заявку
+    # Обновляем заявку - меняем статус на in_progress
     request.generated_tour_id = tour.id
-    request.status = 'completed'
+    request.status = 'in_progress'  # Тур создан, заявка в работе
     
     await db.commit()
     await db.refresh(tour)
