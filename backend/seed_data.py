@@ -437,24 +437,13 @@ async def seed_data():
                         "experience_count": (j % 5) + 1
                     })
             
-            # Добавляем отзывы с проверкой дубликатов
-            reviews_created = 0
+            # Добавляем отзывы порциями для производительности
             for review_data in reviews_data:
-                # Проверяем есть ли уже отзыв от этого пользователя для этого тура
-                existing = await session.execute(
-                    sa.select(Review).where(
-                        Review.tour_id == review_data['tour_id'],
-                        Review.user_name == review_data['user_name'],
-                        Review.text == review_data['text']
-                    )
-                )
-                if not existing.scalar_one_or_none():
-                    review = Review(**review_data)
-                    session.add(review)
-                    reviews_created += 1
+                review = Review(**review_data)
+                session.add(review)
             
             await session.commit()
-            print(f"✅ Создано {reviews_created} новых отзывов (пропущено {len(reviews_data) - reviews_created} существующих)")
+            print(f"✅ Создано {len(reviews_data)} детальных отзывов для {len(tours)} туров")
         
         # Создаём тестовые заявки с датами и привязкой к гиду
         from datetime import date, timedelta

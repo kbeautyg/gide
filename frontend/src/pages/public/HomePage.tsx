@@ -59,26 +59,26 @@ export default function HomePage() {
   const popularTours = toursData?.tours || []
   console.log('Popular tours array:', popularTours, 'Length:', popularTours.length)
 
-  // Mock данные для сезонных идей
+  // Сезонные идеи для осени (ТОЛЬКО АЗИЯ!)
   const seasonalIdeas = [
     {
-      title: 'Оценить стрит-фуд Стамбула',
-      image: 'https://images.unsplash.com/photo-1527838832700-5059252407fa?w=600&h=400&fit=crop',
-      link: '/tours?category=food&location=Стамбул'
+      title: 'Уличная еда Бангкока: 12+ блюд',
+      image: 'https://images.unsplash.com/photo-1578474846511-04ba529f0b88?w=600&h=400&fit=crop',
+      link: '/tours?category=Гастрономия&location=Бангкок'
     },
     {
-      title: 'Изучить древние храмы Тбилиси',
-      image: 'https://images.unsplash.com/photo-1597079858949-19881cff2e1d?w=600&h=400&fit=crop',
-      link: '/tours?category=culture&location=Тбилиси'
+      title: 'Храмы Киото: золотой павильон',
+      image: 'https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?w=600&h=400&fit=crop',
+      link: '/tours?category=Культура&location=Киото'
     },
     {
-      title: 'Покататься на слонах в Чианг Мае',
-      image: 'https://images.unsplash.com/photo-1563784462041-5f97ac9523dd?w=600&h=400&fit=crop',
-      link: '/tours?category=nature&location=Чианг%20Май'
+      title: 'Острова Пхи-Пхи на закате',
+      image: 'https://images.unsplash.com/photo-1552465011-b4e21bf6e79a?w=600&h=400&fit=crop',
+      link: '/tours?category=Природа&location=Пхукет'
     },
     {
-      title: 'Продлить лето в Дубае',
-      image: 'https://images.unsplash.com/photo-1512453979798-5ea266f8880c?w=600&h=400&fit=crop',
+      title: 'Сафари в пустыне Дубая',
+      image: 'https://images.unsplash.com/photo-1451337516015-6b6e9a44a8a3?w=600&h=400&fit=crop',
       link: '/tours?location=Дубай'
     },
   ]
@@ -112,22 +112,22 @@ export default function HomePage() {
       country: dest.country
     }))
 
-  // Mock данные для отзывов
+  // Отзывы с азиатских туров
   const reviews = [
     {
       name: 'Мария',
       photo: 'https://i.pravatar.cc/150?img=1',
       rating: 5,
-      text: 'Это была моя самая лучшая экскурсия в жизни! Михаил — самый чудесный экскурсовод; накормит, напоит и сфотографирует! Было очень интересно слушать информацию...',
-      tour: 'Золотое кольцо Кахетии',
-      experience: 14
+      text: 'Невероятная экскурсия по храмам Бангкока! Гид показал секретные места, рассказал историю каждого храма. Особенно впечатлил лежащий Будда!',
+      tour: 'Три главных храма Бангкока',
+      experience: 7
     },
     {
       name: 'Андрей',
       photo: 'https://i.pravatar.cc/150?img=33',
       rating: 5,
-      text: 'Приятная экскурсия, приятный очаровательный экскурсовод Тамара, хороший водитель, долгий путь. Рекомендую всем!',
-      tour: 'Из Тбилиси — к селу Кanoби',
+      text: 'Лучшая экскурсия! Увидели бухту Майя Бэй, поплавали с рыбками, романтический ужин на закате. Потрясающе!',
+      tour: 'Острова Пхи-Пхи — к селу Кanoби',
       experience: 1
     },
     {
@@ -135,8 +135,8 @@ export default function HomePage() {
       photo: 'https://i.pravatar.cc/150?img=5',
       rating: 5,
       text: 'Замечательный экскурсовод Арчи, очень интересно, подробно рассказывал о всех достопримечательностях. Спасибо!',
-      tour: 'Древняя Мцхета',
-      experience: 9
+      tour: 'teamLab Borderless Токио',
+      experience: 8
     },
   ]
 

@@ -11,25 +11,24 @@ import { FilterPanel } from '@/components/FilterPanel'
 import { TourCard } from '@/components/TourCard'
 import { TourCardSkeleton } from '@/components/TourCardSkeleton'
 
-// Азиатские страны и города
+// Азиатские страны и города (ТОЛЬКО АЗИЯ!)
 const ASIAN_COUNTRIES = [
   { name: 'Таиланд', flag: '🇹🇭' },
-  { name: 'Грузия', flag: '🇬🇪' },
-  { name: 'Турция', flag: '🇹🇷' },
   { name: 'ОАЭ', flag: '🇦🇪' },
   { name: 'Япония', flag: '🇯🇵' },
   { name: 'Корея', flag: '🇰🇷' },
-  { name: 'Китай', flag: '🇨🇳' },
-  { name: 'Индия', flag: '🇮🇳' },
   { name: 'Индонезия', flag: '🇮🇩' },
   { name: 'Вьетнам', flag: '🇻🇳' },
-  { name: 'Малайзия', flag: '🇲🇾' },
   { name: 'Сингапур', flag: '🇸🇬' },
 ]
 
 const ASIAN_CITIES = [
-  'Тбилиси', 'Стамбул', 'Бангкок', 'Пхукет', 'Дубай', 
-  'Токио', 'Сеул', 'Бали', 'Паттайя', 'Ханой', 'Куала-Лумпур',
+  'Бангкок', 'Пхукет', 'Паттайя', 'Краби', 'Чиангмай', 'Ко Тао',
+  'Токио', 'Киото', 'Осака',
+  'Убуд', 'Семиньяк', 'Нуса-Дуа',
+  'Ханой', 'Хошимин', 'Халонг',
+  'Сеул', 'Пусан',
+  'Сингапур', 'Дубай',
 ]
 
 export default function ToursPage() {
@@ -273,8 +272,8 @@ export default function ToursPage() {
               </select>
             </div>
           </div>
-        </div>
-      </div>
+                  </div>
+                </div>
 
       {/* Секция категорий (Рубрики) */}
       <div className="bg-white border-b">
@@ -291,11 +290,11 @@ export default function ToursPage() {
               >
                 Сбросить всё
               </button>
-            </div>
+                </div>
           )}
 
           {/* Фильтр по странам */}
-          <div>
+                <div>
             <h3 className="text-sm font-semibold text-gray-700 mb-2">🌏 Страны</h3>
             <div className="flex gap-2 overflow-x-auto scrollbar-hide pb-2">
               {ASIAN_COUNTRIES.map((country, index) => (
@@ -319,10 +318,10 @@ export default function ToursPage() {
                 </motion.button>
               ))}
             </div>
-          </div>
+                </div>
 
           {/* Фильтр по городам */}
-          <div>
+                <div>
             <h3 className="text-sm font-semibold text-gray-700 mb-2">📍 Города</h3>
             <div className="flex gap-2 overflow-x-auto scrollbar-hide pb-2">
               {ASIAN_CITIES.map((city, index) => (
@@ -345,8 +344,8 @@ export default function ToursPage() {
                   {city}
                 </motion.button>
               ))}
-            </div>
-          </div>
+                  </div>
+                </div>
 
           <div>
             <h2 className="text-xl font-bold text-gray-900 mb-4">Категории</h2>
@@ -379,8 +378,8 @@ export default function ToursPage() {
                   {range}
                 </button>
               ))}
-            </div>
-          </div>
+              </div>
+                </div>
 
           {/* Фильтр по длительности */}
           <div>
@@ -403,8 +402,8 @@ export default function ToursPage() {
                   {duration}
                 </button>
               ))}
-            </div>
-          </div>
+                          </div>
+                        </div>
 
           {/* Фильтр по рейтингу */}
           <div>
@@ -426,8 +425,8 @@ export default function ToursPage() {
                 >
                   ⭐ {rating}
                 </button>
-              ))}
-            </div>
+                  ))}
+                </div>
           </div>
 
           {/* Сброс фильтров */}
@@ -521,7 +520,7 @@ export default function ToursPage() {
         onClose={() => setShowFilters(false)}
         onApply={handleFilterApply}
       />
-
+      
       <PublicFooter />
     </div>
   )
