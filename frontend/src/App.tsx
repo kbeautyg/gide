@@ -63,7 +63,8 @@ function App() {
       <Route path="/tours" element={<ToursPage />} />
       <Route path="/tours/:id" element={<TourDetailPage />} />
       <Route path="/t/:code" element={<TourSharePage />} />
-      <Route path="/destinations/:city" element={<DestinationPage />} />
+      {/* DestinationPage отключена - используем /tours с фильтром */}
+      {/* <Route path="/destinations/:city" element={<DestinationPage />} /> */}
       <Route path="/journal" element={<JournalPage />} />
       <Route path="/journal/:slug" element={<ArticlePage />} />
       <Route path="/about" element={<AboutPage />} />

@@ -323,7 +323,7 @@ export default function HomePage() {
           >
             {destinations.map((dest: any, i: number) => (
               <motion.div key={i} variants={itemVariants}>
-                <Link to={`/destinations/${dest.name.toLowerCase()}`}>
+                <Link to={`/tours?location=${encodeURIComponent(dest.name)}`}>
                   <div className="group relative aspect-square rounded-xl overflow-hidden cursor-pointer">
                     <img
                       src={dest.image}
