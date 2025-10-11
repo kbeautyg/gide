@@ -6,6 +6,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 import pytz
 from datetime import datetime
+import asyncio
 
 from app.core.config import settings
 from app.api.v1.router import api_router
@@ -63,6 +64,18 @@ async def health_check():
 
 # Подключение API роутов
 app.include_router(api_router, prefix="/api/v1")
+
+
+@app.on_event("startup")
+async def startup_event():
+    """Инициализация при старте приложения"""
+    # Проверяем и инициализируем данные если база пустая
+    try:
+        from init_production_data import init_data
+        await init_data()
+    except Exception as e:
+        print(f"⚠️ Предупреждение при инициализации данных: {e}")
+        # Не падаем если что-то пошло не так - приложение должно запуститься
 
 
 if __name__ == "__main__":

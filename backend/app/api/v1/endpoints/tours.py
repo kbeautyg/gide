@@ -133,6 +133,13 @@ async def get_tours(
         bookings_count = stats.count if stats.count else 0
         total_revenue = float(stats.revenue) if stats.revenue else 0.0
         
+        # Считаем РЕАЛЬНОЕ количество отзывов из БД
+        from app.models.review import Review
+        reviews_count_result = await db.execute(
+            select(func.count(Review.id)).where(Review.tour_id == tour_db.id)
+        )
+        real_reviews_count = reviews_count_result.scalar() or 0
+        
         tours_list.append(Tour(
             id=tour_db.id,
             share_code=tour_db.share_code,
@@ -144,7 +151,7 @@ async def get_tours(
             category=tour_db.category,
             photos=tour_db.photos or [],
             rating=tour_db.rating,
-            reviews_count=tour_db.reviews_count,
+            reviews_count=real_reviews_count,  # РЕАЛЬНОЕ количество из БД!
             guide_name=tour_db.guide.name or "Гид",
             guide_id=tour_db.guide_id,
             active=tour_db.active,
