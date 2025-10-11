@@ -467,7 +467,10 @@ async def seed_data():
             await session.commit()
             print(f"✅ Создано {len(reviews_data)} отзывов")
         
-        # Создаём тестовые заявки (проверяем дубликаты по title)
+        # Создаём тестовые заявки с датами и привязкой к гиду
+        from datetime import date, timedelta
+        today = date.today()
+        
         requests_data = [
             {
                 "client_id": admin.id,
@@ -477,7 +480,10 @@ async def seed_data():
                 "participants_count": 2,
                 "budget": 5000.0,
                 "location": "Пхукет",
-                "status": "pending"
+                "preferred_date": today + timedelta(days=3),
+                "guide_id": admin.id,
+                "assigned_date": today + timedelta(days=3),
+                "status": "assigned"
             },
             {
                 "client_id": admin.id,
@@ -487,7 +493,10 @@ async def seed_data():
                 "participants_count": 4,
                 "budget": 15000.0,
                 "location": "Пхукет",
-                "status": "pending"
+                "preferred_date": today + timedelta(days=7),
+                "guide_id": admin.id,
+                "assigned_date": today + timedelta(days=7),
+                "status": "assigned"
             },
             {
                 "client_id": admin.id,
@@ -497,7 +506,10 @@ async def seed_data():
                 "participants_count": 3,
                 "budget": 8000.0,
                 "location": "Бангкок",
-                "status": "pending"
+                "preferred_date": today + timedelta(days=10),
+                "guide_id": admin.id,
+                "assigned_date": today + timedelta(days=10),
+                "status": "assigned"
             },
             {
                 "client_id": admin.id,
@@ -507,7 +519,10 @@ async def seed_data():
                 "participants_count": 2,
                 "budget": 4000.0,
                 "location": "Бангкок",
-                "status": "pending"
+                "preferred_date": today + timedelta(days=14),
+                "guide_id": admin.id,
+                "assigned_date": today + timedelta(days=14),
+                "status": "assigned"
             },
             {
                 "client_id": admin.id,
@@ -517,7 +532,10 @@ async def seed_data():
                 "participants_count": 2,
                 "budget": 4500.0,
                 "location": "Пхукет",
-                "status": "pending"
+                "preferred_date": today + timedelta(days=5),
+                "guide_id": admin.id,
+                "assigned_date": today + timedelta(days=5),
+                "status": "assigned"
             },
             {
                 "client_id": admin.id,
@@ -527,7 +545,10 @@ async def seed_data():
                 "participants_count": 4,
                 "budget": 12000.0,
                 "location": "Краби",
-                "status": "pending"
+                "preferred_date": today + timedelta(days=12),
+                "guide_id": admin.id,
+                "assigned_date": today + timedelta(days=12),
+                "status": "assigned"
             },
         ]
         
