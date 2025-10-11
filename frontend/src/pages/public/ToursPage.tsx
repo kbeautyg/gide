@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import { useSearchParams } from 'react-router-dom'
 import { motion } from 'framer-motion'
@@ -49,8 +49,8 @@ export default function ToursPage() {
   // Читаем параметры из URL при загрузке
   const locationParam = searchParams.get('location')
   const guestsParam = searchParams.get('guests')
-  const dateStartParam = searchParams.get('date_start')
-  const dateEndParam = searchParams.get('date_end')
+  // const dateStartParam = searchParams.get('date_start')  // TODO: использовать для фильтрации по датам
+  // const dateEndParam = searchParams.get('date_end')  // TODO: использовать для фильтрации по датам
 
   // Загрузка категорий
   const { data: categoriesData } = useQuery({

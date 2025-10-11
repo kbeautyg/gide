@@ -332,7 +332,7 @@ export default function HomePage() {
             whileInView="visible"
             viewport={{ once: true }}
           >
-            {destinations.map((dest, i) => (
+            {destinations.map((dest: any, i: number) => (
               <motion.div key={i} variants={itemVariants}>
                 <Link to={`/destinations/${dest.name.toLowerCase()}`}>
                   <div className="group relative aspect-square rounded-xl overflow-hidden cursor-pointer">
