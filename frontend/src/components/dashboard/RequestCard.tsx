@@ -20,12 +20,11 @@ interface RequestCardProps {
     guide_id?: number | null
     assigned_date?: string
   }
-  onTake?: () => void
   onAccept?: () => void
   onViewTour?: (tourId: number) => void
 }
 
-export function RequestCard({ request, onTake, onAccept, onViewTour }: RequestCardProps) {
+export function RequestCard({ request, onAccept, onViewTour }: RequestCardProps) {
   const getStatusBadge = () => {
     // Pending БЕЗ guide_id - новая заявка
     if (request.status === 'pending' && !request.guide_id) {
