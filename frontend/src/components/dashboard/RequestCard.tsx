@@ -17,6 +17,8 @@ interface RequestCardProps {
     telegram_username?: string
     status?: string
     generated_tour_id?: number
+    guide_id?: number | null
+    assigned_date?: string
   }
   onTake?: () => void
   onAccept?: () => void
@@ -25,10 +27,20 @@ interface RequestCardProps {
 
 export function RequestCard({ request, onTake, onAccept, onViewTour }: RequestCardProps) {
   const getStatusBadge = () => {
-    if (request.status === 'pending') {
+    // Pending БЕЗ guide_id - новая заявка
+    if (request.status === 'pending' && !request.guide_id) {
       return (
         <Badge className="bg-yellow-100 text-yellow-800 border-yellow-300">
           Новая заявка
+        </Badge>
+      )
+    }
+    // Pending С guide_id - принята, ждёт создания тура
+    if (request.status === 'pending' && request.guide_id) {
+      return (
+        <Badge className="bg-purple-100 text-purple-800 border-purple-300 gap-1">
+          <CheckCircle size={12} />
+          Принята вами
         </Badge>
       )
     }
@@ -126,16 +138,8 @@ export function RequestCard({ request, onTake, onAccept, onViewTour }: RequestCa
           )}
         </div>
         
-        {request.status === 'pending' && onTake && (
-          <Button 
-            onClick={onTake}
-            className="w-full bg-airbnb-rausch hover:bg-airbnb-rausch/90"
-          >
-            Взять заявку
-          </Button>
-        )}
-        
-        {request.status === 'pending' && onAccept && (
+        {/* Новая заявка БЕЗ guide_id - показываем кнопку Принять */}
+        {request.status === 'pending' && !request.guide_id && onAccept && (
           <Button 
             onClick={onAccept}
             className="w-full bg-green-600 hover:bg-green-700 flex items-center gap-2"
@@ -145,7 +149,19 @@ export function RequestCard({ request, onTake, onAccept, onViewTour }: RequestCa
           </Button>
         )}
 
-        {request.status === 'in_progress' && request.generated_tour_id && onViewTour && (
+        {/* Принятая заявка С guide_id, но без тура - редирект на создание */}
+        {request.status === 'pending' && request.guide_id && !request.generated_tour_id && onAccept && (
+          <Button 
+            onClick={onAccept}
+            className="w-full bg-purple-600 hover:bg-purple-700 flex items-center gap-2"
+          >
+            <Link2 size={16} />
+            Создать тур
+          </Button>
+        )}
+
+        {/* Заявка с созданным туром - показываем кнопку просмотра */}
+        {request.generated_tour_id && onViewTour && (
           <Button 
             onClick={() => onViewTour(request.generated_tour_id!)}
             variant="outline"

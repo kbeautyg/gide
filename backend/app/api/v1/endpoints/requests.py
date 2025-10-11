@@ -152,13 +152,24 @@ async def get_available_requests(
     db: AsyncSession = Depends(get_db),
     current_user: User = Depends(get_current_user)
 ):
-    """Получить список непринятых заявок (для всех авторизованных)"""
+    """
+    Получить список заявок для гида:
+    1. Новые заявки (pending без guide_id) - доступны всем
+    2. Принятые текущим гидом (pending/in_progress с guide_id == current_user.id)
+    """
     # Доступно для всех авторизованных пользователей
     
-    # Заявки без назначенного гида
+    # Заявки: либо без гида, либо принятые текущим гидом
     query = select(Request).where(
-        Request.guide_id.is_(None),
-        Request.status == 'pending'
+        or_(
+            # Новые заявки без гида
+            and_(Request.guide_id.is_(None), Request.status == 'pending'),
+            # Принятые текущим гидом (pending или in_progress)
+            and_(
+                Request.guide_id == current_user.id,
+                Request.status.in_(['pending', 'in_progress'])
+            )
+        )
     ).order_by(Request.created_at.desc())
     
     result = await db.execute(query)
@@ -179,11 +190,11 @@ async def get_available_requests(
             "duration_hours": req.duration_hours,
             "telegram_username": req.telegram_username,
             "status": req.status,
-            "guide_id": req.guide_id,
+            "guide_id": req.guide_id,  # Важно для фронтенда!
             "assigned_date": req.assigned_date.isoformat() if req.assigned_date else None,
             "assigned_to": req.assigned_to,
             "booking_id": req.booking_id,
-            "generated_tour_id": req.generated_tour_id,
+            "generated_tour_id": req.generated_tour_id,  # Важно для кнопки "Посмотреть тур"
             "created_at": req.created_at.isoformat() if req.created_at else None,
             "updated_at": req.updated_at.isoformat() if req.updated_at else None,
         })
