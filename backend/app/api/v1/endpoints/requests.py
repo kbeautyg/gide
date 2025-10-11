@@ -437,6 +437,7 @@ async def accept_request(
     Гид принимает заявку
     
     Назначает guide_id, assigned_date, статус остаётся 'pending' до создания тура
+    Если заявка уже принята этим же гидом - возвращает её без ошибки (идемпотентность)
     """
     # Проверяем что пользователь - гид
     if current_user.role not in [UserRole.MANAGER, UserRole.ADMIN]:
@@ -449,6 +450,11 @@ async def accept_request(
     if not request:
         raise HTTPException(status_code=404, detail="Request not found")
     
+    # Если заявка уже принята текущим гидом - просто вернуть её (идемпотентность)
+    if request.guide_id == current_user.id:
+        return request
+    
+    # Если заявка принята другим гидом - ошибка
     if request.guide_id is not None:
         raise HTTPException(status_code=400, detail="Request is already taken by another guide")
     
