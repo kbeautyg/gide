@@ -15,7 +15,10 @@ from app.models.tour import Tour
 from app.models.review import Review
 from app.models.user import User
 from app.models.destination import Destination
-from tour_generator import apply_category_defaults, generate_what_to_expect, generate_org_details, generate_long_description
+try:
+    from scripts.tour_generator import apply_category_defaults, generate_what_to_expect, generate_org_details, generate_long_description
+except ImportError:
+    from tour_generator import apply_category_defaults, generate_what_to_expect, generate_org_details, generate_long_description
 
 DATABASE_URL = settings.DATABASE_URL.replace("postgresql://", "postgresql+asyncpg://")
 engine = create_async_engine(DATABASE_URL, echo=False)

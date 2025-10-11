@@ -5,7 +5,10 @@ import asyncio
 import sys
 import os
 import random
-sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
+# Добавляем пути для импорта
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
 from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
 from sqlalchemy.orm import sessionmaker
