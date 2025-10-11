@@ -66,18 +66,6 @@ async def health_check():
 app.include_router(api_router, prefix="/api/v1")
 
 
-@app.on_event("startup")
-async def startup_event():
-    """Инициализация при старте приложения"""
-    # Проверяем и инициализируем данные если база пустая
-    try:
-        from init_production_data import init_data
-        await init_data()
-    except Exception as e:
-        print(f"⚠️ Предупреждение при инициализации данных: {e}")
-        # Не падаем если что-то пошло не так - приложение должно запуститься
-
-
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run(

@@ -13,11 +13,9 @@ python -m alembic upgrade head || echo "⚠️ Миграции не приме�
 echo "🔧 Инициализируем БД..."
 python init_db.py || echo "⚠️ Инициализация не прошла (возможно уже есть)"
 
-# УДАЛЕНИЕ И СОЗДАНИЕ ТУРОВ ОТКЛЮЧЕНО - делаем вручную через Railway CLI
-# echo "🗑️  УДАЛЯЕМ ВСЕ СТАРЫЕ ТУРЫ..."
-# python delete_all_tours.py || echo "⚠️ Удаление не прошло"
-# echo "🌱 Создаем 140 азиатских туров..."
-# python seed_data.py || echo "⚠️ Создание не прошло"
+# АВТОМАТИЧЕСКОЕ СОЗДАНИЕ ТУРОВ ПРИ ПЕРВОМ ЗАПУСКЕ
+echo "🌱 Проверяем наличие туров..."
+python init_production_data.py || echo "⚠️ Инициализация пропущена (возможно уже есть данные)"
 
 echo "🚀 Запускаем сервер..."
 python3 -m uvicorn app.main:app --host 0.0.0.0 --port $PORT
