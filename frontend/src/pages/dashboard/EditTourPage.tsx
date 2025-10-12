@@ -1,14 +1,12 @@
 import { useState, useEffect } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
-import { motion } from 'framer-motion'
 import { ArrowLeft, Save, X, Plus } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Badge } from '@/components/ui/badge'
 import { toursApi } from '@/lib/api'
 
@@ -18,6 +16,7 @@ export default function EditTourPage() {
   const queryClient = useQueryClient()
   
   const [formData, setFormData] = useState<any>({})
+  const [activeTab, setActiveTab] = useState('basic')
   const [newPhotoUrl, setNewPhotoUrl] = useState('')
   const [newIncludedItem, setNewIncludedItem] = useState('')
   const [newNotIncludedItem, setNewNotIncludedItem] = useState('')
@@ -160,17 +159,29 @@ export default function EditTourPage() {
         </div>
 
         {/* Табы */}
-        <Tabs defaultValue="basic" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-5">
-            <TabsTrigger value="basic">Основное</TabsTrigger>
-            <TabsTrigger value="photos">Фото</TabsTrigger>
-            <TabsTrigger value="details">Детали</TabsTrigger>
-            <TabsTrigger value="params">Параметры</TabsTrigger>
-            <TabsTrigger value="seo">SEO</TabsTrigger>
-          </TabsList>
+        <div className="space-y-6">
+          <div className="flex gap-2 border-b">
+            {['basic', 'photos', 'details', 'params', 'seo'].map((tab) => (
+              <button
+                key={tab}
+                onClick={() => setActiveTab(tab)}
+                className={`px-4 py-2 font-medium transition ${
+                  activeTab === tab
+                    ? 'border-b-2 border-airbnb-rausch text-airbnb-rausch'
+                    : 'text-gray-600 hover:text-gray-900'
+                }`}
+              >
+                {tab === 'basic' && 'Основное'}
+                {tab === 'photos' && 'Фото'}
+                {tab === 'details' && 'Детали'}
+                {tab === 'params' && 'Параметры'}
+                {tab === 'seo' && 'SEO'}
+              </button>
+            ))}
+          </div>
 
           {/* Основная информация */}
-          <TabsContent value="basic">
+          {activeTab === 'basic' && (
             <Card>
               <CardHeader>
                 <CardTitle>Основная информация</CardTitle>
@@ -290,10 +301,10 @@ export default function EditTourPage() {
                 </div>
               </CardContent>
             </Card>
-          </TabsContent>
+          )}
 
           {/* Фотографии */}
-          <TabsContent value="photos">
+          {activeTab === 'photos' && (
             <Card>
               <CardHeader>
                 <CardTitle>Фотографии</CardTitle>
@@ -331,10 +342,10 @@ export default function EditTourPage() {
                 </div>
               </CardContent>
             </Card>
-          </TabsContent>
+          )}
 
           {/* Детали */}
-          <TabsContent value="details">
+          {activeTab === 'details' && (
             <div className="space-y-6">
               <Card>
                 <CardHeader>
@@ -430,10 +441,10 @@ export default function EditTourPage() {
                 </CardContent>
               </Card>
             </div>
-          </TabsContent>
+          )}
 
           {/* Параметры */}
-          <TabsContent value="params">
+          {activeTab === 'params' && (
             <Card>
               <CardHeader>
                 <CardTitle>Параметры тура</CardTitle>
@@ -495,10 +506,10 @@ export default function EditTourPage() {
                 </div>
               </CardContent>
             </Card>
-          </TabsContent>
+          )}
 
           {/* SEO и метаданные */}
-          <TabsContent value="seo">
+          {activeTab === 'seo' && (
             <div className="space-y-6">
               <Card>
                 <CardHeader>
@@ -519,7 +530,7 @@ export default function EditTourPage() {
                   </div>
                   <div className="flex flex-wrap gap-2">
                     {(formData.landmarks || []).map((landmark: string, index: number) => (
-                      <Badge key={index} variant="secondary" className="gap-1">
+                      <Badge key={index} className="gap-1 bg-gray-100 text-gray-700">
                         {landmark}
                         <button onClick={() => removeLandmark(index)}>
                           <X size={12} />
@@ -549,7 +560,7 @@ export default function EditTourPage() {
                   </div>
                   <div className="flex flex-wrap gap-2">
                     {(formData.tags || []).map((tag: string, index: number) => (
-                      <Badge key={index} variant="secondary" className="gap-1">
+                      <Badge key={index} className="gap-1 bg-gray-100 text-gray-700">
                         {tag}
                         <button onClick={() => removeTag(index)}>
                           <X size={12} />
@@ -597,8 +608,8 @@ export default function EditTourPage() {
                 </CardContent>
               </Card>
             </div>
-          </TabsContent>
-        </Tabs>
+          )}
+        </div>
       </div>
     </div>
   )
