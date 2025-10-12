@@ -53,7 +53,7 @@ export default function TourDetailPage() {
   // Загрузка отзывов
   const { data: reviewsData } = useQuery({
     queryKey: ['reviews', id],
-    queryFn: () => fetch(`/api/v1/reviews/${id}`).then(res => res.json()),
+    queryFn: () => api.get(`/reviews/${id}`).then(res => res.data),
     enabled: !!id,
   })
 
