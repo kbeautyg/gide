@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
+import { useQuery } from '@tanstack/react-query'
 import { useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { Filter, Inbox, CheckCircle2, Clock, Link2 } from 'lucide-react'
@@ -11,7 +11,6 @@ import { api } from '@/lib/api'
 type FilterType = 'all' | 'short' | 'long' | 'pending' | 'in_progress' | 'completed'
 
 export default function RequestsPage() {
-  const queryClient = useQueryClient()
   const navigate = useNavigate()
   const [filter, setFilter] = useState<FilterType>('all')
 
