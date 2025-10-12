@@ -246,7 +246,7 @@ export default function TourDetailPage() {
                   <span className="font-semibold text-lg">{tour.rating.toFixed(2)}</span>
                 </div>
                 <a href="#reviews" className="text-gray-900 underline hover:text-gray-700">
-                  {reviews.length} отзыв{reviews.length === 1 ? '' : reviews.length < 5 ? 'а' : 'ов'}
+                  {tour.reviews_count} отзыв{tour.reviews_count === 1 ? '' : tour.reviews_count < 5 ? 'а' : 'ов'}
                 </a>
               </div>
             </div>
@@ -349,7 +349,7 @@ export default function TourDetailPage() {
             <div id="reviews">
               <div className="flex items-center justify-between mb-6">
                 <h2 className="text-2xl font-bold text-gray-900">
-                  Отзывы <span className="text-gray-600 font-normal">({reviews.length})</span>
+                  Отзывы <span className="text-gray-600 font-normal">({tour?.reviews_count || 0})</span>
                 </h2>
                 <div className="flex items-center gap-2">
                   <Star size={20} className="fill-gray-900 text-gray-900" />
