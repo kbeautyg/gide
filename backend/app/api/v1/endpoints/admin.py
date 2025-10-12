@@ -467,6 +467,141 @@ async def delete_tour(
     return {"message": "Тур удалён", "tour_id": tour_id}
 
 
+@router.post("/tours/bulk-enhance")
+async def bulk_enhance_tours(
+    db: AsyncSession = Depends(get_db),
+    current_user: User = Depends(require_admin)
+):
+    """
+    Массовое дозаполнение туров детальной информацией
+    
+    Доступно: ADMIN, SUPER_ADMIN
+    Находит туры с пустыми полями и заполняет их автоматически
+    """
+    from sqlalchemy import select, or_
+    from app.models.tour import Tour
+    from app.services.rating_service import recalculate_tour_rating
+    import random
+    
+    # Импортируем функции генерации из скрипта
+    import sys
+    import os
+    scripts_path = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(__file__)))), 'scripts')
+    if scripts_path not in sys.path:
+        sys.path.insert(0, scripts_path)
+    
+    from enhance_existing_tours import (
+        generate_detailed_description,
+        generate_what_to_expect,
+        generate_organizational_details,
+        generate_included,
+        generate_not_included,
+        generate_meeting_point,
+        generate_photos,
+        generate_landmarks_and_tags
+    )
+    
+    # Получаем туры с пустыми полями
+    result = await db.execute(
+        select(Tour).where(
+            or_(
+                Tour.organizational_details == None,
+                Tour.organizational_details == "",
+                Tour.what_to_expect == None,
+                Tour.what_to_expect == "",
+            )
+        )
+    )
+    tours = result.scalars().all()
+    
+    if not tours:
+        return {
+            "message": "Все туры уже заполнены!",
+            "updated_count": 0,
+            "total_checked": 0
+        }
+    
+    updated_count = 0
+    
+    for tour in tours:
+        # Дозаполняем поля
+        if not tour.description or len(tour.description) < 200:
+            tour.description = generate_detailed_description(
+                tour.title, tour.location, tour.category, tour.description or ""
+            )
+        
+        if not tour.what_to_expect or len(tour.what_to_expect) < 100:
+            tour.what_to_expect = generate_what_to_expect(
+                tour.title, tour.location, tour.category, tour.duration
+            )
+        
+        if not tour.organizational_details or len(tour.organizational_details) < 100:
+            tour.organizational_details = generate_organizational_details(
+                tour.category, tour.location, tour.duration, tour.price
+            )
+        
+        if not tour.included or len(tour.included) == 0:
+            tour.included = generate_included(tour.category, tour.price)
+        
+        if not tour.not_included or len(tour.not_included) == 0:
+            tour.not_included = generate_not_included(tour.category)
+        
+        if not tour.meeting_point:
+            tour.meeting_point = generate_meeting_point(tour.location)
+        
+        if not tour.photos or len(tour.photos) < 5:
+            existing_photos = tour.photos if tour.photos else []
+            new_photos = generate_photos(tour.title, tour.location, tour.category)
+            all_photos = list(dict.fromkeys(existing_photos + new_photos))
+            tour.photos = all_photos[:8]
+        
+        if not tour.landmarks or len(tour.landmarks) == 0:
+            landmarks, tags = generate_landmarks_and_tags(tour.title, tour.category, tour.location)
+            tour.landmarks = landmarks
+            if not tour.tags or len(tour.tags) == 0:
+                tour.tags = tags
+        
+        if not tour.languages or len(tour.languages) == 0:
+            tour.languages = ["Русский", "Английский"]
+        
+        if not tour.max_group_size:
+            tour.max_group_size = 8 if "VIP" not in tour.title else 6
+        
+        if not tour.min_age:
+            tour.min_age = 0 if tour.category != "Развлечения" else 18
+        
+        if not tour.difficulty_level:
+            difficulty_map = {
+                "Природа": "Средняя",
+                "Приключения": "Сложная",
+            }
+            tour.difficulty_level = difficulty_map.get(tour.category, "Лёгкая")
+        
+        if not tour.long_description:
+            tour.long_description = f"{tour.description}\n\nЭта экскурсия — отличный выбор для тех, кто хочет познать {tour.location} во всей красе. Опытный гид, продуманный маршрут и внимание к деталям сделают ваше путешествие незабываемым."
+        
+        if not tour.formats or len(tour.formats) == 0:
+            tour.formats = ["Групповые туры", "Индивидуальные туры"]
+        
+        # Убедимся что тур публичный
+        if not tour.is_public:
+            tour.is_public = True
+        
+        # Пересчитываем рейтинг
+        await recalculate_tour_rating(db, tour.id)
+        
+        updated_count += 1
+    
+    # Сохраняем все изменения
+    await db.commit()
+    
+    return {
+        "message": f"Успешно дозаполнено {updated_count} туров!",
+        "updated_count": updated_count,
+        "total_checked": len(tours)
+    }
+
+
 # === УПРАВЛЕНИЕ ГИДАМИ ===
 
 @router.get("/guides")

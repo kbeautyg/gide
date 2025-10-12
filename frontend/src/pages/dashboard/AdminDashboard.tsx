@@ -1,7 +1,8 @@
-import { useQuery } from '@tanstack/react-query'
+import { useState } from 'react'
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
-import { MapPin, Users, DollarSign, Calendar, Edit, Trash2, CheckCircle, XCircle } from 'lucide-react'
+import { MapPin, Users, DollarSign, Calendar, Edit, Trash2, CheckCircle, XCircle, Sparkles } from 'lucide-react'
 import { api } from '@/lib/api'
 
 interface AdminStats {
@@ -12,6 +13,9 @@ interface AdminStats {
 }
 
 export default function AdminDashboard() {
+  const queryClient = useQueryClient()
+  const [enhancing, setEnhancing] = useState(false)
+  
   // Загрузка статистики
   const { data: stats, isLoading: statsLoading } = useQuery({
     queryKey: ['admin', 'stats'],
@@ -32,6 +36,27 @@ export default function AdminDashboard() {
 
   const tours = toursData?.tours || []
   const guides = guidesData?.guides || []
+  
+  // Массовое дозаполнение туров
+  const enhanceMutation = useMutation({
+    mutationFn: () => api.post('/admin/tours/bulk-enhance'),
+    onSuccess: (response) => {
+      queryClient.invalidateQueries({ queryKey: ['admin', 'tours'] })
+      alert(`✅ ${response.data.message}\n\nОбновлено туров: ${response.data.updated_count}`)
+      setEnhancing(false)
+    },
+    onError: (error: any) => {
+      alert(`❌ Ошибка: ${error.response?.data?.detail || 'Не удалось обновить туры'}`)
+      setEnhancing(false)
+    },
+  })
+  
+  const handleBulkEnhance = () => {
+    if (confirm('Запустить автоматическое дозаполнение всех туров с пустыми полями?\n\nЭто может занять несколько минут.')) {
+      setEnhancing(true)
+      enhanceMutation.mutate()
+    }
+  }
 
   const formatRUB = (amount: number) => {
     return new Intl.NumberFormat('ru-RU', {
@@ -43,9 +68,19 @@ export default function AdminDashboard() {
 
   return (
     <div className="space-y-6">
-      <div>
-        <h1 className="text-3xl font-bold text-gray-900">Админ-панель</h1>
-        <p className="text-gray-600">Управление контентом и статистикой платформы</p>
+      <div className="flex items-center justify-between">
+        <div>
+          <h1 className="text-3xl font-bold text-gray-900">Админ-панель</h1>
+          <p className="text-gray-600">Управление контентом и статистикой платформы</p>
+        </div>
+        <Button
+          onClick={handleBulkEnhance}
+          disabled={enhancing}
+          className="bg-airbnb-rausch hover:bg-airbnb-rausch/90"
+        >
+          <Sparkles size={16} className="mr-2" />
+          {enhancing ? 'Обработка...' : 'Дозаполнить все туры'}
+        </Button>
       </div>
 
       {/* Статистика */}
