@@ -31,10 +31,10 @@ async def create_tour_from_request(
     """
     Создать кастомный тур из заявки
     
-    Только гид, который принял заявку, может создать тур
+    Любой гид может принять заявку и создать тур
+    После создания тура заявка автоматически принимается этим гидом
     """
-    # Любой авторизованный пользователь может создать тур из принятой заявки
-    # Основная проверка - это guide_id == current_user.id ниже
+    from app.services.schedule_service import ScheduleService
     
     # Получаем заявку
     result = await db.execute(select(Request).where(Request.id == request_id))
@@ -43,11 +43,13 @@ async def create_tour_from_request(
     if not request:
         raise HTTPException(status_code=404, detail="Request not found")
     
-    if request.guide_id != current_user.id:
-        raise HTTPException(status_code=403, detail="You can only create tours from your own requests")
+    # Проверка: если заявка уже имеет guide_id и это НЕ текущий пользователь - ошибка
+    if request.guide_id is not None and request.guide_id != current_user.id:
+        raise HTTPException(status_code=403, detail="This request is already taken by another guide")
     
+    # Проверка: если тур уже создан - ошибка
     if request.generated_tour_id:
-        raise HTTPException(status_code=400, detail="Tour already created for this request")
+        raise HTTPException(status_code=400, detail=f"Tour already created for this request (tour_id: {request.generated_tour_id})")
     
     # Генерируем уникальный share_code
     share_code = generate_share_code()
@@ -78,9 +80,23 @@ async def create_tour_from_request(
     db.add(tour)
     await db.flush()
     
-    # Обновляем заявку - меняем статус на in_progress
+    # Обновляем заявку - устанавливаем guide_id, generated_tour_id и меняем статус
+    request.guide_id = current_user.id  # Устанавливаем гида ТОЛЬКО при создании тура
     request.generated_tour_id = tour.id
     request.status = 'in_progress'  # Тур создан, заявка в работе
+    
+    # Бронируем часы в расписании гида если указана дата
+    if request.preferred_date:
+        try:
+            await ScheduleService.book_hours(
+                db=db,
+                guide_id=current_user.id,
+                target_date=request.preferred_date,
+                hours=request.duration_hours
+            )
+        except ValueError as e:
+            # Если не хватает времени - всё равно создаём тур, но предупреждаем
+            print(f"Warning: Could not book hours for tour {tour.id}: {e}")
     
     await db.commit()
     await db.refresh(tour)
@@ -88,7 +104,7 @@ async def create_tour_from_request(
     return {
         "tour_id": tour.id,
         "share_code": tour.share_code,
-        "share_link": f"/tours/{tour.share_code}",
+        "share_link": f"/t/{tour.share_code}",  # Правильный формат ссылки
         "tour": {
             "id": tour.id,
             "title": tour.title,

@@ -31,6 +31,10 @@ export default function CalendarPage() {
         }
       }).then(res => res.data)
     },
+    // Обновляем календарь каждые 30 секунд чтобы показать актуальные данные
+    refetchInterval: 30000,
+    // Перезагружаем при фокусе на окне
+    refetchOnWindowFocus: true,
   })
 
   // Перенос заявки

@@ -21,18 +21,11 @@ export default function RequestsPage() {
     queryFn: () => api.get('/requests/available').then(res => res.data),
   })
 
-  // Принять заявку и перейти к созданию тура
-  const acceptMutation = useMutation({
-    mutationFn: (requestId: number) => 
-      api.post(`/requests/${requestId}/accept`),
-    onSuccess: (_, requestId) => {
-      queryClient.invalidateQueries({ queryKey: ['requests', 'available'] })
-      navigate(`/dashboard/tours/create-from-request/${requestId}`)
-    },
-    onError: (error: any) => {
-      alert(`❌ ${error.response?.data?.detail || 'Ошибка при принятии заявки'}`)
-    }
-  })
+  // Перейти к созданию тура БЕЗ принятия заявки
+  // Заявка будет принята автоматически только после успешного создания тура
+  const handleAcceptRequest = (requestId: number) => {
+    navigate(`/dashboard/tours/create-from-request/${requestId}`)
+  }
 
   const requests = requestsData?.requests || []
 
@@ -148,7 +141,7 @@ export default function RequestsPage() {
             >
               <RequestCard 
                 request={request}
-                onAccept={() => acceptMutation.mutate(request.id)}
+                onAccept={() => handleAcceptRequest(request.id)}
                 onViewTour={(tourId) => navigate(`/dashboard/my-tours#tour-${tourId}`)}
               />
             </motion.div>
