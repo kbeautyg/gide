@@ -317,6 +317,8 @@ def generate_landmarks_and_tags(title, category, location):
 
 async def enhance_tours():
     """Дозаполняет первые 100 туров с неполными данными"""
+    from app.services.rating_service import recalculate_tour_rating
+    
     async with async_session() as session:
         print("=" * 80)
         print("  ДОЗАПОЛНЕНИЕ ТУРОВ ДЕТАЛЬНОЙ ИНФОРМАЦИЕЙ")
@@ -419,6 +421,9 @@ async def enhance_tours():
                 tour.formats = ["Групповые туры", "Индивидуальные туры"]
             
             updated += 1
+            
+            # Пересчитываем рейтинг на основе реальных отзывов
+            await recalculate_tour_rating(session, tour.id)
             
             # Коммитим каждые 10 туров
             if updated % 10 == 0:

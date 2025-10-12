@@ -46,28 +46,18 @@ async def create_review(
     review: ReviewCreate,
     db: AsyncSession = Depends(get_db)
 ):
-    """Создать отзыв"""
+    """Создать отзыв и автоматически пересчитать рейтинг тура"""
+    from app.services.rating_service import recalculate_tour_rating
+    
+    # Создаем отзыв
     db_review = Review(**review.dict())
     db.add(db_review)
     await db.commit()
     await db.refresh(db_review)
     
-    # Обновляем рейтинг тура
-    from app.models.tour import Tour
-    from sqlalchemy import func
-    
-    tour_result = await db.execute(select(Tour).where(Tour.id == review.tour_id))
-    tour = tour_result.scalar_one_or_none()
-    
-    if tour:
-        reviews_result = await db.execute(select(Review).where(Review.tour_id == review.tour_id))
-        all_reviews = reviews_result.scalars().all()
-        
-        if all_reviews:
-            avg_rating = sum([r.rating for r in all_reviews]) / len(all_reviews)
-            tour.rating = round(avg_rating, 2)
-            tour.reviews_count = len(all_reviews)
-            await db.commit()
+    # Автоматически пересчитываем рейтинг тура
+    await recalculate_tour_rating(db, review.tour_id)
+    await db.commit()
     
     return db_review
 
