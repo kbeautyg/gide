@@ -277,10 +277,20 @@ export default function TourDetailPage() {
             )}
 
             {/* Организационные детали */}
+            {(tour.organizational_details || (tour.included && tour.included.length > 0) || (tour.not_included && tour.not_included.length > 0) || tour.meeting_point || tour.max_group_size || tour.min_age || tour.difficulty_level || (tour.languages && tour.languages.length > 0)) && (
             <div>
               <h2 className="text-2xl font-bold text-gray-900 mb-4">Организационные детали</h2>
               <Card className="border-0 shadow-airbnb">
                 <CardContent className="p-8">
+                  {/* Текстовое описание организационных деталей */}
+                  {tour.organizational_details && (
+                    <div className="mb-6 pb-6 border-b">
+                      <p className="text-gray-700 leading-relaxed whitespace-pre-line">
+                        {tour.organizational_details}
+                      </p>
+                    </div>
+                  )}
+
                   <div className="grid md:grid-cols-2 gap-8">
                     {/* Что включено */}
                     {tour.included && tour.included.length > 0 && (
@@ -314,6 +324,7 @@ export default function TourDetailPage() {
                   </div>
 
                   {/* Дополнительная информация */}
+                  {(tour.meeting_point || tour.max_group_size || tour.min_age || tour.difficulty_level || (tour.languages && tour.languages.length > 0)) && (
                   <div className="mt-6 pt-6 border-t grid md:grid-cols-2 gap-4 text-sm">
                     {tour.meeting_point && (
                       <div>
@@ -341,9 +352,11 @@ export default function TourDetailPage() {
                       </div>
                     )}
                   </div>
+                  )}
                 </CardContent>
               </Card>
             </div>
+            )}
 
             {/* Отзывы */}
             <div id="reviews">

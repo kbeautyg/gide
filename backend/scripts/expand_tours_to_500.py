@@ -109,7 +109,7 @@ async def generate_tour_variations():
                     category=base_tour.category,
                     photos=base_tour.photos if base_tour.photos else [],
                     rating=new_rating,
-                    reviews_count=0,  # Всегда 0, реальное количество считается из таблицы reviews
+                    reviews_count=random.randint(100, 600),
                     what_to_expect=base_tour.what_to_expect,
                     organizational_details=base_tour.organizational_details,
                     included=base_tour.included if base_tour.included else [],
