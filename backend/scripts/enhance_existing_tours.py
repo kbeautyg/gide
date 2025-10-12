@@ -325,25 +325,20 @@ async def enhance_tours():
         print("=" * 80)
         print()
         
-        # Получаем туры с пустыми полями или все подряд
+        # Получаем ВСЕ туры с пустыми organizational_details или другими важными полями
         result = await session.execute(
             select(Tour).where(
                 or_(
-                    Tour.what_to_expect == None,
-                    Tour.what_to_expect == "",
                     Tour.organizational_details == None,
                     Tour.organizational_details == "",
-                    Tour.included == None,
-                    Tour.not_included == None
                 )
-            ).limit(100)
+            )
         )
         tours = result.scalars().all()
         
         if not tours:
-            print("✅ Не найдено туров с пустыми полями. Загружаю первые 100 туров...")
-            result = await session.execute(select(Tour).limit(100))
-            tours = result.scalars().all()
+            print("✅ Все туры уже заполнены!")
+            return
         
         print(f"📊 Найдено {len(tours)} туров для обновления\n")
         

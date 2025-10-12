@@ -247,7 +247,7 @@ async def get_tour_details(
     current_user: User = Depends(require_admin)
 ):
     """
-    Детали тура для редактирования
+    Полная информация о туре для редактирования
     
     Доступно: ADMIN, SUPER_ADMIN
     """
@@ -261,7 +261,49 @@ async def get_tour_details(
     if not tour:
         raise HTTPException(status_code=404, detail="Тур не найден")
     
-    return tour
+    # Возвращаем все поля тура
+    return {
+        "id": tour.id,
+        "guide_id": tour.guide_id,
+        "share_code": tour.share_code,
+        "title": tour.title,
+        "description": tour.description,
+        "price": tour.price,
+        "duration": tour.duration,
+        "location": tour.location,
+        "category": tour.category,
+        "start_date": tour.start_date.isoformat() if tour.start_date else None,
+        "end_date": tour.end_date.isoformat() if tour.end_date else None,
+        "photos": tour.photos or [],
+        "rating": tour.rating,
+        "reviews_count": tour.reviews_count,
+        "what_to_expect": tour.what_to_expect,
+        "organizational_details": tour.organizational_details,
+        "included": tour.included or [],
+        "not_included": tour.not_included or [],
+        "meeting_point": tour.meeting_point,
+        "languages": tour.languages or [],
+        "max_group_size": tour.max_group_size,
+        "min_age": tour.min_age,
+        "difficulty_level": tour.difficulty_level,
+        "landmarks": tour.landmarks or [],
+        "tags": tour.tags or [],
+        "themes": tour.themes or [],
+        "formats": tour.formats or [],
+        "seo_title": tour.seo_title,
+        "seo_description": tour.seo_description,
+        "long_description": tour.long_description,
+        "total_bookings": tour.total_bookings,
+        "views_count": tour.views_count,
+        "has_discount": tour.has_discount,
+        "is_new": tour.is_new,
+        "discount_percentage": tour.discount_percentage,
+        "original_price": tour.original_price,
+        "active": tour.active,
+        "is_public": tour.is_public,
+        "created_at": tour.created_at.isoformat() if tour.created_at else None,
+        "updated_at": tour.updated_at.isoformat() if tour.updated_at else None,
+    }
 
 
 class TourUpdateRequest(BaseModel):
@@ -272,6 +314,46 @@ class TourUpdateRequest(BaseModel):
     duration: Optional[int] = None
     location: Optional[str] = None
     category: Optional[str] = None
+    active: Optional[bool] = None
+    is_public: Optional[bool] = None
+
+
+class TourFullUpdateRequest(BaseModel):
+    """Запрос на полное обновление всех полей тура"""
+    # Базовые поля
+    title: Optional[str] = None
+    description: Optional[str] = None
+    price: Optional[float] = None
+    duration: Optional[int] = None
+    location: Optional[str] = None
+    category: Optional[str] = None
+    photos: Optional[List[str]] = None
+    start_date: Optional[str] = None
+    end_date: Optional[str] = None
+    
+    # Контентные блоки
+    what_to_expect: Optional[str] = None
+    organizational_details: Optional[str] = None
+    included: Optional[List[str]] = None
+    not_included: Optional[List[str]] = None
+    meeting_point: Optional[str] = None
+    
+    # Параметры
+    languages: Optional[List[str]] = None
+    max_group_size: Optional[int] = None
+    min_age: Optional[int] = None
+    difficulty_level: Optional[str] = None
+    
+    # SEO и теги
+    landmarks: Optional[List[str]] = None
+    tags: Optional[List[str]] = None
+    themes: Optional[List[str]] = None
+    formats: Optional[List[str]] = None
+    long_description: Optional[str] = None
+    seo_title: Optional[str] = None
+    seo_description: Optional[str] = None
+    
+    # Статус
     active: Optional[bool] = None
     is_public: Optional[bool] = None
 
@@ -307,6 +389,55 @@ async def update_tour(
     await db.refresh(tour)
     
     return {"message": "Тур обновлён", "tour": tour}
+
+
+@router.put("/tours/{tour_id}/full-update")
+async def full_update_tour(
+    tour_id: int,
+    tour_data: TourFullUpdateRequest,
+    db: AsyncSession = Depends(get_db),
+    current_user: User = Depends(require_admin)
+):
+    """
+    Полное обновление всех полей тура
+    
+    Доступно: ADMIN, SUPER_ADMIN
+    Обновляет только переданные поля (partial update)
+    """
+    from sqlalchemy import select
+    from app.models.tour import Tour
+    from datetime import datetime
+    
+    query = select(Tour).where(Tour.id == tour_id)
+    result = await db.execute(query)
+    tour = result.scalar_one_or_none()
+    
+    if not tour:
+        raise HTTPException(status_code=404, detail="Тур не найден")
+    
+    # Обновляем только переданные поля
+    update_data = tour_data.dict(exclude_unset=True)
+    
+    # Конвертируем даты если они строки
+    if 'start_date' in update_data and update_data['start_date']:
+        try:
+            update_data['start_date'] = datetime.fromisoformat(update_data['start_date'].replace('Z', '+00:00')).date()
+        except:
+            pass
+    
+    if 'end_date' in update_data and update_data['end_date']:
+        try:
+            update_data['end_date'] = datetime.fromisoformat(update_data['end_date'].replace('Z', '+00:00')).date()
+        except:
+            pass
+    
+    for field, value in update_data.items():
+        setattr(tour, field, value)
+    
+    await db.commit()
+    await db.refresh(tour)
+    
+    return {"message": "Тур полностью обновлён", "tour": tour}
 
 
 @router.delete("/tours/{tour_id}")

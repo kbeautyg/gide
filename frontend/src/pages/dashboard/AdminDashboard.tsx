@@ -172,7 +172,7 @@ export default function AdminDashboard() {
                           <Button 
                             variant="outline" 
                             size="sm"
-                            onClick={() => alert(`Редактировать тур #${tour.id}`)}
+                            onClick={() => window.location.href = `/dashboard/tours/edit/${tour.id}`}
                           >
                             <Edit size={14} className="mr-1" />
                             Редактировать

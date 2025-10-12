@@ -68,19 +68,8 @@ export default function MyToursPage() {
   }
 
   const handleEdit = (tour: any) => {
-    setEditData({
-      id: tour.id,
-      title: tour.title,
-      description: tour.description,
-      price: tour.price,
-      duration: tour.duration,
-      location: tour.location,
-      category: tour.category,
-      photos: tour.photos || [],
-      start_date: tour.start_date || null,
-      end_date: tour.end_date || null,
-    })
-    setEditOpen(true)
+    // Переходим на страницу полного редактирования
+    navigate(`/dashboard/tours/edit/${tour.id}`)
   }
 
   const handleDelete = (tourId: number, title: string) => {

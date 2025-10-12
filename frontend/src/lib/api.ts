@@ -143,6 +143,40 @@ export const toursApi = {
     end_date: string
   }) => api.put(`/tours/${id}/dates`, dates),
   
+  // Полное обновление всех полей тура (для админов)
+  fullUpdate: (id: number, tour: Partial<{
+    title: string
+    description: string
+    price: number
+    duration: number
+    location: string
+    category: string
+    photos: string[]
+    start_date: string | null
+    end_date: string | null
+    what_to_expect: string
+    organizational_details: string
+    included: string[]
+    not_included: string[]
+    meeting_point: string
+    languages: string[]
+    max_group_size: number
+    min_age: number
+    difficulty_level: string
+    landmarks: string[]
+    tags: string[]
+    themes: string[]
+    formats: string[]
+    long_description: string
+    seo_title: string
+    seo_description: string
+    active: boolean
+    is_public: boolean
+  }>) => api.put(`/admin/tours/${id}/full-update`, tour),
+  
+  // Получить полную информацию о туре для редактирования
+  getFullDetails: (id: number) => api.get(`/admin/tours/${id}`),
+  
   delete: (id: number) => api.delete(`/tours/${id}`),
 }
 
