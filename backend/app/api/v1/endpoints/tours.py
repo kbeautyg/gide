@@ -307,6 +307,7 @@ async def create_tour(
         end_date=tour.end_date,
     )
     
+    # Для новой экскурсии отзывов пока нет
     return Tour(
         id=new_tour_db.id,
         share_code=new_tour_db.share_code,
@@ -318,7 +319,7 @@ async def create_tour(
         category=new_tour_db.category,
         photos=new_tour_db.photos or [],
         rating=new_tour_db.rating,
-        reviews_count=new_tour_db.reviews_count,
+        reviews_count=0,  # Новая экскурсия - отзывов нет
         guide_name="Текущий гид",
         guide_id=new_tour_db.guide_id,
         bookings_count=0,
