@@ -37,6 +37,30 @@ class Tour(BaseModel):
     bookings_count: int = Field(default=0, description="Количество бронирований")
     total_revenue: float = Field(default=0.0, description="Общий доход с экскурсии")
     is_public: bool = Field(default=False, description="Опубликована ли экскурсия в каталоге")
+    
+    # Контентные блоки
+    what_to_expect: Optional[str] = Field(None, description="Что вас ожидает")
+    organizational_details: Optional[str] = Field(None, description="Организационные детали")
+    included: Optional[List[str]] = Field(default_factory=list, description="Что включено")
+    not_included: Optional[List[str]] = Field(default_factory=list, description="Что НЕ включено")
+    meeting_point: Optional[str] = Field(None, description="Точка встречи")
+    
+    # Параметры
+    languages: Optional[List[str]] = Field(default_factory=list, description="Языки")
+    max_group_size: Optional[int] = Field(None, description="Макс. размер группы")
+    min_age: Optional[int] = Field(None, description="Минимальный возраст")
+    difficulty_level: Optional[str] = Field(None, description="Сложность")
+    
+    # Метаданные
+    landmarks: Optional[List[str]] = Field(default_factory=list, description="Достопримечательности")
+    tags: Optional[List[str]] = Field(default_factory=list, description="Теги")
+    themes: Optional[List[str]] = Field(default_factory=list, description="Темы")
+    formats: Optional[List[str]] = Field(default_factory=list, description="Форматы")
+    
+    # SEO
+    seo_title: Optional[str] = Field(None, description="SEO заголовок")
+    seo_description: Optional[str] = Field(None, description="SEO описание")
+    long_description: Optional[str] = Field(None, description="Подробное описание")
 
 
 class TourCreate(BaseModel):
@@ -159,6 +183,26 @@ async def get_tours(
             bookings_count=bookings_count,
             total_revenue=total_revenue,
             is_public=tour_db.is_public,
+            # Контентные блоки
+            what_to_expect=tour_db.what_to_expect,
+            organizational_details=tour_db.organizational_details,
+            included=tour_db.included or [],
+            not_included=tour_db.not_included or [],
+            meeting_point=tour_db.meeting_point,
+            # Параметры
+            languages=tour_db.languages or [],
+            max_group_size=tour_db.max_group_size,
+            min_age=tour_db.min_age,
+            difficulty_level=tour_db.difficulty_level,
+            # Метаданные
+            landmarks=tour_db.landmarks or [],
+            tags=tour_db.tags or [],
+            themes=tour_db.themes or [],
+            formats=tour_db.formats or [],
+            # SEO
+            seo_title=tour_db.seo_title,
+            seo_description=tour_db.seo_description,
+            long_description=tour_db.long_description,
         ))
     
     # Если экскурсий нет - возвращаем пустой список
@@ -224,6 +268,26 @@ async def get_tour_by_code(
         bookings_count=bookings_count,
         total_revenue=total_revenue,
         is_public=tour_db.is_public,
+        # Контентные блоки
+        what_to_expect=tour_db.what_to_expect,
+        organizational_details=tour_db.organizational_details,
+        included=tour_db.included or [],
+        not_included=tour_db.not_included or [],
+        meeting_point=tour_db.meeting_point,
+        # Параметры
+        languages=tour_db.languages or [],
+        max_group_size=tour_db.max_group_size,
+        min_age=tour_db.min_age,
+        difficulty_level=tour_db.difficulty_level,
+        # Метаданные
+        landmarks=tour_db.landmarks or [],
+        tags=tour_db.tags or [],
+        themes=tour_db.themes or [],
+        formats=tour_db.formats or [],
+        # SEO
+        seo_title=tour_db.seo_title,
+        seo_description=tour_db.seo_description,
+        long_description=tour_db.long_description,
     )
 
 
@@ -278,6 +342,27 @@ async def get_tour(
         created_at=tour_db.created_at,
         bookings_count=bookings_count,
         total_revenue=total_revenue,
+        is_public=tour_db.is_public,
+        # Контентные блоки
+        what_to_expect=tour_db.what_to_expect,
+        organizational_details=tour_db.organizational_details,
+        included=tour_db.included or [],
+        not_included=tour_db.not_included or [],
+        meeting_point=tour_db.meeting_point,
+        # Параметры
+        languages=tour_db.languages or [],
+        max_group_size=tour_db.max_group_size,
+        min_age=tour_db.min_age,
+        difficulty_level=tour_db.difficulty_level,
+        # Метаданные
+        landmarks=tour_db.landmarks or [],
+        tags=tour_db.tags or [],
+        themes=tour_db.themes or [],
+        formats=tour_db.formats or [],
+        # SEO
+        seo_title=tour_db.seo_title,
+        seo_description=tour_db.seo_description,
+        long_description=tour_db.long_description,
     )
 
 
@@ -496,6 +581,26 @@ async def get_tour_recommendations(
             bookings_count=bookings_count,
             total_revenue=total_revenue,
             is_public=tour_db.is_public,
+            # Контентные блоки
+            what_to_expect=tour_db.what_to_expect,
+            organizational_details=tour_db.organizational_details,
+            included=tour_db.included or [],
+            not_included=tour_db.not_included or [],
+            meeting_point=tour_db.meeting_point,
+            # Параметры
+            languages=tour_db.languages or [],
+            max_group_size=tour_db.max_group_size,
+            min_age=tour_db.min_age,
+            difficulty_level=tour_db.difficulty_level,
+            # Метаданные
+            landmarks=tour_db.landmarks or [],
+            tags=tour_db.tags or [],
+            themes=tour_db.themes or [],
+            formats=tour_db.formats or [],
+            # SEO
+            seo_title=tour_db.seo_title,
+            seo_description=tour_db.seo_description,
+            long_description=tour_db.long_description,
         ))
     
     return {"tours": tours_list, "total": len(tours_list)}
