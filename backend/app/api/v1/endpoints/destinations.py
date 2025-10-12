@@ -61,39 +61,6 @@ async def get_destinations_with_counts(db: AsyncSession = Depends(get_db)):
     }
 
 
-@router.get("/", response_model=List[DestinationSchema])
-async def get_destinations(
-    skip: int = 0,
-    limit: int = 100,
-    db: AsyncSession = Depends(get_db)
-):
-    """Получить список всех направлений"""
-    stmt = select(Destination).offset(skip).limit(limit)
-    result = await db.execute(stmt)
-    destinations = result.scalars().all()
-    return destinations
-
-
-@router.get("/{slug}", response_model=DestinationSchema)
-async def get_destination(slug: str, db: AsyncSession = Depends(get_db)):
-    """Получить направление по slug"""
-    stmt = select(Destination).where(Destination.slug == slug)
-    result = await db.execute(stmt)
-    destination = result.scalar_one_or_none()
-    if not destination:
-        raise HTTPException(status_code=404, detail="Направление не найдено")
-    return destination
-
-
-@router.get("/{destination_id}/landmarks", response_model=List[LandmarkSchema])
-async def get_landmarks(destination_id: int, db: AsyncSession = Depends(get_db)):
-    """Получить достопримечательности направления"""
-    stmt = select(Landmark).where(Landmark.destination_id == destination_id)
-    result = await db.execute(stmt)
-    landmarks = result.scalars().all()
-    return landmarks
-
-
 @router.get("/landmarks-with-counts")
 async def get_landmarks_with_counts(
     location: Optional[str] = Query(None, description="Город для фильтрации"),
@@ -168,4 +135,37 @@ async def get_countries_with_counts(db: AsyncSession = Depends(get_db)):
         "countries": countries_data,
         "total": len(countries_data)
     }
+
+
+@router.get("/", response_model=List[DestinationSchema])
+async def get_destinations(
+    skip: int = 0,
+    limit: int = 100,
+    db: AsyncSession = Depends(get_db)
+):
+    """Получить список всех направлений"""
+    stmt = select(Destination).offset(skip).limit(limit)
+    result = await db.execute(stmt)
+    destinations = result.scalars().all()
+    return destinations
+
+
+@router.get("/{slug}", response_model=DestinationSchema)
+async def get_destination(slug: str, db: AsyncSession = Depends(get_db)):
+    """Получить направление по slug"""
+    stmt = select(Destination).where(Destination.slug == slug)
+    result = await db.execute(stmt)
+    destination = result.scalar_one_or_none()
+    if not destination:
+        raise HTTPException(status_code=404, detail="Направление не найдено")
+    return destination
+
+
+@router.get("/{destination_id}/landmarks", response_model=List[LandmarkSchema])
+async def get_landmarks(destination_id: int, db: AsyncSession = Depends(get_db)):
+    """Получить достопримечательности направления"""
+    stmt = select(Landmark).where(Landmark.destination_id == destination_id)
+    result = await db.execute(stmt)
+    landmarks = result.scalars().all()
+    return landmarks
 
