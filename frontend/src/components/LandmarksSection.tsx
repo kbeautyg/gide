@@ -83,11 +83,12 @@ export function LandmarksSection({ location }: LandmarksSectionProps) {
               >
                 <Link to={`/tours?location=${encodeURIComponent(location)}&landmarks=${encodeURIComponent(landmark.name)}`}>
                   <div className="group cursor-pointer">
-                    <div className="aspect-[4/3] rounded-xl overflow-hidden mb-3 shadow-sm hover:shadow-md transition-shadow">
+                    <div className="aspect-[4/3] rounded-xl overflow-hidden mb-3 shadow-sm hover:shadow-md transition-shadow bg-gray-100">
                       <img
                         src={getDefaultImage(landmark.name)}
                         alt={landmark.name}
-                        className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
+                        className="w-full h-full object-cover object-center transition-transform duration-300 group-hover:scale-110"
+                        style={{ objectFit: 'cover' }}
                       />
                     </div>
                     <div className="font-semibold text-gray-900 text-sm mb-1 group-hover:text-airbnb-rausch transition-colors">
