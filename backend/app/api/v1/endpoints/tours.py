@@ -506,6 +506,110 @@ async def update_tour_dates(
     return {"success": True, "start_date": str(updated_tour.start_date), "end_date": str(updated_tour.end_date)}
 
 
+@router.put("/{tour_id}/reschedule")
+async def reschedule_tour_with_request(
+    tour_id: int,
+    data: dict,
+    db: AsyncSession = Depends(get_db),
+    current_user: User = Depends(get_current_user)
+):
+    """
+    Перенести тур на новую дату с синхронизацией заявки и расписания
+    
+    Требуется подтверждение согласования с клиентом.
+    Обновляет:
+    - Даты тура (start_date, end_date)
+    - Дату связанной заявки (assigned_date)
+    - Расписание гида (освобождает старые даты, бронирует новые)
+    - Отправляет WebSocket уведомления
+    
+    Параметры:
+    - new_start_date: новая дата начала (YYYY-MM-DD)
+    - client_confirmed: подтверждение согласования с клиентом (boolean)
+    """
+    from datetime import datetime, date
+    from app.models.request import Request
+    from app.services.schedule_service import ScheduleService
+    from app.services.websocket_service import notify_tour_updated, notify_request_updated
+    
+    # 1. Проверка подтверждения клиента
+    if not data.get('client_confirmed'):
+        raise HTTPException(status_code=400, detail="Client confirmation required")
+    
+    # 2. Получить тур
+    tour = await TourService.get_tour_by_id(db, tour_id)
+    
+    if not tour:
+        raise HTTPException(status_code=404, detail="Tour not found")
+    
+    if tour.guide_id != current_user.id and current_user.role != UserRole.ADMIN:
+        raise HTTPException(status_code=403, detail="You can only reschedule your own tours")
+    
+    # 3. Парсим новую дату
+    new_date_str = data.get('new_start_date')
+    if not new_date_str:
+        raise HTTPException(status_code=400, detail="new_start_date is required")
+    
+    try:
+        if isinstance(new_date_str, str):
+            new_date = datetime.strptime(new_date_str, "%Y-%m-%d").date()
+        elif isinstance(new_date_str, date):
+            new_date = new_date_str
+        else:
+            raise ValueError("Invalid date format")
+    except ValueError:
+        raise HTTPException(status_code=400, detail="Invalid date format. Use YYYY-MM-DD")
+    
+    old_date = tour.start_date
+    
+    # 4. Проверка доступности новой даты
+    available = await ScheduleService.check_availability(
+        db, current_user.id, new_date, tour.duration
+    )
+    
+    if not available:
+        schedule = await ScheduleService.get_or_create_schedule(db, current_user.id, new_date)
+        raise HTTPException(
+            status_code=400,
+            detail=f"Недостаточно времени на {new_date}. Занято: {schedule.booked_hours}/8ч"
+        )
+    
+    # 5. Обновить schedule (освободить старую дату, занять новую)
+    if old_date:
+        await ScheduleService.free_hours(db, current_user.id, old_date, tour.duration)
+    
+    await ScheduleService.book_hours(db, current_user.id, new_date, tour.duration)
+    
+    # 6. Обновить даты тура
+    tour.start_date = new_date
+    tour.end_date = new_date  # Для однодневных туров
+    
+    # 7. Обновить связанную заявку (если есть)
+    if tour.request_id:
+        result = await db.execute(select(Request).where(Request.id == tour.request_id))
+        request = result.scalar_one_or_none()
+        
+        if request:
+            request.assigned_date = new_date
+            await notify_request_updated(tour.request_id, [current_user.id])
+    
+    await db.commit()
+    await db.refresh(tour)
+    
+    # 8. WebSocket уведомления
+    await notify_tour_updated(tour_id, current_user.id)
+    
+    return {
+        "success": True,
+        "tour": {
+            "id": tour.id,
+            "start_date": str(tour.start_date),
+            "end_date": str(tour.end_date),
+        },
+        "message": f"Тур успешно перенесён на {new_date.strftime('%d.%m.%Y')}"
+    }
+
+
 @router.delete("/{tour_id}")
 async def delete_tour(
     tour_id: int,

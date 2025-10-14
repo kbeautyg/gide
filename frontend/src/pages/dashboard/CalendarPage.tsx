@@ -7,6 +7,7 @@ import { Switch } from '@/components/ui/switch'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
 import { Calendar as CalendarIcon, HelpCircle } from 'lucide-react'
 import { GuideCalendar } from '@/components/dashboard/GuideCalendar'
+import { TourRescheduleDialog } from '@/components/dashboard/TourRescheduleDialog'
 import { api, toursApi } from '@/lib/api'
 import { format } from 'date-fns'
 import { toast } from '@/lib/toast'
@@ -18,6 +19,11 @@ export default function CalendarPage() {
   const [selectedRequest, setSelectedRequest] = useState<any>(null)
   const [newDate, setNewDate] = useState<Date | null>(null)
   const [autoUpdateDates, setAutoUpdateDates] = useState(true)
+  
+  // Для переноса туров с подтверждением
+  const [rescheduleDialogOpen, setRescheduleDialogOpen] = useState(false)
+  const [selectedTourForReschedule, setSelectedTourForReschedule] = useState<any>(null)
+  const [targetDateForReschedule, setTargetDateForReschedule] = useState<string>('')
 
   // Автообновление данных через WebSocket + polling fallback
   useAutoRefresh({
@@ -83,6 +89,26 @@ export default function CalendarPage() {
     },
     onError: (error: any) => {
       toast.error('Ошибка при обновлении дат', error.response?.data?.detail)
+    }
+  })
+
+  // Перенос тура с подтверждением клиента
+  const rescheduleTourMutation = useMutation({
+    mutationFn: ({ tourId, new_start_date, client_confirmed }: { 
+      tourId: number, 
+      new_start_date: string, 
+      client_confirmed: boolean 
+    }) =>
+      api.put(`/tours/${tourId}/reschedule`, { new_start_date, client_confirmed }),
+    onSuccess: (response) => {
+      queryClient.invalidateQueries({ queryKey: ['my-schedule'] })
+      queryClient.invalidateQueries({ queryKey: ['tours'] })
+      queryClient.invalidateQueries({ queryKey: ['requests'] })
+      setRescheduleDialogOpen(false)
+      toast.success('Тур успешно перенесён!', response.data.message)
+    },
+    onError: (error: any) => {
+      toast.error('Ошибка при переносе тура', error.response?.data?.detail)
     }
   })
 
@@ -198,8 +224,12 @@ export default function CalendarPage() {
               rescheduleMutation.mutate({ requestId, new_date: newDate })
             }}
             onTourReschedule={(tourId, newStartDate, newEndDate) => {
-              if (autoUpdateDates) {
-                updateTourDatesMutation.mutate({ tourId, start_date: newStartDate, end_date: newEndDate })
+              // Открываем диалог подтверждения перед переносом
+              const tour = tours.find((t: any) => t.id === tourId)
+              if (tour) {
+                setSelectedTourForReschedule(tour)
+                setTargetDateForReschedule(newStartDate)
+                setRescheduleDialogOpen(true)
               }
             }}
             onCancel={(requestId) => cancelMutation.mutate(requestId)}
@@ -324,6 +354,26 @@ export default function CalendarPage() {
           )}
         </DialogContent>
       </Dialog>
+
+      {/* Диалог подтверждения переноса тура */}
+      {selectedTourForReschedule && (
+        <TourRescheduleDialog
+          open={rescheduleDialogOpen}
+          onOpenChange={setRescheduleDialogOpen}
+          tourOrRequestName={selectedTourForReschedule.title}
+          currentDate={new Date(selectedTourForReschedule.start_date).toLocaleDateString('ru')}
+          newDate={new Date(targetDateForReschedule).toLocaleDateString('ru')}
+          onConfirm={() => {
+            rescheduleTourMutation.mutate({
+              tourId: selectedTourForReschedule.id,
+              new_start_date: targetDateForReschedule,
+              client_confirmed: true
+            })
+          }}
+          loading={rescheduleTourMutation.isPending}
+          type="tour"
+        />
+      )}
     </div>
   )
 }
