@@ -47,6 +47,7 @@ class Booking(BaseModel):
     client_name: str
     client_phone: str
     client_email: Optional[str]
+    telegram_username: Optional[str] = None
     date: date_type
     participants_count: int
     total_price: float
@@ -132,6 +133,7 @@ async def mark_as_paid(
         client_name=booking.client_name,
         client_phone=booking.client_phone,
         client_email=booking.client_email,
+        telegram_username=booking.telegram_username,
         date=booking.date,
         participants_count=booking.participants_count,
         total_price=booking.total_price,
@@ -228,6 +230,7 @@ async def get_bookings(
             client_name=b.client_name,
             client_phone=b.client_phone,
             client_email=b.client_email,
+            telegram_username=b.telegram_username,
             date=b.date,
             participants_count=b.participants_count,
             total_price=b.total_price,
@@ -312,6 +315,7 @@ async def create_booking(
         client_name=booking.client_name,
         client_phone=booking.client_phone,
         client_email=booking.client_email,
+        telegram_username=booking.telegram_username,
         date=booking.date,
         participants_count=booking.participants_count,
         total_price=booking.total_price,

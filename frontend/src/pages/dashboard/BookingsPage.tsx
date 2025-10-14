@@ -314,6 +314,15 @@ export default function BookingsPage() {
                       </div>
                     </div>
                   )}
+                  {selectedBooking.telegram_username && (
+                    <div className="flex items-center gap-2">
+                      <MessageCircle size={16} className="text-gray-400" />
+                      <div>
+                        <div className="text-xs text-gray-500">Telegram</div>
+                        <div className="text-sm font-medium">@{selectedBooking.telegram_username}</div>
+                      </div>
+                    </div>
+                  )}
                   <div className="flex items-center gap-2">
                     <Users size={16} className="text-gray-400" />
                     <div>
