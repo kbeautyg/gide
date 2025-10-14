@@ -304,11 +304,11 @@ async def seed_data():
         
         tours_created = 0
         for tour_data in tours_data:
-            # Проверяем дубликаты по title
+            # Проверяем дубликаты по title (используем first вместо scalar_one_or_none)
             existing = await session.execute(
-                sa.select(Tour).where(Tour.title == tour_data['title'])
+                sa.select(Tour).where(Tour.title == tour_data['title']).limit(1)
             )
-            if not existing.scalar_one_or_none():
+            if not existing.first():
                 tour = Tour(
                     guide_id=system_guide.id,  # Привязываем к системному гиду, не к супер-админу
                     title=tour_data['title'],
