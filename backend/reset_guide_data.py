@@ -22,16 +22,16 @@ async def reset_guide_data():
     
     async with AsyncSessionLocal() as session:
         async with session.begin():
-            # Получаем ID ВСЕХ пользователей (включая админа)
-            result = await session.execute(sa.text("SELECT id FROM users"))
+            # Получаем ID всех гидов (кроме супер-админа с id=1)
+            result = await session.execute(sa.text("SELECT id FROM users WHERE id > 1"))
             guide_ids = [row[0] for row in result.fetchall()]
             
             if not guide_ids:
-                print("   ℹ️  Нет пользователей для очистки")
+                print("   ℹ️  Нет гидов для очистки")
                 return
             
             guide_ids_str = ','.join(map(str, guide_ids))
-            print(f"   🎯 Найдено пользователей для очистки: {len(guide_ids)} (включая админа)")
+            print(f"   🎯 Найдено гидов для очистки: {len(guide_ids)}")
             
             # 1. Очищаем связи в requests
             result = await session.execute(sa.text(f"""
@@ -83,7 +83,7 @@ async def reset_guide_data():
             except Exception as e:
                 print(f"   ⚠️ Не удалось сбросить счётчики: {e}")
     
-    print("✅ Данные ВСЕХ пользователей очищены (включая админа)!")
+    print("✅ Данные всех гидов очищены! Публичные туры админа сохранены.")
 
 
 if __name__ == "__main__":
