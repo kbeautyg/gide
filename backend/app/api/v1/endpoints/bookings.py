@@ -269,11 +269,14 @@ async def create_booking(
     db.add(booking)
     await db.flush()  # Получить ID бронирования
     
-    # Создаём заявку для гида с данными клиента
-    # Используем try/except для обратной совместимости (до применения миграции 008)
-    try:
+    # Создаём заявку для гида
+    # Проверяем есть ли поля client_name в модели (миграция 008 применена?)
+    has_client_fields = hasattr(RequestModel, 'client_name')
+    
+    if has_client_fields:
+        # Миграция 008 применена - создаём с полями клиента
         request = RequestModel(
-            client_id=current_user.id if current_user else 1,  # 1 = супер-админ для анонимных
+            client_id=current_user.id if current_user else 1,
             title=tour.title,
             description=tour.description,
             preferred_date=booking_data.date,
@@ -281,7 +284,6 @@ async def create_booking(
             budget=total_price,
             location=tour.location,
             duration_hours=tour.duration,
-            # ДАННЫЕ КЛИЕНТА из формы бронирования (после миграции 008)
             client_name=booking_data.client_name,
             client_phone=booking_data.client_phone,
             client_email=booking_data.client_email,
@@ -289,7 +291,7 @@ async def create_booking(
             status='pending',
             booking_id=booking.id,
         )
-    except TypeError:
+    else:
         # Миграция 008 ещё не применена - создаём без полей клиента
         request = RequestModel(
             client_id=current_user.id if current_user else 1,
@@ -307,7 +309,8 @@ async def create_booking(
     
     db.add(request)
     
-    # Связываем бронирование с заявкой
+    # Связываем бронирование с заявкой (нужно делать до flush)
+    await db.flush()  # Получаем ID request
     booking.request_id = request.id
     
     await db.commit()
