@@ -11,7 +11,7 @@ import sqlalchemy as sa
 
 # revision identifiers, used by Alembic.
 revision = '008'
-down_revision = '006'
+down_revision = '2025_10_09_0000_007_add_guide_schedule_and_request_duration'
 branch_labels = None
 depends_on = None
 
