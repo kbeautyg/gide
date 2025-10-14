@@ -39,8 +39,9 @@ export default function MyToursPage() {
 
   const allTours = toursData?.data?.tours || []
   
-  // Фильтруем архивные туры
-  const tours = allTours.filter((tour: any) => !tour.is_archived)
+  // TODO: Включить ТОЛЬКО после применения миграции 009 на Railway
+  // const tours = allTours.filter((tour: any) => !tour.is_archived)
+  const tours = allTours
 
   // Mutation для удаления тура
   const deleteMutation = useMutation({

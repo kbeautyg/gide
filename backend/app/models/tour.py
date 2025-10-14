@@ -75,12 +75,13 @@ class Tour(Base):
     # Статус
     active = Column(Boolean, default=True)
     is_public = Column(Boolean, default=False, index=True)
-    is_archived = Column(Boolean, default=False, index=True)
-    
-    # Данные клиента (для кастомных туров)
-    client_name = Column(String, nullable=True)
-    client_phone = Column(String, nullable=True)
-    client_email = Column(String, nullable=True)
+    # TODO: Раскомментировать ТОЛЬКО после применения миграции 009 на Railway
+    # is_archived = Column(Boolean, default=False, index=True)
+    # 
+    # # Данные клиента (для кастомных туров)
+    # client_name = Column(String, nullable=True)
+    # client_phone = Column(String, nullable=True)
+    # client_email = Column(String, nullable=True)
     
     # Временные метки
     created_at = Column(DateTime, default=datetime.utcnow)
