@@ -1,7 +1,7 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
-import { motion, AnimatePresence } from 'framer-motion'
+import { motion } from 'framer-motion'
 import confetti from 'canvas-confetti'
 import {
   MapPin, Clock, Calendar, CheckCircle, Users, DollarSign,
@@ -32,7 +32,7 @@ export default function TourSharePage() {
 
   // Автообновление данных тура
   useAutoRefresh({
-    queryKeys: [['tour-by-code', code]],
+    queryKeys: [['tour-by-code', code || '']],
     intervalMs: 30000, // Каждые 30 сек
   })
 
@@ -42,6 +42,7 @@ export default function TourSharePage() {
       const response = await api.get(`/tours/by-code/${code}`)
       return response.data
     },
+    enabled: !!code,
   })
 
   const bookingMutation = useMutation({
