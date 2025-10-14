@@ -52,6 +52,19 @@ export interface Tour {
   discount_percentage?: number
   original_price?: number
   updated_at?: string
+  
+  // Кастомные туры
+  is_custom?: boolean
+  request_id?: number
+  is_archived?: boolean
+  
+  // Данные клиента (для кастомных туров)
+  client_name?: string
+  client_phone?: string
+  client_email?: string
+  
+  // Дополнительные поля из публичного тура
+  max_guests?: number
 }
 
 export interface TourCreate {

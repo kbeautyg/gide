@@ -23,7 +23,6 @@ interface SearchBarProps {
 
 export function SearchBar({ variant = 'hero', className }: SearchBarProps) {
   const navigate = useNavigate()
-  const [activeTab, setActiveTab] = useState<Tab>('tours')
   const [expandedField, setExpandedField] = useState<string | null>(null)
   const [searchData, setSearchData] = useState({
     where: '',
@@ -73,7 +72,6 @@ export function SearchBar({ variant = 'hero', className }: SearchBarProps) {
     if (totalGuests > 1) {
       params.append('guests', totalGuests.toString())
     }
-    params.append('type', activeTab)
     
     navigate(`/tours${params.toString() ? '?' + params.toString() : ''}`)
     setExpandedField(null)
