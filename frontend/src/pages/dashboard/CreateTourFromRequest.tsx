@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { motion } from 'framer-motion'
@@ -22,7 +22,6 @@ export default function CreateTourFromRequest() {
   const queryClient = useQueryClient()
   const [shareLink, setShareLink] = useState<string>('')
   const [showConfirm, setShowConfirm] = useState(false)
-  const [showQR, setShowQR] = useState(false)
 
   // Загрузка заявки
   const { data: request, isLoading } = useQuery({

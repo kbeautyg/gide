@@ -78,19 +78,8 @@ export default function CalendarPage() {
     }
   })
 
-  // Обновление дат тура
-  const updateTourDatesMutation = useMutation({
-    mutationFn: ({ tourId, start_date, end_date }: { tourId: number, start_date: string, end_date: string }) =>
-      toursApi.updateDates(tourId, { start_date, end_date }),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['my-schedule'] })
-      queryClient.invalidateQueries({ queryKey: ['tours'] })
-      toast.success('Даты тура обновлены!', 'Изменения сохранены')
-    },
-    onError: (error: any) => {
-      toast.error('Ошибка при обновлении дат', error.response?.data?.detail)
-    }
-  })
+  // Обновление дат тура (оставлено для совместимости, но не используется)
+  // Теперь используем rescheduleTourMutation с подтверждением клиента
 
   // Перенос тура с подтверждением клиента
   const rescheduleTourMutation = useMutation({
@@ -223,7 +212,7 @@ export default function CalendarPage() {
             onReschedule={(requestId, newDate) => {
               rescheduleMutation.mutate({ requestId, new_date: newDate })
             }}
-            onTourReschedule={(tourId, newStartDate, newEndDate) => {
+            onTourReschedule={(tourId, newStartDate) => {
               // Открываем диалог подтверждения перед переносом
               const tour = tours.find((t: any) => t.id === tourId)
               if (tour) {
