@@ -19,6 +19,11 @@ export default function CalendarPage() {
   const [selectedRequest, setSelectedRequest] = useState<any>(null)
   const [newDate, setNewDate] = useState<Date | null>(null)
   const [clientConfirmed, setClientConfirmed] = useState(false) // Галочка "я согласовал с клиентом"
+  
+  // Для переноса туров с подтверждением
+  const [rescheduleDialogOpen, setRescheduleDialogOpen] = useState(false)
+  const [selectedTourForReschedule, setSelectedTourForReschedule] = useState<any>(null)
+  const [targetDateForReschedule, setTargetDateForReschedule] = useState<string>('')
 
   // Автообновление данных через WebSocket + polling fallback
   useAutoRefresh({

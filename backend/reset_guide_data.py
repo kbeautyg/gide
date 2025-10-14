@@ -38,9 +38,11 @@ async def reset_guide_data():
             result = await session.execute(sa.text("DELETE FROM reviews"))
             print(f"   ✓ Удалено отзывов: {result.rowcount}")
             
-            # 5. Удаляем туры
-            result = await session.execute(sa.text("DELETE FROM tours"))
-            print(f"   ✓ Удалено туров: {result.rowcount}")
+            # 5. Удаляем ТОЛЬКО туры созданные гидом из заявок (с request_id)
+            # Публичные туры (request_id IS NULL) остаются для главной страницы!
+            result = await session.execute(sa.text("DELETE FROM tours WHERE request_id IS NOT NULL"))
+            print(f"   ✓ Удалено туров гида: {result.rowcount}")
+            print(f"   ℹ️  Публичные туры для главной страницы сохранены")
             
             # 6. Сбрасываем счётчики у гидов (но не удаляем их)
             result = await session.execute(sa.text("""
