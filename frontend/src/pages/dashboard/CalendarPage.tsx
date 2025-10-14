@@ -136,28 +136,28 @@ export default function CalendarPage() {
     .map((s: any) => new Date(s.date))
 
   return (
-    <div className="space-y-6">
-      <div className="flex items-center justify-between">
+    <div className="space-y-4 sm:space-y-6">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">Календарь экскурсий</h1>
-          <p className="text-gray-600">
+          <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">Календарь экскурсий</h1>
+          <p className="text-sm sm:text-base text-gray-600 mt-1">
             Управляйте своим расписанием • Занято: {totalBookedHours} часов в месяц
           </p>
         </div>
         
         {/* Статистика */}
-        <div className="flex gap-4">
+        <div className="flex gap-3 sm:gap-4">
           <div className="text-center">
-            <div className="text-2xl font-bold text-airbnb-rausch">{requestsThisMonth}</div>
-            <div className="text-sm text-gray-600">Заявок</div>
+            <div className="text-xl sm:text-2xl font-bold text-airbnb-rausch">{requestsThisMonth}</div>
+            <div className="text-xs sm:text-sm text-gray-600">Заявок</div>
           </div>
           <div className="text-center">
-            <div className="text-2xl font-bold text-green-600">{totalBookedHours}</div>
-            <div className="text-sm text-gray-600">Часов</div>
+            <div className="text-xl sm:text-2xl font-bold text-green-600">{totalBookedHours}</div>
+            <div className="text-xs sm:text-sm text-gray-600">Часов</div>
           </div>
           <div className="text-center">
-            <div className="text-2xl font-bold text-blue-600">{daysWorked}</div>
-            <div className="text-sm text-gray-600">Дней</div>
+            <div className="text-xl sm:text-2xl font-bold text-blue-600">{daysWorked}</div>
+            <div className="text-xs sm:text-sm text-gray-600">Дней</div>
           </div>
         </div>
       </div>

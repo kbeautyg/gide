@@ -200,7 +200,7 @@ export default function DashboardLayout() {
       </AnimatePresence>
 
       {/* Быстрая навигация с счётчиками */}
-      <div className="bg-gradient-to-r from-gray-50 to-gray-100 border-b sticky top-[73px] z-30">
+      <div className="bg-gradient-to-r from-gray-50 to-gray-100 border-b sticky top-[73px] z-30 hidden md:block">
         <div className="container mx-auto px-4 py-3">
           <div className="flex gap-3 overflow-x-auto scrollbar-hide">
             <Link
@@ -274,7 +274,7 @@ export default function DashboardLayout() {
         </aside>
 
         {/* Main Content */}
-        <main className="flex-1 p-4 md:p-8">
+        <main className="flex-1 p-3 sm:p-4 md:p-6 lg:p-8">
           <Outlet />
         </main>
       </div>

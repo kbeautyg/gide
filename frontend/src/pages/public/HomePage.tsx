@@ -141,7 +141,7 @@ export default function HomePage() {
       </div>
 
       {/* Hero Section - 3D объекты фон */}
-      <section className="relative text-white overflow-hidden h-[85vh] flex items-center bg-gradient-to-br from-gray-900 via-gray-800 to-black">
+      <section className="relative text-white overflow-hidden min-h-[500px] sm:min-h-[600px] lg:h-[85vh] flex items-center bg-gradient-to-br from-gray-900 via-gray-800 to-black">
         {/* Анимированные blob градиенты */}
         <div className="absolute inset-0 overflow-hidden">
           <motion.div

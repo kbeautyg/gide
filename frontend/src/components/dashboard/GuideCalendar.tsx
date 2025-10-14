@@ -152,16 +152,16 @@ export function GuideCalendar({
   }
   
   const calendarContent = (
-    <div className="bg-white rounded-xl shadow-airbnb p-6">
+    <div className="bg-white rounded-xl shadow-airbnb p-3 sm:p-4 md:p-6">
       {/* Навигация по месяцам */}
-      <div className="flex items-center justify-between mb-6">
+      <div className="flex items-center justify-between mb-4 md:mb-6">
         <button 
           onClick={() => setCurrentMonth(subMonths(currentMonth, 1))}
           className="p-2 hover:bg-gray-100 rounded-full transition-colors"
         >
           <ChevronLeft size={20} />
         </button>
-        <h3 className="text-xl font-bold text-gray-900 capitalize">
+        <h3 className="text-lg sm:text-xl font-bold text-gray-900 capitalize">
           {format(currentMonth, 'LLLL yyyy', { locale: ru })}
         </h3>
         <button 
@@ -173,10 +173,10 @@ export function GuideCalendar({
       </div>
       
       {/* Сетка дней */}
-      <div className="grid grid-cols-7 gap-2">
+      <div className="grid grid-cols-7 gap-1 sm:gap-2">
         {/* Заголовки дней недели */}
         {['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'].map(day => (
-          <div key={day} className="text-center font-semibold text-gray-600 py-2 text-sm">
+          <div key={day} className="text-center font-semibold text-gray-600 py-1 sm:py-2 text-xs sm:text-sm">
             {day}
           </div>
         ))}
