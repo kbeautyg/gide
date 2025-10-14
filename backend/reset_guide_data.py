@@ -68,7 +68,7 @@ async def reset_guide_data():
                     total_tours = 0, 
                     reviews_count = 0,
                     rating = 0.0
-                WHERE role = 'guide'
+                WHERE role = 'manager'
             """))
             print(f"   ✓ Сброшены счётчики у {result.rowcount} гидов")
     
