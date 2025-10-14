@@ -254,16 +254,20 @@ async def get_tour_by_code(
     client_data = None
     if tour_db.request_id:
         from app.models.request import Request
+        from sqlalchemy.orm import selectinload
+        
         request_result = await db.execute(
-            select(Request).where(Request.id == tour_db.request_id)
+            select(Request)
+            .options(selectinload(Request.client))
+            .where(Request.id == tour_db.request_id)
         )
         request = request_result.scalar_one_or_none()
-        if request:
+        if request and request.client:
             client_data = {
-                "client_name": request.client_name,
-                "client_phone": request.client_phone,
-                "client_email": request.client_email,
-                "telegram_username": request.telegram_username,
+                "client_name": request.client.name,
+                "client_phone": request.client.phone,
+                "client_email": request.client.email,
+                "telegram_username": request.telegram_username or request.client.telegram_username,
                 "participants_count": request.participants_count,
                 "preferred_date": str(request.preferred_date) if request.preferred_date else None,
                 "assigned_date": str(request.assigned_date) if request.assigned_date else None,
