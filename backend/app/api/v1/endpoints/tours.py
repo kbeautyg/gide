@@ -250,52 +250,61 @@ async def get_tour_by_code(
     )
     real_reviews_count = reviews_count_result.scalar() or 0
     
-    # Получаем данные клиента из связанной заявки
-    # Заявка содержит данные клиента, который оставил запрос на экскурсию
+    # Получаем данные клиента из связанной заявки или бронирования
     client_data = None
     
-    if tour_db.request_id:
-        from app.models.request import Request
-        from sqlalchemy.orm import selectinload
-        
-        request_result = await db.execute(
-            select(Request)
-            .options(selectinload(Request.client))
-            .where(Request.id == tour_db.request_id)
-        )
-        request = request_result.scalar_one_or_none()
-        
-        if request:
-            # Данные РЕАЛЬНОГО клиента из полей заявки (не из User)
-            client_data = {
-                "client_name": request.client_name or "",
-                "client_phone": request.client_phone or "",
-                "client_email": request.client_email or "",
-                "telegram_username": request.telegram_username or "",
-                "participants_count": request.participants_count or 1,
-                "preferred_date": str(request.preferred_date) if request.preferred_date else None,
-                "assigned_date": str(request.assigned_date) if request.assigned_date else str(tour_db.start_date) if tour_db.start_date else None,
-            }
-    else:
-        # Если тура не создан из заявки, пробуем взять из последнего бронирования
-        booking_result = await db.execute(
-            select(Booking)
-            .where(Booking.tour_id == tour_db.id)
-            .order_by(Booking.created_at.desc())
-            .limit(1)
-        )
-        last_booking = booking_result.scalar_one_or_none()
-        
-        if last_booking:
-            client_data = {
-                "client_name": last_booking.client_name,
-                "client_phone": last_booking.client_phone,
-                "client_email": last_booking.client_email,
-                "telegram_username": last_booking.telegram_username,
-                "participants_count": last_booking.participants_count,
-                "preferred_date": str(last_booking.date) if last_booking.date else None,
-                "assigned_date": str(tour_db.start_date) if tour_db.start_date else None,
-            }
+    # Пробуем взять из последнего бронирования (всегда работает)
+    booking_result = await db.execute(
+        select(Booking)
+        .where(Booking.tour_id == tour_db.id)
+        .order_by(Booking.created_at.desc())
+        .limit(1)
+    )
+    last_booking = booking_result.scalar_one_or_none()
+    
+    if last_booking:
+        client_data = {
+            "client_name": last_booking.client_name,
+            "client_phone": last_booking.client_phone,
+            "client_email": last_booking.client_email,
+            "telegram_username": last_booking.telegram_username,
+            "participants_count": last_booking.participants_count,
+            "preferred_date": str(last_booking.date) if last_booking.date else None,
+            "assigned_date": str(tour_db.start_date) if tour_db.start_date else None,
+        }
+    
+    # Если нет бронирования, но есть request_id - пробуем взять из Request
+    # (после миграции там будут поля client_name, client_phone, client_email)
+    if not client_data and tour_db.request_id:
+        try:
+            from app.models.request import Request
+            
+            request_result = await db.execute(
+                select(Request)
+                .where(Request.id == tour_db.request_id)
+            )
+            request = request_result.scalar_one_or_none()
+            
+            if request:
+                # Пробуем получить данные из новых полей (если миграция применена)
+                client_name = getattr(request, 'client_name', None)
+                client_phone = getattr(request, 'client_phone', None)
+                client_email = getattr(request, 'client_email', None)
+                
+                if client_name or client_phone:  # Есть данные клиента
+                    client_data = {
+                        "client_name": client_name or "",
+                        "client_phone": client_phone or "",
+                        "client_email": client_email or "",
+                        "telegram_username": request.telegram_username or "",
+                        "participants_count": request.participants_count or 1,
+                        "preferred_date": str(request.preferred_date) if request.preferred_date else None,
+                        "assigned_date": str(request.assigned_date) if request.assigned_date else str(tour_db.start_date) if tour_db.start_date else None,
+                    }
+        except Exception as e:
+            # Миграция ещё не применена или другая ошибка - игнорируем
+            print(f"Warning: Could not fetch client data from Request: {e}")
+            pass
     
     tour_data = Tour(
         id=tour_db.id,
