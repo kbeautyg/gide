@@ -14,8 +14,6 @@ import { api } from '@/lib/api'
 import { MobileSearchModal } from './MobileSearchModal'
 import 'react-day-picker/dist/style.css'
 
-type Tab = 'tours' | 'experiences'
-
 interface SearchBarProps {
   variant?: 'hero' | 'sticky'
   className?: string
