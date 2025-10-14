@@ -23,9 +23,16 @@ async def init_data():
         tours_count_result = await session.execute(select(func.count(Tour.id)))
         tours_count = tours_count_result.scalar()
         
-        if tours_count > 0:
+        # Принудительное создание если установлен флаг
+        force_create = os.getenv('FORCE_CREATE_TOURS') == 'true'
+        
+        if tours_count > 0 and not force_create:
             print(f"✅ База уже содержит {tours_count} туров. Пропускаю инициализацию.")
             return
+        
+        if force_create:
+            print(f"⚠️ ПРИНУДИТЕЛЬНОЕ создание туров (FORCE_CREATE_TOURS=true)...")
+            print(f"   Текущее количество: {tours_count}")
         
         print("🌱 База пустая. Инициализирую данные...\n")
         
