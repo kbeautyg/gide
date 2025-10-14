@@ -250,32 +250,52 @@ async def get_tour_by_code(
     )
     real_reviews_count = reviews_count_result.scalar() or 0
     
-    # Получаем данные клиента из последнего бронирования (если есть)
-    # НЕ показываем данные гида/админа, только реальные данные клиента из бронирования
+    # Получаем данные клиента из связанной заявки
+    # Заявка содержит данные клиента, который оставил запрос на экскурсию
     client_data = None
     
-    # Берём данные только из последнего бронирования (реальный клиент)
-    booking_result = await db.execute(
-        select(Booking)
-        .where(Booking.tour_id == tour_db.id)
-        .order_by(Booking.created_at.desc())
-        .limit(1)
-    )
-    last_booking = booking_result.scalar_one_or_none()
-    
-    if last_booking:
-        # Данные из бронирования (реальный клиент, который забронировал)
-        client_data = {
-            "client_name": last_booking.client_name,
-            "client_phone": last_booking.client_phone,
-            "client_email": last_booking.client_email,
-            "telegram_username": last_booking.telegram_username,
-            "participants_count": last_booking.participants_count,
-            "preferred_date": str(last_booking.date) if last_booking.date else None,
-            "assigned_date": str(tour_db.start_date) if tour_db.start_date else None,
-        }
-    # НЕ берём данные из заявки, т.к. там может быть гид/админ
-    # Форма будет пустой пока клиент не забронирует первый раз
+    if tour_db.request_id:
+        from app.models.request import Request
+        from sqlalchemy.orm import selectinload
+        
+        request_result = await db.execute(
+            select(Request)
+            .options(selectinload(Request.client))
+            .where(Request.id == tour_db.request_id)
+        )
+        request = request_result.scalar_one_or_none()
+        
+        if request and request.client:
+            # Данные клиента, который оставил заявку
+            client_data = {
+                "client_name": request.client.name or "Клиент",
+                "client_phone": request.client.phone or "",
+                "client_email": request.client.email or "",
+                "telegram_username": request.telegram_username or request.client.telegram_username or "",
+                "participants_count": request.participants_count or 1,
+                "preferred_date": str(request.preferred_date) if request.preferred_date else None,
+                "assigned_date": str(request.assigned_date) if request.assigned_date else str(tour_db.start_date) if tour_db.start_date else None,
+            }
+    else:
+        # Если тура не создан из заявки, пробуем взять из последнего бронирования
+        booking_result = await db.execute(
+            select(Booking)
+            .where(Booking.tour_id == tour_db.id)
+            .order_by(Booking.created_at.desc())
+            .limit(1)
+        )
+        last_booking = booking_result.scalar_one_or_none()
+        
+        if last_booking:
+            client_data = {
+                "client_name": last_booking.client_name,
+                "client_phone": last_booking.client_phone,
+                "client_email": last_booking.client_email,
+                "telegram_username": last_booking.telegram_username,
+                "participants_count": last_booking.participants_count,
+                "preferred_date": str(last_booking.date) if last_booking.date else None,
+                "assigned_date": str(tour_db.start_date) if tour_db.start_date else None,
+            }
     
     tour_data = Tour(
         id=tour_db.id,
