@@ -398,7 +398,6 @@ export default function CreateTourFromRequest() {
                         </div>
                       </div>
                     )}
-                  </div>
                   </CardContent>
                 </Card>
               </motion.div>
