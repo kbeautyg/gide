@@ -22,12 +22,18 @@ async def reset_guide_data():
     
     async with AsyncSessionLocal() as session:
         async with session.begin():
-            # Получаем ID всех гидов (кроме супер-админа с id=1)
-            result = await session.execute(sa.text("SELECT id FROM users WHERE id > 1"))
+            # Получаем ID всех пользователей КРОМЕ:
+            # - id=1 (супер-админ)
+            # - системного гида с телефоном "00000000000" (создатель публичных туров)
+            result = await session.execute(sa.text("""
+                SELECT id FROM users 
+                WHERE id > 1 
+                AND phone != '00000000000'
+            """))
             guide_ids = [row[0] for row in result.fetchall()]
             
             if not guide_ids:
-                print("   ℹ️  Нет гидов для очистки")
+                print("   ℹ️  Нет гидов для очистки (только админ и системный гид)")
                 return
             
             guide_ids_str = ','.join(map(str, guide_ids))

@@ -133,13 +133,6 @@ export default function HomePage() {
     <div className="min-h-screen bg-white">
       <PublicHeader />
 
-      {/* Sticky Search Bar - как на странице /tours */}
-      <div className="sticky top-0 z-30 bg-white border-b shadow-sm">
-        <div className="container mx-auto px-4 py-3">
-          <SearchBar variant="sticky" />
-        </div>
-      </div>
-
       {/* Hero Section - 3D объекты фон */}
       <section className="relative text-white overflow-hidden min-h-[500px] sm:min-h-[600px] lg:h-[85vh] flex items-center bg-gradient-to-br from-gray-900 via-gray-800 to-black">
         {/* Анимированные blob градиенты */}
