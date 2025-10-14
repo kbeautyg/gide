@@ -5,7 +5,7 @@ import { motion } from 'framer-motion'
 import { 
   AlertTriangle, CheckCircle, Copy, ExternalLink, Sparkles, 
   Calendar, MapPin, Clock, Users, DollarSign, Zap, Star,
-  ArrowRight, Gift
+  ArrowRight, Gift, User, Phone, Mail
 } from 'lucide-react'
 import confetti from 'canvas-confetti'
 import { QRCodeSVG } from 'qrcode.react'
@@ -365,6 +365,40 @@ export default function CreateTourFromRequest() {
                         </motion.div>
                       )}
                     </div>
+                    
+                    {/* Данные клиента */}
+                    {(request.client_name || request.client_phone || request.client_email) && (
+                      <div className="mt-6 p-5 rounded-xl bg-gradient-to-br from-yellow-50 via-amber-50 to-orange-50 border-2 border-yellow-300">
+                        <h3 className="text-lg font-bold text-yellow-900 mb-4 flex items-center gap-2">
+                          <User className="w-5 h-5" />
+                          Контактные данные клиента
+                        </h3>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                          {request.client_name && (
+                            <div className="flex items-center gap-2 text-gray-900">
+                              <User className="w-4 h-4 text-yellow-700" />
+                              <span className="font-semibold">Имя:</span>
+                              <span>{request.client_name}</span>
+                            </div>
+                          )}
+                          {request.client_phone && (
+                            <div className="flex items-center gap-2 text-gray-900">
+                              <Phone className="w-4 h-4 text-yellow-700" />
+                              <span className="font-semibold">Телефон:</span>
+                              <span>{request.client_phone}</span>
+                            </div>
+                          )}
+                          {request.client_email && (
+                            <div className="flex items-center gap-2 text-gray-900">
+                              <Mail className="w-4 h-4 text-yellow-700" />
+                              <span className="font-semibold">Email:</span>
+                              <span>{request.client_email}</span>
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    )}
+                  </div>
                   </CardContent>
                 </Card>
               </motion.div>

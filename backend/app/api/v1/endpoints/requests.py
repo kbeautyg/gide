@@ -41,6 +41,11 @@ async def create_request(
         budget=request_data.budget,
         location=request_data.location,
         duration_hours=request_data.duration_hours,
+        # Данные клиента из формы
+        client_name=request_data.client_name,
+        client_phone=request_data.client_phone,
+        client_email=request_data.client_email,
+        telegram_username=request_data.telegram_username,
         status='pending'
     )
     

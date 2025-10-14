@@ -269,9 +269,9 @@ async def create_booking(
     db.add(booking)
     await db.flush()  # Получить ID бронирования
     
-    # Создаём заявку для гида
+    # Создаём заявку для гида с данными клиента
     request = RequestModel(
-        client_id=current_user.id if current_user else None,
+        client_id=current_user.id if current_user else 1,  # 1 = супер-админ для анонимных
         title=tour.title,
         description=tour.description,
         preferred_date=booking_data.date,
@@ -279,6 +279,10 @@ async def create_booking(
         budget=total_price,
         location=tour.location,
         duration_hours=tour.duration,
+        # ДАННЫЕ КЛИЕНТА из формы бронирования
+        client_name=booking_data.client_name,
+        client_phone=booking_data.client_phone,
+        client_email=booking_data.client_email,
         telegram_username=booking_data.telegram_username,
         status='pending',
         booking_id=booking.id,

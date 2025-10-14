@@ -15,6 +15,12 @@ class RequestBase(BaseModel):
     budget: Optional[float] = None
     location: Optional[str] = None
     duration_hours: int  # 1-8 часов
+    
+    # Контактные данные клиента
+    client_name: Optional[str] = None
+    client_phone: Optional[str] = None
+    client_email: Optional[str] = None
+    telegram_username: Optional[str] = None
 
 
 class RequestCreate(RequestBase):
@@ -45,7 +51,6 @@ class Request(RequestBase):
     assigned_to: Optional[int] = None
     guide_id: Optional[int] = None
     assigned_date: Optional[date] = None
-    telegram_username: Optional[str] = None
     booking_id: Optional[int] = None
     generated_tour_id: Optional[int] = None
     created_at: datetime
