@@ -7,7 +7,6 @@ import { Switch } from '@/components/ui/switch'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
 import { Calendar as CalendarIcon, HelpCircle } from 'lucide-react'
 import { GuideCalendar } from '@/components/dashboard/GuideCalendar'
-import { TourRescheduleDialog } from '@/components/dashboard/TourRescheduleDialog'
 import { api } from '@/lib/api'
 import { format } from 'date-fns'
 import { toast } from '@/lib/toast'
@@ -19,11 +18,6 @@ export default function CalendarPage() {
   const [selectedRequest, setSelectedRequest] = useState<any>(null)
   const [newDate, setNewDate] = useState<Date | null>(null)
   const [clientConfirmed, setClientConfirmed] = useState(false) // Галочка "я согласовал с клиентом"
-  
-  // Для переноса туров с подтверждением
-  const [rescheduleDialogOpen, setRescheduleDialogOpen] = useState(false)
-  const [selectedTourForReschedule, setSelectedTourForReschedule] = useState<any>(null)
-  const [targetDateForReschedule, setTargetDateForReschedule] = useState<string>('')
 
   // Автообновление данных через WebSocket + polling fallback
   useAutoRefresh({
@@ -93,7 +87,6 @@ export default function CalendarPage() {
       queryClient.invalidateQueries({ queryKey: ['my-schedule'] })
       queryClient.invalidateQueries({ queryKey: ['tours'] })
       queryClient.invalidateQueries({ queryKey: ['requests'] })
-      setRescheduleDialogOpen(false)
       toast.success('Тур успешно перенесён!', response.data.message)
     },
     onError: (error: any) => {
@@ -363,26 +356,6 @@ export default function CalendarPage() {
           )}
         </DialogContent>
       </Dialog>
-
-      {/* Диалог подтверждения переноса тура */}
-      {selectedTourForReschedule && (
-        <TourRescheduleDialog
-          open={rescheduleDialogOpen}
-          onOpenChange={setRescheduleDialogOpen}
-          tourOrRequestName={selectedTourForReschedule.title}
-          currentDate={new Date(selectedTourForReschedule.start_date).toLocaleDateString('ru')}
-          newDate={new Date(targetDateForReschedule).toLocaleDateString('ru')}
-          onConfirm={() => {
-            rescheduleTourMutation.mutate({
-              tourId: selectedTourForReschedule.id,
-              new_start_date: targetDateForReschedule,
-              client_confirmed: true
-            })
-          }}
-          loading={rescheduleTourMutation.isPending}
-          type="tour"
-        />
-      )}
     </div>
   )
 }
