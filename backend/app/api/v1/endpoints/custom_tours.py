@@ -43,11 +43,13 @@ async def create_tour_from_request(
     if not request:
         raise HTTPException(status_code=404, detail="Request not found")
     
-    if request.guide_id != current_user.id:
-        raise HTTPException(status_code=403, detail="You can only create tours from your own requests")
-    
+    # Проверяем что тур еще не создан
     if request.generated_tour_id:
         raise HTTPException(status_code=400, detail="Tour already created for this request")
+    
+    # Если заявка уже занята другим гидом - ошибка
+    if request.guide_id is not None and request.guide_id != current_user.id:
+        raise HTTPException(status_code=403, detail="This request is already taken by another guide")
     
     # Генерируем уникальный share_code
     share_code = generate_share_code()
@@ -78,17 +80,24 @@ async def create_tour_from_request(
     db.add(tour)
     await db.flush()
     
-    # Обновляем заявку - меняем статус на in_progress
+    # Обновляем заявку - ТЕПЕРЬ назначаем гида и меняем статус
+    request.guide_id = current_user.id  # Устанавливаем гида при создании тура
+    request.assigned_date = request.preferred_date  # Устанавливаем дату
     request.generated_tour_id = tour.id
     request.status = 'in_progress'  # Тур создан, заявка в работе
     
     await db.commit()
     await db.refresh(tour)
     
+    # Уведомляем через WebSocket о создании тура
+    from app.services.websocket_service import notify_tour_created, notify_request_updated
+    await notify_tour_created(tour.id, current_user.id)
+    await notify_request_updated(request_id, [current_user.id])
+    
     return {
         "tour_id": tour.id,
         "share_code": tour.share_code,
-        "share_link": f"/tours/{tour.share_code}",
+        "share_link": f"/t/{tour.share_code}",
         "tour": {
             "id": tour.id,
             "title": tour.title,

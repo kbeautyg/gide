@@ -434,15 +434,12 @@ async def accept_request(
     db: AsyncSession = Depends(get_db)
 ):
     """
-    Гид принимает заявку
+    Гид "резервирует" заявку для просмотра и создания тура
     
-    Назначает guide_id, assigned_date, статус остаётся 'pending' до создания тура
-    Если заявка уже принята этим же гидом - возвращает её без ошибки (идемпотентность)
+    НЕ назначает guide_id сразу - это произойдет только при создании тура!
+    Просто возвращает заявку для перехода на страницу создания.
+    Это позволяет гиду отменить действие без последствий.
     """
-    # Проверяем что пользователь - гид
-    if current_user.role not in [UserRole.MANAGER, UserRole.ADMIN]:
-        raise HTTPException(status_code=403, detail="Only guides can accept requests")
-    
     # Получаем заявку
     result = await db.execute(select(Request).where(Request.id == request_id))
     request = result.scalar_one_or_none()
@@ -450,21 +447,21 @@ async def accept_request(
     if not request:
         raise HTTPException(status_code=404, detail="Request not found")
     
-    # Если заявка уже принята текущим гидом - просто вернуть её (идемпотентность)
-    if request.guide_id == current_user.id:
-        return request
-    
-    # Если заявка принята другим гидом - ошибка
+    # Если заявка уже имеет guide_id - проверяем кто
     if request.guide_id is not None:
-        raise HTTPException(status_code=400, detail="Request is already taken by another guide")
+        if request.guide_id == current_user.id:
+            # Уже наша заявка - просто вернуть
+            return request
+        else:
+            # Занята другим гидом
+            raise HTTPException(status_code=400, detail="Request is already taken by another guide")
     
-    # Назначаем гида и дату, статус остаётся pending
-    request.guide_id = current_user.id
-    request.assigned_date = request.preferred_date  # Используем preferred_date
-    # Статус остаётся 'pending' - изменится на 'in_progress' при создании тура
+    # Проверяем что заявка доступна (pending без гида)
+    if request.status != 'pending':
+        raise HTTPException(status_code=400, detail="Request is not available")
     
-    await db.commit()
-    await db.refresh(request)
+    # НЕ меняем guide_id! Просто возвращаем заявку
+    # guide_id будет установлен при создании тура в custom_tours.py
     
     return request
 

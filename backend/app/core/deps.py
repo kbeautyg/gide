@@ -4,8 +4,9 @@ Dependencies для проверки прав доступа
 from typing import Optional
 from fastapi import Depends, HTTPException, status, Request
 from sqlalchemy.ext.asyncio import AsyncSession
+from jose import jwt, JWTError
 
-from app.core.security import get_current_user_id
+from app.core.security import get_current_user_id, SECRET_KEY, ALGORITHM
 from app.db.session import get_db
 from app.services.user_service import UserService
 from app.models.user import User, UserRole
@@ -89,3 +90,36 @@ def check_hierarchy(current_user: User, target_user: User) -> bool:
         return True
     
     return False
+
+
+async def get_current_user_ws(token: Optional[str] = None) -> Optional[User]:
+    """
+    Получение текущего пользователя для WebSocket
+    
+    Args:
+        token: JWT токен из query параметра
+    
+    Returns:
+        User или None
+    """
+    if not token:
+        return None
+    
+    try:
+        # Декодируем токен
+        payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+        user_id_str: str = payload.get("sub")
+        
+        if user_id_str is None:
+            return None
+        
+        user_id = int(user_id_str)
+        
+        # Получаем пользователя из БД
+        from app.db.session import AsyncSessionLocal
+        async with AsyncSessionLocal() as db:
+            user = await UserService.get_user_by_id(db, user_id)
+            return user
+            
+    except (JWTError, ValueError, Exception):
+        return None
