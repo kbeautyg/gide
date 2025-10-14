@@ -1,6 +1,6 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
+import { useQuery, useMutation } from '@tanstack/react-query'
 import { motion } from 'framer-motion'
 import { AlertTriangle, CheckCircle, Copy, ExternalLink } from 'lucide-react'
 import { Button } from '@/components/ui/button'
@@ -11,7 +11,6 @@ import { api } from '@/lib/api'
 export default function CreateTourFromRequest() {
   const { requestId } = useParams<{ requestId: string }>()
   const navigate = useNavigate()
-  const queryClient = useQueryClient()
   const [shareLink, setShareLink] = useState<string>('')
 
   // Загрузка заявки
@@ -20,29 +19,13 @@ export default function CreateTourFromRequest() {
     queryFn: () => api.get(`/requests/${requestId}`).then(res => res.data),
     enabled: !!requestId,
   })
-  
-  // Проверка: если тур уже создан - редирект
-  useEffect(() => {
-    if (request?.generated_tour_id) {
-      alert('✅ Тур для этой заявки уже создан! Перенаправляем в "Мои экскурсии"...')
-      navigate('/dashboard/my-tours')
-    }
-  }, [request, navigate])
 
   // Создание тура из заявки
   const createTourMutation = useMutation({
     mutationFn: () => api.post(`/custom-tours/from-request/${requestId}`),
     onSuccess: (response) => {
-      // Правильный формат ссылки: /t/{share_code}
-      const link = `${window.location.origin}/t/${response.data.share_code}`
+      const link = `${window.location.origin}/tours/${response.data.share_code}`
       setShareLink(link)
-      
-      // Обновляем данные в кэше
-      queryClient.invalidateQueries({ queryKey: ['requests'] })
-      queryClient.invalidateQueries({ queryKey: ['requests', 'available'] })
-      queryClient.invalidateQueries({ queryKey: ['tours'] })
-      queryClient.invalidateQueries({ queryKey: ['request', requestId] })
-      queryClient.invalidateQueries({ queryKey: ['my-schedule'] })  // Обновляем календарь
     },
     onError: (error: any) => {
       alert(`❌ ${error.response?.data?.detail || 'Ошибка при создании тура'}`)
@@ -200,17 +183,25 @@ export default function CreateTourFromRequest() {
                   </Button>
                 </div>
 
-                <div className="mt-4 flex gap-3">
-                  <Button
-                    onClick={() => navigate('/dashboard/my-tours')}
-                    className="flex-1 bg-airbnb-rausch hover:bg-airbnb-rausch/90"
-                  >
-                    Перейти к моим турам
-                  </Button>
+                <div className="mt-4 space-y-2">
+                  <div className="flex gap-3">
+                    <Button
+                      onClick={() => navigate('/dashboard/my-tours')}
+                      className="flex-1 bg-airbnb-rausch hover:bg-airbnb-rausch/90"
+                    >
+                      Перейти к моим турам
+                    </Button>
+                    <Button
+                      onClick={() => navigate('/dashboard/calendar')}
+                      className="flex-1 bg-green-600 hover:bg-green-700"
+                    >
+                      Открыть календарь
+                    </Button>
+                  </div>
                   <Button
                     onClick={() => navigate('/dashboard/requests')}
                     variant="outline"
-                    className="flex-1"
+                    className="w-full"
                   >
                     Вернуться к заявкам
                   </Button>

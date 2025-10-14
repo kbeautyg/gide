@@ -43,7 +43,6 @@ class Booking(BaseModel):
     """Модель бронирования"""
     id: int
     tour_id: int
-    tour_title: str
     client_id: int
     client_name: str
     client_phone: str
@@ -118,7 +117,6 @@ async def mark_as_paid(
     return Booking(
         id=booking.id,
         tour_id=booking.tour_id,
-        tour_title=tour.title,  # Добавляем название тура
         client_id=booking.client_id,
         client_name=booking.client_name,
         client_phone=booking.client_phone,
@@ -206,21 +204,15 @@ async def get_bookings(
     if not tour_ids:
         return BookingList(bookings=[], total=0)
     
-    # Получаем бронирования с JOIN к Tour для получения title
-    stmt = (
-        select(BookingModel, Tour.title)
-        .join(Tour, BookingModel.tour_id == Tour.id)
-        .where(BookingModel.tour_id.in_(tour_ids))
-        .order_by(BookingModel.created_at.desc())
-    )
+    # Получаем бронирования
+    stmt = select(BookingModel).where(BookingModel.tour_id.in_(tour_ids)).order_by(BookingModel.created_at.desc())
     result = await db.execute(stmt)
-    bookings_with_tours = result.all()
+    bookings_db = result.scalars().all()
     
     bookings_list = [
         Booking(
             id=b.id,
             tour_id=b.tour_id,
-            tour_title=tour_title,  # Добавляем название тура
             client_id=b.client_id,
             client_name=b.client_name,
             client_phone=b.client_phone,
@@ -232,7 +224,7 @@ async def get_bookings(
             payment_status=b.payment_status.value,
             created_at=b.created_at,
         )
-        for b, tour_title in bookings_with_tours
+        for b in bookings_db
     ]
     
     return BookingList(bookings=bookings_list, total=len(bookings_list))
@@ -303,7 +295,6 @@ async def create_booking(
     return Booking(
         id=booking.id,
         tour_id=booking.tour_id,
-        tour_title=tour.title,  # Добавляем название тура
         client_id=booking.client_id,
         client_name=booking.client_name,
         client_phone=booking.client_phone,

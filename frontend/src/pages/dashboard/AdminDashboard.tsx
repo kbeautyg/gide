@@ -219,13 +219,7 @@ export default function AdminDashboard() {
                             onClick={() => {
                               if (confirm('Удалить тур?')) {
                                 api.delete(`/admin/tours/${tour.id}`)
-                                  .then(() => {
-                                    queryClient.invalidateQueries({ queryKey: ['admin', 'tours'] })
-                                    queryClient.invalidateQueries({ queryKey: ['admin', 'stats'] })
-                                  })
-                                  .catch((error) => {
-                                    alert(`❌ ${error.response?.data?.detail || 'Ошибка при удалении'}`)
-                                  })
+                                  .then(() => window.location.reload())
                               }
                             }}
                           >
@@ -290,13 +284,7 @@ export default function AdminDashboard() {
                             className="text-green-600 hover:text-green-700 hover:bg-green-50"
                             onClick={() => {
                               api.put(`/admin/guides/${guide.id}/approve`)
-                                .then(() => {
-                                  queryClient.invalidateQueries({ queryKey: ['admin', 'guides'] })
-                                  alert('✅ Гид одобрен')
-                                })
-                                .catch((error) => {
-                                  alert(`❌ ${error.response?.data?.detail || 'Ошибка'}`)
-                                })
+                                .then(() => alert('Гид одобрен'))
                             }}
                           >
                             <CheckCircle size={14} className="mr-1" />
@@ -309,13 +297,7 @@ export default function AdminDashboard() {
                             onClick={() => {
                               if (confirm('Заблокировать гида?')) {
                                 api.put(`/admin/guides/${guide.id}/block`)
-                                  .then(() => {
-                                    queryClient.invalidateQueries({ queryKey: ['admin', 'guides'] })
-                                    alert('✅ Гид заблокирован')
-                                  })
-                                  .catch((error) => {
-                                    alert(`❌ ${error.response?.data?.detail || 'Ошибка'}`)
-                                  })
+                                  .then(() => alert('Гид заблокирован'))
                               }
                             }}
                           >

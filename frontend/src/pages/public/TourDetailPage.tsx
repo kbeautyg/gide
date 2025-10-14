@@ -510,39 +510,48 @@ export default function TourDetailPage() {
                         </button>
                         
                         {showCalendar && (
-                          <div className="absolute top-full left-0 mt-2 bg-white border border-gray-200 rounded-lg shadow-xl z-50 p-4">
-                            <DayPicker
-                              mode="single"
-                              selected={selectedDate}
-                              onSelect={(date) => {
-                                setSelectedDate(date)
-                                setBookingData({ ...bookingData, date: date ? format(date, 'yyyy-MM-dd') : '' })
-                                setShowCalendar(false)
-                              }}
-                              disabled={{ before: new Date() }}
-                              locale={ru}
-                              className="rdp"
-                              classNames={{
-                                months: "flex gap-4",
-                                month: "space-y-4",
-                                caption: "flex justify-center pt-1 relative items-center",
-                                caption_label: "text-lg font-semibold",
-                                nav: "space-x-1 flex items-center",
-                                nav_button: "h-8 w-8 bg-transparent p-0 opacity-50 hover:opacity-100 inline-flex items-center justify-center rounded-md border border-gray-300 hover:bg-gray-100",
-                                nav_button_previous: "absolute left-1",
-                                nav_button_next: "absolute right-1",
-                                table: "w-full border-collapse space-y-1",
-                                head_row: "flex",
-                                head_cell: "text-gray-500 rounded-md w-10 font-normal text-sm",
-                                row: "flex w-full mt-2",
-                                cell: "text-center text-sm p-0 relative",
-                                day: "h-10 w-10 p-0 font-normal rounded-md hover:bg-gray-100 inline-flex items-center justify-center",
-                                day_selected: "bg-tropical-ocean text-white hover:bg-tropical-ocean hover:text-white focus:bg-tropical-ocean focus:text-white",
-                                day_today: "bg-gray-100 text-gray-900 font-semibold",
-                                day_disabled: "text-gray-300 opacity-50",
-                              }}
+                          <>
+                            {/* Overlay для закрытия календаря */}
+                            <div 
+                              className="fixed inset-0 z-40 bg-black/20 md:hidden"
+                              onClick={() => setShowCalendar(false)}
                             />
-                          </div>
+                            
+                            {/* Календарь */}
+                            <div className="fixed md:absolute inset-x-4 top-1/2 -translate-y-1/2 md:inset-x-auto md:top-full md:left-0 md:translate-y-0 mt-0 md:mt-2 bg-white border border-gray-200 rounded-lg shadow-xl z-50 p-3 md:p-4 max-w-[calc(100vw-2rem)] md:max-w-none mx-auto md:mx-0">
+                              <DayPicker
+                                mode="single"
+                                selected={selectedDate}
+                                onSelect={(date) => {
+                                  setSelectedDate(date)
+                                  setBookingData({ ...bookingData, date: date ? format(date, 'yyyy-MM-dd') : '' })
+                                  setShowCalendar(false)
+                                }}
+                                disabled={{ before: new Date() }}
+                                locale={ru}
+                                className="rdp"
+                                classNames={{
+                                  months: "flex gap-2 md:gap-4",
+                                  month: "space-y-3 md:space-y-4",
+                                  caption: "flex justify-center pt-1 relative items-center",
+                                  caption_label: "text-base md:text-lg font-semibold",
+                                  nav: "space-x-1 flex items-center",
+                                  nav_button: "h-7 w-7 md:h-8 md:w-8 bg-transparent p-0 opacity-50 hover:opacity-100 inline-flex items-center justify-center rounded-md border border-gray-300 hover:bg-gray-100",
+                                  nav_button_previous: "absolute left-1",
+                                  nav_button_next: "absolute right-1",
+                                  table: "w-full border-collapse space-y-1",
+                                  head_row: "flex",
+                                  head_cell: "text-gray-500 rounded-md w-8 md:w-10 font-normal text-xs md:text-sm",
+                                  row: "flex w-full mt-2",
+                                  cell: "text-center text-xs md:text-sm p-0 relative",
+                                  day: "h-8 w-8 md:h-10 md:w-10 p-0 font-normal rounded-md hover:bg-gray-100 inline-flex items-center justify-center text-sm md:text-base",
+                                  day_selected: "bg-tropical-ocean text-white hover:bg-tropical-ocean hover:text-white focus:bg-tropical-ocean focus:text-white",
+                                  day_today: "bg-gray-100 text-gray-900 font-semibold",
+                                  day_disabled: "text-gray-300 opacity-50",
+                                }}
+                              />
+                            </div>
+                          </>
                         )}
                       </div>
                     </div>

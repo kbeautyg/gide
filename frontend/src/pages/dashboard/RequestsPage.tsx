@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { useQuery } from '@tanstack/react-query'
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { Filter, Inbox, CheckCircle2, Clock, Link2 } from 'lucide-react'
@@ -11,6 +11,7 @@ import { api } from '@/lib/api'
 type FilterType = 'all' | 'short' | 'long' | 'pending' | 'in_progress' | 'completed'
 
 export default function RequestsPage() {
+  const queryClient = useQueryClient()
   const navigate = useNavigate()
   const [filter, setFilter] = useState<FilterType>('all')
 
@@ -20,11 +21,18 @@ export default function RequestsPage() {
     queryFn: () => api.get('/requests/available').then(res => res.data),
   })
 
-  // Перейти к созданию тура БЕЗ принятия заявки
-  // Заявка будет принята автоматически только после успешного создания тура
-  const handleAcceptRequest = (requestId: number) => {
-    navigate(`/dashboard/tours/create-from-request/${requestId}`)
-  }
+  // Принять заявку и перейти к созданию тура
+  const acceptMutation = useMutation({
+    mutationFn: (requestId: number) => 
+      api.post(`/requests/${requestId}/accept`),
+    onSuccess: (_, requestId) => {
+      queryClient.invalidateQueries({ queryKey: ['requests', 'available'] })
+      navigate(`/dashboard/tours/create-from-request/${requestId}`)
+    },
+    onError: (error: any) => {
+      alert(`❌ ${error.response?.data?.detail || 'Ошибка при принятии заявки'}`)
+    }
+  })
 
   const requests = requestsData?.requests || []
 
@@ -140,7 +148,7 @@ export default function RequestsPage() {
             >
               <RequestCard 
                 request={request}
-                onAccept={() => handleAcceptRequest(request.id)}
+                onAccept={() => acceptMutation.mutate(request.id)}
                 onViewTour={(tourId) => navigate(`/dashboard/my-tours#tour-${tourId}`)}
               />
             </motion.div>
