@@ -19,6 +19,37 @@ import {
 import { CSS } from '@dnd-kit/utilities'
 import { motion, AnimatePresence } from 'framer-motion'
 
+// Draggable компонент для туров
+function DraggableTour({ tour }: { tour: any }) {
+  const { attributes, listeners, setNodeRef, transform, isDragging } = useDraggable({
+    id: `tour-${tour.id}`,
+  })
+  
+  const style = {
+    transform: CSS.Translate.toString(transform),
+    opacity: isDragging ? 0.5 : 1,
+    cursor: isDragging ? 'grabbing' : 'grab',
+  }
+  
+  return (
+    <div 
+      ref={setNodeRef} 
+      style={style} 
+      {...listeners} 
+      {...attributes}
+      className="bg-blue-50 border-2 border-blue-300 rounded px-2 py-1 text-xs shadow-md group/tour relative hover:bg-blue-100 transition-colors"
+    >
+      <div className="flex items-center gap-1">
+        <GripVertical className="w-3 h-3 text-blue-500 flex-shrink-0" />
+        <div className="flex-1">
+          <div className="font-semibold line-clamp-1 text-blue-900">{tour.title}</div>
+          <div className="text-blue-600 text-[10px]">Тур • {tour.duration}ч</div>
+        </div>
+      </div>
+    </div>
+  )
+}
+
 interface GuideCalendarProps {
   schedules: Array<{ date: string, booked_hours: number, available_hours?: number }>
   requests: Array<any>
@@ -57,7 +88,12 @@ export function GuideCalendar({
   const [expandedDate, setExpandedDate] = useState<Date | null>(null)
   
   const handleDragStart = (event: DragStartEvent) => {
-    setActiveId(Number(event.active.id))
+    const id = String(event.active.id)
+    if (id.startsWith('tour-')) {
+      setActiveId(Number(id.replace('tour-', '')))
+    } else {
+      setActiveId(Number(id))
+    }
   }
   
   const handleDragEnd = (event: DragEndEvent) => {
@@ -65,15 +101,27 @@ export function GuideCalendar({
     
     setActiveId(null)
     
-    if (!over || !onReschedule) return
+    if (!over) return
     
-    const requestId = Number(active.id)
+    const activeIdStr = String(active.id)
     const newDate = over.id as string
     
-    onReschedule(requestId, newDate)
+    // Проверяем тип: тур или заявка
+    if (activeIdStr.startsWith('tour-')) {
+      // Перенос тура
+      if (!onTourReschedule) return
+      const tourId = Number(activeIdStr.replace('tour-', ''))
+      onTourReschedule(tourId, newDate, newDate) // start и end одинаковые
+    } else {
+      // Перенос заявки
+      if (!onReschedule) return
+      const requestId = Number(activeIdStr)
+      onReschedule(requestId, newDate)
+    }
   }
   
   const activeRequest = activeId ? requests.find(r => r.id === activeId) : null
+  const activeTour = activeId ? tours.find(t => t.id === activeId) : null
   
   const monthStart = startOfMonth(currentMonth)
   const monthEnd = endOfMonth(currentMonth)
@@ -189,6 +237,11 @@ export function GuideCalendar({
             <div className="bg-white rounded px-3 py-2 shadow-2xl border-2 border-airbnb-rausch opacity-80 cursor-grabbing">
               <div className="font-semibold text-sm text-gray-900">{activeRequest.title}</div>
               <div className="text-xs text-gray-500">{activeRequest.duration_hours}ч</div>
+            </div>
+          ) : activeTour ? (
+            <div className="bg-blue-50 rounded px-3 py-2 shadow-2xl border-2 border-blue-500 opacity-90 cursor-grabbing">
+              <div className="font-semibold text-sm text-blue-900">{activeTour.title}</div>
+              <div className="text-xs text-blue-600">Тур • {activeTour.duration}ч</div>
             </div>
           ) : null}
         </DragOverlay>
@@ -419,10 +472,14 @@ function DayCell({
             exit={{ opacity: 0, height: 0 }}
           >
             {tours.slice(0, 2).map(tour => (
-              <div key={tour.id} className="bg-blue-50 border border-blue-200 rounded px-2 py-1 text-xs shadow-sm group/tour relative">
-                <div className="font-semibold line-clamp-1 text-blue-900">{tour.title}</div>
-                <div className="text-blue-600 text-[10px]">Тур • {tour.duration}ч</div>
-              </div>
+              enableDragDrop ? (
+                <DraggableTour key={tour.id} tour={tour} />
+              ) : (
+                <div key={tour.id} className="bg-blue-50 border border-blue-200 rounded px-2 py-1 text-xs shadow-sm group/tour relative">
+                  <div className="font-semibold line-clamp-1 text-blue-900">{tour.title}</div>
+                  <div className="text-blue-600 text-[10px]">Тур • {tour.duration}ч</div>
+                </div>
+              )
             ))}
             {tours.length > 2 && (
               <div className="text-xs text-blue-500 text-center">+{tours.length - 2} туров</div>

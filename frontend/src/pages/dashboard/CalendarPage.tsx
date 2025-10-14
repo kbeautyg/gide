@@ -18,7 +18,7 @@ export default function CalendarPage() {
   const [rescheduleModal, setRescheduleModal] = useState(false)
   const [selectedRequest, setSelectedRequest] = useState<any>(null)
   const [newDate, setNewDate] = useState<Date | null>(null)
-  const [autoUpdateDates, setAutoUpdateDates] = useState(true)
+  const [clientConfirmed, setClientConfirmed] = useState(false) // Галочка "я согласовал с клиентом"
   
   // Для переноса туров с подтверждением
   const [rescheduleDialogOpen, setRescheduleDialogOpen] = useState(false)
@@ -162,33 +162,52 @@ export default function CalendarPage() {
         </div>
       </div>
 
-      {/* Автопереключение дат */}
-      <Card className="bg-blue-50 border-blue-200">
-        <CardContent className="py-4">
+      {/* Режим переноса дат с подтверждением клиента */}
+      <Card className="bg-gradient-to-r from-blue-50 to-indigo-50 border-2 border-blue-200 shadow-md">
+        <CardContent className="py-5">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <Switch
-                checked={autoUpdateDates}
-                onCheckedChange={setAutoUpdateDates}
+                checked={clientConfirmed}
+                onCheckedChange={setClientConfirmed}
+                className="data-[state=checked]:bg-green-600"
               />
-              <label className="text-sm font-medium text-gray-900">
-                Автопереключение дат на ссылке
-              </label>
+              <div className="flex flex-col">
+                <label className="text-base font-bold text-gray-900 cursor-pointer" onClick={() => setClientConfirmed(!clientConfirmed)}>
+                  Я согласовал даты с клиентом
+                </label>
+                <p className="text-xs text-gray-600 mt-0.5">
+                  Включите, чтобы разрешить перетаскивание туров в календаре
+                </p>
+              </div>
               <TooltipProvider>
                 <Tooltip>
                   <TooltipTrigger asChild>
                     <button className="text-gray-500 hover:text-gray-700">
-                      <HelpCircle size={16} />
+                      <HelpCircle size={18} />
                     </button>
                   </TooltipTrigger>
-                  <TooltipContent className="max-w-xs">
-                    <p>При переносе экскурсии в календаре дата автоматически обновится в ссылке тура (start_date/end_date)</p>
+                  <TooltipContent className="max-w-sm bg-white border-2 border-blue-200 p-4">
+                    <p className="font-semibold mb-2">Как это работает:</p>
+                    <ul className="text-sm space-y-1 list-disc pl-4">
+                      <li>Включите переключатель после согласования с клиентом</li>
+                      <li>Перетащите тур на новую дату в календаре</li>
+                      <li>Дата автоматически обновится в ссылке тура (/t/code)</li>
+                      <li>Клиент увидит новую дату при переходе по ссылке</li>
+                    </ul>
                   </TooltipContent>
                 </Tooltip>
               </TooltipProvider>
             </div>
-            {autoUpdateDates && (
-              <span className="text-xs text-green-600 font-medium">✓ Включено</span>
+            {clientConfirmed ? (
+              <div className="flex items-center gap-2 bg-green-100 text-green-800 px-4 py-2 rounded-lg font-semibold text-sm shadow-sm">
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
+                </svg>
+                Режим переноса активен
+              </div>
+            ) : (
+              <span className="text-xs text-gray-500 font-medium bg-gray-100 px-3 py-1.5 rounded">Отключено</span>
             )}
           </div>
         </CardContent>
@@ -207,18 +226,19 @@ export default function CalendarPage() {
             requests={requests}
             tours={tours}
             mode="view"
-            enableDragDrop={true}
-            autoUpdateDates={autoUpdateDates}
+            enableDragDrop={clientConfirmed}
             onReschedule={(requestId, newDate) => {
               rescheduleMutation.mutate({ requestId, new_date: newDate })
             }}
             onTourReschedule={(tourId, newStartDate) => {
-              // Открываем диалог подтверждения перед переносом
+              // Перенос тура напрямую (подтверждение уже дано через clientConfirmed)
               const tour = tours.find((t: any) => t.id === tourId)
-              if (tour) {
-                setSelectedTourForReschedule(tour)
-                setTargetDateForReschedule(newStartDate)
-                setRescheduleDialogOpen(true)
+              if (tour && clientConfirmed) {
+                rescheduleTourMutation.mutate({
+                  tourId,
+                  new_start_date: newStartDate,
+                  client_confirmed: true
+                })
               }
             }}
             onCancel={(requestId) => cancelMutation.mutate(requestId)}
