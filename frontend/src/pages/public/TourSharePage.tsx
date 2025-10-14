@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useParams } from 'react-router-dom'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { motion } from 'framer-motion'
@@ -36,7 +36,7 @@ export default function TourSharePage() {
     intervalMs: 30000, // Каждые 30 сек
   })
 
-  const { data: tour, isLoading } = useQuery({
+  const { data: tourResponse, isLoading } = useQuery({
     queryKey: ['tour-by-code', code],
     queryFn: async () => {
       const response = await api.get(`/tours/by-code/${code}`)
@@ -44,6 +44,22 @@ export default function TourSharePage() {
     },
     enabled: !!code,
   })
+
+  const tour = tourResponse?.tour
+  const clientData = tourResponse?.client_data
+
+  // Предзаполнение формы данными из заявки
+  useEffect(() => {
+    if (clientData) {
+      setFormData({
+        client_name: clientData.client_name || '',
+        client_phone: clientData.client_phone || '',
+        client_email: clientData.client_email || '',
+        participants_count: clientData.participants_count || 1,
+        date: clientData.assigned_date || clientData.preferred_date || '',
+      })
+    }
+  }, [clientData])
 
   const bookingMutation = useMutation({
     mutationFn: async (data: typeof formData) => {
@@ -438,6 +454,18 @@ export default function TourSharePage() {
                 </div>
 
                 <CardContent className="p-6">
+                  {clientData && (
+                    <div className="mb-6 bg-gradient-to-r from-green-50 to-emerald-50 border-2 border-green-300 p-4 rounded-xl">
+                      <div className="flex items-center gap-2 mb-2">
+                        <CheckCircle className="w-5 h-5 text-green-600" />
+                        <p className="font-bold text-green-900">Ваши данные уже заполнены!</p>
+                      </div>
+                      <p className="text-sm text-green-700">
+                        Данные взяты из вашей заявки. Проверьте их и нажмите "Подтвердить и оплатить".
+                      </p>
+                    </div>
+                  )}
+
                   <form onSubmit={handleSubmit} className="space-y-5">
                     <div>
                       <Label htmlFor="client_name" className="flex items-center gap-2 text-gray-700 font-semibold mb-2">
@@ -450,7 +478,8 @@ export default function TourSharePage() {
                         value={formData.client_name}
                         onChange={(e) => setFormData({ ...formData, client_name: e.target.value })}
                         placeholder="Иван Иванов"
-                        className="border-2 focus:border-airbnb-rausch"
+                        className={`border-2 focus:border-airbnb-rausch ${clientData ? 'bg-green-50' : ''}`}
+                        readOnly={!!clientData}
                       />
                     </div>
 
@@ -466,7 +495,8 @@ export default function TourSharePage() {
                         value={formData.client_phone}
                         onChange={(e) => setFormData({ ...formData, client_phone: e.target.value })}
                         placeholder="+7 (999) 123-45-67"
-                        className="border-2 focus:border-airbnb-rausch"
+                        className={`border-2 focus:border-airbnb-rausch ${clientData ? 'bg-green-50' : ''}`}
+                        readOnly={!!clientData}
                       />
                     </div>
 
@@ -481,14 +511,15 @@ export default function TourSharePage() {
                         value={formData.client_email}
                         onChange={(e) => setFormData({ ...formData, client_email: e.target.value })}
                         placeholder="ivan@example.com"
-                        className="border-2 focus:border-airbnb-rausch"
+                        className={`border-2 focus:border-airbnb-rausch ${clientData ? 'bg-green-50' : ''}`}
+                        readOnly={!!clientData}
                       />
                     </div>
 
                     <div>
                       <Label htmlFor="date" className="flex items-center gap-2 text-gray-700 font-semibold mb-2">
                         <CalendarDays className="w-4 h-4" />
-                        Желаемая дата *
+                        Дата экскурсии *
                       </Label>
                       <Input
                         id="date"
@@ -496,8 +527,15 @@ export default function TourSharePage() {
                         type="date"
                         value={formData.date}
                         onChange={(e) => setFormData({ ...formData, date: e.target.value })}
-                        className="border-2 focus:border-airbnb-rausch"
+                        className={`border-2 focus:border-airbnb-rausch ${clientData ? 'bg-green-50 font-bold text-green-800' : ''}`}
+                        readOnly={!!clientData}
                       />
+                      {clientData && (
+                        <p className="text-xs text-green-600 mt-1 flex items-center gap-1">
+                          <CheckCircle className="w-3 h-3" />
+                          Дата согласована с гидом
+                        </p>
+                      )}
                     </div>
 
                     <div>
@@ -513,7 +551,8 @@ export default function TourSharePage() {
                         max="20"
                         value={formData.participants_count}
                         onChange={(e) => setFormData({ ...formData, participants_count: parseInt(e.target.value) })}
-                        className="border-2 focus:border-airbnb-rausch"
+                        className={`border-2 focus:border-airbnb-rausch ${clientData ? 'bg-green-50' : ''}`}
+                        readOnly={!!clientData}
                       />
                     </div>
 
@@ -546,6 +585,11 @@ export default function TourSharePage() {
                         <>
                           <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2" />
                           Обработка...
+                        </>
+                      ) : clientData ? (
+                        <>
+                          <CheckCircle className="mr-2 group-hover:scale-110 transition-transform" />
+                          Подтвердить и оплатить
                         </>
                       ) : (
                         <>

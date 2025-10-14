@@ -12,7 +12,7 @@ from app.db.session import get_db
 from app.services.tour_service import TourService
 from app.models.booking import Booking
 from app.core.deps import get_current_user, get_current_user_optional
-from app.models.user import User
+from app.models.user import User, UserRole
 
 router = APIRouter()
 
@@ -216,7 +216,7 @@ async def get_tours(
     )
 
 
-@router.get("/by-code/{share_code}", response_model=Tour)
+@router.get("/by-code/{share_code}")
 async def get_tour_by_code(
     share_code: str,
     db: AsyncSession = Depends(get_db)
@@ -225,6 +225,7 @@ async def get_tour_by_code(
     Получение экскурсии по уникальному коду (для шаринга)
     
     Публичный эндпоинт без авторизации
+    Возвращает тур + данные из связанной заявки для предзаполнения формы
     """
     tour_db = await TourService.get_tour_by_share_code(db, share_code)
     
@@ -249,7 +250,26 @@ async def get_tour_by_code(
     )
     real_reviews_count = reviews_count_result.scalar() or 0
     
-    return Tour(
+    # Получаем данные из связанной заявки (если есть)
+    client_data = None
+    if tour_db.request_id:
+        from app.models.request import Request
+        request_result = await db.execute(
+            select(Request).where(Request.id == tour_db.request_id)
+        )
+        request = request_result.scalar_one_or_none()
+        if request:
+            client_data = {
+                "client_name": request.client_name,
+                "client_phone": request.client_phone,
+                "client_email": request.client_email,
+                "telegram_username": request.telegram_username,
+                "participants_count": request.participants_count,
+                "preferred_date": str(request.preferred_date) if request.preferred_date else None,
+                "assigned_date": str(request.assigned_date) if request.assigned_date else None,
+            }
+    
+    tour_data = Tour(
         id=tour_db.id,
         share_code=tour_db.share_code,
         title=tour_db.title,
@@ -260,7 +280,7 @@ async def get_tour_by_code(
         category=tour_db.category,
         photos=tour_db.photos or [],
         rating=tour_db.rating,
-        reviews_count=real_reviews_count,  # РЕАЛЬНОЕ количество из БД!
+        reviews_count=real_reviews_count,
         guide_name=tour_db.guide.name or "Гид",
         guide_id=tour_db.guide_id,
         active=tour_db.active,
@@ -288,7 +308,15 @@ async def get_tour_by_code(
         seo_title=tour_db.seo_title,
         seo_description=tour_db.seo_description,
         long_description=tour_db.long_description,
+        start_date=tour_db.start_date,
+        end_date=tour_db.end_date,
+        total_bookings=tour_db.total_bookings or 0,
     )
+    
+    return {
+        "tour": tour_data.dict(),
+        "client_data": client_data,  # Данные клиента из заявки для предзаполнения
+    }
 
 
 @router.get("/{tour_id}", response_model=Tour)
