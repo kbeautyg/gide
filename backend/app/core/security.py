@@ -21,6 +21,10 @@ security = HTTPBearer()
 # Московская временная зона
 MOSCOW_TZ = pytz.timezone('Europe/Moscow')
 
+# Экспортируем константы для WebSocket
+SECRET_KEY = settings.JWT_SECRET_KEY
+ALGORITHM = settings.JWT_ALGORITHM
+
 
 def verify_password(plain_password: str, hashed_password: str) -> bool:
     """Проверка пароля"""

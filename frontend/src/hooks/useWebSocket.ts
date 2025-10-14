@@ -5,6 +5,10 @@ const WS_URL = import.meta.env.VITE_WS_URL || 'ws://localhost:8081/ws'
 const RECONNECT_DELAY = 3000
 const PING_INTERVAL = 25000
 
+// Типы для таймеров
+type TimeoutId = ReturnType<typeof setTimeout>
+type IntervalId = ReturnType<typeof setInterval>
+
 interface WebSocketMessage {
   type: string
   [key: string]: any
@@ -21,8 +25,8 @@ export function useWebSocket(options: UseWebSocketOptions = {}) {
   const { enabled = true, onMessage, onConnect, onDisconnect } = options
   const wsRef = useRef<WebSocket | null>(null)
   const queryClient = useQueryClient()
-  const reconnectTimeoutRef = useRef<NodeJS.Timeout>()
-  const pingIntervalRef = useRef<NodeJS.Timeout>()
+  const reconnectTimeoutRef = useRef<TimeoutId>()
+  const pingIntervalRef = useRef<IntervalId>()
   const [isConnected, setIsConnected] = useState(false)
   const [connectionError, setConnectionError] = useState<string | null>(null)
 
