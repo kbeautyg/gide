@@ -198,8 +198,10 @@ export function GuideCalendar({
           // Проверяем нужно ли подсветить эту дату
           const dayStr = format(day, 'yyyy-MM-dd')
           // Подсвечиваем дату если она совпадает ИЛИ если на этой дате есть нужный тур
-          const shouldHighlight = (highlightDate === dayStr) || 
+          const shouldHighlight = Boolean(
+            (highlightDate === dayStr) || 
             (highlightTourId && toursOnDay.some(t => t.id === highlightTourId))
+          )
           
           return (
             <DayCell
