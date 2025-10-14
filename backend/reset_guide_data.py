@@ -39,29 +39,25 @@ async def reset_guide_data():
             """))
             print(f"   ✓ Очищены связи в бронированиях: {result.rowcount}")
             
-            # 2. Удаляем отзывы (связаны с турами)
-            result = await session.execute(sa.text("DELETE FROM reviews"))
-            print(f"   ✓ Удалено отзывов: {result.rowcount}")
-            
-            # 3. Удаляем расписание гидов
+            # 2. Удаляем расписание гидов
             result = await session.execute(sa.text("DELETE FROM guide_schedules"))
             print(f"   ✓ Удалено записей расписания: {result.rowcount}")
             
-            # 4. Удаляем бронирования (теперь можно, т.к. связи очищены)
+            # 3. Удаляем бронирования (теперь можно, т.к. связи очищены)
             result = await session.execute(sa.text("DELETE FROM bookings"))
             print(f"   ✓ Удалено бронирований: {result.rowcount}")
             
-            # 5. Удаляем ТОЛЬКО туры созданные гидом из заявок (с request_id)
+            # 4. Удаляем ТОЛЬКО туры созданные гидом из заявок (с request_id)
             # Публичные туры (request_id IS NULL) остаются для главной страницы!
             result = await session.execute(sa.text("DELETE FROM tours WHERE request_id IS NOT NULL"))
             print(f"   ✓ Удалено туров гида: {result.rowcount}")
             print(f"   ℹ️  Публичные туры для главной страницы сохранены")
             
-            # 6. Удаляем заявки (теперь можно, т.к. связи с турами очищены)
+            # 5. Удаляем заявки (теперь можно, т.к. связи с турами очищены)
             result = await session.execute(sa.text("DELETE FROM requests"))
             print(f"   ✓ Удалено заявок: {result.rowcount}")
             
-            # 7. Сбрасываем счётчики у ВСЕХ пользователей (т.к. enum может отличаться)
+            # 6. Сбрасываем счётчики у ВСЕХ пользователей (т.к. enum может отличаться)
             # Обновляем только если поля существуют
             try:
                 result = await session.execute(sa.text("""
