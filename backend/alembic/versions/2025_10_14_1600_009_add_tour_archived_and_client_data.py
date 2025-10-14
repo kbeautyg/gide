@@ -1,7 +1,7 @@
 """add tour archived and client data
 
 Revision ID: 009
-Revises: 007
+Revises: 008
 Create Date: 2025-10-14 16:00:00.000000
 
 """
@@ -11,7 +11,7 @@ import sqlalchemy as sa
 
 # revision identifiers, used by Alembic.
 revision = '009'
-down_revision = '007'
+down_revision = '008'
 branch_labels = None
 depends_on = None
 
