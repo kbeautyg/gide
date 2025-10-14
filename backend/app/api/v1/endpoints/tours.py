@@ -251,9 +251,10 @@ async def get_tour_by_code(
     real_reviews_count = reviews_count_result.scalar() or 0
     
     # Получаем данные клиента из последнего бронирования (если есть)
+    # НЕ показываем данные гида/админа, только реальные данные клиента из бронирования
     client_data = None
     
-    # Сначала пробуем получить данные из последнего бронирования
+    # Берём данные только из последнего бронирования (реальный клиент)
     booking_result = await db.execute(
         select(Booking)
         .where(Booking.tour_id == tour_db.id)
@@ -263,7 +264,7 @@ async def get_tour_by_code(
     last_booking = booking_result.scalar_one_or_none()
     
     if last_booking:
-        # Данные из бронирования
+        # Данные из бронирования (реальный клиент, который забронировал)
         client_data = {
             "client_name": last_booking.client_name,
             "client_phone": last_booking.client_phone,
@@ -273,27 +274,8 @@ async def get_tour_by_code(
             "preferred_date": str(last_booking.date) if last_booking.date else None,
             "assigned_date": str(tour_db.start_date) if tour_db.start_date else None,
         }
-    elif tour_db.request_id:
-        # Если бронирований нет, берём данные из связанной заявки
-        from app.models.request import Request
-        from sqlalchemy.orm import selectinload
-        
-        request_result = await db.execute(
-            select(Request)
-            .options(selectinload(Request.client))
-            .where(Request.id == tour_db.request_id)
-        )
-        request = request_result.scalar_one_or_none()
-        if request and request.client:
-            client_data = {
-                "client_name": request.client.name,
-                "client_phone": request.client.phone,
-                "client_email": request.client.email,
-                "telegram_username": request.telegram_username or request.client.telegram_username,
-                "participants_count": request.participants_count,
-                "preferred_date": str(request.preferred_date) if request.preferred_date else None,
-                "assigned_date": str(request.assigned_date) if request.assigned_date else None,
-            }
+    # НЕ берём данные из заявки, т.к. там может быть гид/админ
+    # Форма будет пустой пока клиент не забронирует первый раз
     
     tour_data = Tour(
         id=tour_db.id,
