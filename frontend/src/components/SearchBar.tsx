@@ -109,37 +109,6 @@ export function SearchBar({ variant = 'hero', className }: SearchBarProps) {
 
   return (
     <div className={cn("relative", className)}>
-      {/* Табы с фонами */}
-      <div className="flex items-center gap-4 mb-4">
-        <button
-          onClick={() => setActiveTab('tours')}
-          className={cn(
-            "px-6 py-2.5 text-base font-semibold transition-all rounded-full",
-            activeTab === 'tours' 
-              ? "bg-white text-gray-900 shadow-md" 
-              : isHero 
-                ? "bg-white/20 backdrop-blur-sm text-white border border-white/40 hover:bg-white/30" 
-                : "bg-gray-100 text-gray-700 hover:bg-gray-200"
-          )}
-        >
-          Экскурсии
-        </button>
-        
-        <button
-          onClick={() => setActiveTab('experiences')}
-          className={cn(
-            "px-6 py-2.5 text-base font-semibold transition-all rounded-full",
-            activeTab === 'experiences' 
-              ? "bg-white text-gray-900 shadow-md" 
-              : isHero 
-                ? "bg-white/20 backdrop-blur-sm text-white border border-white/40 hover:bg-white/30" 
-                : "bg-gray-100 text-gray-700 hover:bg-gray-200"
-          )}
-        >
-          Впечатления
-        </button>
-      </div>
-
       {/* Поисковая панель */}
       <motion.div
         className={cn(
@@ -164,7 +133,7 @@ export function SearchBar({ variant = 'hero', className }: SearchBarProps) {
                 </div>
               </button>
             </PopoverTrigger>
-            <PopoverContent className="w-[400px] p-4 bg-white rounded-2xl shadow-airbnb-lg" align="start">
+            <PopoverContent className="w-[400px] p-4 bg-white rounded-2xl shadow-airbnb-lg" align="start" side="bottom">
               <Input
                 placeholder="Введите город или страну"
                 value={searchData.where}

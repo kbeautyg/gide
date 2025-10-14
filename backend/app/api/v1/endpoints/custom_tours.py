@@ -36,8 +36,15 @@ async def create_tour_from_request(
     # Любой авторизованный пользователь может создать тур из принятой заявки
     # Основная проверка - это guide_id == current_user.id ниже
     
-    # Получаем заявку
-    result = await db.execute(select(Request).where(Request.id == request_id))
+    # Получаем заявку с загрузкой связанного бронирования
+    from sqlalchemy.orm import selectinload
+    from app.models.booking import Booking
+    
+    result = await db.execute(
+        select(Request)
+        .options(selectinload(Request.client))
+        .where(Request.id == request_id)
+    )
     request = result.scalar_one_or_none()
     
     if not request:
@@ -51,6 +58,18 @@ async def create_tour_from_request(
     if request.guide_id is not None and request.guide_id != current_user.id:
         raise HTTPException(status_code=403, detail="This request is already taken by another guide")
     
+    # Ищем подходящий публичный тур для копирования данных и фото
+    public_tour = None
+    if request.location or request.title:
+        query = select(Tour).where(
+            Tour.is_public == True,
+            Tour.request_id == None
+        )
+        if request.location:
+            query = query.where(Tour.location.ilike(f"%{request.location}%"))
+        result = await db.execute(query.limit(1))
+        public_tour = result.scalar_one_or_none()
+    
     # Генерируем уникальный share_code
     share_code = generate_share_code()
     while True:
@@ -59,7 +78,46 @@ async def create_tour_from_request(
             break
         share_code = generate_share_code()
     
-    # Создаём тур из данных заявки
+    # Получаем данные клиента из бронирования (если есть)
+    client_name = None
+    client_phone = None
+    client_email = None
+    
+    if request.booking_id:
+        booking_result = await db.execute(select(Booking).where(Booking.id == request.booking_id))
+        booking = booking_result.scalar_one_or_none()
+        if booking:
+            client_name = booking.client_name
+            client_phone = booking.client_phone
+            client_email = booking.client_email
+    
+    # Копируем данные из публичного тура если найден
+    photos = []
+    what_to_expect = None
+    organizational_details = None
+    included = []
+    not_included = []
+    meeting_point = None
+    max_guests = None
+    difficulty_level = None
+    languages = None
+    
+    if public_tour:
+        # Берем первое фото из публичного тура
+        if public_tour.photos and len(public_tour.photos) > 0:
+            photos = [public_tour.photos[0]]
+        
+        # Копируем дополнительные поля
+        what_to_expect = public_tour.what_to_expect
+        organizational_details = public_tour.organizational_details
+        included = public_tour.included or []
+        not_included = public_tour.not_included or []
+        meeting_point = public_tour.meeting_point
+        max_guests = public_tour.max_group_size
+        difficulty_level = public_tour.difficulty_level
+        languages = public_tour.languages
+    
+    # Создаём тур из данных заявки + данные из публичного тура
     tour = Tour(
         guide_id=current_user.id,
         title=request.title,
@@ -75,6 +133,18 @@ async def create_tour_from_request(
         request_id=request_id,
         share_code=share_code,
         is_public=False,  # Кастомные туры не публичные
+        photos=photos,
+        what_to_expect=what_to_expect,
+        organizational_details=organizational_details,
+        included=included,
+        not_included=not_included,
+        meeting_point=meeting_point,
+        max_guests=max_guests,
+        difficulty_level=difficulty_level,
+        languages=languages,
+        client_name=client_name,
+        client_phone=client_phone,
+        client_email=client_email,
     )
     
     db.add(tour)

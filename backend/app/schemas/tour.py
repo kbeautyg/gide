@@ -75,6 +75,12 @@ class Tour(TourBase):
     active: bool
     total_bookings: int = 0
     views_count: int = 0
+    is_archived: bool = False
+    
+    # Данные клиента (для кастомных туров)
+    client_name: Optional[str] = None
+    client_phone: Optional[str] = None
+    client_email: Optional[str] = None
     
     class Config:
         from_attributes = True

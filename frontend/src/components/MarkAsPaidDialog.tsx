@@ -71,7 +71,7 @@ export function MarkAsPaidDialog({ open, onOpenChange, tour }: MarkAsPaidDialogP
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-[500px]">
+      <DialogContent className="sm:max-w-[95vw] md:max-w-[500px] max-h-[90vh] overflow-y-auto p-4 sm:p-6">
         <DialogHeader>
           <DialogTitle>Отметить как оплаченное</DialogTitle>
           <DialogDescription>

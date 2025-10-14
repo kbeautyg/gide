@@ -62,7 +62,7 @@ export default function RequestsPage() {
   const completedCount = requests.filter((r: any) => r.status === 'completed').length
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 overflow-x-hidden max-w-full">
       {/* Заголовок */}
       <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
         <div>

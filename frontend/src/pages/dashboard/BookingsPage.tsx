@@ -90,7 +90,7 @@ export default function BookingsPage() {
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 overflow-x-hidden max-w-full">
       {/* Header */}
       <div className="flex items-center justify-between">
       <div>
@@ -274,7 +274,7 @@ export default function BookingsPage() {
 
       {/* Модальное окно с деталями */}
       <Dialog open={!!selectedBooking} onOpenChange={() => setSelectedBooking(null)}>
-        <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto scrollbar-hide">
+        <DialogContent className="sm:max-w-[95vw] md:max-w-2xl max-h-[90vh] overflow-y-auto scrollbar-hide p-4 sm:p-6">
           <DialogHeader>
             <DialogTitle>Детали заказа #{selectedBooking?.id}</DialogTitle>
           </DialogHeader>

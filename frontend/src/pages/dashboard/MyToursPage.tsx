@@ -10,7 +10,7 @@ import { Textarea } from '@/components/ui/textarea'
 import { ConfirmDialog } from '@/components/ui/confirm-dialog'
 import { CreateTourDialog } from '@/components/CreateTourDialog'
 import { MarkAsPaidDialog } from '@/components/MarkAsPaidDialog'
-import { MapPin, Clock, Star, Edit, Trash2, Link as LinkIcon, Copy, CheckCircle, ExternalLink, Calendar as CalendarIcon, ShoppingBag } from 'lucide-react'
+import { MapPin, Clock, Star, Edit, Trash2, Link as LinkIcon, Copy, CheckCircle, ExternalLink, Calendar as CalendarIcon, ShoppingBag, User, Phone, Mail, Info } from 'lucide-react'
 import { toursApi } from '@/lib/api'
 import { formatRUB } from '@/lib/utils'
 import { toast } from '@/lib/toast'
@@ -37,7 +37,10 @@ export default function MyToursPage() {
     queryFn: () => toursApi.getList({ include_private: true }),
   })
 
-  const tours = toursData?.data?.tours || []
+  const allTours = toursData?.data?.tours || []
+  
+  // Фильтруем архивные туры (которые были оплачены)
+  const tours = allTours.filter((tour: any) => !tour.is_archived)
 
   // Mutation для удаления тура
   const deleteMutation = useMutation({
@@ -100,7 +103,7 @@ export default function MyToursPage() {
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 overflow-x-hidden max-w-full">
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-3xl font-bold">Мои экскурсии</h1>
@@ -138,21 +141,26 @@ export default function MyToursPage() {
               <CardHeader>
                 <div className="flex items-center gap-2 text-sm text-gray-600 mb-2 flex-wrap">
                   <MapPin size={16} />
-                  <span>{tour.location}</span>
+                  <span className="truncate">{tour.location}</span>
                   <Clock size={16} className="ml-auto" />
                   <span>{tour.duration} ч</span>
                 </div>
-                {(tour.start_date || tour.end_date) && (
-                  <div className="flex items-center gap-1 text-xs text-blue-600 mb-2">
-                    <CalendarIcon size={14} />
-                    <span>
-                      {tour.start_date && new Date(tour.start_date).toLocaleDateString('ru')}
-                      {tour.start_date && tour.end_date && ' — '}
-                      {tour.end_date && tour.start_date !== tour.end_date && new Date(tour.end_date).toLocaleDateString('ru')}
-                    </span>
-                  </div>
-                )}
-                <CardTitle className="text-lg">{tour.title}</CardTitle>
+                <div className="flex items-center gap-1 text-xs mb-2">
+                  <CalendarIcon size={14} className={tour.start_date ? "text-blue-600" : "text-gray-400"} />
+                  <span className={tour.start_date ? "text-blue-600 font-medium" : "text-gray-400 italic"}>
+                    {tour.start_date ? (
+                      <>
+                        {new Date(tour.start_date).toLocaleDateString('ru')}
+                        {tour.end_date && tour.start_date !== tour.end_date && (
+                          <> — {new Date(tour.end_date).toLocaleDateString('ru')}</>
+                        )}
+                      </>
+                    ) : (
+                      'Дата не назначена'
+                    )}
+                  </span>
+                </div>
+                <CardTitle className="text-lg break-words">{tour.title}</CardTitle>
               </CardHeader>
 
               <CardContent className="flex-1 space-y-3">
@@ -173,6 +181,76 @@ export default function MyToursPage() {
                     <p className="text-lg font-bold text-green-600">{tour.total_bookings || 0}</p>
                   </div>
                 </div>
+
+                {/* Данные клиента */}
+                {tour.is_custom && (tour.client_name || tour.client_phone || tour.client_email) && (
+                  <div className="bg-yellow-50 border-l-4 border-yellow-400 p-3 rounded">
+                    <h4 className="font-semibold text-sm mb-2 flex items-center gap-1">
+                      <User size={14} />
+                      Данные клиента
+                    </h4>
+                    <div className="space-y-1 text-xs">
+                      {tour.client_name && (
+                        <p className="flex items-center gap-1.5">
+                          <User size={12} className="text-yellow-700" />
+                          {tour.client_name}
+                        </p>
+                      )}
+                      {tour.client_phone && (
+                        <p className="flex items-center gap-1.5">
+                          <Phone size={12} className="text-yellow-700" />
+                          {tour.client_phone}
+                        </p>
+                      )}
+                      {tour.client_email && (
+                        <p className="flex items-center gap-1.5">
+                          <Mail size={12} className="text-yellow-700" />
+                          {tour.client_email}
+                        </p>
+                      )}
+                    </div>
+                  </div>
+                )}
+
+                {/* Информация о туре из публичного */}
+                {tour.is_custom && (tour.what_to_expect || tour.organizational_details || tour.max_guests || tour.difficulty_level) && (
+                  <div className="space-y-2">
+                    {tour.what_to_expect && (
+                      <div className="bg-blue-50 rounded p-3">
+                        <h4 className="font-semibold text-sm mb-1 flex items-center gap-1">
+                          <Info size={14} className="text-blue-600" />
+                          Что вас ожидает
+                        </h4>
+                        <p className="text-xs text-gray-700 line-clamp-3">{tour.what_to_expect}</p>
+                      </div>
+                    )}
+                    
+                    {tour.organizational_details && (
+                      <div className="bg-green-50 rounded p-3">
+                        <h4 className="font-semibold text-sm mb-1 flex items-center gap-1">
+                          <Info size={14} className="text-green-600" />
+                          Организационные детали
+                        </h4>
+                        <p className="text-xs text-gray-700 line-clamp-3">{tour.organizational_details}</p>
+                      </div>
+                    )}
+                    
+                    {(tour.max_guests || tour.difficulty_level) && (
+                      <div className="grid grid-cols-2 gap-2 text-xs">
+                        {tour.max_guests && (
+                          <div className="bg-gray-50 p-2 rounded">
+                            <span className="font-semibold">Макс. группа:</span> {tour.max_guests}
+                          </div>
+                        )}
+                        {tour.difficulty_level && (
+                          <div className="bg-gray-50 p-2 rounded">
+                            <span className="font-semibold">Сложность:</span> {tour.difficulty_level}
+                          </div>
+                        )}
+                      </div>
+                    )}
+                  </div>
+                )}
 
                 {/* Ссылка на экскурсию */}
                 <div className="bg-airbnb-rausch/10 p-3 rounded-lg border-2 border-airbnb-rausch/30">
@@ -221,7 +299,7 @@ export default function MyToursPage() {
                     variant="outline"
                     size="sm"
                     className="flex-1"
-                    onClick={() => navigate('/dashboard/calendar')}
+                    onClick={() => navigate(`/dashboard/calendar?highlight=${tour.start_date || ''}&tour=${tour.id}`)}
                   >
                     <CalendarIcon size={14} className="mr-1" />
                     Календарь

@@ -64,6 +64,8 @@ interface GuideCalendarProps {
   selectedDate?: Date | null
   enableDragDrop?: boolean
   autoUpdateDates?: boolean
+  highlightDate?: string | null
+  highlightTourId?: number | null
 }
 
 export function GuideCalendar({ 
@@ -81,7 +83,9 @@ export function GuideCalendar({
   selectedDate,
   enableDragDrop = false,
   // @ts-ignore - будет использоваться позже для drag&drop туров
-  autoUpdateDates = false
+  autoUpdateDates = false,
+  highlightDate = null,
+  highlightTourId = null
 }: GuideCalendarProps) {
   const [currentMonth, setCurrentMonth] = useState(new Date())
   const [activeId, setActiveId] = useState<number | null>(null)
@@ -191,6 +195,11 @@ export function GuideCalendar({
           const isSelected = selectedDate && isSameDay(day, selectedDate)
           const isCurrentMonth = isSameMonth(day, currentMonth)
           
+          // Проверяем нужно ли подсветить эту дату
+          const dayStr = format(day, 'yyyy-MM-dd')
+          const shouldHighlight = highlightDate === dayStr && 
+            toursOnDay.some(t => t.id === highlightTourId)
+          
           return (
             <DayCell
               key={day.toString()}
@@ -214,6 +223,7 @@ export function GuideCalendar({
               onCancel={onCancel}
               enableDragDrop={enableDragDrop}
               isExpanded={expandedDate ? isSameDay(expandedDate, day) : false}
+              isHighlighted={shouldHighlight}
             />
           )
         })}
@@ -266,6 +276,7 @@ interface DayCellProps {
   onCancel?: (requestId: number) => void
   enableDragDrop?: boolean
   isExpanded?: boolean
+  isHighlighted?: boolean
 }
 
 // Компонент перетаскиваемой карточки заявки
@@ -332,7 +343,8 @@ function DayCell({
   onClick,
   onCancel,
   enableDragDrop = false,
-  isExpanded = false
+  isExpanded = false,
+  isHighlighted = false
 }: DayCellProps) {
   // Делаем дату droppable зоной
   const { setNodeRef, isOver } = useDroppable({
@@ -351,8 +363,23 @@ function DayCell({
   
   const percentage = (bookedHours / 8) * 100
   
+  // Компонент с анимацией для подсветки
+  const DayCellContent = isHighlighted ? motion.div : 'div'
+  const animationProps = isHighlighted ? {
+    initial: { scale: 1, backgroundColor: bgColor },
+    animate: { 
+      scale: [1, 1.05, 1],
+      boxShadow: [
+        '0 0 0 0px rgba(251, 191, 36, 0)',
+        '0 0 0 8px rgba(251, 191, 36, 0.4)',
+        '0 0 0 0px rgba(251, 191, 36, 0)'
+      ]
+    },
+    transition: { duration: 0.6, repeat: 3 }
+  } : {}
+  
   return (
-    <div 
+    <DayCellContent 
       ref={setNodeRef}
       className={cn(
         "min-h-[100px] p-2 border rounded-lg transition-all",
@@ -360,9 +387,11 @@ function DayCell({
         !disabled && isCurrentMonth && "hover:shadow-sm cursor-pointer",
         disabled && "cursor-not-allowed",
         isOver && availableHours > 0 && "ring-2 ring-green-500 ring-offset-2 bg-green-100/50",
-        isOver && availableHours === 0 && "ring-2 ring-red-500 ring-offset-2 animate-shake"
+        isOver && availableHours === 0 && "ring-2 ring-red-500 ring-offset-2 animate-shake",
+        isHighlighted && "ring-4 ring-yellow-400"
       )}
       onClick={!disabled ? onClick : undefined}
+      {...animationProps}
     >
       <div className={cn(
         "font-bold text-sm mb-1", 

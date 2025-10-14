@@ -92,7 +92,7 @@ async def mark_as_paid(
     # Рассчитываем общую стоимость
     total_price = tour.price * payment.participants_count
     
-    # Создаём бронирование
+    # Создаём бронирование (оплачено офлайн)
     booking = BookingModel(
         tour_id=payment.tour_id,
         client_id=current_user.id,  # Гид создаёт от своего имени
@@ -107,6 +107,16 @@ async def mark_as_paid(
     )
     
     db.add(booking)
+    
+    # Архивируем тур (убираем из "Мои экскурсии")
+    tour.is_archived = True
+    
+    # Если тур создан из заявки - помечаем заявку как завершённую
+    if tour.request_id:
+        request_result = await db.execute(select(RequestModel).where(RequestModel.id == tour.request_id))
+        request = request_result.scalar_one_or_none()
+        if request:
+            request.status = 'completed'
     
     # Обновляем баланс гида
     current_user.balance_rub += total_price
