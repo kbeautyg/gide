@@ -7,6 +7,8 @@ import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
 import { RequestCard } from '@/components/dashboard/RequestCard'
 import { api } from '@/lib/api'
+import { toast } from '@/lib/toast'
+import { useAutoRefresh } from '@/hooks/useAutoRefresh'
 
 type FilterType = 'all' | 'short' | 'long' | 'pending' | 'in_progress' | 'completed'
 
@@ -14,6 +16,12 @@ export default function RequestsPage() {
   const queryClient = useQueryClient()
   const navigate = useNavigate()
   const [filter, setFilter] = useState<FilterType>('all')
+
+  // Автообновление данных через WebSocket + polling fallback
+  useAutoRefresh({
+    queryKeys: [['requests', 'available']],
+    intervalMs: 15000,
+  })
 
   // Загрузка доступных заявок
   const { data: requestsData, isLoading } = useQuery({
@@ -30,7 +38,8 @@ export default function RequestsPage() {
       navigate(`/dashboard/tours/create-from-request/${requestId}`)
     },
     onError: (error: any) => {
-      alert(`❌ ${error.response?.data?.detail || 'Ошибка при принятии заявки'}`)
+      toast.error('Ошибка при принятии заявки', error.response?.data?.detail)
+      queryClient.invalidateQueries({ queryKey: ['requests', 'available'] })
     }
   })
 

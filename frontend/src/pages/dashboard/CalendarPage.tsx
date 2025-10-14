@@ -9,6 +9,8 @@ import { Calendar as CalendarIcon, HelpCircle } from 'lucide-react'
 import { GuideCalendar } from '@/components/dashboard/GuideCalendar'
 import { api, toursApi } from '@/lib/api'
 import { format } from 'date-fns'
+import { toast } from '@/lib/toast'
+import { useAutoRefresh } from '@/hooks/useAutoRefresh'
 
 export default function CalendarPage() {
   const queryClient = useQueryClient()
@@ -16,6 +18,12 @@ export default function CalendarPage() {
   const [selectedRequest, setSelectedRequest] = useState<any>(null)
   const [newDate, setNewDate] = useState<Date | null>(null)
   const [autoUpdateDates, setAutoUpdateDates] = useState(true)
+
+  // Автообновление данных через WebSocket + polling fallback
+  useAutoRefresh({
+    queryKeys: [['my-schedule']],
+    intervalMs: 15000,
+  })
 
   // Загрузка расписания
   const { data: scheduleData, isLoading } = useQuery({
@@ -44,10 +52,10 @@ export default function CalendarPage() {
       setRescheduleModal(false)
       setSelectedRequest(null)
       setNewDate(null)
-      alert('✅ Заявка успешно перенесена!')
+      toast.success('Заявка успешно перенесена!', 'Расписание обновлено')
     },
     onError: (error: any) => {
-      alert(`❌ ${error.response?.data?.detail || 'Ошибка при переносе'}`)
+      toast.error('Ошибка при переносе', error.response?.data?.detail)
     }
   })
 
@@ -57,10 +65,10 @@ export default function CalendarPage() {
       api.put(`/requests/${requestId}/cancel`),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['my-schedule'] })
-      alert('✅ Заявка отменена, часы освобождены!')
+      toast.success('Заявка отменена', 'Часы освобождены в расписании')
     },
     onError: (error: any) => {
-      alert(`❌ ${error.response?.data?.detail || 'Ошибка при отмене'}`)
+      toast.error('Ошибка при отмене', error.response?.data?.detail)
     }
   })
 
@@ -71,10 +79,10 @@ export default function CalendarPage() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['my-schedule'] })
       queryClient.invalidateQueries({ queryKey: ['tours'] })
-      alert('✅ Даты тура обновлены!')
+      toast.success('Даты тура обновлены!', 'Изменения сохранены')
     },
     onError: (error: any) => {
-      alert(`❌ ${error.response?.data?.detail || 'Ошибка при обновлении дат'}`)
+      toast.error('Ошибка при обновлении дат', error.response?.data?.detail)
     }
   })
 

@@ -1,17 +1,21 @@
 import { useState } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
-import { useQuery, useMutation } from '@tanstack/react-query'
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { motion } from 'framer-motion'
 import { AlertTriangle, CheckCircle, Copy, ExternalLink } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Alert, AlertDescription } from '@/components/ui/alert'
+import { ConfirmDialog } from '@/components/ui/confirm-dialog'
 import { api } from '@/lib/api'
+import { toast } from '@/lib/toast'
 
 export default function CreateTourFromRequest() {
   const { requestId } = useParams<{ requestId: string }>()
   const navigate = useNavigate()
+  const queryClient = useQueryClient()
   const [shareLink, setShareLink] = useState<string>('')
+  const [showConfirm, setShowConfirm] = useState(false)
 
   // Загрузка заявки
   const { data: request, isLoading } = useQuery({
@@ -24,23 +28,29 @@ export default function CreateTourFromRequest() {
   const createTourMutation = useMutation({
     mutationFn: () => api.post(`/custom-tours/from-request/${requestId}`),
     onSuccess: (response) => {
-      const link = `${window.location.origin}/tours/${response.data.share_code}`
+      const link = `${window.location.origin}/t/${response.data.share_code}`
       setShareLink(link)
+      toast.success('Тур успешно создан!', 'Уникальная ссылка готова для отправки клиенту')
+      queryClient.invalidateQueries({ queryKey: ['requests'] })
+      queryClient.invalidateQueries({ queryKey: ['tours'] })
     },
     onError: (error: any) => {
-      alert(`❌ ${error.response?.data?.detail || 'Ошибка при создании тура'}`)
+      toast.error('Ошибка при создании тура', error.response?.data?.detail)
     }
   })
 
   const handleCreateTour = () => {
-    if (confirm('Создать тур из этой заявки? Данные будут заполнены автоматически.')) {
-      createTourMutation.mutate()
-    }
+    setShowConfirm(true)
+  }
+
+  const confirmCreateTour = () => {
+    createTourMutation.mutate()
+    setShowConfirm(false)
   }
 
   const copyLink = () => {
     navigator.clipboard.writeText(shareLink)
-    alert('✅ Ссылка скопирована!')
+    toast.success('Ссылка скопирована!', 'Теперь можно отправить её клиенту')
   }
 
   if (isLoading) {
@@ -60,6 +70,39 @@ export default function CreateTourFromRequest() {
         <Alert>
           <AlertDescription>Заявка не найдена</AlertDescription>
         </Alert>
+      </div>
+    )
+  }
+
+  // Защита: тур уже создан
+  if (request.generated_tour_id && !shareLink) {
+    return (
+      <div className="container mx-auto px-4 py-8 max-w-4xl">
+        <Card className="bg-blue-50 border-blue-200">
+          <CardContent className="pt-6">
+            <div className="text-center">
+              <CheckCircle className="h-16 w-16 text-blue-600 mx-auto mb-4" />
+              <h2 className="text-2xl font-bold text-blue-900 mb-2">Тур уже создан</h2>
+              <p className="text-blue-800 mb-6">
+                Для этой заявки уже был создан тур. Вы можете посмотреть его в разделе "Мои экскурсии".
+              </p>
+              <div className="flex gap-3 justify-center">
+                <Button
+                  onClick={() => navigate(`/dashboard/my-tours#tour-${request.generated_tour_id}`)}
+                  className="bg-blue-600 hover:bg-blue-700"
+                >
+                  Перейти к туру
+                </Button>
+                <Button
+                  onClick={() => navigate('/dashboard/requests')}
+                  variant="outline"
+                >
+                  Вернуться к заявкам
+                </Button>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
       </div>
     )
   }
@@ -184,20 +227,12 @@ export default function CreateTourFromRequest() {
                 </div>
 
                 <div className="mt-4 space-y-2">
-                  <div className="flex gap-3">
-                    <Button
-                      onClick={() => navigate('/dashboard/my-tours')}
-                      className="flex-1 bg-airbnb-rausch hover:bg-airbnb-rausch/90"
-                    >
-                      Перейти к моим турам
-                    </Button>
-                    <Button
-                      onClick={() => navigate('/dashboard/calendar')}
-                      className="flex-1 bg-green-600 hover:bg-green-700"
-                    >
-                      Открыть календарь
-                    </Button>
-                  </div>
+                  <Button
+                    onClick={() => navigate('/dashboard/my-tours')}
+                    className="w-full bg-airbnb-rausch hover:bg-airbnb-rausch/90"
+                  >
+                    Перейти к моим турам
+                  </Button>
                   <Button
                     onClick={() => navigate('/dashboard/requests')}
                     variant="outline"
@@ -234,6 +269,30 @@ export default function CreateTourFromRequest() {
           </div>
         )}
       </motion.div>
+
+      {/* ConfirmDialog для подтверждения создания тура */}
+      <ConfirmDialog
+        open={showConfirm}
+        onOpenChange={setShowConfirm}
+        title="Создать тур из заявки?"
+        description={
+          <div className="space-y-2">
+            <p>Данные будут заполнены автоматически из заявки клиента:</p>
+            <ul className="list-disc list-inside space-y-1 text-sm">
+              <li>Название: {request?.title}</li>
+              <li>Локация: {request?.location || 'Не указана'}</li>
+              <li>Длительность: {request?.duration_hours} часов</li>
+              <li>Бюджет: {request?.budget ? `${request.budget.toLocaleString('ru')} ₽` : 'Не указан'}</li>
+            </ul>
+            <p className="text-sm font-semibold mt-3">После создания будет сгенерирована уникальная ссылка для клиента.</p>
+          </div>
+        }
+        confirmText="Создать тур"
+        cancelText="Отмена"
+        onConfirm={confirmCreateTour}
+        variant="default"
+        loading={createTourMutation.isPending}
+      />
     </div>
   )
 }

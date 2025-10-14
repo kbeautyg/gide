@@ -7,11 +7,14 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/u
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
+import { ConfirmDialog } from '@/components/ui/confirm-dialog'
 import { CreateTourDialog } from '@/components/CreateTourDialog'
 import { MarkAsPaidDialog } from '@/components/MarkAsPaidDialog'
 import { MapPin, Clock, Star, Edit, Trash2, Link as LinkIcon, Copy, CheckCircle, ExternalLink, Calendar as CalendarIcon, ShoppingBag } from 'lucide-react'
 import { toursApi } from '@/lib/api'
 import { formatRUB } from '@/lib/utils'
+import { toast } from '@/lib/toast'
+import { useAutoRefresh } from '@/hooks/useAutoRefresh'
 
 export default function MyToursPage() {
   const queryClient = useQueryClient()
@@ -21,7 +24,14 @@ export default function MyToursPage() {
   const [selectedTour, setSelectedTour] = useState<any>(null)
   const [editOpen, setEditOpen] = useState(false)
   const [editData, setEditData] = useState<any>(null)
+  const [deleteConfirm, setDeleteConfirm] = useState<{ open: boolean; tour: any | null }>({ open: false, tour: null })
   
+  // Автообновление данных через WebSocket + polling fallback
+  useAutoRefresh({
+    queryKeys: [['tours']],
+    intervalMs: 15000,
+  })
+
   const { data: toursData, isLoading } = useQuery({
     queryKey: ['tours'],
     queryFn: () => toursApi.getList({ include_private: true }),
@@ -34,10 +44,11 @@ export default function MyToursPage() {
     mutationFn: (tourId: number) => toursApi.delete(tourId),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['tours'] })
-      alert('✅ Экскурсия удалена')
+      toast.success('Экскурсия удалена')
+      setDeleteConfirm({ open: false, tour: null })
     },
     onError: (error: any) => {
-      alert(`❌ ${error.response?.data?.detail || 'Ошибка при удалении'}`)
+      toast.error('Ошибка при удалении', error.response?.data?.detail)
     }
   })
 
@@ -48,10 +59,10 @@ export default function MyToursPage() {
       queryClient.invalidateQueries({ queryKey: ['tours'] })
       setEditOpen(false)
       setEditData(null)
-      alert('✅ Экскурсия обновлена')
+      toast.success('Экскурсия обновлена')
     },
     onError: (error: any) => {
-      alert(`❌ ${error.response?.data?.detail || 'Ошибка при обновлении'}`)
+      toast.error('Ошибка при обновлении', error.response?.data?.detail)
     }
   })
 
@@ -59,6 +70,7 @@ export default function MyToursPage() {
     const link = `${window.location.origin}/t/${shareCode}`
     navigator.clipboard.writeText(link)
     setCopiedId(tourId)
+    toast.success('Ссылка скопирована!', 'Теперь можно отправить её клиенту')
     setTimeout(() => setCopiedId(null), 2000)
   }
 
@@ -72,9 +84,13 @@ export default function MyToursPage() {
     navigate(`/dashboard/tours/edit/${tour.id}`)
   }
 
-  const handleDelete = (tourId: number, title: string) => {
-    if (confirm(`Вы уверены, что хотите удалить экскурсию "${title}"?`)) {
-      deleteMutation.mutate(tourId)
+  const handleDelete = (tour: any) => {
+    setDeleteConfirm({ open: true, tour })
+  }
+
+  const confirmDelete = () => {
+    if (deleteConfirm.tour) {
+      deleteMutation.mutate(deleteConfirm.tour.id)
     }
   }
 
@@ -248,7 +264,7 @@ export default function MyToursPage() {
                   variant="destructive" 
                   size="sm"
                   className="w-full"
-                  onClick={() => handleDelete(tour.id, tour.title)}
+                  onClick={() => handleDelete(tour)}
                 >
                   <Trash2 size={16} className="mr-1" />
                   Удалить
@@ -358,6 +374,29 @@ export default function MyToursPage() {
           )}
         </DialogContent>
       </Dialog>
+
+      {/* ConfirmDialog для удаления */}
+      <ConfirmDialog
+        open={deleteConfirm.open}
+        onOpenChange={(open) => setDeleteConfirm({ open, tour: open ? deleteConfirm.tour : null })}
+        title="Удалить экскурсию?"
+        description={
+          deleteConfirm.tour ? (
+            <div className="space-y-2">
+              <p>Вы действительно хотите удалить экскурсию:</p>
+              <p className="font-semibold text-gray-900">"{deleteConfirm.tour.title}"</p>
+              <p className="text-sm text-red-600">Это действие нельзя отменить!</p>
+            </div>
+          ) : (
+            ''
+          )
+        }
+        confirmText="Удалить"
+        cancelText="Отмена"
+        onConfirm={confirmDelete}
+        variant="destructive"
+        loading={deleteMutation.isPending}
+      />
     </div>
   )
 }
