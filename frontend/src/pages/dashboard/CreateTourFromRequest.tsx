@@ -165,8 +165,8 @@ export default function CreateTourFromRequest() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-50 via-pink-50 to-blue-50 py-8 px-4">
-      <div className="max-w-5xl mx-auto">
+    <div className="min-h-screen bg-gradient-to-br from-purple-50 via-pink-50 to-blue-50 py-4 sm:py-8 px-4 overflow-y-auto">
+      <div className="max-w-5xl mx-auto pb-8">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -407,12 +407,12 @@ export default function CreateTourFromRequest() {
                 initial={{ y: 20, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ delay: 0.7 }}
-                className="flex gap-3"
+                className="flex flex-col sm:flex-row gap-3"
               >
                 <Button
                   onClick={handleCreateTour}
                   disabled={createTourMutation.isPending}
-                  className="flex-1 bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white shadow-xl hover:shadow-2xl transition-all text-lg py-6 group"
+                  className="w-full sm:flex-1 bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white shadow-xl hover:shadow-2xl transition-all text-base sm:text-lg py-5 sm:py-6 group"
                   size="lg"
                 >
                   {createTourMutation.isPending ? (
@@ -432,7 +432,7 @@ export default function CreateTourFromRequest() {
                 <Button
                   onClick={() => navigate('/dashboard/requests')}
                   variant="outline"
-                  className="border-2 hover:bg-gray-50 text-lg py-6"
+                  className="w-full sm:w-auto border-2 hover:bg-gray-50 text-base sm:text-lg py-5 sm:py-6"
                   size="lg"
                 >
                   Отмена
