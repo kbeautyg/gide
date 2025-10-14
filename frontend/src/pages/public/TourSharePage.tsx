@@ -1,16 +1,25 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useParams } from 'react-router-dom'
-import { useQuery, useMutation } from '@tanstack/react-query'
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
+import { motion, AnimatePresence } from 'framer-motion'
+import confetti from 'canvas-confetti'
+import {
+  MapPin, Clock, Calendar, CheckCircle, Users, DollarSign,
+  Star, Heart, Share2, Sparkles, Gift, Trophy, Shield,
+  MessageCircle, Phone, Mail, User, CalendarDays, PartyPopper
+} from 'lucide-react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import { MapPin, Clock, Calendar, CheckCircle } from 'lucide-react'
 import { api } from '@/lib/api'
 import { formatRUB } from '@/lib/utils'
+import { toast } from '@/lib/toast'
+import { useAutoRefresh } from '@/hooks/useAutoRefresh'
 
 export default function TourSharePage() {
   const { code } = useParams<{ code: string }>()
+  const queryClient = useQueryClient()
   const [formData, setFormData] = useState({
     client_name: '',
     client_phone: '',
@@ -19,6 +28,13 @@ export default function TourSharePage() {
     date: '',
   })
   const [bookingSuccess, setBookingSuccess] = useState(false)
+  const [isFavorite, setIsFavorite] = useState(false)
+
+  // Автообновление данных тура
+  useAutoRefresh({
+    queryKeys: [['tour-by-code', code]],
+    intervalMs: 30000, // Каждые 30 сек
+  })
 
   const { data: tour, isLoading } = useQuery({
     queryKey: ['tour-by-code', code],
@@ -38,9 +54,20 @@ export default function TourSharePage() {
     },
     onSuccess: () => {
       setBookingSuccess(true)
+      
+      // Конфетти!
+      confetti({
+        particleCount: 150,
+        spread: 90,
+        origin: { y: 0.6 },
+        colors: ['#FF385C', '#00A699', '#FC642D', '#FFD700', '#00D0B0']
+      })
+      
+      toast.success('Бронирование успешно!', 'Гид свяжется с вами в ближайшее время')
+      queryClient.invalidateQueries({ queryKey: ['tour-by-code', code] })
     },
     onError: (error: any) => {
-      alert(error.response?.data?.detail || 'Ошибка при бронировании')
+      toast.error('Ошибка при бронировании', error.response?.data?.detail)
     },
   })
 
@@ -49,227 +76,527 @@ export default function TourSharePage() {
     bookingMutation.mutate(formData)
   }
 
+  const handleShare = () => {
+    const shareUrl = window.location.href
+    if (navigator.share) {
+      navigator.share({
+        title: tour?.title,
+        text: tour?.description?.substring(0, 100),
+        url: shareUrl,
+      })
+    } else {
+      navigator.clipboard.writeText(shareUrl)
+      toast.success('Ссылка скопирована!', 'Поделитесь с друзьями')
+    }
+  }
+
+  const handleFavorite = () => {
+    setIsFavorite(!isFavorite)
+    toast.info(isFavorite ? 'Убрано из избранного' : 'Добавлено в избранное')
+  }
+
+  // Loading state
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-tropical-turquoise/10 to-tropical-ocean/10 flex items-center justify-center">
-        <div className="animate-spin rounded-full h-16 w-16 border-b-4 border-tropical-ocean"></div>
+      <div className="min-h-screen bg-gradient-to-br from-purple-50 via-pink-50 to-blue-50 flex items-center justify-center">
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          className="text-center"
+        >
+          <motion.div
+            animate={{ rotate: 360 }}
+            transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+            className="w-20 h-20 border-4 border-airbnb-rausch border-t-transparent rounded-full mx-auto mb-4"
+          />
+          <p className="text-gray-600 font-medium text-lg">Загрузка экскурсии...</p>
+        </motion.div>
       </div>
     )
   }
 
+  // Not found state
   if (!tour) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 flex items-center justify-center p-4">
-        <Card className="max-w-md">
-          <CardContent className="text-center py-12">
-            <p className="text-2xl font-bold text-gray-900 mb-2">Экскурсия не найдена</p>
-            <p className="text-gray-600">Проверьте правильность ссылки</p>
-          </CardContent>
-        </Card>
+      <div className="min-h-screen bg-gradient-to-br from-gray-50 via-gray-100 to-gray-200 flex items-center justify-center p-4">
+        <motion.div
+          initial={{ scale: 0.9, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+        >
+          <Card className="max-w-md shadow-2xl">
+            <CardContent className="text-center py-16">
+              <div className="w-20 h-20 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                <Sparkles className="text-red-600" size={48} />
+              </div>
+              <h1 className="text-3xl font-bold text-gray-900 mb-2">Экскурсия не найдена</h1>
+              <p className="text-gray-600 mb-6">Проверьте правильность ссылки или свяжитесь с гидом</p>
+              <Button onClick={() => window.location.href = '/'} variant="outline">
+                На главную
+              </Button>
+            </CardContent>
+          </Card>
+        </motion.div>
       </div>
     )
   }
 
+  // Success state
   if (bookingSuccess) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-green-50 to-tropical-turquoise/20 flex items-center justify-center p-4">
-        <Card className="max-w-2xl">
-          <CardContent className="text-center py-16">
-            <div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
-              <CheckCircle className="text-green-600" size={48} />
+      <div className="min-h-screen bg-gradient-to-br from-green-50 via-emerald-50 to-teal-50 flex items-center justify-center p-4">
+        <motion.div
+          initial={{ scale: 0.8, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          transition={{ type: "spring", duration: 0.6 }}
+          className="max-w-2xl w-full"
+        >
+          <Card className="shadow-2xl overflow-hidden border-2 border-green-300">
+            <div className="bg-gradient-to-r from-green-500 to-emerald-600 p-8 text-center">
+              <motion.div
+                initial={{ scale: 0 }}
+                animate={{ scale: 1 }}
+                transition={{ type: "spring", delay: 0.3 }}
+                className="w-24 h-24 bg-white rounded-full flex items-center justify-center mx-auto mb-4"
+              >
+                <PartyPopper className="text-green-600" size={56} strokeWidth={2.5} />
+              </motion.div>
+              <h1 className="text-4xl font-bold text-white mb-2">Бронирование оформлено!</h1>
+              <p className="text-green-50 text-lg">Ваша заявка успешно отправлена гиду</p>
             </div>
-            <h1 className="text-3xl font-bold text-gray-900 mb-4">Бронирование оформлено!</h1>
-            <p className="text-lg text-gray-700 mb-6">
-              Спасибо за ваш заказ! Мы свяжемся с вами в ближайшее время для подтверждения деталей.
-            </p>
-            <div className="bg-gray-50 p-6 rounded-lg text-left max-w-md mx-auto">
-              <p className="text-sm text-gray-600 mb-1">Экскурсия:</p>
-              <p className="font-bold text-lg mb-3">{tour.title}</p>
-              <p className="text-sm text-gray-600 mb-1">Клиент:</p>
-              <p className="font-semibold">{formData.client_name}</p>
-              <p className="text-sm text-gray-600">{formData.client_phone}</p>
-              <p className="text-sm text-gray-600 mt-3 mb-1">К оплате:</p>
-              <p className="text-2xl font-bold text-tropical-ocean">{formatRUB(tour.price * formData.participants_count)}</p>
-            </div>
-          </CardContent>
-        </Card>
+
+            <CardContent className="p-8">
+              <div className="bg-gradient-to-br from-green-50 to-teal-50 p-6 rounded-2xl mb-6">
+                <div className="flex items-center gap-3 mb-4">
+                  <div className="w-12 h-12 bg-green-500 rounded-full flex items-center justify-center">
+                    <CheckCircle className="text-white" size={28} />
+                  </div>
+                  <div>
+                    <p className="text-sm text-gray-600">Статус</p>
+                    <p className="text-lg font-bold text-green-700">Подтверждается</p>
+                  </div>
+                </div>
+
+                <div className="space-y-3 text-gray-800">
+                  <div className="flex items-center gap-2">
+                    <Gift className="w-5 h-5 text-teal-600" />
+                    <span className="font-semibold">{tour.title}</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <User className="w-5 h-5 text-purple-600" />
+                    <span>{formData.client_name}</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Phone className="w-5 h-5 text-blue-600" />
+                    <span>{formData.client_phone}</span>
+                  </div>
+                  {formData.date && (
+                    <div className="flex items-center gap-2">
+                      <Calendar className="w-5 h-5 text-orange-600" />
+                      <span>{new Date(formData.date).toLocaleDateString('ru-RU')}</span>
+                    </div>
+                  )}
+                  <div className="flex items-center gap-2">
+                    <Users className="w-5 h-5 text-pink-600" />
+                    <span>{formData.participants_count} {formData.participants_count === 1 ? 'участник' : 'участников'}</span>
+                  </div>
+                </div>
+              </div>
+
+              <div className="bg-gradient-to-r from-airbnb-rausch/10 to-pink-100 p-6 rounded-2xl mb-6">
+                <p className="text-sm text-gray-600 mb-2">К оплате</p>
+                <p className="text-4xl font-bold text-airbnb-rausch">
+                  {formatRUB(tour.price * formData.participants_count)}
+                </p>
+                <p className="text-sm text-gray-500 mt-1">
+                  {formatRUB(tour.price)} × {formData.participants_count}
+                </p>
+              </div>
+
+              <div className="bg-blue-50 border-2 border-blue-200 p-4 rounded-xl mb-6">
+                <p className="text-sm text-blue-900">
+                  <strong>Что дальше?</strong> Гид свяжется с вами в ближайшее время для подтверждения деталей и согласования способа оплаты.
+                </p>
+              </div>
+
+              <div className="flex gap-3">
+                <Button
+                  onClick={() => window.location.href = '/'}
+                  variant="outline"
+                  className="flex-1 py-6 text-lg"
+                >
+                  На главную
+                </Button>
+                <Button
+                  onClick={() => setBookingSuccess(false)}
+                  className="flex-1 bg-gradient-to-r from-airbnb-rausch to-pink-600 hover:from-airbnb-rausch/90 hover:to-pink-600/90 py-6 text-lg"
+                >
+                  Ещё одна заявка
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
+        </motion.div>
       </div>
     )
   }
 
+  // Main tour page
   return (
-    <div className="min-h-screen bg-gradient-to-br from-tropical-turquoise/10 via-white to-tropical-ocean/10 py-12 px-4">
-      <div className="max-w-4xl mx-auto">
-        {/* Tour Info */}
-        <Card className="mb-8 overflow-hidden">
-          <div className="relative">
-            <img
-              src={tour.photos[0] || 'https://images.unsplash.com/photo-1589394815804-964ed0be2eb5?w=800'}
-              alt={tour.title}
-              className="w-full h-80 object-cover"
-            />
-            <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-6">
-              <h1 className="text-4xl font-bold text-white mb-2">{tour.title}</h1>
-              <div className="flex items-center gap-4 text-white/90">
-                <span className="flex items-center gap-1">
-                  <MapPin size={18} />
-                  {tour.location}
-                </span>
-                <span className="flex items-center gap-1">
-                  <Clock size={18} />
-                  {tour.duration} часов
-                </span>
-                <span className="flex items-center gap-1">
-                  <Calendar size={18} />
-                  {tour.start_date && tour.end_date 
-                    ? `${new Date(tour.start_date).toLocaleDateString('ru-RU')} - ${new Date(tour.end_date).toLocaleDateString('ru-RU')}`
-                    : 'По запросу'
-                  }
-                </span>
-              </div>
-            </div>
+    <div className="min-h-screen bg-gradient-to-br from-purple-50 via-pink-50 to-blue-50">
+      {/* Hero Section */}
+      <div className="relative">
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.6 }}
+          className="relative h-[60vh] overflow-hidden"
+        >
+          <img
+            src={tour.photos[0] || 'https://images.unsplash.com/photo-1589394815804-964ed0be2eb5?w=1200'}
+            alt={tour.title}
+            className="w-full h-full object-cover"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
+          
+          {/* Floating action buttons */}
+          <div className="absolute top-6 right-6 flex gap-3">
+            <motion.button
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.9 }}
+              onClick={handleFavorite}
+              className="w-12 h-12 bg-white/90 backdrop-blur-sm rounded-full flex items-center justify-center shadow-lg"
+            >
+              <Heart className={`w-6 h-6 ${isFavorite ? 'fill-red-500 text-red-500' : 'text-gray-700'}`} />
+            </motion.button>
+            <motion.button
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.9 }}
+              onClick={handleShare}
+              className="w-12 h-12 bg-white/90 backdrop-blur-sm rounded-full flex items-center justify-center shadow-lg"
+            >
+              <Share2 className="w-6 h-6 text-gray-700" />
+            </motion.button>
           </div>
 
-          <CardContent className="p-8">
-            <div className="grid md:grid-cols-3 gap-6 mb-8">
-              <div className="text-center p-4 bg-tropical-ocean/5 rounded-lg">
-                <p className="text-4xl font-bold text-tropical-ocean mb-1">{formatRUB(tour.price)}</p>
-                <p className="text-sm text-gray-600">За человека</p>
-              </div>
-              <div className="text-center p-4 bg-blue-50 rounded-lg">
-                <p className="text-4xl font-bold text-blue-600 mb-1">{tour.duration}ч</p>
-                <p className="text-sm text-gray-600">Продолжительность</p>
-              </div>
-              <div className="text-center p-4 bg-green-50 rounded-lg">
-                <p className="text-4xl font-bold text-green-600 mb-1">{tour.rating}</p>
-                <p className="text-sm text-gray-600">Рейтинг</p>
-              </div>
-            </div>
-
-            <div className="mb-8">
-              <h2 className="text-2xl font-bold mb-4">Описание</h2>
-              <p className="text-gray-700 leading-relaxed whitespace-pre-line">{tour.description}</p>
-            </div>
-
-            {tour.photos && tour.photos.length > 1 && (
-              <div className="mb-8">
-                <h2 className="text-2xl font-bold mb-4">Фотогалерея</h2>
-                <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-                  {tour.photos.slice(1).map((photo: string, i: number) => (
-                    <img
-                      key={i}
-                      src={photo}
-                      alt={`${tour.title} - фото ${i + 2}`}
-                      className="w-full h-48 object-cover rounded-lg"
-                    />
-                  ))}
-                </div>
-              </div>
-            )}
-          </CardContent>
-        </Card>
-
-        {/* Booking Form */}
-        <Card>
-          <CardHeader className="bg-gradient-to-r from-tropical-ocean to-tropical-turquoise text-white">
-            <CardTitle className="text-2xl">Забронировать экскурсию</CardTitle>
-          </CardHeader>
-          <CardContent className="p-8">
-            <form onSubmit={handleSubmit} className="space-y-6">
-              <div className="grid md:grid-cols-2 gap-6">
-                <div>
-                  <Label htmlFor="client_name">Ваше имя *</Label>
-                  <Input
-                    id="client_name"
-                    required
-                    value={formData.client_name}
-                    onChange={(e) => setFormData({ ...formData, client_name: e.target.value })}
-                    placeholder="Иван Иванов"
-                  />
-                </div>
-
-                <div>
-                  <Label htmlFor="client_phone">Телефон *</Label>
-                  <Input
-                    id="client_phone"
-                    required
-                    type="tel"
-                    value={formData.client_phone}
-                    onChange={(e) => setFormData({ ...formData, client_phone: e.target.value })}
-                    placeholder="+7 (999) 123-45-67"
-                  />
-                </div>
-              </div>
-
-              <div className="grid md:grid-cols-2 gap-6">
-                <div>
-                  <Label htmlFor="client_email">Email</Label>
-                  <Input
-                    id="client_email"
-                    type="email"
-                    value={formData.client_email}
-                    onChange={(e) => setFormData({ ...formData, client_email: e.target.value })}
-                    placeholder="ivan@example.com"
-                  />
-                </div>
-
-                <div>
-                  <Label htmlFor="date">Желаемая дата *</Label>
-                  <Input
-                    id="date"
-                    required
-                    type="date"
-                    value={formData.date}
-                    onChange={(e) => setFormData({ ...formData, date: e.target.value })}
-                  />
-                </div>
-              </div>
-
-              <div>
-                <Label htmlFor="participants_count">Количество участников *</Label>
-                <Input
-                  id="participants_count"
-                  required
-                  type="number"
-                  min="1"
-                  value={formData.participants_count}
-                  onChange={(e) => setFormData({ ...formData, participants_count: parseInt(e.target.value) })}
-                />
-              </div>
-
-              <div className="bg-gray-50 p-6 rounded-lg">
-                <div className="flex items-center justify-between mb-2">
-                  <span className="text-gray-700">Стоимость за человека:</span>
-                  <span className="font-semibold">{formatRUB(tour.price)}</span>
-                </div>
-                <div className="flex items-center justify-between mb-2">
-                  <span className="text-gray-700">Количество участников:</span>
-                  <span className="font-semibold">{formData.participants_count}</span>
-                </div>
-                <div className="border-t pt-2 mt-2 flex items-center justify-between">
-                  <span className="text-lg font-bold">Итого к оплате:</span>
-                  <span className="text-2xl font-bold text-tropical-ocean">
-                    {formatRUB(tour.price * formData.participants_count)}
-                  </span>
-                </div>
-              </div>
-
-              <Button
-                type="submit"
-                variant="tropical"
-                className="w-full text-lg py-6"
-                disabled={bookingMutation.isPending}
+          {/* Title overlay */}
+          <div className="absolute bottom-0 left-0 right-0 p-8">
+            <div className="max-w-6xl mx-auto">
+              <motion.div
+                initial={{ y: 30, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ delay: 0.3, duration: 0.6 }}
               >
-                {bookingMutation.isPending ? 'Обработка...' : 'Забронировать и оплатить'}
-              </Button>
+                <div className="flex items-center gap-3 mb-4">
+                  <div className="w-12 h-12 bg-gradient-to-br from-airbnb-rausch to-pink-600 rounded-xl flex items-center justify-center shadow-lg">
+                    <Sparkles className="w-6 h-6 text-white" />
+                  </div>
+                  <Badge className="bg-green-500 text-white text-sm px-4 py-1">
+                    Доступно
+                  </Badge>
+                </div>
+                <h1 className="text-5xl md:text-6xl font-bold text-white mb-4 drop-shadow-lg">
+                  {tour.title}
+                </h1>
+                <div className="flex flex-wrap items-center gap-4 text-white/95">
+                  <div className="flex items-center gap-2 bg-white/20 backdrop-blur-sm px-4 py-2 rounded-full">
+                    <MapPin className="w-5 h-5" />
+                    <span className="font-semibold">{tour.location}</span>
+                  </div>
+                  <div className="flex items-center gap-2 bg-white/20 backdrop-blur-sm px-4 py-2 rounded-full">
+                    <Clock className="w-5 h-5" />
+                    <span className="font-semibold">{tour.duration} часов</span>
+                  </div>
+                  {tour.start_date && (
+                    <div className="flex items-center gap-2 bg-white/20 backdrop-blur-sm px-4 py-2 rounded-full">
+                      <Calendar className="w-5 h-5" />
+                      <span className="font-semibold">
+                        {new Date(tour.start_date).toLocaleDateString('ru-RU')}
+                      </span>
+                    </div>
+                  )}
+                </div>
+              </motion.div>
+            </div>
+          </div>
+        </motion.div>
+      </div>
 
-              <p className="text-xs text-gray-500 text-center">
-                После бронирования с вами свяжется гид для подтверждения деталей и оплаты
-              </p>
-            </form>
-          </CardContent>
-        </Card>
+      {/* Content */}
+      <div className="max-w-6xl mx-auto px-4 py-12">
+        <div className="grid lg:grid-cols-3 gap-8">
+          {/* Left column - Tour info */}
+          <div className="lg:col-span-2 space-y-6">
+            {/* Quick stats */}
+            <motion.div
+              initial={{ y: 20, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ delay: 0.4 }}
+              className="grid grid-cols-2 md:grid-cols-4 gap-4"
+            >
+              <Card className="bg-gradient-to-br from-blue-50 to-indigo-100 border-2 border-blue-200">
+                <CardContent className="p-4 text-center">
+                  <DollarSign className="w-8 h-8 text-blue-600 mx-auto mb-2" />
+                  <p className="text-2xl font-bold text-blue-900">{formatRUB(tour.price)}</p>
+                  <p className="text-xs text-blue-700">За человека</p>
+                </CardContent>
+              </Card>
+
+              <Card className="bg-gradient-to-br from-green-50 to-emerald-100 border-2 border-green-200">
+                <CardContent className="p-4 text-center">
+                  <Clock className="w-8 h-8 text-green-600 mx-auto mb-2" />
+                  <p className="text-2xl font-bold text-green-900">{tour.duration}ч</p>
+                  <p className="text-xs text-green-700">Длительность</p>
+                </CardContent>
+              </Card>
+
+              <Card className="bg-gradient-to-br from-yellow-50 to-amber-100 border-2 border-yellow-200">
+                <CardContent className="p-4 text-center">
+                  <Star className="w-8 h-8 text-yellow-600 mx-auto mb-2" />
+                  <p className="text-2xl font-bold text-yellow-900">{tour.rating || '5.0'}</p>
+                  <p className="text-xs text-yellow-700">Рейтинг</p>
+                </CardContent>
+              </Card>
+
+              <Card className="bg-gradient-to-br from-purple-50 to-pink-100 border-2 border-purple-200">
+                <CardContent className="p-4 text-center">
+                  <Trophy className="w-8 h-8 text-purple-600 mx-auto mb-2" />
+                  <p className="text-2xl font-bold text-purple-900">{tour.total_bookings || 0}</p>
+                  <p className="text-xs text-purple-700">Бронирований</p>
+                </CardContent>
+              </Card>
+            </motion.div>
+
+            {/* Description */}
+            <motion.div
+              initial={{ y: 20, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ delay: 0.5 }}
+            >
+              <Card className="backdrop-blur-lg bg-white/80 border-2 border-white/50 shadow-xl">
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2 text-2xl">
+                    <Gift className="w-6 h-6 text-airbnb-rausch" />
+                    Описание экскурсии
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-gray-700 leading-relaxed whitespace-pre-line text-lg">
+                    {tour.description}
+                  </p>
+                </CardContent>
+              </Card>
+            </motion.div>
+
+            {/* Photo gallery */}
+            {tour.photos && tour.photos.length > 1 && (
+              <motion.div
+                initial={{ y: 20, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ delay: 0.6 }}
+              >
+                <Card className="backdrop-blur-lg bg-white/80 border-2 border-white/50 shadow-xl">
+                  <CardHeader>
+                    <CardTitle className="flex items-center gap-2 text-2xl">
+                      <Sparkles className="w-6 h-6 text-purple-600" />
+                      Фотогалерея
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                      {tour.photos.slice(1, 7).map((photo: string, i: number) => (
+                        <motion.img
+                          key={i}
+                          initial={{ scale: 0.9, opacity: 0 }}
+                          animate={{ scale: 1, opacity: 1 }}
+                          transition={{ delay: 0.7 + i * 0.1 }}
+                          whileHover={{ scale: 1.05 }}
+                          src={photo}
+                          alt={`${tour.title} - фото ${i + 2}`}
+                          className="w-full h-48 object-cover rounded-xl shadow-lg cursor-pointer"
+                        />
+                      ))}
+                    </div>
+                  </CardContent>
+                </Card>
+              </motion.div>
+            )}
+          </div>
+
+          {/* Right column - Booking form */}
+          <div className="lg:col-span-1">
+            <motion.div
+              initial={{ x: 20, opacity: 0 }}
+              animate={{ x: 0, opacity: 1 }}
+              transition={{ delay: 0.6 }}
+              className="sticky top-6"
+            >
+              <Card className="backdrop-blur-lg bg-white/90 border-2 border-airbnb-rausch/30 shadow-2xl overflow-hidden">
+                <div className="bg-gradient-to-r from-airbnb-rausch to-pink-600 p-6 text-center">
+                  <h2 className="text-3xl font-bold text-white mb-2">Забронировать</h2>
+                  <p className="text-white/90">Заполните форму и мы свяжемся с вами</p>
+                </div>
+
+                <CardContent className="p-6">
+                  <form onSubmit={handleSubmit} className="space-y-5">
+                    <div>
+                      <Label htmlFor="client_name" className="flex items-center gap-2 text-gray-700 font-semibold mb-2">
+                        <User className="w-4 h-4" />
+                        Ваше имя *
+                      </Label>
+                      <Input
+                        id="client_name"
+                        required
+                        value={formData.client_name}
+                        onChange={(e) => setFormData({ ...formData, client_name: e.target.value })}
+                        placeholder="Иван Иванов"
+                        className="border-2 focus:border-airbnb-rausch"
+                      />
+                    </div>
+
+                    <div>
+                      <Label htmlFor="client_phone" className="flex items-center gap-2 text-gray-700 font-semibold mb-2">
+                        <Phone className="w-4 h-4" />
+                        Телефон *
+                      </Label>
+                      <Input
+                        id="client_phone"
+                        required
+                        type="tel"
+                        value={formData.client_phone}
+                        onChange={(e) => setFormData({ ...formData, client_phone: e.target.value })}
+                        placeholder="+7 (999) 123-45-67"
+                        className="border-2 focus:border-airbnb-rausch"
+                      />
+                    </div>
+
+                    <div>
+                      <Label htmlFor="client_email" className="flex items-center gap-2 text-gray-700 font-semibold mb-2">
+                        <Mail className="w-4 h-4" />
+                        Email (опционально)
+                      </Label>
+                      <Input
+                        id="client_email"
+                        type="email"
+                        value={formData.client_email}
+                        onChange={(e) => setFormData({ ...formData, client_email: e.target.value })}
+                        placeholder="ivan@example.com"
+                        className="border-2 focus:border-airbnb-rausch"
+                      />
+                    </div>
+
+                    <div>
+                      <Label htmlFor="date" className="flex items-center gap-2 text-gray-700 font-semibold mb-2">
+                        <CalendarDays className="w-4 h-4" />
+                        Желаемая дата *
+                      </Label>
+                      <Input
+                        id="date"
+                        required
+                        type="date"
+                        value={formData.date}
+                        onChange={(e) => setFormData({ ...formData, date: e.target.value })}
+                        className="border-2 focus:border-airbnb-rausch"
+                      />
+                    </div>
+
+                    <div>
+                      <Label htmlFor="participants_count" className="flex items-center gap-2 text-gray-700 font-semibold mb-2">
+                        <Users className="w-4 h-4" />
+                        Количество участников *
+                      </Label>
+                      <Input
+                        id="participants_count"
+                        required
+                        type="number"
+                        min="1"
+                        max="20"
+                        value={formData.participants_count}
+                        onChange={(e) => setFormData({ ...formData, participants_count: parseInt(e.target.value) })}
+                        className="border-2 focus:border-airbnb-rausch"
+                      />
+                    </div>
+
+                    {/* Price calculation */}
+                    <div className="bg-gradient-to-br from-green-50 to-teal-50 p-5 rounded-xl border-2 border-green-200">
+                      <div className="space-y-2">
+                        <div className="flex justify-between text-sm text-gray-700">
+                          <span>Стоимость за человека:</span>
+                          <span className="font-semibold">{formatRUB(tour.price)}</span>
+                        </div>
+                        <div className="flex justify-between text-sm text-gray-700">
+                          <span>Участников:</span>
+                          <span className="font-semibold">{formData.participants_count}</span>
+                        </div>
+                        <div className="border-t-2 border-green-300 pt-2 flex justify-between items-center">
+                          <span className="font-bold text-gray-900">Итого:</span>
+                          <span className="text-3xl font-bold text-green-700">
+                            {formatRUB(tour.price * formData.participants_count)}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+
+                    <Button
+                      type="submit"
+                      disabled={bookingMutation.isPending}
+                      className="w-full bg-gradient-to-r from-airbnb-rausch to-pink-600 hover:from-airbnb-rausch/90 hover:to-pink-600/90 text-white text-lg py-7 shadow-xl hover:shadow-2xl transition-all group"
+                    >
+                      {bookingMutation.isPending ? (
+                        <>
+                          <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2" />
+                          Обработка...
+                        </>
+                      ) : (
+                        <>
+                          <Sparkles className="mr-2 group-hover:rotate-12 transition-transform" />
+                          Забронировать экскурсию
+                        </>
+                      )}
+                    </Button>
+
+                    <div className="flex items-center gap-2 text-xs text-gray-500 bg-blue-50 p-3 rounded-lg">
+                      <Shield className="w-4 h-4 flex-shrink-0" />
+                      <p>После бронирования гид свяжется с вами для подтверждения</p>
+                    </div>
+                  </form>
+                </CardContent>
+              </Card>
+
+              {/* Contact info */}
+              {tour.guide && (
+                <motion.div
+                  initial={{ y: 20, opacity: 0 }}
+                  animate={{ y: 0, opacity: 1 }}
+                  transition={{ delay: 0.8 }}
+                >
+                  <Card className="mt-6 backdrop-blur-lg bg-white/80 border-2 border-purple-200">
+                    <CardContent className="p-4">
+                      <div className="flex items-center gap-3 mb-3">
+                        <div className="w-12 h-12 bg-gradient-to-br from-purple-500 to-pink-500 rounded-full flex items-center justify-center">
+                          <MessageCircle className="w-6 h-6 text-white" />
+                        </div>
+                        <div>
+                          <p className="text-sm text-gray-600">Ваш гид</p>
+                          <p className="font-bold text-gray-900">{tour.guide.name || 'Профессиональный гид'}</p>
+                        </div>
+                      </div>
+                      <p className="text-xs text-gray-500">
+                        Опытный гид с отличными отзывами. Готов ответить на ваши вопросы!
+                      </p>
+                    </CardContent>
+                  </Card>
+                </motion.div>
+              )}
+            </motion.div>
+          </div>
+        </div>
       </div>
     </div>
   )
 }
+
+const Badge = ({ className, children }: { className?: string; children: React.ReactNode }) => (
+  <span className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold ${className}`}>
+    {children}
+  </span>
+)
