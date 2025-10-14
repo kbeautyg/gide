@@ -516,7 +516,7 @@ function DayCell({
           </motion.div>
         </AnimatePresence>
       )}
-    </div>
+    </DayCellContent>
   )
 }
 
