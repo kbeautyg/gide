@@ -265,13 +265,13 @@ async def get_tour_by_code(
         )
         request = request_result.scalar_one_or_none()
         
-        if request and request.client:
-            # Данные клиента, который оставил заявку
+        if request:
+            # Данные РЕАЛЬНОГО клиента из полей заявки (не из User)
             client_data = {
-                "client_name": request.client.name or "Клиент",
-                "client_phone": request.client.phone or "",
-                "client_email": request.client.email or "",
-                "telegram_username": request.telegram_username or request.client.telegram_username or "",
+                "client_name": request.client_name or "",
+                "client_phone": request.client_phone or "",
+                "client_email": request.client_email or "",
+                "telegram_username": request.telegram_username or "",
                 "participants_count": request.participants_count or 1,
                 "preferred_date": str(request.preferred_date) if request.preferred_date else None,
                 "assigned_date": str(request.assigned_date) if request.assigned_date else str(tour_db.start_date) if tour_db.start_date else None,
