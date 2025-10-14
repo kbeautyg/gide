@@ -22,57 +22,68 @@ async def reset_guide_data():
     
     async with AsyncSessionLocal() as session:
         async with session.begin():
-            # 1. Сначала очищаем foreign keys чтобы избежать constraint violations
+            # Получаем ID всех гидов (кроме супер-админа с id=1)
+            result = await session.execute(sa.text("SELECT id FROM users WHERE id > 1"))
+            guide_ids = [row[0] for row in result.fetchall()]
             
-            # 1.1. Очищаем связи request → booking, request → tour
-            result = await session.execute(sa.text("""
+            if not guide_ids:
+                print("   ℹ️  Нет гидов для очистки")
+                return
+            
+            guide_ids_str = ','.join(map(str, guide_ids))
+            print(f"   🎯 Найдено гидов для очистки: {len(guide_ids)}")
+            
+            # 1. Очищаем связи в requests
+            result = await session.execute(sa.text(f"""
                 UPDATE requests 
                 SET booking_id = NULL, 
                     generated_tour_id = NULL
+                WHERE guide_id IN ({guide_ids_str})
             """))
-            print(f"   ✓ Очищены связи в заявках: {result.rowcount}")
+            print(f"   ✓ Очищены связи в заявках гидов: {result.rowcount}")
             
-            # 1.2. Очищаем связи booking → request
-            result = await session.execute(sa.text("""
+            # 2. Очищаем связи в bookings (для туров гидов)
+            result = await session.execute(sa.text(f"""
                 UPDATE bookings 
                 SET request_id = NULL
+                WHERE tour_id IN (SELECT id FROM tours WHERE guide_id IN ({guide_ids_str}))
             """))
-            print(f"   ✓ Очищены связи в бронированиях: {result.rowcount}")
+            print(f"   ✓ Очищены связи в бронированиях гидов: {result.rowcount}")
             
-            # 2. Удаляем расписание гидов
-            result = await session.execute(sa.text("DELETE FROM guide_schedules"))
+            # 3. Удаляем расписание гидов
+            result = await session.execute(sa.text(f"DELETE FROM guide_schedules WHERE guide_id IN ({guide_ids_str})"))
             print(f"   ✓ Удалено записей расписания: {result.rowcount}")
             
-            # 3. Удаляем бронирования (теперь можно, т.к. связи очищены)
-            result = await session.execute(sa.text("DELETE FROM bookings"))
-            print(f"   ✓ Удалено бронирований: {result.rowcount}")
+            # 4. Удаляем бронирования туров гидов
+            result = await session.execute(sa.text(f"""
+                DELETE FROM bookings 
+                WHERE tour_id IN (SELECT id FROM tours WHERE guide_id IN ({guide_ids_str}))
+            """))
+            print(f"   ✓ Удалено бронирований гидов: {result.rowcount}")
             
-            # 4. Удаляем ТОЛЬКО туры созданные гидом из заявок (с request_id)
-            # Публичные туры (request_id IS NULL) остаются для главной страницы!
-            result = await session.execute(sa.text("DELETE FROM tours WHERE request_id IS NOT NULL"))
-            print(f"   ✓ Удалено туров гида: {result.rowcount}")
-            print(f"   ℹ️  Публичные туры для главной страницы сохранены")
+            # 5. Удаляем туры гидов (И с request_id И без него)
+            result = await session.execute(sa.text(f"DELETE FROM tours WHERE guide_id IN ({guide_ids_str})"))
+            print(f"   ✓ Удалено всех туров гидов: {result.rowcount}")
             
-            # 5. Удаляем заявки (теперь можно, т.к. связи с турами очищены)
-            result = await session.execute(sa.text("DELETE FROM requests"))
-            print(f"   ✓ Удалено заявок: {result.rowcount}")
+            # 6. Удаляем заявки гидов
+            result = await session.execute(sa.text(f"DELETE FROM requests WHERE guide_id IN ({guide_ids_str})"))
+            print(f"   ✓ Удалено заявок гидов: {result.rowcount}")
             
-            # 6. Сбрасываем счётчики у ВСЕХ пользователей (т.к. enum может отличаться)
-            # Обновляем только если поля существуют
+            # 7. Сбрасываем счётчики у гидов
             try:
-                result = await session.execute(sa.text("""
+                result = await session.execute(sa.text(f"""
                     UPDATE users 
                     SET total_earnings = 0, 
                         total_tours = 0, 
                         reviews_count = 0,
                         rating = 0.0
-                    WHERE id > 1
+                    WHERE id IN ({guide_ids_str})
                 """))
-                print(f"   ✓ Сброшены счётчики у {result.rowcount} пользователей")
+                print(f"   ✓ Сброшены счётчики у {result.rowcount} гидов")
             except Exception as e:
-                print(f"   ⚠️ Не удалось сбросить счётчики (возможно поля не существуют): {e}")
+                print(f"   ⚠️ Не удалось сбросить счётчики: {e}")
     
-    print("✅ Данные гидов очищены! Супер-админ и пользователи сохранены.")
+    print("✅ Данные всех гидов очищены! Публичные туры админа сохранены.")
 
 
 if __name__ == "__main__":
