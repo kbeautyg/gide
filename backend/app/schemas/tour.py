@@ -73,16 +73,15 @@ class Tour(TourBase):
     rating: float
     reviews_count: int
     active: bool
-    total_bookings: int = 0
-    views_count: int = 0
-    is_archived: bool = False
-    
-    # Данные клиента (для кастомных туров)
-    client_name: Optional[str] = None
-    client_phone: Optional[str] = None
-    client_email: Optional[str] = None
-    
-    class Config:
+  total_bookings: int = 0
+  views_count: int = 0
+  # TODO: Раскомментировать после применения миграции 009
+  # is_archived: bool = False
+  # client_name: Optional[str] = None
+  # client_phone: Optional[str] = None
+  # client_email: Optional[str] = None
+  
+  class Config:
         from_attributes = True
 
 
