@@ -8,7 +8,7 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/comp
 import { Calendar as CalendarIcon, HelpCircle } from 'lucide-react'
 import { GuideCalendar } from '@/components/dashboard/GuideCalendar'
 import { TourRescheduleDialog } from '@/components/dashboard/TourRescheduleDialog'
-import { api, toursApi } from '@/lib/api'
+import { api } from '@/lib/api'
 import { format } from 'date-fns'
 import { toast } from '@/lib/toast'
 import { useAutoRefresh } from '@/hooks/useAutoRefresh'
