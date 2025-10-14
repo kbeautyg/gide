@@ -28,10 +28,10 @@ class Request(Base):
     duration_hours = Column(Integer, nullable=False, default=2)
     
     # Контактные данные КЛИЕНТА (реального человека, который хочет экскурсию)
-    # Заполняются при создании заявки, не берутся из User
-    client_name = Column(String, nullable=True)
-    client_phone = Column(String, nullable=True)
-    client_email = Column(String, nullable=True)
+    # TODO: Раскомментировать после применения миграции 008 на Railway
+    # client_name = Column(String, nullable=True)
+    # client_phone = Column(String, nullable=True)
+    # client_email = Column(String, nullable=True)
     
     # Telegram для связи
     telegram_username = Column(String, nullable=True)

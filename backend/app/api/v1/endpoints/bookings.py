@@ -269,47 +269,25 @@ async def create_booking(
     db.add(booking)
     await db.flush()  # Получить ID бронирования
     
-    # Создаём заявку для гида
-    # Проверяем есть ли поля client_name в модели (миграция 008 применена?)
-    has_client_fields = hasattr(RequestModel, 'client_name')
-    
-    if has_client_fields:
-        # Миграция 008 применена - создаём с полями клиента
-        request = RequestModel(
-            client_id=current_user.id if current_user else 1,
-            title=tour.title,
-            description=tour.description,
-            preferred_date=booking_data.date,
-            participants_count=booking_data.participants_count,
-            budget=total_price,
-            location=tour.location,
-            duration_hours=tour.duration,
-            client_name=booking_data.client_name,
-            client_phone=booking_data.client_phone,
-            client_email=booking_data.client_email,
-            telegram_username=booking_data.telegram_username,
-            status='pending',
-            booking_id=booking.id,
-        )
-    else:
-        # Миграция 008 ещё не применена - создаём без полей клиента
-        request = RequestModel(
-            client_id=current_user.id if current_user else 1,
-            title=tour.title,
-            description=tour.description,
-            preferred_date=booking_data.date,
-            participants_count=booking_data.participants_count,
-            budget=total_price,
-            location=tour.location,
-            duration_hours=tour.duration,
-            telegram_username=booking_data.telegram_username,
-            status='pending',
-            booking_id=booking.id,
-        )
+    # Создаём заявку для гида (БЕЗ client_* полей до применения миграции 008)
+    # Данные клиента хранятся в Booking, откуда их берёт endpoint /tours/by-code
+    request = RequestModel(
+        client_id=current_user.id if current_user else 1,
+        title=tour.title,
+        description=tour.description,
+        preferred_date=booking_data.date,
+        participants_count=booking_data.participants_count,
+        budget=total_price,
+        location=tour.location,
+        duration_hours=tour.duration,
+        telegram_username=booking_data.telegram_username,
+        status='pending',
+        booking_id=booking.id,
+    )
     
     db.add(request)
     
-    # Связываем бронирование с заявкой (нужно делать до flush)
+    # Связываем бронирование с заявкой
     await db.flush()  # Получаем ID request
     booking.request_id = request.id
     

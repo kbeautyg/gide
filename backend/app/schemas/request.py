@@ -15,12 +15,12 @@ class RequestBase(BaseModel):
     budget: Optional[float] = None
     location: Optional[str] = None
     duration_hours: int  # 1-8 часов
-    
-    # Контактные данные клиента
-    client_name: Optional[str] = None
-    client_phone: Optional[str] = None
-    client_email: Optional[str] = None
     telegram_username: Optional[str] = None
+    
+    # TODO: Раскомментировать после применения миграции 008
+    # client_name: Optional[str] = None
+    # client_phone: Optional[str] = None
+    # client_email: Optional[str] = None
 
 
 class RequestCreate(RequestBase):
