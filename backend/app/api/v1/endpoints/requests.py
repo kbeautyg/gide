@@ -160,7 +160,7 @@ async def get_available_requests(
     """
     Получить список заявок для гида:
     1. Новые заявки (pending без guide_id) - доступны всем
-    2. Принятые текущим гидом (pending/in_progress с guide_id == current_user.id)
+    2. Принятые текущим гидом (pending/in_progress/completed с guide_id == current_user.id)
     """
     # Доступно для всех авторизованных пользователей
     
@@ -169,10 +169,10 @@ async def get_available_requests(
         or_(
             # Новые заявки без гида
             and_(Request.guide_id.is_(None), Request.status == 'pending'),
-            # Принятые текущим гидом (pending или in_progress)
+            # Принятые текущим гидом (pending, in_progress или completed)
             and_(
                 Request.guide_id == current_user.id,
-                Request.status.in_(['pending', 'in_progress'])
+                Request.status.in_(['pending', 'in_progress', 'completed'])
             )
         )
     ).order_by(Request.created_at.desc())

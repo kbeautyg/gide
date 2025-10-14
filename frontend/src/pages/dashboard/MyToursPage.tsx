@@ -39,9 +39,8 @@ export default function MyToursPage() {
 
   const allTours = toursData?.data?.tours || []
   
-  // TODO: Включить после применения миграции 009
-  // const tours = allTours.filter((tour: any) => !tour.is_archived)
-  const tours = allTours
+  // Фильтруем архивные туры
+  const tours = allTours.filter((tour: any) => !tour.is_archived)
 
   // Mutation для удаления тура
   const deleteMutation = useMutation({

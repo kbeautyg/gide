@@ -404,6 +404,134 @@ export default function TourSharePage() {
               </Card>
             </motion.div>
 
+            {/* Информация о туре */}
+            {(tour.what_to_expect || tour.organizational_details || tour.included || tour.not_included || tour.meeting_point || tour.max_group_size || tour.difficulty_level || tour.languages) && (
+              <motion.div
+                initial={{ y: 20, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ delay: 0.55 }}
+                className="space-y-4"
+              >
+                {tour.what_to_expect && (
+                  <Card className="backdrop-blur-lg bg-blue-50/80 border-2 border-blue-200 shadow-lg">
+                    <CardContent className="p-6">
+                      <h3 className="font-bold text-xl mb-3 flex items-center gap-2 text-blue-900">
+                        <Sparkles className="w-5 h-5 text-blue-600" />
+                        Что вас ожидает
+                      </h3>
+                      <p className="text-gray-800 leading-relaxed whitespace-pre-line">
+                        {tour.what_to_expect}
+                      </p>
+                    </CardContent>
+                  </Card>
+                )}
+
+                {tour.organizational_details && (
+                  <Card className="backdrop-blur-lg bg-green-50/80 border-2 border-green-200 shadow-lg">
+                    <CardContent className="p-6">
+                      <h3 className="font-bold text-xl mb-3 flex items-center gap-2 text-green-900">
+                        <CheckCircle className="w-5 h-5 text-green-600" />
+                        Организационные детали
+                      </h3>
+                      <p className="text-gray-800 leading-relaxed whitespace-pre-line">
+                        {tour.organizational_details}
+                      </p>
+                    </CardContent>
+                  </Card>
+                )}
+
+                {(tour.included || tour.not_included) && (
+                  <Card className="backdrop-blur-lg bg-purple-50/80 border-2 border-purple-200 shadow-lg">
+                    <CardContent className="p-6">
+                      <div className="grid md:grid-cols-2 gap-6">
+                        {tour.included && tour.included.length > 0 && (
+                          <div>
+                            <h3 className="font-bold text-lg mb-3 flex items-center gap-2 text-green-900">
+                              <CheckCircle className="w-5 h-5 text-green-600" />
+                              Что включено
+                            </h3>
+                            <ul className="space-y-2">
+                              {tour.included.map((item: string, i: number) => (
+                                <li key={i} className="flex items-start gap-2 text-gray-800">
+                                  <CheckCircle className="w-4 h-4 text-green-500 mt-0.5 flex-shrink-0" />
+                                  <span>{item}</span>
+                                </li>
+                              ))}
+                            </ul>
+                          </div>
+                        )}
+                        {tour.not_included && tour.not_included.length > 0 && (
+                          <div>
+                            <h3 className="font-bold text-lg mb-3 flex items-center gap-2 text-red-900">
+                              <Shield className="w-5 h-5 text-red-600" />
+                              Что не включено
+                            </h3>
+                            <ul className="space-y-2">
+                              {tour.not_included.map((item: string, i: number) => (
+                                <li key={i} className="flex items-start gap-2 text-gray-800">
+                                  <span className="text-red-500 font-bold flex-shrink-0">✕</span>
+                                  <span>{item}</span>
+                                </li>
+                              ))}
+                            </ul>
+                          </div>
+                        )}
+                      </div>
+                    </CardContent>
+                  </Card>
+                )}
+
+                {(tour.meeting_point || tour.max_group_size || tour.difficulty_level || tour.languages) && (
+                  <Card className="backdrop-blur-lg bg-orange-50/80 border-2 border-orange-200 shadow-lg">
+                    <CardContent className="p-6">
+                      <h3 className="font-bold text-xl mb-4 flex items-center gap-2 text-orange-900">
+                        <MapPin className="w-5 h-5 text-orange-600" />
+                        Дополнительная информация
+                      </h3>
+                      <div className="grid md:grid-cols-2 gap-4">
+                        {tour.meeting_point && (
+                          <div className="flex items-start gap-3">
+                            <MapPin className="w-5 h-5 text-orange-600 mt-0.5 flex-shrink-0" />
+                            <div>
+                              <p className="font-semibold text-gray-900">Место встречи</p>
+                              <p className="text-gray-700">{tour.meeting_point}</p>
+                            </div>
+                          </div>
+                        )}
+                        {tour.max_group_size && (
+                          <div className="flex items-start gap-3">
+                            <Users className="w-5 h-5 text-blue-600 mt-0.5 flex-shrink-0" />
+                            <div>
+                              <p className="font-semibold text-gray-900">Макс. размер группы</p>
+                              <p className="text-gray-700">{tour.max_group_size} человек</p>
+                            </div>
+                          </div>
+                        )}
+                        {tour.difficulty_level && (
+                          <div className="flex items-start gap-3">
+                            <Trophy className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" />
+                            <div>
+                              <p className="font-semibold text-gray-900">Сложность</p>
+                              <p className="text-gray-700">{tour.difficulty_level}</p>
+                            </div>
+                          </div>
+                        )}
+                        {tour.languages && tour.languages.length > 0 && (
+                          <div className="flex items-start gap-3">
+                            <MessageCircle className="w-5 h-5 text-purple-600 mt-0.5 flex-shrink-0" />
+                            <div>
+                              <p className="font-semibold text-gray-900">Языки</p>
+                              <p className="text-gray-700">{tour.languages.join(', ')}</p>
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    </CardContent>
+                  </Card>
+                )}
+              </motion.div>
+            )}
+
             {/* Photo gallery */}
             {tour.photos && tour.photos.length > 1 && (
               <motion.div
