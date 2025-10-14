@@ -250,9 +250,31 @@ async def get_tour_by_code(
     )
     real_reviews_count = reviews_count_result.scalar() or 0
     
-    # Получаем данные из связанной заявки (если есть)
+    # Получаем данные клиента из последнего бронирования (если есть)
     client_data = None
-    if tour_db.request_id:
+    
+    # Сначала пробуем получить данные из последнего бронирования
+    booking_result = await db.execute(
+        select(Booking)
+        .where(Booking.tour_id == tour_db.id)
+        .order_by(Booking.created_at.desc())
+        .limit(1)
+    )
+    last_booking = booking_result.scalar_one_or_none()
+    
+    if last_booking:
+        # Данные из бронирования
+        client_data = {
+            "client_name": last_booking.client_name,
+            "client_phone": last_booking.client_phone,
+            "client_email": last_booking.client_email,
+            "telegram_username": last_booking.telegram_username,
+            "participants_count": last_booking.participants_count,
+            "preferred_date": str(last_booking.date) if last_booking.date else None,
+            "assigned_date": str(tour_db.start_date) if tour_db.start_date else None,
+        }
+    elif tour_db.request_id:
+        # Если бронирований нет, берём данные из связанной заявки
         from app.models.request import Request
         from sqlalchemy.orm import selectinload
         
