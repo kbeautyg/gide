@@ -61,16 +61,20 @@ async def reset_guide_data():
             result = await session.execute(sa.text("DELETE FROM requests"))
             print(f"   ✓ Удалено заявок: {result.rowcount}")
             
-            # 7. Сбрасываем счётчики у гидов (но не удаляем их)
-            result = await session.execute(sa.text("""
-                UPDATE users 
-                SET total_earnings = 0, 
-                    total_tours = 0, 
-                    reviews_count = 0,
-                    rating = 0.0
-                WHERE role = 'manager'
-            """))
-            print(f"   ✓ Сброшены счётчики у {result.rowcount} гидов")
+            # 7. Сбрасываем счётчики у ВСЕХ пользователей (т.к. enum может отличаться)
+            # Обновляем только если поля существуют
+            try:
+                result = await session.execute(sa.text("""
+                    UPDATE users 
+                    SET total_earnings = 0, 
+                        total_tours = 0, 
+                        reviews_count = 0,
+                        rating = 0.0
+                    WHERE id > 1
+                """))
+                print(f"   ✓ Сброшены счётчики у {result.rowcount} пользователей")
+            except Exception as e:
+                print(f"   ⚠️ Не удалось сбросить счётчики (возможно поля не существуют): {e}")
     
     print("✅ Данные гидов очищены! Супер-админ и пользователи сохранены.")
 
