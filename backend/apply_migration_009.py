@@ -78,13 +78,16 @@ async def apply_migration():
             await session.commit()
             print("✅ Миграция 009 успешно применена!")
             
-            # Обновляем alembic_version
-            print("🔄 Обновляю alembic_version...")
-            await session.execute(text("""
-                UPDATE alembic_version SET version_num = '009'
-            """))
-            await session.commit()
-            print("✅ alembic_version обновлён на 009")
+            # Пытаемся обновить alembic_version (если таблица существует)
+            try:
+                print("🔄 Обновляю alembic_version...")
+                await session.execute(text("""
+                    UPDATE alembic_version SET version_num = '009' WHERE EXISTS (SELECT 1 FROM alembic_version)
+                """))
+                await session.commit()
+                print("✅ alembic_version обновлён на 009")
+            except Exception as e:
+                print(f"⚠️ Не удалось обновить alembic_version: {e}")
             
         except Exception as e:
             print(f"❌ Ошибка при применении миграции: {e}")
