@@ -216,28 +216,34 @@ async def get_bookings(
     if not tour_ids:
         return BookingList(bookings=[], total=0)
     
-    # Получаем бронирования
-    stmt = select(BookingModel).where(BookingModel.tour_id.in_(tour_ids)).order_by(BookingModel.created_at.desc())
+    # Получаем бронирования с джоином к турам для получения названия
+    stmt = (
+        select(BookingModel, Tour.title)
+        .join(Tour, BookingModel.tour_id == Tour.id)
+        .where(BookingModel.tour_id.in_(tour_ids))
+        .order_by(BookingModel.created_at.desc())
+    )
     result = await db.execute(stmt)
-    bookings_db = result.scalars().all()
+    bookings_with_tours = result.all()
     
     bookings_list = [
-        Booking(
-            id=b.id,
-            tour_id=b.tour_id,
-            client_id=b.client_id,
-            client_name=b.client_name,
-            client_phone=b.client_phone,
-            client_email=b.client_email,
-            telegram_username=b.telegram_username,
-            date=b.date,
-            participants_count=b.participants_count,
-            total_price=b.total_price,
-            status=b.status.value,
-            payment_status=b.payment_status.value,
-            created_at=b.created_at,
-        )
-        for b in bookings_db
+        {
+            "id": b.id,
+            "tour_id": b.tour_id,
+            "tour_title": tour_title,
+            "client_id": b.client_id,
+            "client_name": b.client_name,
+            "client_phone": b.client_phone,
+            "client_email": b.client_email,
+            "telegram_username": b.telegram_username,
+            "date": b.date,
+            "participants_count": b.participants_count,
+            "total_price": b.total_price,
+            "status": b.status.value,
+            "payment_status": b.payment_status.value,
+            "created_at": b.created_at,
+        }
+        for b, tour_title in bookings_with_tours
     ]
     
     return BookingList(bookings=bookings_list, total=len(bookings_list))
