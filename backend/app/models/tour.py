@@ -81,7 +81,7 @@ class Tour(Base):
     client_name = Column(String, nullable=True)
     client_phone = Column(String, nullable=True)
     client_email = Column(String, nullable=True)
-    client_telegram = Column(String, nullable=True)
+    # client_telegram = Column(String, nullable=True)  # Temporarily disabled until migration 011
     
     # Временные метки
     created_at = Column(DateTime, default=datetime.utcnow)
