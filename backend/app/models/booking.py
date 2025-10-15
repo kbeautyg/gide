@@ -35,6 +35,7 @@ class Booking(Base):
     
     # Детали бронирования
     date = Column(Date, nullable=False)
+    time = Column(String, nullable=True, default="10:00")  # Время экскурсии (HH:MM)
     participants_count = Column(Integer, nullable=False)
     total_price = Column(Float, nullable=False)
     

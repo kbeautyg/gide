@@ -124,26 +124,26 @@ export default function MyToursPage() {
           </CardContent>
         </Card>
       ) : (
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
           {tours.map((tour) => (
-            <Card key={tour.id} id={`tour-${tour.id}`} className="flex flex-col scroll-mt-24">
+            <Card key={tour.id} id={`tour-${tour.id}`} className="flex flex-col scroll-mt-24 max-w-full">
               <div className="relative">
                 <img
                   src={tour.photos[0] || 'https://images.unsplash.com/photo-1589394815804-964ed0be2eb5?w=800'}
                   alt={tour.title}
                   className="w-full h-48 object-cover rounded-t-lg"
                 />
-                <div className="absolute top-3 right-3 bg-white px-3 py-1 rounded-full text-sm font-semibold">
+                <div className="absolute top-3 right-3 bg-white px-2 sm:px-3 py-1 rounded-full text-xs sm:text-sm font-semibold">
                   {formatRUB(tour.price)}
                 </div>
               </div>
 
-              <CardHeader>
-                <div className="flex items-center gap-2 text-sm text-gray-600 mb-2 flex-wrap">
-                  <MapPin size={16} />
-                  <span className="truncate">{tour.location}</span>
-                  <Clock size={16} className="ml-auto" />
-                  <span>{tour.duration} ч</span>
+              <CardHeader className="p-3 sm:p-6">
+                <div className="flex items-center gap-2 text-xs sm:text-sm text-gray-600 mb-2 flex-wrap">
+                  <MapPin size={14} className="sm:w-4 sm:h-4 flex-shrink-0" />
+                  <span className="truncate flex-1 min-w-0">{tour.location}</span>
+                  <Clock size={14} className="sm:w-4 sm:h-4 flex-shrink-0" />
+                  <span className="whitespace-nowrap">{tour.duration} ч</span>
                 </div>
                 <div className="flex items-center gap-1 text-xs mb-2">
                   <CalendarIcon size={14} className={tour.start_date ? "text-blue-600" : "text-gray-400"} />
@@ -160,10 +160,10 @@ export default function MyToursPage() {
                     )}
                   </span>
                 </div>
-                <CardTitle className="text-lg break-words">{tour.title}</CardTitle>
+                <CardTitle className="text-base sm:text-lg break-words line-clamp-2">{tour.title}</CardTitle>
               </CardHeader>
 
-              <CardContent className="flex-1 space-y-3">
+              <CardContent className="flex-1 space-y-3 p-3 sm:p-6">
                 <div className="flex items-center gap-2 text-sm">
                   <Star className="fill-yellow-400 text-yellow-400" size={16} />
                   <span className="font-semibold">{tour.rating}</span>
@@ -253,12 +253,12 @@ export default function MyToursPage() {
                 )}
 
                 {/* Ссылка на экскурсию */}
-                <div className="bg-airbnb-rausch/10 p-3 rounded-lg border-2 border-airbnb-rausch/30">
+                <div className="bg-airbnb-rausch/10 p-2 sm:p-3 rounded-lg border-2 border-airbnb-rausch/30">
                   <div className="flex items-center gap-2 mb-2">
-                    <LinkIcon size={14} className="text-airbnb-rausch" />
+                    <LinkIcon size={14} className="text-airbnb-rausch flex-shrink-0" />
                     <span className="text-xs font-semibold text-airbnb-rausch">Платёжная ссылка</span>
                   </div>
-                  <div className="text-xs text-gray-700 break-all mb-2 bg-white p-2 rounded font-mono">
+                  <div className="text-xs text-gray-700 break-all mb-2 bg-white p-2 rounded font-mono overflow-hidden">
                     {window.location.origin}/t/{tour.share_code || tour.id}
                   </div>
                   <div className="flex gap-2">
@@ -292,26 +292,26 @@ export default function MyToursPage() {
                 </div>
               </CardContent>
 
-              <CardFooter className="flex flex-col gap-2 pt-4">
+              <CardFooter className="flex flex-col gap-2 pt-4 p-3 sm:p-6">
                 {/* Навигационные кнопки */}
                 <div className="flex gap-2 w-full text-xs">
                   <Button
                     variant="outline"
                     size="sm"
-                    className="flex-1"
+                    className="flex-1 min-w-0"
                     onClick={() => navigate(`/dashboard/calendar?highlight=${tour.start_date || ''}&tour=${tour.id}`)}
                   >
-                    <CalendarIcon size={14} className="mr-1" />
-                    Календарь
+                    <CalendarIcon size={14} className="mr-1 flex-shrink-0" />
+                    <span className="truncate">Календарь</span>
                   </Button>
                   <Button
                     variant="outline"
                     size="sm"
-                    className="flex-1"
+                    className="flex-1 min-w-0"
                     onClick={() => navigate(`/dashboard/bookings?tour_id=${tour.id}`)}
                   >
-                    <ShoppingBag size={14} className="mr-1" />
-                    Заказы
+                    <ShoppingBag size={14} className="mr-1 flex-shrink-0" />
+                    <span className="truncate">Заказы</span>
                   </Button>
                 </div>
                 
@@ -320,20 +320,21 @@ export default function MyToursPage() {
                   <Button 
                     variant="default" 
                     size="sm" 
-                    className="flex-1 bg-green-600 hover:bg-green-700"
+                    className="flex-1 bg-green-600 hover:bg-green-700 min-w-0"
                     onClick={() => handleMarkAsPaid(tour)}
                   >
-                    <CheckCircle size={16} className="mr-1" />
-                    Оплачено
+                    <CheckCircle size={14} className="mr-1 flex-shrink-0" />
+                    <span className="truncate">Оплачено</span>
                   </Button>
                   <Button 
                     variant="outline" 
                     size="sm" 
-                    className="flex-1"
+                    className="flex-1 min-w-0"
                     onClick={() => handleEdit(tour)}
                   >
-                    <Edit size={16} className="mr-1" />
-                    Редактировать
+                    <Edit size={14} className="mr-1 flex-shrink-0" />
+                    <span className="truncate hidden sm:inline">Редактировать</span>
+                    <span className="truncate sm:hidden">Ред.</span>
                   </Button>
                 </div>
                 
@@ -344,8 +345,8 @@ export default function MyToursPage() {
                   className="w-full"
                   onClick={() => handleDelete(tour)}
                 >
-                  <Trash2 size={16} className="mr-1" />
-                  Удалить
+                  <Trash2 size={14} className="mr-1 flex-shrink-0" />
+                  <span className="truncate">Удалить</span>
                 </Button>
               </CardFooter>
             </Card>

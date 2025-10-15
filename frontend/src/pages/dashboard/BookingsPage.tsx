@@ -90,23 +90,23 @@ export default function BookingsPage() {
   }
 
   return (
-    <div className="space-y-6 overflow-x-hidden max-w-full">
+    <div className="space-y-4 sm:space-y-6 overflow-x-hidden max-w-full">
       {/* Header */}
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
       <div>
-          <h1 className="text-3xl font-bold text-gray-900">Заказы</h1>
-          <p className="text-gray-600">Транзакции клиентов и детальная информация</p>
+          <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">Заказы</h1>
+          <p className="text-sm sm:text-base text-gray-600">Транзакции клиентов и детальная информация</p>
         </div>
 
         {/* Статистика */}
-        <div className="flex gap-6">
-          <div className="text-right">
-            <div className="text-sm text-gray-600">Оборот</div>
-            <div className="text-2xl font-bold text-blue-600">{formatRUB(totalTurnover)}</div>
+        <div className="flex gap-3 sm:gap-6">
+          <div className="text-left sm:text-right">
+            <div className="text-xs sm:text-sm text-gray-600">Оборот</div>
+            <div className="text-xl sm:text-2xl font-bold text-blue-600">{formatRUB(totalTurnover)}</div>
           </div>
-          <div className="text-right">
-            <div className="text-sm text-gray-600">Ваш доход (3%)</div>
-            <div className="text-2xl font-bold text-airbnb-rausch">{formatRUB(totalIncome)}</div>
+          <div className="text-left sm:text-right">
+            <div className="text-xs sm:text-sm text-gray-600">Ваш доход (3%)</div>
+            <div className="text-xl sm:text-2xl font-bold text-airbnb-rausch">{formatRUB(totalIncome)}</div>
           </div>
         </div>
       </div>
@@ -114,7 +114,7 @@ export default function BookingsPage() {
       {/* Фильтры */}
       <div className="space-y-3">
         {/* Фильтр по статусу */}
-        <div className="flex gap-3 flex-wrap">
+        <div className="flex gap-2 sm:gap-3 flex-wrap">
           {[
             { value: 'all', label: 'Все' },
             { value: 'paid', label: 'Оплачено' },
@@ -124,14 +124,14 @@ export default function BookingsPage() {
             <button
               key={filter.value}
               onClick={() => setFilterStatus(filter.value)}
-              className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
+              className={`px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg text-xs sm:text-sm font-medium transition-all whitespace-nowrap ${
                 filterStatus === filter.value
                   ? 'bg-airbnb-rausch text-white shadow-md'
                   : 'bg-white border border-gray-300 text-gray-700 hover:border-gray-900'
               }`}
             >
               {filter.label}
-              <span className="ml-2 text-xs opacity-75">
+              <span className="ml-1 sm:ml-2 text-xs opacity-75">
                 ({filter.value === 'all' ? bookings.length : bookings.filter((b: any) => b.payment_status === filter.value).length})
               </span>
             </button>
@@ -140,12 +140,12 @@ export default function BookingsPage() {
 
         {/* Фильтр по турам */}
         {tours.length > 0 && (
-          <div className="flex items-center gap-3">
-            <label className="text-sm font-medium text-gray-700">Фильтр по туру:</label>
+          <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-3">
+            <label className="text-xs sm:text-sm font-medium text-gray-700 whitespace-nowrap">Фильтр по туру:</label>
             <select
               value={filterTourId}
               onChange={(e) => setFilterTourId(e.target.value)}
-              className="px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-airbnb-rausch focus:border-airbnb-rausch"
+              className="w-full sm:w-auto px-3 py-2 border border-gray-300 rounded-lg text-xs sm:text-sm focus:ring-2 focus:ring-airbnb-rausch focus:border-airbnb-rausch"
             >
               <option value="all">Все туры ({bookings.length})</option>
               {tours.map(tour => (
@@ -180,86 +180,88 @@ export default function BookingsPage() {
       ) : (
         <Card>
           <CardContent className="p-0">
-            <div className="overflow-x-auto">
-              <table className="w-full">
+            <div className="overflow-x-auto scrollbar-hide">
+              <table className="w-full min-w-[800px]">
                 <thead className="bg-gray-50 border-b">
                   <tr>
-                    <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">ID</th>
-                    <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Экскурсия</th>
-                    <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Клиент</th>
-                    <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Дата и время</th>
-                    <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Участники</th>
-                    <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Оборот</th>
-                    <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Ваш доход</th>
-                    <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Статус</th>
-                    <th className="px-4 py-3 text-right text-xs font-medium text-gray-500 uppercase">Действия</th>
+                    <th className="px-2 sm:px-4 py-2 sm:py-3 text-left text-xs font-medium text-gray-500 uppercase whitespace-nowrap">ID</th>
+                    <th className="px-2 sm:px-4 py-2 sm:py-3 text-left text-xs font-medium text-gray-500 uppercase whitespace-nowrap">Экскурсия</th>
+                    <th className="px-2 sm:px-4 py-2 sm:py-3 text-left text-xs font-medium text-gray-500 uppercase whitespace-nowrap">Клиент</th>
+                    <th className="px-2 sm:px-4 py-2 sm:py-3 text-left text-xs font-medium text-gray-500 uppercase whitespace-nowrap">Дата и время</th>
+                    <th className="px-2 sm:px-4 py-2 sm:py-3 text-left text-xs font-medium text-gray-500 uppercase whitespace-nowrap">Участники</th>
+                    <th className="px-2 sm:px-4 py-2 sm:py-3 text-left text-xs font-medium text-gray-500 uppercase whitespace-nowrap">Оборот</th>
+                    <th className="px-2 sm:px-4 py-2 sm:py-3 text-left text-xs font-medium text-gray-500 uppercase whitespace-nowrap">Ваш доход</th>
+                    <th className="px-2 sm:px-4 py-2 sm:py-3 text-left text-xs font-medium text-gray-500 uppercase whitespace-nowrap">Статус</th>
+                    <th className="px-2 sm:px-4 py-2 sm:py-3 text-right text-xs font-medium text-gray-500 uppercase whitespace-nowrap">Действия</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y">
                   {filteredBookings.map((booking: any) => (
                     <tr key={booking.id} className="hover:bg-gray-50">
-                      <td className="px-4 py-4 text-sm text-gray-900">#{booking.id}</td>
-                      <td className="px-4 py-4">
-                        <div className="flex items-center gap-2">
-                          <div className="font-medium text-gray-900 max-w-xs truncate">
+                      <td className="px-2 sm:px-4 py-3 sm:py-4 text-xs sm:text-sm text-gray-900 whitespace-nowrap">#{booking.id}</td>
+                      <td className="px-2 sm:px-4 py-3 sm:py-4">
+                        <div className="flex items-center gap-2 max-w-[200px]">
+                          <div className="font-medium text-gray-900 text-xs sm:text-sm truncate">
                             {booking.tour_title}
                           </div>
                           <button
                             onClick={() => navigate(`/dashboard/my-tours#tour-${booking.tour_id}`)}
-                            className="text-blue-600 hover:text-blue-800"
+                            className="text-blue-600 hover:text-blue-800 flex-shrink-0"
                             title="Посмотреть тур"
                           >
-                            <ExternalLink size={14} />
+                            <ExternalLink size={12} className="sm:w-3.5 sm:h-3.5" />
                           </button>
                         </div>
                       </td>
-                      <td className="px-4 py-4">
-                        <div>
-                          <div className="text-sm font-medium text-gray-900">{booking.client_name}</div>
-                          <div className="text-xs text-gray-500">{booking.client_phone}</div>
+                      <td className="px-2 sm:px-4 py-3 sm:py-4">
+                        <div className="max-w-[150px]">
+                          <div className="text-xs sm:text-sm font-medium text-gray-900 truncate">{booking.client_name}</div>
+                          <div className="text-xs text-gray-500 truncate">{booking.client_phone}</div>
                         </div>
                       </td>
-                      <td className="px-4 py-4">
-                        <div className="text-sm text-gray-900">
+                      <td className="px-2 sm:px-4 py-3 sm:py-4 whitespace-nowrap">
+                        <div className="text-xs sm:text-sm text-gray-900">
                           {new Date(booking.date).toLocaleDateString('ru')}
                         </div>
                         <div className="text-xs text-gray-500">
                           {booking.time || '10:00'}
                         </div>
                       </td>
-                      <td className="px-4 py-4 text-sm text-gray-900">
+                      <td className="px-2 sm:px-4 py-3 sm:py-4 text-xs sm:text-sm text-gray-900 whitespace-nowrap">
                         {booking.participants_count} чел.
                       </td>
-                      <td className="px-4 py-4">
-                        <div className="text-sm font-bold text-blue-600">
+                      <td className="px-2 sm:px-4 py-3 sm:py-4 whitespace-nowrap">
+                        <div className="text-xs sm:text-sm font-bold text-blue-600">
                           {formatRUB(booking.total_price)}
                         </div>
                       </td>
-                      <td className="px-4 py-4">
-                        <div className="text-sm font-bold text-airbnb-rausch">
+                      <td className="px-2 sm:px-4 py-3 sm:py-4 whitespace-nowrap">
+                        <div className="text-xs sm:text-sm font-bold text-airbnb-rausch">
                           {formatRUB(booking.total_price * 0.03)}
                         </div>
                       </td>
-                      <td className="px-4 py-4">
+                      <td className="px-2 sm:px-4 py-3 sm:py-4">
                         {getStatusBadge(booking.payment_status)}
                       </td>
-                      <td className="px-4 py-4 text-right">
-                        <div className="flex gap-2 justify-end">
+                      <td className="px-2 sm:px-4 py-3 sm:py-4 text-right">
+                        <div className="flex gap-1 sm:gap-2 justify-end">
                           <Button
                             variant="outline"
                             size="sm"
                             onClick={() => navigate(`/dashboard/calendar`)}
                             title="Посмотреть в календаре"
+                            className="p-1.5 sm:p-2"
                           >
-                            <Calendar size={14} />
+                            <Calendar size={12} className="sm:w-3.5 sm:h-3.5" />
                           </Button>
                           <Button
                             variant="outline"
                             size="sm"
                             onClick={() => setSelectedBooking(booking)}
+                            className="text-xs"
                           >
-                            <Eye size={14} className="mr-1" />
-                            Детали
+                            <Eye size={12} className="sm:w-3.5 sm:h-3.5 mr-1" />
+                            <span className="hidden sm:inline">Детали</span>
                           </Button>
                         </div>
                       </td>

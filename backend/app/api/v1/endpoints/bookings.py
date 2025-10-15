@@ -22,6 +22,7 @@ class BookingCreate(BaseModel):
     """Создание бронирования"""
     tour_id: int = Field(..., description="ID экскурсии")
     date: date_type = Field(..., description="Дата экскурсии")
+    time: Optional[str] = Field("10:00", description="Время экскурсии (HH:MM)")
     participants_count: int = Field(..., ge=1, description="Количество участников")
     client_name: str = Field(..., description="Имя клиента")
     client_phone: str = Field(..., description="Телефон клиента")
@@ -37,6 +38,7 @@ class OfflinePaymentRequest(BaseModel):
     client_email: Optional[str] = None
     participants_count: int = Field(default=1, ge=1)
     date: Optional[date_type] = None  # Если не указана, используется сегодня
+    time: Optional[str] = Field("10:00", description="Время экскурсии (HH:MM)")
 
 
 class Booking(BaseModel):
@@ -49,6 +51,7 @@ class Booking(BaseModel):
     client_email: Optional[str]
     telegram_username: Optional[str] = None
     date: date_type
+    time: Optional[str] = "10:00"
     participants_count: int
     total_price: float
     status: str
@@ -98,6 +101,7 @@ async def mark_as_paid(
         tour_id=payment.tour_id,
         client_id=current_user.id,  # Гид создаёт от своего имени
         date=payment.date or date_type.today(),
+        time=payment.time or "10:00",
         participants_count=payment.participants_count,
         total_price=total_price,
         status=BookingStatus.CONFIRMED,
@@ -134,6 +138,7 @@ async def mark_as_paid(
         client_email=booking.client_email,
         telegram_username=booking.telegram_username,
         date=booking.date,
+        time=booking.time,
         participants_count=booking.participants_count,
         total_price=booking.total_price,
         status=booking.status.value,
@@ -237,6 +242,7 @@ async def get_bookings(
             "client_email": b.client_email,
             "telegram_username": b.telegram_username,
             "date": b.date,
+            "time": b.time,
             "participants_count": b.participants_count,
             "total_price": b.total_price,
             "status": b.status.value,
@@ -275,6 +281,7 @@ async def create_booking(
         tour_id=booking_data.tour_id,
         client_id=current_user.id if current_user else None,
         date=booking_data.date,
+        time=booking_data.time or "10:00",
         participants_count=booking_data.participants_count,
         total_price=total_price,
         client_name=booking_data.client_name,
@@ -322,6 +329,7 @@ async def create_booking(
         client_email=booking.client_email,
         telegram_username=booking.telegram_username,
         date=booking.date,
+        time=booking.time,
         participants_count=booking.participants_count,
         total_price=booking.total_price,
         status=booking.status.value,
