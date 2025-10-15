@@ -39,7 +39,7 @@ export default function MyToursPage() {
 
   const allTours = toursData?.data?.tours || []
   
-  // Фильтруем архивные туры (оплаченные)
+  // Фильтруем архивные туры (скрываем после оплаты)
   const tours = allTours.filter((tour: any) => !tour.is_archived)
 
   // Mutation для удаления тура
@@ -150,9 +150,9 @@ export default function MyToursPage() {
                   <span className={tour.start_date ? "text-blue-600 font-medium" : "text-gray-400 italic"}>
                     {tour.start_date ? (
                       <>
-                        {new Date(tour.start_date).toLocaleDateString('ru')}
+                        {new Date(tour.start_date + 'T00:00:00').toLocaleDateString('ru', { day: 'numeric', month: 'long', weekday: 'short' })}
                         {tour.end_date && tour.start_date !== tour.end_date && (
-                          <> — {new Date(tour.end_date).toLocaleDateString('ru')}</>
+                          <> — {new Date(tour.end_date + 'T00:00:00').toLocaleDateString('ru', { day: 'numeric', month: 'long' })}</>
                         )}
                       </>
                     ) : (

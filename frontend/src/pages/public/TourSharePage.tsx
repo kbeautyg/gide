@@ -150,8 +150,8 @@ export default function TourSharePage() {
               <Button onClick={() => window.location.href = '/'} variant="outline">
                 На главную
               </Button>
-            </CardContent>
-          </Card>
+          </CardContent>
+        </Card>
         </motion.div>
       </div>
     )
@@ -227,7 +227,7 @@ export default function TourSharePage() {
                 <p className="text-sm text-gray-500 mt-1">
                   {formatRUB(tour.price)} × {formData.participants_count}
                 </p>
-              </div>
+            </div>
 
               <div className="bg-blue-50 border-2 border-blue-200 p-4 rounded-xl mb-6">
                 <p className="text-sm text-blue-900">
@@ -249,9 +249,9 @@ export default function TourSharePage() {
                 >
                   Ещё одна заявка
                 </Button>
-              </div>
-            </CardContent>
-          </Card>
+            </div>
+          </CardContent>
+        </Card>
         </motion.div>
       </div>
     )
@@ -261,7 +261,7 @@ export default function TourSharePage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-50 via-pink-50 to-blue-50">
       {/* Hero Section */}
-      <div className="relative">
+          <div className="relative">
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -270,7 +270,7 @@ export default function TourSharePage() {
         >
           <img
             src={tour.photos[0] || 'https://images.unsplash.com/photo-1589394815804-964ed0be2eb5?w=1200'}
-            alt={tour.title}
+              alt={tour.title}
             className="w-full h-full object-cover"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
@@ -328,8 +328,8 @@ export default function TourSharePage() {
                       <Calendar className="w-5 h-5" />
                       <span className="font-semibold">
                         {new Date(tour.start_date).toLocaleDateString('ru-RU')}
-                      </span>
-                    </div>
+                </span>
+              </div>
                   )}
                 </div>
               </motion.div>
@@ -513,8 +513,8 @@ export default function TourSharePage() {
                             <div>
                               <p className="font-semibold text-gray-900">Сложность</p>
                               <p className="text-gray-700">{tour.difficulty_level}</p>
-                            </div>
-                          </div>
+              </div>
+              </div>
                         )}
                         {tour.languages && tour.languages.length > 0 && (
                           <div className="flex items-start gap-3">
@@ -522,10 +522,10 @@ export default function TourSharePage() {
                             <div>
                               <p className="font-semibold text-gray-900">Языки</p>
                               <p className="text-gray-700">{tour.languages.join(', ')}</p>
-                            </div>
-                          </div>
+              </div>
+            </div>
                         )}
-                      </div>
+            </div>
                     </CardContent>
                   </Card>
                 )}
@@ -547,20 +547,20 @@ export default function TourSharePage() {
                     </CardTitle>
                   </CardHeader>
                   <CardContent>
-                    <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
                       {tour.photos.slice(1, 7).map((photo: string, i: number) => (
                         <motion.img
-                          key={i}
+                      key={i}
                           initial={{ scale: 0.9, opacity: 0 }}
                           animate={{ scale: 1, opacity: 1 }}
                           transition={{ delay: 0.7 + i * 0.1 }}
                           whileHover={{ scale: 1.05 }}
-                          src={photo}
-                          alt={`${tour.title} - фото ${i + 2}`}
+                      src={photo}
+                      alt={`${tour.title} - фото ${i + 2}`}
                           className="w-full h-48 object-cover rounded-xl shadow-lg cursor-pointer"
-                        />
-                      ))}
-                    </div>
+                    />
+                  ))}
+                </div>
                   </CardContent>
                 </Card>
               </motion.div>
@@ -591,70 +591,70 @@ export default function TourSharePage() {
                       <p className="text-sm text-green-700">
                         Данные взяты из вашей заявки. Проверьте их и нажмите "Подтвердить и оплатить".
                       </p>
-                    </div>
-                  )}
+              </div>
+            )}
 
                   <form onSubmit={handleSubmit} className="space-y-5">
-                    <div>
+                <div>
                       <Label htmlFor="client_name" className="flex items-center gap-2 text-gray-700 font-semibold mb-2">
                         <User className="w-4 h-4" />
                         Ваше имя *
                       </Label>
-                      <Input
-                        id="client_name"
-                        required
-                        value={formData.client_name}
-                        onChange={(e) => setFormData({ ...formData, client_name: e.target.value })}
-                        placeholder="Иван Иванов"
+                  <Input
+                    id="client_name"
+                    required
+                    value={formData.client_name}
+                    onChange={(e) => setFormData({ ...formData, client_name: e.target.value })}
+                    placeholder="Иван Иванов"
                         className={`border-2 focus:border-airbnb-rausch ${clientData ? 'bg-green-50' : ''}`}
                         readOnly={!!clientData}
-                      />
-                    </div>
+                  />
+                </div>
 
-                    <div>
+                <div>
                       <Label htmlFor="client_phone" className="flex items-center gap-2 text-gray-700 font-semibold mb-2">
                         <Phone className="w-4 h-4" />
                         Телефон *
                       </Label>
-                      <Input
-                        id="client_phone"
-                        required
-                        type="tel"
-                        value={formData.client_phone}
-                        onChange={(e) => setFormData({ ...formData, client_phone: e.target.value })}
-                        placeholder="+7 (999) 123-45-67"
+                  <Input
+                    id="client_phone"
+                    required
+                    type="tel"
+                    value={formData.client_phone}
+                    onChange={(e) => setFormData({ ...formData, client_phone: e.target.value })}
+                    placeholder="+7 (999) 123-45-67"
                         className={`border-2 focus:border-airbnb-rausch ${clientData ? 'bg-green-50' : ''}`}
                         readOnly={!!clientData}
-                      />
-                    </div>
+                  />
+              </div>
 
-                    <div>
+                <div>
                       <Label htmlFor="client_email" className="flex items-center gap-2 text-gray-700 font-semibold mb-2">
                         <Mail className="w-4 h-4" />
                         Email (опционально)
                       </Label>
-                      <Input
-                        id="client_email"
-                        type="email"
-                        value={formData.client_email}
-                        onChange={(e) => setFormData({ ...formData, client_email: e.target.value })}
-                        placeholder="ivan@example.com"
+                  <Input
+                    id="client_email"
+                    type="email"
+                    value={formData.client_email}
+                    onChange={(e) => setFormData({ ...formData, client_email: e.target.value })}
+                    placeholder="ivan@example.com"
                         className={`border-2 focus:border-airbnb-rausch ${clientData ? 'bg-green-50' : ''}`}
                         readOnly={!!clientData}
-                      />
-                    </div>
+                  />
+                </div>
 
-                    <div>
+                <div>
                       <Label htmlFor="date" className="flex items-center gap-2 text-gray-700 font-semibold mb-2">
                         <CalendarDays className="w-4 h-4" />
                         Дата экскурсии *
                       </Label>
-                      <Input
-                        id="date"
-                        required
-                        type="date"
-                        value={formData.date}
-                        onChange={(e) => setFormData({ ...formData, date: e.target.value })}
+                  <Input
+                    id="date"
+                    required
+                    type="date"
+                    value={formData.date}
+                    onChange={(e) => setFormData({ ...formData, date: e.target.value })}
                         className={`border-2 focus:border-airbnb-rausch ${clientData ? 'bg-green-50 font-bold text-green-800' : ''}`}
                         readOnly={!!clientData}
                       />
@@ -664,49 +664,49 @@ export default function TourSharePage() {
                           Дата согласована с гидом
                         </p>
                       )}
-                    </div>
+              </div>
 
-                    <div>
+              <div>
                       <Label htmlFor="participants_count" className="flex items-center gap-2 text-gray-700 font-semibold mb-2">
                         <Users className="w-4 h-4" />
                         Количество участников *
                       </Label>
-                      <Input
-                        id="participants_count"
-                        required
-                        type="number"
-                        min="1"
+                <Input
+                  id="participants_count"
+                  required
+                  type="number"
+                  min="1"
                         max="20"
-                        value={formData.participants_count}
-                        onChange={(e) => setFormData({ ...formData, participants_count: parseInt(e.target.value) })}
+                  value={formData.participants_count}
+                  onChange={(e) => setFormData({ ...formData, participants_count: parseInt(e.target.value) })}
                         className={`border-2 focus:border-airbnb-rausch ${clientData ? 'bg-green-50' : ''}`}
                         readOnly={!!clientData}
-                      />
-                    </div>
+                />
+              </div>
 
                     {/* Price calculation */}
                     <div className="bg-gradient-to-br from-green-50 to-teal-50 p-5 rounded-xl border-2 border-green-200">
                       <div className="space-y-2">
                         <div className="flex justify-between text-sm text-gray-700">
                           <span>Стоимость за человека:</span>
-                          <span className="font-semibold">{formatRUB(tour.price)}</span>
-                        </div>
+                  <span className="font-semibold">{formatRUB(tour.price)}</span>
+                </div>
                         <div className="flex justify-between text-sm text-gray-700">
                           <span>Участников:</span>
-                          <span className="font-semibold">{formData.participants_count}</span>
-                        </div>
+                  <span className="font-semibold">{formData.participants_count}</span>
+                </div>
                         <div className="border-t-2 border-green-300 pt-2 flex justify-between items-center">
                           <span className="font-bold text-gray-900">Итого:</span>
                           <span className="text-3xl font-bold text-green-700">
-                            {formatRUB(tour.price * formData.participants_count)}
-                          </span>
+                    {formatRUB(tour.price * formData.participants_count)}
+                  </span>
                         </div>
-                      </div>
-                    </div>
+                </div>
+              </div>
 
-                    <Button
-                      type="submit"
-                      disabled={bookingMutation.isPending}
+              <Button
+                type="submit"
+                disabled={bookingMutation.isPending}
                       className="w-full bg-gradient-to-r from-airbnb-rausch to-pink-600 hover:from-airbnb-rausch/90 hover:to-pink-600/90 text-white text-lg py-7 shadow-xl hover:shadow-2xl transition-all group"
                     >
                       {bookingMutation.isPending ? (
@@ -725,15 +725,15 @@ export default function TourSharePage() {
                           Забронировать экскурсию
                         </>
                       )}
-                    </Button>
+              </Button>
 
                     <div className="flex items-center gap-2 text-xs text-gray-500 bg-blue-50 p-3 rounded-lg">
                       <Shield className="w-4 h-4 flex-shrink-0" />
                       <p>После бронирования гид свяжется с вами для подтверждения</p>
                     </div>
-                  </form>
-                </CardContent>
-              </Card>
+            </form>
+          </CardContent>
+        </Card>
 
               {/* Contact info */}
               {tour.guide && (
