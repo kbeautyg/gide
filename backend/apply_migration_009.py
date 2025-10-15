@@ -11,18 +11,27 @@ from sqlalchemy.orm import sessionmaker
 from sqlalchemy import text
 
 async def apply_migration():
+    print("=" * 80)
+    print("🔧 ЗАПУСК СКРИПТА МИГРАЦИИ 009")
+    print("=" * 80)
+    
     database_url = os.getenv("DATABASE_URL")
     if not database_url:
         print("❌ DATABASE_URL не найден!")
         sys.exit(1)
     
+    print(f"✓ DATABASE_URL найден: {database_url[:30]}...")
+    
     # Преобразуем postgresql:// в postgresql+asyncpg://
     if database_url.startswith("postgresql://"):
         database_url = database_url.replace("postgresql://", "postgresql+asyncpg://", 1)
+        print("✓ Преобразован в asyncpg URL")
     
     # Создаём движок
-    engine = create_async_engine(database_url, echo=True)
+    print("🔄 Создаю подключение к базе...")
+    engine = create_async_engine(database_url, echo=False)  # Отключил echo для чистоты логов
     async_session = sessionmaker(engine, class_=AsyncSession, expire_on_commit=False)
+    print("✓ Подключение создано")
     
     async with async_session() as session:
         print("🔄 Применяю миграцию 009...")
@@ -95,5 +104,11 @@ async def apply_migration():
             raise
 
 if __name__ == "__main__":
-    asyncio.run(apply_migration())
+    try:
+        asyncio.run(apply_migration())
+    except Exception as e:
+        print(f"❌ КРИТИЧЕСКАЯ ОШИБКА В СКРИПТЕ МИГРАЦИИ: {e}")
+        import traceback
+        traceback.print_exc()
+        sys.exit(1)
 
