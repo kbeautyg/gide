@@ -20,7 +20,7 @@ import { CSS } from '@dnd-kit/utilities'
 import { motion, AnimatePresence } from 'framer-motion'
 
 // Draggable компонент для туров
-function DraggableTour({ tour }: { tour: any }) {
+function DraggableTour({ tour, isHighlighted }: { tour: any, isHighlighted?: boolean }) {
   const { attributes, listeners, setNodeRef, transform, isDragging } = useDraggable({
     id: `tour-${tour.id}`,
   })
@@ -31,22 +31,47 @@ function DraggableTour({ tour }: { tour: any }) {
     cursor: isDragging ? 'grabbing' : 'grab',
   }
   
+  // Компонент с анимацией для подсветки
+  const TourContent = isHighlighted ? motion.div : 'div'
+  const animationProps = isHighlighted ? {
+    initial: { scale: 1, backgroundColor: 'rgb(254 226 226)' }, // red-100
+    animate: { 
+      scale: [1, 1.05, 1],
+      backgroundColor: [
+        'rgb(254 226 226)', // red-100
+        'rgb(254 202 202)', // red-200
+        'rgb(254 226 226)', // red-100
+      ],
+      boxShadow: [
+        '0 0 0 0px rgba(225, 29, 72, 0)',
+        '0 0 0 6px rgba(225, 29, 72, 0.3)',
+        '0 0 0 0px rgba(225, 29, 72, 0)'
+      ]
+    },
+    transition: { duration: 0.6, repeat: 3 }
+  } : {}
+  
   return (
-    <div 
+    <TourContent 
       ref={setNodeRef} 
       style={style} 
       {...listeners} 
       {...attributes}
-      className="bg-blue-50 border-2 border-blue-300 rounded px-2 py-1 text-xs shadow-md group/tour relative hover:bg-blue-100 transition-colors"
+      className={`rounded px-2 py-1 text-xs shadow-md group/tour relative transition-colors border-2 ${
+        isHighlighted 
+          ? 'bg-rose-100 border-rose-400' 
+          : 'bg-rose-50 border-rose-300 hover:bg-rose-100'
+      }`}
+      {...animationProps}
     >
       <div className="flex items-center gap-1">
-        <GripVertical className="w-3 h-3 text-blue-500 flex-shrink-0" />
+        <GripVertical className="w-3 h-3 text-rose-500 flex-shrink-0" />
         <div className="flex-1">
-          <div className="font-semibold line-clamp-1 text-blue-900">{tour.title}</div>
-          <div className="text-blue-600 text-[10px]">Тур • {tour.duration}ч</div>
+          <div className="font-semibold line-clamp-1 text-rose-900">{tour.title}</div>
+          <div className="text-rose-600 text-[10px]">Тур • {tour.duration}ч</div>
         </div>
       </div>
-    </div>
+    </TourContent>
   )
 }
 
@@ -227,6 +252,7 @@ export function GuideCalendar({
               enableDragDrop={enableDragDrop}
               isExpanded={expandedDate ? isSameDay(expandedDate, day) : false}
               isHighlighted={shouldHighlight}
+              highlightTourId={highlightTourId}
             />
           )
         })}
@@ -280,6 +306,7 @@ interface DayCellProps {
   enableDragDrop?: boolean
   isExpanded?: boolean
   isHighlighted?: boolean
+  highlightTourId?: number | null
 }
 
 // Компонент перетаскиваемой карточки заявки
@@ -347,7 +374,8 @@ function DayCell({
   onCancel,
   enableDragDrop = false,
   isExpanded = false,
-  isHighlighted = false
+  isHighlighted = false,
+  highlightTourId = null
 }: DayCellProps) {
   // Делаем дату droppable зоной
   const { setNodeRef, isOver } = useDroppable({
@@ -505,16 +533,27 @@ function DayCell({
           >
             {tours.slice(0, 2).map(tour => (
               enableDragDrop ? (
-                <DraggableTour key={tour.id} tour={tour} />
+                <DraggableTour 
+                  key={tour.id} 
+                  tour={tour} 
+                  isHighlighted={highlightTourId === tour.id}
+                />
               ) : (
-                <div key={tour.id} className="bg-blue-50 border border-blue-200 rounded px-2 py-1 text-xs shadow-sm group/tour relative">
-                  <div className="font-semibold line-clamp-1 text-blue-900">{tour.title}</div>
-                  <div className="text-blue-600 text-[10px]">Тур • {tour.duration}ч</div>
+                <div 
+                  key={tour.id} 
+                  className={`rounded px-2 py-1 text-xs shadow-sm group/tour relative border ${
+                    highlightTourId === tour.id
+                      ? 'bg-rose-100 border-rose-300'
+                      : 'bg-rose-50 border-rose-200'
+                  }`}
+                >
+                  <div className="font-semibold line-clamp-1 text-rose-900">{tour.title}</div>
+                  <div className="text-rose-600 text-[10px]">Тур • {tour.duration}ч</div>
                 </div>
               )
             ))}
             {tours.length > 2 && (
-              <div className="text-xs text-blue-500 text-center">+{tours.length - 2} туров</div>
+              <div className="text-xs text-rose-500 text-center">+{tours.length - 2} туров</div>
             )}
           </motion.div>
         </AnimatePresence>

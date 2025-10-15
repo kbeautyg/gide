@@ -35,6 +35,7 @@ export default function CalendarPage() {
     const tourId = searchParams.get('tour')
     
     if (highlight && tourId) {
+      // Подсвечиваем дату и тур из URL
       setHighlightDate(highlight)
       setHighlightTourId(Number(tourId))
       
@@ -45,6 +46,17 @@ export default function CalendarPage() {
         // Очистить URL params
         setSearchParams({})
       }, 3000)
+      
+      return () => clearTimeout(timer)
+    } else {
+      // Если нет параметров в URL, подсвечиваем сегодняшнюю дату
+      const today = format(new Date(), 'yyyy-MM-dd')
+      setHighlightDate(today)
+      
+      // Убрать подсветку сегодняшней даты через 2 секунды
+      const timer = setTimeout(() => {
+        setHighlightDate(null)
+      }, 2000)
       
       return () => clearTimeout(timer)
     }
