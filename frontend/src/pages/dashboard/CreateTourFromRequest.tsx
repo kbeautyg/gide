@@ -59,7 +59,7 @@ export default function CreateTourFromRequest() {
   }
 
   const confirmCreateTour = () => {
-    createTourMutation.mutate()
+      createTourMutation.mutate()
     setShowConfirm(false)
   }
 
@@ -167,11 +167,11 @@ export default function CreateTourFromRequest() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-50 via-pink-50 to-blue-50 py-4 sm:py-8 px-4 overflow-y-auto">
       <div className="max-w-5xl mx-auto pb-8">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-        >
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+      >
           {/* Заголовок с градиентом */}
           <div className="text-center mb-8">
             <motion.div
@@ -200,7 +200,7 @@ export default function CreateTourFromRequest() {
               transition={{ delay: 0.4 }}
               className="text-gray-600 text-lg"
             >
-              Данные будут автоматически заполнены из заявки клиента
+          Данные будут автоматически заполнены из заявки клиента
             </motion.p>
           </div>
 
@@ -219,10 +219,10 @@ export default function CreateTourFromRequest() {
                     </div>
                     <AlertDescription className="text-orange-900 pt-1">
                       <strong className="font-bold">Важно:</strong> Данные заполняются автоматически из заявки клиента. 
-                      Не рекомендуется изменять цену, дату и описание после создания тура.
-                    </AlertDescription>
+            Не рекомендуется изменять цену, дату и описание после создания тура.
+          </AlertDescription>
                   </div>
-                </Alert>
+        </Alert>
               </motion.div>
 
               {/* Предпросмотр данных заявки - Glassmorphism */}
@@ -234,14 +234,14 @@ export default function CreateTourFromRequest() {
                 <Card className="mb-6 backdrop-blur-lg bg-white/80 border-2 border-white/50 shadow-2xl overflow-hidden">
                   <div className="absolute top-0 right-0 w-64 h-64 bg-gradient-to-br from-purple-200/30 to-pink-200/30 rounded-full blur-3xl -z-10" />
                   
-                  <CardHeader>
+          <CardHeader>
                     <CardTitle className="flex items-center gap-2 text-2xl">
                       <div className="w-8 h-8 bg-gradient-to-br from-purple-500 to-pink-500 rounded-lg flex items-center justify-center">
                         <Gift className="w-5 h-5 text-white" />
                       </div>
                       Данные заявки
                     </CardTitle>
-                  </CardHeader>
+          </CardHeader>
                   
                   <CardContent className="space-y-6">
                     {/* Название */}
@@ -275,11 +275,11 @@ export default function CreateTourFromRequest() {
                           <div className="w-10 h-10 bg-gradient-to-br from-teal-500 to-cyan-500 rounded-lg flex items-center justify-center">
                             <MapPin className="w-5 h-5 text-white" />
                           </div>
-                          <div>
+            <div>
                             <label className="text-xs font-bold text-teal-900 uppercase">Локация</label>
                             <p className="text-lg font-semibold text-gray-900">{request.location || 'Не указана'}</p>
                           </div>
-                        </div>
+            </div>
                       </motion.div>
 
                       <motion.div
@@ -290,11 +290,11 @@ export default function CreateTourFromRequest() {
                           <div className="w-10 h-10 bg-gradient-to-br from-orange-500 to-amber-500 rounded-lg flex items-center justify-center">
                             <Clock className="w-5 h-5 text-white" />
                           </div>
-                          <div>
+            <div>
                             <label className="text-xs font-bold text-orange-900 uppercase">Длительность</label>
                             <p className="text-lg font-semibold text-gray-900">{request.duration_hours} часов</p>
                           </div>
-                        </div>
+            </div>
                       </motion.div>
 
                       <motion.div
@@ -305,11 +305,11 @@ export default function CreateTourFromRequest() {
                           <div className="w-10 h-10 bg-gradient-to-br from-pink-500 to-rose-500 rounded-lg flex items-center justify-center">
                             <Users className="w-5 h-5 text-white" />
                           </div>
-                          <div>
+              <div>
                             <label className="text-xs font-bold text-pink-900 uppercase">Гостей</label>
                             <p className="text-lg font-semibold text-gray-900">{request.participants_count} чел.</p>
-                          </div>
-                        </div>
+              </div>
+              </div>
                       </motion.div>
 
                       <motion.div
@@ -319,17 +319,17 @@ export default function CreateTourFromRequest() {
                         <div className="flex items-center gap-3">
                           <div className="w-10 h-10 bg-gradient-to-br from-green-500 to-emerald-500 rounded-lg flex items-center justify-center">
                             <DollarSign className="w-5 h-5 text-white" />
-                          </div>
-                          <div>
+              </div>
+              <div>
                             <label className="text-xs font-bold text-green-900 uppercase">Бюджет</label>
                             <p className="text-lg font-semibold text-gray-900">
-                              {request.budget ? `${request.budget.toLocaleString('ru')} ₽` : 'Не указан'}
-                            </p>
-                          </div>
+                  {request.budget ? `${request.budget.toLocaleString('ru')} ₽` : 'Не указан'}
+                </p>
+              </div>
                         </div>
                       </motion.div>
 
-                      {request.preferred_date && (
+              {request.preferred_date && (
                         <motion.div
                           whileHover={{ scale: 1.05 }}
                           className="p-4 rounded-xl bg-gradient-to-br from-blue-50 to-indigo-50 border border-blue-200"
@@ -338,17 +338,17 @@ export default function CreateTourFromRequest() {
                             <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-indigo-500 rounded-lg flex items-center justify-center">
                               <Calendar className="w-5 h-5 text-white" />
                             </div>
-                            <div>
+                <div>
                               <label className="text-xs font-bold text-blue-900 uppercase">Предпочт. дата</label>
                               <p className="text-lg font-semibold text-gray-900">
-                                {new Date(request.preferred_date).toLocaleDateString('ru')}
-                              </p>
-                            </div>
+                    {new Date(request.preferred_date).toLocaleDateString('ru')}
+                  </p>
+                </div>
                           </div>
                         </motion.div>
-                      )}
+              )}
 
-                      {request.telegram_username && (
+              {request.telegram_username && (
                         <motion.div
                           whileHover={{ scale: 1.05 }}
                           className="p-4 rounded-xl bg-gradient-to-br from-violet-50 to-purple-50 border border-violet-200"
@@ -357,7 +357,7 @@ export default function CreateTourFromRequest() {
                             <div className="w-10 h-10 bg-gradient-to-br from-violet-500 to-purple-500 rounded-lg flex items-center justify-center">
                               <Zap className="w-5 h-5 text-white" />
                             </div>
-                            <div>
+                <div>
                               <label className="text-xs font-bold text-violet-900 uppercase">Telegram</label>
                               <p className="text-lg font-semibold text-gray-900">{request.telegram_username}</p>
                             </div>
@@ -393,13 +393,13 @@ export default function CreateTourFromRequest() {
                               <Mail className="w-4 h-4 text-yellow-700" />
                               <span className="font-semibold">Email:</span>
                               <span>{request.client_email}</span>
-                            </div>
-                          )}
-                        </div>
+                </div>
+              )}
+            </div>
                       </div>
                     )}
-                  </CardContent>
-                </Card>
+          </CardContent>
+        </Card>
               </motion.div>
 
               {/* Кнопки действий */}
@@ -479,7 +479,7 @@ export default function CreateTourFromRequest() {
                     </motion.p>
 
                     {/* QR код и ссылка */}
-                    <motion.div
+          <motion.div
                       initial={{ y: 20, opacity: 0 }}
                       animate={{ y: 0, opacity: 1 }}
                       transition={{ delay: 0.5 }}
@@ -495,30 +495,30 @@ export default function CreateTourFromRequest() {
                             className="rounded-lg"
                           />
                           <p className="text-xs text-gray-500 mt-2 text-center">Отсканируй меня</p>
-                        </div>
-                        
+                </div>
+
                         <div className="flex-1 w-full">
-                          <div className="flex gap-2">
-                            <input
-                              type="text"
-                              value={shareLink}
-                              readOnly
+                <div className="flex gap-2">
+                  <input
+                    type="text"
+                    value={shareLink}
+                    readOnly
                               className="flex-1 px-4 py-3 bg-gray-50 border-2 border-green-200 rounded-lg text-gray-900 font-mono text-sm"
-                            />
-                            <Button
-                              onClick={copyLink}
+                  />
+                  <Button
+                    onClick={copyLink}
                               className="bg-green-600 hover:bg-green-700 shadow-lg"
-                            >
+                  >
                               <Copy size={18} />
-                            </Button>
-                            <Button
-                              onClick={() => window.open(shareLink, '_blank')}
-                              variant="outline"
+                  </Button>
+                  <Button
+                    onClick={() => window.open(shareLink, '_blank')}
+                    variant="outline"
                               className="border-2 border-green-600 text-green-700 hover:bg-green-50"
-                            >
+                  >
                               <ExternalLink size={18} />
-                            </Button>
-                          </div>
+                  </Button>
+                </div>
                         </div>
                       </div>
                     </motion.div>
@@ -533,25 +533,25 @@ export default function CreateTourFromRequest() {
                         onClick={() => navigate('/dashboard/my-tours')}
                         className="w-full bg-gradient-to-r from-airbnb-rausch to-pink-600 hover:from-airbnb-rausch/90 hover:to-pink-600/90 shadow-xl text-lg py-6"
                         size="lg"
-                      >
-                        Перейти к моим турам
-                      </Button>
+                    >
+                      Перейти к моим турам
+                    </Button>
                       
-                      <Button
-                        onClick={() => navigate('/dashboard/requests')}
-                        variant="outline"
+                  <Button
+                    onClick={() => navigate('/dashboard/requests')}
+                    variant="outline"
                         className="w-full border-2 border-green-300 hover:bg-green-50 text-lg py-6"
                         size="lg"
-                      >
-                        Вернуться к заявкам
-                      </Button>
+                  >
+                    Вернуться к заявкам
+                  </Button>
                     </motion.div>
-                  </div>
-                </CardContent>
-              </Card>
-            </motion.div>
-          )}
-        </motion.div>
+                </div>
+              </CardContent>
+            </Card>
+          </motion.div>
+        )}
+      </motion.div>
 
         {/* ConfirmDialog для подтверждения создания тура */}
         <ConfirmDialog
