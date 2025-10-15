@@ -43,12 +43,12 @@ async def apply_migration():
             
             print(f"📋 Найдено полей: {existing_columns}")
             
-            # Добавляем недостающие поля
+            # Добавляем недостающие поля (с проверкой на существование)
             if 'is_archived' not in existing_columns:
                 print("➕ Добавляю is_archived...")
                 await session.execute(text("""
                     ALTER TABLE tours 
-                    ADD COLUMN is_archived BOOLEAN DEFAULT FALSE
+                    ADD COLUMN IF NOT EXISTS is_archived BOOLEAN DEFAULT FALSE
                 """))
                 await session.execute(text("""
                     CREATE INDEX IF NOT EXISTS ix_tours_is_archived ON tours (is_archived)
@@ -58,21 +58,21 @@ async def apply_migration():
                 print("➕ Добавляю client_name...")
                 await session.execute(text("""
                     ALTER TABLE tours 
-                    ADD COLUMN client_name VARCHAR
+                    ADD COLUMN IF NOT EXISTS client_name VARCHAR
                 """))
             
             if 'client_phone' not in existing_columns:
                 print("➕ Добавляю client_phone...")
                 await session.execute(text("""
                     ALTER TABLE tours 
-                    ADD COLUMN client_phone VARCHAR
+                    ADD COLUMN IF NOT EXISTS client_phone VARCHAR
                 """))
             
             if 'client_email' not in existing_columns:
                 print("➕ Добавляю client_email...")
                 await session.execute(text("""
                     ALTER TABLE tours 
-                    ADD COLUMN client_email VARCHAR
+                    ADD COLUMN IF NOT EXISTS client_email VARCHAR
                 """))
             
             await session.commit()
