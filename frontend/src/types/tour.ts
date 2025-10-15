@@ -62,6 +62,7 @@ export interface Tour {
   client_name?: string
   client_phone?: string
   client_email?: string
+  client_telegram?: string
   
   // Дополнительные поля из публичного тура
   max_guests?: number

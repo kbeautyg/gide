@@ -36,6 +36,7 @@ class OfflinePaymentRequest(BaseModel):
     client_name: str
     client_phone: str
     client_email: Optional[str] = None
+    client_telegram: Optional[str] = None
     participants_count: int = Field(default=1, ge=1)
     date: Optional[date_type] = None  # Если не указана, используется сегодня
     time: Optional[str] = Field("10:00", description="Время экскурсии (HH:MM)")
@@ -109,6 +110,7 @@ async def mark_as_paid(
         client_name=payment.client_name,
         client_phone=payment.client_phone,
         client_email=payment.client_email,
+        telegram_username=payment.client_telegram,
     )
     
     db.add(booking)

@@ -24,6 +24,7 @@ interface MarkAsPaidDialogProps {
     client_name?: string
     client_phone?: string
     client_email?: string
+    client_telegram?: string
   }
 }
 
@@ -33,6 +34,7 @@ export function MarkAsPaidDialog({ open, onOpenChange, tour }: MarkAsPaidDialogP
     client_name: tour.client_name || '',
     client_phone: tour.client_phone || '',
     client_email: tour.client_email || '',
+    client_telegram: tour.client_telegram || '',
     participants_count: 1,
     time: '10:00',
   })
@@ -44,6 +46,7 @@ export function MarkAsPaidDialog({ open, onOpenChange, tour }: MarkAsPaidDialogP
         client_name: tour.client_name || '',
         client_phone: tour.client_phone || '',
         client_email: tour.client_email || '',
+        client_telegram: tour.client_telegram || '',
         participants_count: 1,
         time: '10:00',
       })
@@ -71,6 +74,7 @@ export function MarkAsPaidDialog({ open, onOpenChange, tour }: MarkAsPaidDialogP
         client_name: '',
         client_phone: '',
         client_email: '',
+        client_telegram: '',
         participants_count: 1,
         time: '10:00',
       })
@@ -139,6 +143,18 @@ export function MarkAsPaidDialog({ open, onOpenChange, tour }: MarkAsPaidDialogP
                 value={formData.client_email}
                 onChange={(e) => setFormData({ ...formData, client_email: e.target.value })}
                 placeholder="ivan@example.com"
+                className="text-sm"
+              />
+            </div>
+
+            <div>
+              <Label htmlFor="client_telegram" className="text-xs sm:text-sm">Telegram клиента (необязательно)</Label>
+              <Input
+                id="client_telegram"
+                type="text"
+                value={formData.client_telegram}
+                onChange={(e) => setFormData({ ...formData, client_telegram: e.target.value })}
+                placeholder="@username или username"
                 className="text-sm"
               />
             </div>

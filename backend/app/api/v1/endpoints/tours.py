@@ -48,6 +48,7 @@ class Tour(BaseModel):
     client_name: Optional[str] = Field(None, description="Имя клиента")
     client_phone: Optional[str] = Field(None, description="Телефон клиента")
     client_email: Optional[str] = Field(None, description="Email клиента")
+    client_telegram: Optional[str] = Field(None, description="Telegram username клиента")
     
     # Контентные блоки
     what_to_expect: Optional[str] = Field(None, description="Что вас ожидает")
@@ -201,6 +202,7 @@ async def get_tours(
             client_name=tour_db.client_name,
             client_phone=tour_db.client_phone,
             client_email=tour_db.client_email,
+            client_telegram=getattr(tour_db, 'client_telegram', None),  # Fallback for old DB
             is_custom=tour_db.is_custom,
             is_archived=tour_db.is_archived,
             # Контентные блоки
