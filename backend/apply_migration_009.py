@@ -16,6 +16,10 @@ async def apply_migration():
         print("❌ DATABASE_URL не найден!")
         sys.exit(1)
     
+    # Преобразуем postgresql:// в postgresql+asyncpg://
+    if database_url.startswith("postgresql://"):
+        database_url = database_url.replace("postgresql://", "postgresql+asyncpg://", 1)
+    
     # Создаём движок
     engine = create_async_engine(database_url, echo=True)
     async_session = sessionmaker(engine, class_=AsyncSession, expire_on_commit=False)
