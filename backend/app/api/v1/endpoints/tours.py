@@ -38,6 +38,17 @@ class Tour(BaseModel):
     total_revenue: float = Field(default=0.0, description="Общий доход с экскурсии")
     is_public: bool = Field(default=False, description="Опубликована ли экскурсия в каталоге")
     
+    # Даты и статус
+    start_date: Optional[str] = Field(None, description="Дата начала экскурсии")
+    end_date: Optional[str] = Field(None, description="Дата окончания экскурсии")
+    is_custom: Optional[bool] = Field(default=False, description="Кастомная экскурсия из заявки")
+    is_archived: Optional[bool] = Field(default=False, description="Архивная экскурсия (оплачена)")
+    
+    # Данные клиента (для кастомных туров)
+    client_name: Optional[str] = Field(None, description="Имя клиента")
+    client_phone: Optional[str] = Field(None, description="Телефон клиента")
+    client_email: Optional[str] = Field(None, description="Email клиента")
+    
     # Контентные блоки
     what_to_expect: Optional[str] = Field(None, description="Что вас ожидает")
     organizational_details: Optional[str] = Field(None, description="Организационные детали")
@@ -183,6 +194,15 @@ async def get_tours(
             bookings_count=bookings_count,
             total_revenue=total_revenue,
             is_public=tour_db.is_public,
+            # Даты
+            start_date=str(tour_db.start_date) if tour_db.start_date else None,
+            end_date=str(tour_db.end_date) if tour_db.end_date else None,
+            # Данные клиента (для кастомных туров)
+            client_name=tour_db.client_name,
+            client_phone=tour_db.client_phone,
+            client_email=tour_db.client_email,
+            is_custom=tour_db.is_custom,
+            is_archived=tour_db.is_archived,
             # Контентные блоки
             what_to_expect=tour_db.what_to_expect,
             organizational_details=tour_db.organizational_details,

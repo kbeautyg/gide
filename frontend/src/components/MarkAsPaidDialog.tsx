@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import {
   Dialog,
@@ -21,18 +21,34 @@ interface MarkAsPaidDialogProps {
     id: number
     title: string
     price: number
+    client_name?: string
+    client_phone?: string
+    client_email?: string
   }
 }
 
 export function MarkAsPaidDialog({ open, onOpenChange, tour }: MarkAsPaidDialogProps) {
   const queryClient = useQueryClient()
   const [formData, setFormData] = useState({
-    client_name: '',
-    client_phone: '',
-    client_email: '',
+    client_name: tour.client_name || '',
+    client_phone: tour.client_phone || '',
+    client_email: tour.client_email || '',
     participants_count: 1,
     time: '10:00',
   })
+  
+  // Обновляем данные формы когда меняется тур
+  useEffect(() => {
+    if (tour) {
+      setFormData({
+        client_name: tour.client_name || '',
+        client_phone: tour.client_phone || '',
+        client_email: tour.client_email || '',
+        participants_count: 1,
+        time: '10:00',
+      })
+    }
+  }, [tour])
 
   const markPaidMutation = useMutation({
     mutationFn: async (data: typeof formData) => {
