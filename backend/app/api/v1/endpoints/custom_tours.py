@@ -139,12 +139,11 @@ async def create_tour_from_request(
         included=included,
         not_included=not_included,
         meeting_point=meeting_point,
-        # TODO: Раскомментировать ТОЛЬКО после применения миграции 009
-        # difficulty_level=difficulty_level,
-        # languages=languages,
-        # client_name=client_name,
-        # client_phone=client_phone,
-        # client_email=client_email,
+        difficulty_level=difficulty_level,
+        languages=languages,
+        client_name=client_name,
+        client_phone=client_phone,
+        client_email=client_email,
     )
     
     db.add(tour)

@@ -43,14 +43,17 @@ class Booking(BaseModel):
     """Модель бронирования"""
     id: int
     tour_id: int
+    tour_title: str
     client_id: int
     client_name: str
     client_phone: str
     client_email: Optional[str]
     telegram_username: Optional[str] = None
     date: date_type
+    time: Optional[str] = None
     participants_count: int
     total_price: float
+    income: float  # 3% от total_price
     status: str
     payment_status: str
     created_at: datetime
@@ -109,9 +112,8 @@ async def mark_as_paid(
     
     db.add(booking)
     
-    # TODO: Раскомментировать ТОЛЬКО после применения миграции 009
-    # # Архивируем тур (убираем из "Мои экскурсии")
-    # tour.is_archived = True
+    # Архивируем тур (убираем из "Мои экскурсии")
+    tour.is_archived = True
     
     # Если тур создан из заявки - помечаем заявку как завершённую
     if tour.request_id:
@@ -129,14 +131,17 @@ async def mark_as_paid(
     return Booking(
         id=booking.id,
         tour_id=booking.tour_id,
+        tour_title=tour.title,
         client_id=booking.client_id,
         client_name=booking.client_name,
         client_phone=booking.client_phone,
         client_email=booking.client_email,
         telegram_username=booking.telegram_username,
         date=booking.date,
+        time=tour.time if hasattr(tour, 'time') else "10:00",
         participants_count=booking.participants_count,
         total_price=booking.total_price,
+        income=booking.total_price * 0.03,
         status=booking.status.value,
         payment_status=booking.payment_status.value,
         created_at=booking.created_at,
@@ -217,28 +222,31 @@ async def get_bookings(
     if not tour_ids:
         return BookingList(bookings=[], total=0)
     
-    # Получаем бронирования
-    stmt = select(BookingModel).where(BookingModel.tour_id.in_(tour_ids)).order_by(BookingModel.created_at.desc())
+    # Получаем бронирования с информацией о турах
+    stmt = select(BookingModel, Tour).join(Tour, BookingModel.tour_id == Tour.id).where(BookingModel.tour_id.in_(tour_ids)).order_by(BookingModel.created_at.desc())
     result = await db.execute(stmt)
-    bookings_db = result.scalars().all()
+    bookings_with_tours = result.all()
     
     bookings_list = [
         Booking(
             id=b.id,
             tour_id=b.tour_id,
+            tour_title=tour.title,
             client_id=b.client_id,
             client_name=b.client_name,
             client_phone=b.client_phone,
             client_email=b.client_email,
             telegram_username=b.telegram_username,
             date=b.date,
+            time=tour.time if hasattr(tour, 'time') else "10:00",
             participants_count=b.participants_count,
             total_price=b.total_price,
+            income=b.total_price * 0.03,
             status=b.status.value,
             payment_status=b.payment_status.value,
             created_at=b.created_at,
         )
-        for b in bookings_db
+        for b, tour in bookings_with_tours
     ]
     
     return BookingList(bookings=bookings_list, total=len(bookings_list))
@@ -311,14 +319,17 @@ async def create_booking(
     return Booking(
         id=booking.id,
         tour_id=booking.tour_id,
+        tour_title=tour.title,
         client_id=booking.client_id,
         client_name=booking.client_name,
         client_phone=booking.client_phone,
         client_email=booking.client_email,
         telegram_username=booking.telegram_username,
         date=booking.date,
+        time=tour.time if hasattr(tour, 'time') else "10:00",
         participants_count=booking.participants_count,
         total_price=booking.total_price,
+        income=booking.total_price * 0.03,
         status=booking.status.value,
         payment_status=booking.payment_status.value,
         created_at=booking.created_at,
