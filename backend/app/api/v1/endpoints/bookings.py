@@ -101,7 +101,7 @@ async def mark_as_paid(
         tour_id=payment.tour_id,
         client_id=current_user.id,  # Гид создаёт от своего имени
         date=payment.date or date_type.today(),
-        time=payment.time or "10:00",
+        # time=payment.time or "10:00",  # Temporarily disabled until migration
         participants_count=payment.participants_count,
         total_price=total_price,
         status=BookingStatus.CONFIRMED,
@@ -138,7 +138,7 @@ async def mark_as_paid(
         client_email=booking.client_email,
         telegram_username=booking.telegram_username,
         date=booking.date,
-        time=booking.time,
+        time=getattr(booking, 'time', '10:00'),  # Fallback for old DB
         participants_count=booking.participants_count,
         total_price=booking.total_price,
         status=booking.status.value,
@@ -242,7 +242,7 @@ async def get_bookings(
             "client_email": b.client_email,
             "telegram_username": b.telegram_username,
             "date": b.date,
-            "time": b.time,
+            "time": getattr(b, 'time', '10:00'),  # Fallback for old DB
             "participants_count": b.participants_count,
             "total_price": b.total_price,
             "status": b.status.value,
@@ -281,7 +281,7 @@ async def create_booking(
         tour_id=booking_data.tour_id,
         client_id=current_user.id if current_user else None,
         date=booking_data.date,
-        time=booking_data.time or "10:00",
+        # time=booking_data.time or "10:00",  # Temporarily disabled until migration
         participants_count=booking_data.participants_count,
         total_price=total_price,
         client_name=booking_data.client_name,
@@ -329,7 +329,7 @@ async def create_booking(
         client_email=booking.client_email,
         telegram_username=booking.telegram_username,
         date=booking.date,
-        time=booking.time,
+        time=getattr(booking, 'time', '10:00'),  # Fallback for old DB
         participants_count=booking.participants_count,
         total_price=booking.total_price,
         status=booking.status.value,
