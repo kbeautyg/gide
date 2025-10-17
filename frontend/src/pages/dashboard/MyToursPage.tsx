@@ -103,11 +103,11 @@ export default function MyToursPage() {
   }
 
   return (
-    <div className="space-y-6 overflow-x-hidden max-w-full">
-      <div className="flex items-center justify-between">
+    <div className="space-y-4 sm:space-y-6 overflow-x-hidden max-w-full">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
         <div>
-          <h1 className="text-3xl font-bold">Мои экскурсии</h1>
-          <p className="text-gray-600">Управление вашими экскурсиями</p>
+          <h1 className="text-2xl sm:text-3xl font-bold">Мои экскурсии</h1>
+          <p className="text-sm sm:text-base text-gray-600">Управление вашими экскурсиями</p>
         </div>
         <CreateTourDialog />
       </div>
@@ -124,7 +124,7 @@ export default function MyToursPage() {
           </CardContent>
         </Card>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-6">
           {tours.map((tour) => (
             <Card key={tour.id} id={`tour-${tour.id}`} className="flex flex-col scroll-mt-24 max-w-full">
               <div className="relative">

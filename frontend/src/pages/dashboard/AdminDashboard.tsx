@@ -67,16 +67,16 @@ export default function AdminDashboard() {
   }
 
   return (
-    <div className="space-y-6">
-      <div className="flex items-center justify-between">
+    <div className="space-y-4 sm:space-y-6 overflow-x-hidden max-w-full">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-4">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">Админ-панель</h1>
-          <p className="text-gray-600">Управление контентом и статистикой платформы</p>
+          <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">Админ-панель</h1>
+          <p className="text-sm sm:text-base text-gray-600">Управление контентом и статистикой платформы</p>
         </div>
         <Button
           onClick={handleBulkEnhance}
           disabled={enhancing}
-          className="bg-airbnb-rausch hover:bg-airbnb-rausch/90"
+          className="bg-airbnb-rausch hover:bg-airbnb-rausch/90 w-full sm:w-auto"
         >
           <Sparkles size={16} className="mr-2" />
           {enhancing ? 'Обработка...' : 'Дозаполнить все туры'}
@@ -84,7 +84,7 @@ export default function AdminDashboard() {
       </div>
 
       {/* Статистика */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between pb-2">
             <CardTitle className="text-sm font-medium text-gray-600">
@@ -160,41 +160,43 @@ export default function AdminDashboard() {
           <CardTitle>Все экскурсии</CardTitle>
           <p className="text-sm text-gray-600">Управление экскурсиями платформы</p>
         </CardHeader>
-        <CardContent>
+        <CardContent className="p-0">
           {toursLoading ? (
             <div className="text-center py-8 text-gray-500">Загрузка...</div>
           ) : tours.length === 0 ? (
             <div className="text-center py-8 text-gray-500">Нет экскурсий</div>
           ) : (
-            <div className="overflow-x-auto">
-              <table className="w-full">
+            <div className="overflow-x-auto scrollbar-hide">
+              <table className="w-full min-w-[800px]">
                 <thead className="bg-gray-50 border-b">
                   <tr>
-                    <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">ID</th>
-                    <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Название</th>
-                    <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Локация</th>
-                    <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Цена</th>
-                    <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Рейтинг</th>
-                    <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Статус</th>
-                    <th className="px-4 py-3 text-right text-xs font-medium text-gray-500 uppercase">Действия</th>
+                    <th className="px-2 sm:px-4 py-2 sm:py-3 text-left text-xs font-medium text-gray-500 uppercase whitespace-nowrap">ID</th>
+                    <th className="px-2 sm:px-4 py-2 sm:py-3 text-left text-xs font-medium text-gray-500 uppercase">Название</th>
+                    <th className="px-2 sm:px-4 py-2 sm:py-3 text-left text-xs font-medium text-gray-500 uppercase whitespace-nowrap">Локация</th>
+                    <th className="px-2 sm:px-4 py-2 sm:py-3 text-left text-xs font-medium text-gray-500 uppercase whitespace-nowrap">Цена</th>
+                    <th className="px-2 sm:px-4 py-2 sm:py-3 text-left text-xs font-medium text-gray-500 uppercase whitespace-nowrap">Рейтинг</th>
+                    <th className="px-2 sm:px-4 py-2 sm:py-3 text-left text-xs font-medium text-gray-500 uppercase whitespace-nowrap">Статус</th>
+                    <th className="px-2 sm:px-4 py-2 sm:py-3 text-right text-xs font-medium text-gray-500 uppercase whitespace-nowrap">Действия</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y">
                   {tours.map((tour: any) => (
                     <tr key={tour.id} className="hover:bg-gray-50">
-                      <td className="px-4 py-3 text-sm text-gray-900">#{tour.id}</td>
-                      <td className="px-4 py-3 text-sm font-medium text-gray-900 max-w-xs truncate">
-                        {tour.title}
+                      <td className="px-2 sm:px-4 py-2 sm:py-3 text-xs sm:text-sm text-gray-900 whitespace-nowrap">#{tour.id}</td>
+                      <td className="px-2 sm:px-4 py-2 sm:py-3">
+                        <div className="text-xs sm:text-sm font-medium text-gray-900 max-w-[200px] truncate">
+                          {tour.title}
+                        </div>
                       </td>
-                      <td className="px-4 py-3 text-sm text-gray-600">{tour.location}</td>
-                      <td className="px-4 py-3 text-sm text-gray-900 font-semibold">
+                      <td className="px-2 sm:px-4 py-2 sm:py-3 text-xs sm:text-sm text-gray-600 whitespace-nowrap">{tour.location}</td>
+                      <td className="px-2 sm:px-4 py-2 sm:py-3 text-xs sm:text-sm text-gray-900 font-semibold whitespace-nowrap">
                         {formatRUB(tour.price)}
                       </td>
-                      <td className="px-4 py-3 text-sm text-gray-600">
+                      <td className="px-2 sm:px-4 py-2 sm:py-3 text-xs sm:text-sm text-gray-600 whitespace-nowrap">
                         ⭐ {tour.rating || 0} ({tour.reviews_count || 0})
                       </td>
-                      <td className="px-4 py-3">
-                        <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
+                      <td className="px-2 sm:px-4 py-2 sm:py-3">
+                        <span className={`inline-flex items-center px-2 sm:px-2.5 py-0.5 rounded-full text-xs font-medium whitespace-nowrap ${
                           tour.is_public && tour.active 
                             ? 'bg-green-100 text-green-800' 
                             : 'bg-gray-100 text-gray-800'
@@ -202,20 +204,21 @@ export default function AdminDashboard() {
                           {tour.is_public && tour.active ? 'Опубликован' : 'Черновик'}
                         </span>
                       </td>
-                      <td className="px-4 py-3 text-right">
-                        <div className="flex gap-2 justify-end">
+                      <td className="px-2 sm:px-4 py-2 sm:py-3 text-right">
+                        <div className="flex gap-1 sm:gap-2 justify-end">
                           <Button 
                             variant="outline" 
                             size="sm"
                             onClick={() => window.location.href = `/dashboard/tours/edit/${tour.id}`}
+                            className="text-xs whitespace-nowrap"
                           >
-                            <Edit size={14} className="mr-1" />
-                            Редактировать
+                            <Edit size={12} className="sm:w-3.5 sm:h-3.5 sm:mr-1" />
+                            <span className="hidden sm:inline">Редактировать</span>
                           </Button>
                           <Button 
                             variant="outline" 
                             size="sm"
-                            className="text-red-600 hover:text-red-700 hover:bg-red-50"
+                            className="text-red-600 hover:text-red-700 hover:bg-red-50 p-1.5 sm:p-2"
                             onClick={() => {
                               if (confirm('Удалить тур?')) {
                                 api.delete(`/admin/tours/${tour.id}`)
@@ -223,7 +226,7 @@ export default function AdminDashboard() {
                               }
                             }}
                           >
-                            <Trash2 size={14} />
+                            <Trash2 size={12} className="sm:w-3.5 sm:h-3.5" />
                           </Button>
                         </div>
                       </td>
@@ -242,58 +245,58 @@ export default function AdminDashboard() {
           <CardTitle>Все гиды</CardTitle>
           <p className="text-sm text-gray-600">Управление гидами платформы</p>
         </CardHeader>
-        <CardContent>
+        <CardContent className="p-0">
           {guidesLoading ? (
             <div className="text-center py-8 text-gray-500">Загрузка...</div>
           ) : guides.length === 0 ? (
             <div className="text-center py-8 text-gray-500">Нет гидов</div>
           ) : (
-            <div className="overflow-x-auto">
-              <table className="w-full">
+            <div className="overflow-x-auto scrollbar-hide">
+              <table className="w-full min-w-[700px]">
                 <thead className="bg-gray-50 border-b">
                   <tr>
-                    <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">ID</th>
-                    <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Имя</th>
-                    <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Телефон</th>
-                    <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Роль</th>
-                    <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Баланс</th>
-                    <th className="px-4 py-3 text-right text-xs font-medium text-gray-500 uppercase">Действия</th>
+                    <th className="px-2 sm:px-4 py-2 sm:py-3 text-left text-xs font-medium text-gray-500 uppercase whitespace-nowrap">ID</th>
+                    <th className="px-2 sm:px-4 py-2 sm:py-3 text-left text-xs font-medium text-gray-500 uppercase">Имя</th>
+                    <th className="px-2 sm:px-4 py-2 sm:py-3 text-left text-xs font-medium text-gray-500 uppercase whitespace-nowrap">Телефон</th>
+                    <th className="px-2 sm:px-4 py-2 sm:py-3 text-left text-xs font-medium text-gray-500 uppercase whitespace-nowrap">Роль</th>
+                    <th className="px-2 sm:px-4 py-2 sm:py-3 text-left text-xs font-medium text-gray-500 uppercase whitespace-nowrap">Баланс</th>
+                    <th className="px-2 sm:px-4 py-2 sm:py-3 text-right text-xs font-medium text-gray-500 uppercase whitespace-nowrap">Действия</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y">
                   {guides.map((guide: any) => (
                     <tr key={guide.id} className="hover:bg-gray-50">
-                      <td className="px-4 py-3 text-sm text-gray-900">#{guide.id}</td>
-                      <td className="px-4 py-3 text-sm font-medium text-gray-900">
+                      <td className="px-2 sm:px-4 py-2 sm:py-3 text-xs sm:text-sm text-gray-900 whitespace-nowrap">#{guide.id}</td>
+                      <td className="px-2 sm:px-4 py-2 sm:py-3 text-xs sm:text-sm font-medium text-gray-900">
                         {guide.name || 'Не указано'}
                       </td>
-                      <td className="px-4 py-3 text-sm text-gray-600">{guide.phone}</td>
-                      <td className="px-4 py-3">
-                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                      <td className="px-2 sm:px-4 py-2 sm:py-3 text-xs sm:text-sm text-gray-600 whitespace-nowrap">{guide.phone}</td>
+                      <td className="px-2 sm:px-4 py-2 sm:py-3">
+                        <span className="inline-flex items-center px-2 sm:px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800 whitespace-nowrap">
                           {guide.role}
                         </span>
                       </td>
-                      <td className="px-4 py-3 text-sm text-gray-900">
+                      <td className="px-2 sm:px-4 py-2 sm:py-3 text-xs sm:text-sm text-gray-900 whitespace-nowrap">
                         {formatRUB(guide.balance_rub || 0)}
                       </td>
-                      <td className="px-4 py-3 text-right">
-                        <div className="flex gap-2 justify-end">
+                      <td className="px-2 sm:px-4 py-2 sm:py-3 text-right">
+                        <div className="flex gap-1 sm:gap-2 justify-end flex-wrap">
                           <Button 
                             variant="outline" 
                             size="sm"
-                            className="text-green-600 hover:text-green-700 hover:bg-green-50"
+                            className="text-green-600 hover:text-green-700 hover:bg-green-50 text-xs whitespace-nowrap"
                             onClick={() => {
                               api.put(`/admin/guides/${guide.id}/approve`)
                                 .then(() => alert('Гид одобрен'))
                             }}
                           >
-                            <CheckCircle size={14} className="mr-1" />
-                            Одобрить
+                            <CheckCircle size={12} className="sm:w-3.5 sm:h-3.5 sm:mr-1" />
+                            <span className="hidden sm:inline">Одобрить</span>
                           </Button>
                           <Button 
                             variant="outline" 
                             size="sm"
-                            className="text-red-600 hover:text-red-700 hover:bg-red-50"
+                            className="text-red-600 hover:text-red-700 hover:bg-red-50 text-xs whitespace-nowrap"
                             onClick={() => {
                               if (confirm('Заблокировать гида?')) {
                                 api.put(`/admin/guides/${guide.id}/block`)
@@ -301,8 +304,8 @@ export default function AdminDashboard() {
                               }
                             }}
                           >
-                            <XCircle size={14} className="mr-1" />
-                            Заблокировать
+                            <XCircle size={12} className="sm:w-3.5 sm:h-3.5 sm:mr-1" />
+                            <span className="hidden sm:inline">Заблокировать</span>
                           </Button>
                         </div>
                       </td>

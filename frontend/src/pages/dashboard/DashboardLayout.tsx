@@ -71,11 +71,11 @@ export default function DashboardLayout() {
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
       <header className="bg-white border-b sticky top-0 z-40">
-        <div className="container mx-auto px-4 py-4 flex items-center justify-between">
+        <div className="w-full max-w-full mx-auto px-3 sm:px-4 py-3 sm:py-4 flex items-center justify-between">
           <Logo size="md" linkTo="/" />
           
           {/* Desktop navigation */}
-          <div className="hidden md:flex items-center gap-4">
+          <div className="hidden lg:flex items-center gap-2 xl:gap-4">
             <Link to="/">
               <Button variant="ghost" size="sm" className="gap-2">
                 <Home size={18} />
@@ -83,13 +83,13 @@ export default function DashboardLayout() {
               </Button>
             </Link>
 
-            <div className="flex items-center gap-3 px-4 py-2 bg-gray-50 rounded-lg">
-              <div className="w-8 h-8 bg-airbnb-rausch rounded-full flex items-center justify-center text-white font-bold text-sm">
+            <div className="flex items-center gap-2 xl:gap-3 px-3 xl:px-4 py-2 bg-gray-50 rounded-lg">
+              <div className="w-8 h-8 bg-airbnb-rausch rounded-full flex items-center justify-center text-white font-bold text-sm flex-shrink-0">
                 {user?.name?.[0] || user?.phone?.[0] || 'Г'}
               </div>
-              <div>
-                <p className="text-sm font-semibold">{user?.name || user?.phone}</p>
-                <p className="text-xs text-gray-500">
+              <div className="min-w-0">
+                <p className="text-sm font-semibold truncate">{user?.name || user?.phone}</p>
+                <p className="text-xs text-gray-500 truncate">
                   {user?.role === 'admin' ? 'Администратор' : 'Гид'}
                 </p>
               </div>
@@ -109,7 +109,7 @@ export default function DashboardLayout() {
           {/* Mobile hamburger button */}
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="md:hidden p-2 hover:bg-gray-100 rounded-lg transition-colors"
+            className="lg:hidden p-2 hover:bg-gray-100 rounded-lg transition-colors"
           >
             {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
           </button>
@@ -124,9 +124,9 @@ export default function DashboardLayout() {
             animate={{ x: 0 }}
             exit={{ x: '100%' }}
             transition={{ type: 'tween', duration: 0.3 }}
-            className="fixed inset-y-0 right-0 w-80 bg-white shadow-2xl z-50 md:hidden overflow-y-auto"
+            className="fixed inset-y-0 right-0 w-[85vw] max-w-xs bg-white shadow-2xl z-50 md:hidden overflow-y-auto"
           >
-            <div className="p-6 space-y-6">
+            <div className="p-4 space-y-6">
               {/* User info */}
               <div className="flex items-center gap-3 pb-6 border-b">
                 <div className="w-12 h-12 bg-airbnb-rausch rounded-full flex items-center justify-center text-white font-bold">
@@ -200,12 +200,12 @@ export default function DashboardLayout() {
       </AnimatePresence>
 
       {/* Быстрая навигация с счётчиками */}
-      <div className="bg-gradient-to-r from-gray-50 to-gray-100 border-b sticky top-[73px] z-30 hidden md:block">
-        <div className="container mx-auto px-4 py-3">
-          <div className="flex gap-3 overflow-x-auto scrollbar-hide">
+      <div className="bg-gradient-to-r from-gray-50 to-gray-100 border-b sticky top-[73px] z-30 hidden lg:block">
+        <div className="w-full max-w-full px-3 sm:px-4 py-3">
+          <div className="flex gap-2 sm:gap-3 overflow-x-auto scrollbar-hide">
             <Link
               to="/dashboard/requests"
-              className="flex items-center gap-2 px-4 py-2 bg-white rounded-lg border hover:border-airbnb-rausch hover:shadow-md transition-all whitespace-nowrap"
+              className="flex items-center gap-2 px-3 sm:px-4 py-2 bg-white rounded-lg border hover:border-airbnb-rausch hover:shadow-md transition-all whitespace-nowrap flex-shrink-0"
             >
               <FileText size={16} className="text-airbnb-rausch" />
               <span className="text-sm font-medium">Заявки</span>
@@ -216,7 +216,7 @@ export default function DashboardLayout() {
 
             <Link
               to="/dashboard/my-tours"
-              className="flex items-center gap-2 px-4 py-2 bg-white rounded-lg border hover:border-blue-500 hover:shadow-md transition-all whitespace-nowrap"
+              className="flex items-center gap-2 px-3 sm:px-4 py-2 bg-white rounded-lg border hover:border-blue-500 hover:shadow-md transition-all whitespace-nowrap flex-shrink-0"
             >
               <MapPin size={16} className="text-blue-600" />
               <span className="text-sm font-medium">Мои экскурсии</span>
@@ -227,7 +227,7 @@ export default function DashboardLayout() {
 
             <Link
               to="/dashboard/calendar"
-              className="flex items-center gap-2 px-4 py-2 bg-white rounded-lg border hover:border-green-500 hover:shadow-md transition-all whitespace-nowrap"
+              className="flex items-center gap-2 px-3 sm:px-4 py-2 bg-white rounded-lg border hover:border-green-500 hover:shadow-md transition-all whitespace-nowrap flex-shrink-0"
             >
               <Calendar size={16} className="text-green-600" />
               <span className="text-sm font-medium">Календарь</span>
@@ -235,7 +235,7 @@ export default function DashboardLayout() {
 
             <Link
               to="/dashboard/bookings"
-              className="flex items-center gap-2 px-4 py-2 bg-white rounded-lg border hover:border-purple-500 hover:shadow-md transition-all whitespace-nowrap"
+              className="flex items-center gap-2 px-3 sm:px-4 py-2 bg-white rounded-lg border hover:border-purple-500 hover:shadow-md transition-all whitespace-nowrap flex-shrink-0"
             >
               <ShoppingBag size={16} className="text-purple-600" />
               <span className="text-sm font-medium">Заказы</span>
@@ -247,10 +247,10 @@ export default function DashboardLayout() {
         </div>
       </div>
 
-      <div className="flex">
+      <div className="flex min-h-0">
         {/* Sidebar - только desktop */}
-        <aside className="hidden md:block w-64 bg-white border-r min-h-[calc(100vh-73px)]">
-          <nav className="p-4 space-y-2">
+        <aside className="hidden lg:block w-56 xl:w-64 bg-white border-r min-h-[calc(100vh-73px)] flex-shrink-0">
+          <nav className="p-3 xl:p-4 space-y-2">
             {menuItems.map((item) => {
               const Icon = item.icon
               const active = isActive(item.path)
@@ -274,7 +274,7 @@ export default function DashboardLayout() {
         </aside>
 
         {/* Main Content */}
-        <main className="flex-1 p-3 sm:p-4 md:p-6 lg:p-8 overflow-x-hidden">
+        <main className="flex-1 p-3 sm:p-4 lg:p-6 xl:p-8 overflow-x-hidden min-w-0 w-full">
           <Outlet />
         </main>
       </div>

@@ -76,26 +76,26 @@ export default function ManagerDashboard() {
   const recentBookings = bookings.slice(0, 3)
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4 sm:space-y-6 overflow-x-hidden max-w-full">
       {/* Header */}
-      <div className="bg-airbnb-rausch rounded-xl p-6 text-white shadow-lg">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-4">
-            <div className="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center text-2xl font-bold">
+      <div className="bg-airbnb-rausch rounded-xl p-4 sm:p-6 text-white shadow-lg">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+          <div className="flex items-center gap-3 sm:gap-4">
+            <div className="w-12 h-12 sm:w-16 sm:h-16 bg-white/20 rounded-full flex items-center justify-center text-xl sm:text-2xl font-bold flex-shrink-0">
               {user?.name?.[0] || user?.phone?.[0] || 'Г'}
             </div>
-            <div>
-              <p className="text-2xl font-bold">{user?.name || 'Гид'}</p>
-              <p className="text-white/90">
+            <div className="min-w-0">
+              <p className="text-xl sm:text-2xl font-bold truncate">{user?.name || 'Гид'}</p>
+              <p className="text-sm sm:text-base text-white/90 truncate">
                 {user?.role === 'admin' ? 'Администратор' : 'Гид'} • ThaiGuide Pro
               </p>
             </div>
           </div>
-          <div className="text-right space-y-3">
-            <p className="text-white/90 text-sm mb-1">Доход за месяц (3% комиссия)</p>
-            <p className="text-3xl font-bold">{formatRUB(monthlyIncome)}</p>
+          <div className="w-full sm:w-auto sm:text-right space-y-2 sm:space-y-3">
+            <p className="text-white/90 text-xs sm:text-sm">Доход за месяц (3% комиссия)</p>
+            <p className="text-2xl sm:text-3xl font-bold">{formatRUB(monthlyIncome)}</p>
             <Button
-              className="gap-2 bg-white text-tropical-ocean hover:bg-white/90"
+              className="gap-2 bg-white text-tropical-ocean hover:bg-white/90 w-full sm:w-auto"
               onClick={() => alert('Заявка на вывод средств отправлена менеджеру.')}>
               <ArrowUpRight size={18} />
               Вывести средства
@@ -105,53 +105,53 @@ export default function ManagerDashboard() {
       </div>
 
       {/* Stats Cards */}
-      <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6">
         <Card className="border-green-200 hover:shadow-lg transition-shadow">
-          <CardHeader className="pb-3">
-            <CardTitle className="text-sm font-medium text-gray-600 flex items-center justify-between">
-              <span>Активных экскурсий</span>
-              <MapPin size={32} className="text-green-600" />
+          <CardHeader className="pb-2 sm:pb-3">
+            <CardTitle className="text-xs sm:text-sm font-medium text-gray-600 flex items-center justify-between gap-1">
+              <span className="truncate">Активных экскурсий</span>
+              <MapPin size={24} className="text-green-600 flex-shrink-0 sm:w-8 sm:h-8" />
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <p className="text-4xl font-bold text-green-600">{activeTours}</p>
+            <p className="text-3xl sm:text-4xl font-bold text-green-600">{activeTours}</p>
           </CardContent>
         </Card>
 
         <Card className="border-blue-200 hover:shadow-lg transition-shadow">
-          <CardHeader className="pb-3">
-            <CardTitle className="text-sm font-medium text-gray-600 flex items-center justify-between">
-              <span>Заказов за месяц</span>
-              <CreditCard size={32} className="text-blue-600" />
+          <CardHeader className="pb-2 sm:pb-3">
+            <CardTitle className="text-xs sm:text-sm font-medium text-gray-600 flex items-center justify-between gap-1">
+              <span className="truncate">Заказов за месяц</span>
+              <CreditCard size={24} className="text-blue-600 flex-shrink-0 sm:w-8 sm:h-8" />
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <p className="text-4xl font-bold text-blue-600">{thisMonthBookings}</p>
+            <p className="text-3xl sm:text-4xl font-bold text-blue-600">{thisMonthBookings}</p>
           </CardContent>
         </Card>
 
         <Card className="border-blue-300 hover:shadow-lg transition-shadow">
-          <CardHeader className="pb-3">
-            <CardTitle className="text-sm font-medium text-gray-600 flex items-center justify-between">
-              <span>Оборот сделок</span>
-              <DollarSign size={32} className="text-blue-500" />
+          <CardHeader className="pb-2 sm:pb-3">
+            <CardTitle className="text-xs sm:text-sm font-medium text-gray-600 flex items-center justify-between gap-1">
+              <span className="truncate">Оборот сделок</span>
+              <DollarSign size={24} className="text-blue-500 flex-shrink-0 sm:w-8 sm:h-8" />
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <p className="text-4xl font-bold text-blue-500">{formatRUB(monthlyTurnover)}</p>
+            <p className="text-2xl sm:text-3xl lg:text-4xl font-bold text-blue-500 truncate">{formatRUB(monthlyTurnover)}</p>
             <p className="text-xs text-gray-500 mt-1">Полная стоимость</p>
           </CardContent>
         </Card>
 
         <Card className="border-airbnb-rausch/30 hover:shadow-lg transition-shadow">
-          <CardHeader className="pb-3">
-            <CardTitle className="text-sm font-medium text-gray-600 flex items-center justify-between">
-              <span>Ваш доход (3%)</span>
-              <TrendingUp size={32} className="text-airbnb-rausch" />
+          <CardHeader className="pb-2 sm:pb-3">
+            <CardTitle className="text-xs sm:text-sm font-medium text-gray-600 flex items-center justify-between gap-1">
+              <span className="truncate">Ваш доход (3%)</span>
+              <TrendingUp size={24} className="text-airbnb-rausch flex-shrink-0 sm:w-8 sm:h-8" />
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <p className="text-4xl font-bold text-airbnb-rausch">{formatRUB(monthlyIncome)}</p>
+            <p className="text-2xl sm:text-3xl lg:text-4xl font-bold text-airbnb-rausch truncate">{formatRUB(monthlyIncome)}</p>
             <p className="text-xs text-gray-500 mt-1">Комиссия от оборота</p>
           </CardContent>
         </Card>
@@ -188,7 +188,7 @@ export default function ManagerDashboard() {
       {/* Recent Orders */}
       <Card>
         <CardHeader>
-          <CardTitle className="flex items-center justify-between">
+          <CardTitle className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
             <span>Последние заказы</span>
             <span className="text-sm font-normal text-green-600 flex items-center gap-1">
               <CheckCircle size={16} />
@@ -200,17 +200,17 @@ export default function ManagerDashboard() {
           {recentBookings.length > 0 ? (
             <div className="space-y-3">
               {recentBookings.map((booking: any) => (
-                <div key={booking.id} className="flex items-center justify-between p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
+                <div key={booking.id} className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 p-3 sm:p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
                   <div className="flex items-center gap-3">
-                    <div className="w-12 h-12 bg-tropical-ocean/10 rounded-full flex items-center justify-center">
-                      <Users size={20} className="text-tropical-ocean" />
+                    <div className="w-10 h-10 sm:w-12 sm:h-12 bg-tropical-ocean/10 rounded-full flex items-center justify-center flex-shrink-0">
+                      <Users size={18} className="text-tropical-ocean sm:w-5 sm:h-5" />
                     </div>
-                    <div>
-                      <p className="font-semibold">{booking.client_name || 'Клиент'}</p>
-                      <p className="text-sm text-gray-600">{booking.client_phone}</p>
+                    <div className="min-w-0">
+                      <p className="font-semibold truncate">{booking.client_name || 'Клиент'}</p>
+                      <p className="text-sm text-gray-600 truncate">{booking.client_phone}</p>
                     </div>
                   </div>
-                  <div className="text-right">
+                  <div className="text-left sm:text-right">
                     <p className="font-bold text-tropical-ocean">{formatRUB(booking.total_price)}</p>
                     <p className="text-xs text-green-600 flex items-center gap-1">
                       <CheckCircle size={12} />

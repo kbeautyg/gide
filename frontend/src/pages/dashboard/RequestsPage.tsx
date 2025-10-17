@@ -62,60 +62,72 @@ export default function RequestsPage() {
   const completedCount = requests.filter((r: any) => r.status === 'completed').length
 
   return (
-    <div className="space-y-6 overflow-x-hidden max-w-full">
+    <div className="space-y-4 sm:space-y-6 overflow-x-hidden max-w-full">
       {/* Заголовок */}
-      <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+      <div className="flex flex-col gap-3 sm:gap-4">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">Заявки</h1>
-          <p className="text-gray-600 mt-1">Выберите заявку и создайте тур. Когда клиент бронирует — она появится здесь.</p>
+          <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">Заявки</h1>
+          <p className="text-sm sm:text-base text-gray-600 mt-1">Выберите заявку и создайте тур. Когда клиент бронирует — она появится здесь.</p>
         </div>
       </div>
 
       {/* Фильтры по статусу */}
-      <div className="grid gap-3 md:grid-cols-6">
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2 sm:gap-3">
         <Button 
           onClick={() => setFilter('all')}
           variant={filter === 'all' ? 'airbnb' : 'outline'}
-          className="gap-2"
+          className="gap-2 text-xs sm:text-sm whitespace-nowrap"
         >
-          <Filter size={16} />
-          Все ({requests.length})
+          <Filter size={14} className="sm:w-4 sm:h-4" />
+          <span>Все</span>
+          <span className="hidden sm:inline">({requests.length})</span>
         </Button>
         <Button 
           onClick={() => setFilter('pending')}
           variant={filter === 'pending' ? 'airbnb' : 'outline'}
-          className="gap-2"
+          className="gap-2 text-xs sm:text-sm whitespace-nowrap"
         >
-          <Clock size={16} />
-          Новые ({pendingCount})
+          <Clock size={14} className="sm:w-4 sm:h-4" />
+          <span>Новые</span>
+          <span className="hidden sm:inline">({pendingCount})</span>
         </Button>
         <Button 
           onClick={() => setFilter('in_progress')}
           variant={filter === 'in_progress' ? 'airbnb' : 'outline'}
-          className="gap-2"
+          className="gap-2 text-xs sm:text-sm whitespace-nowrap"
         >
-          <Link2 size={16} />
-          В работе ({inProgressCount})
+          <Link2 size={14} className="sm:w-4 sm:h-4" />
+          <span className="hidden sm:inline">В работе</span>
+          <span className="sm:hidden">Работа</span>
+          <span className="hidden sm:inline">({inProgressCount})</span>
         </Button>
         <Button 
           onClick={() => setFilter('completed')}
           variant={filter === 'completed' ? 'airbnb' : 'outline'}
-          className="gap-2"
+          className="gap-2 text-xs sm:text-sm whitespace-nowrap"
         >
-          <CheckCircle2 size={16} />
-          Завершены ({completedCount})
+          <CheckCircle2 size={14} className="sm:w-4 sm:h-4" />
+          <span className="hidden sm:inline">Завершены</span>
+          <span className="sm:hidden">Готово</span>
+          <span className="hidden sm:inline">({completedCount})</span>
         </Button>
         <Button 
           onClick={() => setFilter('short')}
           variant={filter === 'short' ? 'airbnb' : 'outline'}
+          className="text-xs sm:text-sm whitespace-nowrap"
         >
-          ⚡ Короткие ({shortCount})
+          ⚡ <span className="hidden sm:inline ml-1">Короткие</span>
+          <span className="sm:hidden ml-1">Корот.</span>
+          <span className="hidden sm:inline ml-1">({shortCount})</span>
         </Button>
         <Button 
           onClick={() => setFilter('long')}
           variant={filter === 'long' ? 'airbnb' : 'outline'}
+          className="text-xs sm:text-sm whitespace-nowrap"
         >
-          🌟 Длинные ({longCount})
+          🌟 <span className="hidden sm:inline ml-1">Длинные</span>
+          <span className="sm:hidden ml-1">Длин.</span>
+          <span className="hidden sm:inline ml-1">({longCount})</span>
         </Button>
       </div>
 
@@ -136,7 +148,7 @@ export default function RequestsPage() {
         </Card>
       ) : (
         <motion.div
-          className="grid md:grid-cols-2 lg:grid-cols-3 gap-6"
+          className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-6"
           initial="hidden"
           animate="visible"
           variants={{
