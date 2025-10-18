@@ -57,18 +57,18 @@ function DraggableTour({ tour, isHighlighted }: { tour: any, isHighlighted?: boo
       style={style} 
       {...listeners} 
       {...attributes}
-      className={`rounded px-2 py-1 text-xs shadow-md group/tour relative transition-colors border-2 ${
+      className={`rounded px-1 sm:px-2 py-0.5 sm:py-1 text-[9px] sm:text-xs shadow-md group/tour relative transition-colors border sm:border-2 ${
         isHighlighted 
           ? 'bg-rose-100 border-rose-400' 
           : 'bg-rose-50 border-rose-300 hover:bg-rose-100'
       }`}
       {...animationProps}
     >
-      <div className="flex items-center gap-1">
-        <GripVertical className="w-3 h-3 text-rose-500 flex-shrink-0" />
-        <div className="flex-1">
+      <div className="flex items-center gap-0.5 sm:gap-1">
+        <GripVertical className="w-2 h-2 sm:w-3 sm:h-3 text-rose-500 flex-shrink-0" />
+        <div className="flex-1 min-w-0">
           <div className="font-semibold line-clamp-1 text-rose-900">{tour.title}</div>
-          <div className="text-rose-600 text-[10px]">Тур • {tour.duration}ч</div>
+          <div className="text-rose-600 text-[8px] sm:text-[10px]">Тур • {tour.duration}ч</div>
         </div>
       </div>
     </TourContent>
@@ -181,31 +181,31 @@ export function GuideCalendar({
   }
   
   const calendarContent = (
-    <div className="bg-white rounded-xl shadow-airbnb p-3 sm:p-4 md:p-6">
+    <div className="bg-white rounded-xl shadow-airbnb p-2 sm:p-4 md:p-6 overflow-x-hidden max-w-full">
       {/* Навигация по месяцам */}
-      <div className="flex items-center justify-between mb-4 md:mb-6">
+      <div className="flex items-center justify-between mb-3 sm:mb-4 md:mb-6">
         <button 
           onClick={() => setCurrentMonth(subMonths(currentMonth, 1))}
-          className="p-2 hover:bg-gray-100 rounded-full transition-colors"
+          className="p-1.5 sm:p-2 hover:bg-gray-100 rounded-full transition-colors flex-shrink-0"
         >
-          <ChevronLeft size={20} />
+          <ChevronLeft size={18} className="sm:w-5 sm:h-5" />
         </button>
-        <h3 className="text-lg sm:text-xl font-bold text-gray-900 capitalize">
+        <h3 className="text-base sm:text-lg md:text-xl font-bold text-gray-900 capitalize truncate px-2">
           {format(currentMonth, 'LLLL yyyy', { locale: ru })}
         </h3>
         <button 
           onClick={() => setCurrentMonth(addMonths(currentMonth, 1))}
-          className="p-2 hover:bg-gray-100 rounded-full transition-colors"
+          className="p-1.5 sm:p-2 hover:bg-gray-100 rounded-full transition-colors flex-shrink-0"
         >
-          <ChevronRight size={20} />
+          <ChevronRight size={18} className="sm:w-5 sm:h-5" />
         </button>
       </div>
       
       {/* Сетка дней */}
-      <div className="grid grid-cols-7 gap-1 sm:gap-2">
+      <div className="grid grid-cols-7 gap-0.5 sm:gap-1 md:gap-2">
         {/* Заголовки дней недели */}
         {['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'].map(day => (
-          <div key={day} className="text-center font-semibold text-gray-600 py-1 sm:py-2 text-xs sm:text-sm">
+          <div key={day} className="text-center font-semibold text-gray-600 py-1 sm:py-2 text-[10px] sm:text-xs md:text-sm">
             {day}
           </div>
         ))}
@@ -327,16 +327,16 @@ function DraggableRequestCard({ request, onCancel }: { request: any, onCancel?: 
       {...attributes}
       {...listeners}
       className={cn(
-        "bg-white rounded px-2 py-1 text-xs shadow-sm group/card relative",
+        "bg-white rounded px-1 sm:px-2 py-0.5 sm:py-1 text-[9px] sm:text-xs shadow-sm group/card relative",
         "cursor-grab active:cursor-grabbing hover:shadow-md transition-all hover:scale-[1.02]",
         isDragging && "opacity-50 scale-95 shadow-xl cursor-grabbing"
       )}
     >
-      <div className="flex items-center gap-1">
+      <div className="flex items-center gap-0.5 sm:gap-1">
         <div className="flex-shrink-0">
-          <GripVertical size={12} className="text-gray-400" />
+          <GripVertical size={10} className="text-gray-400 sm:w-3 sm:h-3" />
         </div>
-        <div className="flex-1 pointer-events-none">
+        <div className="flex-1 pointer-events-none min-w-0">
           <div className="font-semibold line-clamp-1 text-gray-900">{request.title}</div>
           <div className="flex items-center justify-between">
             <div className="text-gray-500">{request.duration_hours}ч</div>
@@ -350,9 +350,9 @@ function DraggableRequestCard({ request, onCancel }: { request: any, onCancel?: 
                 onCancel(request.id)
               }
             }}
-            className="opacity-0 group-hover/card:opacity-100 text-red-600 hover:text-red-700 p-0.5 pointer-events-auto"
+            className="opacity-0 group-hover/card:opacity-100 text-red-600 hover:text-red-700 p-0.5 pointer-events-auto flex-shrink-0"
           >
-            <X size={12} />
+            <X size={10} className="sm:w-3 sm:h-3" />
           </button>
         )}
       </div>
@@ -413,19 +413,19 @@ function DayCell({
     <DayCellContent 
       ref={setNodeRef}
       className={cn(
-        "min-h-[100px] p-2 border rounded-lg transition-all",
+        "min-h-[60px] sm:min-h-[80px] md:min-h-[100px] p-1 sm:p-1.5 md:p-2 border rounded transition-all",
         bgColor,
         !disabled && isCurrentMonth && "hover:shadow-sm cursor-pointer",
         disabled && "cursor-not-allowed",
-        isOver && availableHours > 0 && "ring-2 ring-green-500 ring-offset-2 bg-green-100/50",
-        isOver && availableHours === 0 && "ring-2 ring-red-500 ring-offset-2 animate-shake",
-        isHighlighted && "ring-4 ring-yellow-400"
+        isOver && availableHours > 0 && "ring-1 sm:ring-2 ring-green-500 ring-offset-1 sm:ring-offset-2 bg-green-100/50",
+        isOver && availableHours === 0 && "ring-1 sm:ring-2 ring-red-500 ring-offset-1 sm:ring-offset-2 animate-shake",
+        isHighlighted && "ring-2 sm:ring-4 ring-yellow-400"
       )}
       onClick={!disabled ? onClick : undefined}
       {...animationProps}
     >
       <div className={cn(
-        "font-bold text-sm mb-1", 
+        "font-bold text-[10px] sm:text-xs md:text-sm mb-0.5 sm:mb-1", 
         isSelected ? "text-white" : !isCurrentMonth ? "text-gray-400" : "text-gray-900"
       )}>
         {day.getDate()}
@@ -433,16 +433,16 @@ function DayCell({
       
       {isCurrentMonth && showHours && (
         <div className={cn(
-          "text-xs mb-1", 
+          "text-[9px] sm:text-[10px] md:text-xs mb-0.5 sm:mb-1", 
           isSelected ? "text-white/90" : "text-gray-600"
         )}>
-          {availableHours}/8ч свободно
+          {availableHours}/8ч
         </div>
       )}
       
       {isCurrentMonth && !showHours && bookedHours > 0 && (
         <div className={cn(
-          "text-xs mb-1", 
+          "text-[9px] sm:text-[10px] md:text-xs mb-0.5 sm:mb-1", 
           isSelected ? "text-white/90" : "text-gray-600"
         )}>
           {bookedHours}/8ч
@@ -452,7 +452,7 @@ function DayCell({
       {/* Прогресс-бар */}
       {isCurrentMonth && bookedHours > 0 && (
         <div className={cn(
-          "w-full h-1 rounded mb-2",
+          "w-full h-0.5 sm:h-1 rounded mb-1 sm:mb-2",
           isSelected ? "bg-white/30" : "bg-gray-200"
         )}>
           <div 
@@ -472,7 +472,7 @@ function DayCell({
       {isCurrentMonth && requests.length > 0 && !showHours && (
         <AnimatePresence>
           <motion.div 
-            className="space-y-1 mt-1"
+            className="space-y-0.5 sm:space-y-1 mt-0.5 sm:mt-1"
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
@@ -480,20 +480,20 @@ function DayCell({
             {enableDragDrop ? (
               // С Drag & Drop
               <>
-                {(isExpanded ? requests : requests.slice(0, 2)).map(req => (
+                {(isExpanded ? requests : requests.slice(0, 1)).map(req => (
                   <DraggableRequestCard key={req.id} request={req} onCancel={onCancel} />
                 ))}
-                {!isExpanded && requests.length > 2 && (
-                  <div className="text-xs text-gray-500 text-center cursor-pointer hover:text-gray-700" onClick={onClick}>
-                    +{requests.length - 2} (клик для раскрытия)
+                {!isExpanded && requests.length > 1 && (
+                  <div className="text-[9px] sm:text-xs text-gray-500 text-center cursor-pointer hover:text-gray-700" onClick={onClick}>
+                    +{requests.length - 1}
                   </div>
                 )}
               </>
             ) : (
               // Без Drag & Drop (старая версия)
               <>
-                {requests.slice(0, 2).map(req => (
-                  <div key={req.id} className="bg-white rounded px-2 py-1 text-xs shadow-sm group/card relative">
+                {requests.slice(0, 1).map(req => (
+                  <div key={req.id} className="bg-white rounded px-1 sm:px-2 py-0.5 sm:py-1 text-[9px] sm:text-xs shadow-sm group/card relative">
                     <div className="font-semibold line-clamp-1 text-gray-900">{req.title}</div>
                     <div className="flex items-center justify-between">
                       <div className="text-gray-500">{req.duration_hours}ч</div>
@@ -507,14 +507,14 @@ function DayCell({
                           }}
                           className="opacity-0 group-hover/card:opacity-100 text-red-600 hover:text-red-700 p-0.5"
                         >
-                          <X size={12} />
+                          <X size={10} className="sm:w-3 sm:h-3" />
                         </button>
                       )}
                     </div>
                   </div>
                 ))}
-                {requests.length > 2 && (
-                  <div className="text-xs text-gray-500 text-center">+{requests.length - 2}</div>
+                {requests.length > 1 && (
+                  <div className="text-[9px] sm:text-xs text-gray-500 text-center">+{requests.length - 1}</div>
                 )}
               </>
             )}
@@ -526,12 +526,12 @@ function DayCell({
       {isCurrentMonth && tours.length > 0 && !showHours && (
         <AnimatePresence>
           <motion.div 
-            className="space-y-1 mt-1"
+            className="space-y-0.5 sm:space-y-1 mt-0.5 sm:mt-1"
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
           >
-            {tours.slice(0, 2).map(tour => (
+            {tours.slice(0, 1).map(tour => (
               enableDragDrop ? (
                 <DraggableTour 
                   key={tour.id} 
@@ -541,19 +541,19 @@ function DayCell({
               ) : (
                 <div 
                   key={tour.id} 
-                  className={`rounded px-2 py-1 text-xs shadow-sm group/tour relative border ${
+                  className={`rounded px-1 sm:px-2 py-0.5 sm:py-1 text-[9px] sm:text-xs shadow-sm group/tour relative border ${
                     highlightTourId === tour.id
                       ? 'bg-rose-100 border-rose-300'
                       : 'bg-rose-50 border-rose-200'
                   }`}
                 >
                   <div className="font-semibold line-clamp-1 text-rose-900">{tour.title}</div>
-                  <div className="text-rose-600 text-[10px]">Тур • {tour.duration}ч</div>
+                  <div className="text-rose-600 text-[8px] sm:text-[10px]">Тур • {tour.duration}ч</div>
                 </div>
               )
             ))}
-            {tours.length > 2 && (
-              <div className="text-xs text-rose-500 text-center">+{tours.length - 2} туров</div>
+            {tours.length > 1 && (
+              <div className="text-[9px] sm:text-xs text-rose-500 text-center">+{tours.length - 1}</div>
             )}
           </motion.div>
         </AnimatePresence>

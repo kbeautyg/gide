@@ -194,50 +194,51 @@ export default function CalendarPage() {
 
       {/* Режим переноса дат с подтверждением клиента */}
       <Card className="bg-gradient-to-r from-blue-50 to-indigo-50 border-2 border-blue-200 shadow-md">
-        <CardContent className="py-5">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-3">
+        <CardContent className="py-3 sm:py-5">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-4">
+            <div className="flex items-start sm:items-center gap-2 sm:gap-3 flex-1">
               <Switch
                 checked={clientConfirmed}
                 onCheckedChange={setClientConfirmed}
-                className="data-[state=checked]:bg-green-600"
+                className="data-[state=checked]:bg-green-600 flex-shrink-0 mt-1 sm:mt-0"
               />
-              <div className="flex flex-col">
-                <label className="text-base font-bold text-gray-900 cursor-pointer" onClick={() => setClientConfirmed(!clientConfirmed)}>
+              <div className="flex flex-col flex-1 min-w-0">
+                <label className="text-sm sm:text-base font-bold text-gray-900 cursor-pointer" onClick={() => setClientConfirmed(!clientConfirmed)}>
                   Я согласовал даты с клиентом
                 </label>
                 <p className="text-xs text-gray-600 mt-0.5">
-                  Включите, чтобы разрешить перетаскивание туров в календаре
+                  Включите для перетаскивания туров
                 </p>
               </div>
               <TooltipProvider>
                 <Tooltip>
                   <TooltipTrigger asChild>
-                    <button className="text-gray-500 hover:text-gray-700">
-                      <HelpCircle size={18} />
+                    <button className="text-gray-500 hover:text-gray-700 flex-shrink-0">
+                      <HelpCircle size={16} className="sm:w-[18px] sm:h-[18px]" />
                     </button>
                   </TooltipTrigger>
-                  <TooltipContent className="max-w-sm bg-white border-2 border-blue-200 p-4">
-                    <p className="font-semibold mb-2">Как это работает:</p>
-                    <ul className="text-sm space-y-1 list-disc pl-4">
-                      <li>Включите переключатель после согласования с клиентом</li>
-                      <li>Перетащите тур на новую дату в календаре</li>
-                      <li>Дата автоматически обновится в ссылке тура (/t/code)</li>
-                      <li>Клиент увидит новую дату при переходе по ссылке</li>
+                  <TooltipContent className="max-w-[280px] sm:max-w-sm bg-white border-2 border-blue-200 p-3 sm:p-4">
+                    <p className="font-semibold mb-2 text-sm">Как это работает:</p>
+                    <ul className="text-xs sm:text-sm space-y-1 list-disc pl-4">
+                      <li>Включите переключатель после согласования</li>
+                      <li>Перетащите тур на новую дату</li>
+                      <li>Дата обновится в ссылке тура</li>
+                      <li>Клиент увидит новую дату</li>
                     </ul>
                   </TooltipContent>
                 </Tooltip>
               </TooltipProvider>
             </div>
             {clientConfirmed ? (
-              <div className="flex items-center gap-2 bg-green-100 text-green-800 px-4 py-2 rounded-lg font-semibold text-sm shadow-sm">
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <div className="flex items-center gap-2 bg-green-100 text-green-800 px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg font-semibold text-xs sm:text-sm shadow-sm">
+                <svg className="w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
                 </svg>
-                Режим переноса активен
+                <span className="hidden sm:inline">Режим переноса активен</span>
+                <span className="sm:hidden">Активен</span>
               </div>
             ) : (
-              <span className="text-xs text-gray-500 font-medium bg-gray-100 px-3 py-1.5 rounded">Отключено</span>
+              <span className="text-xs text-gray-500 font-medium bg-gray-100 px-3 py-1.5 rounded whitespace-nowrap">Отключено</span>
             )}
           </div>
         </CardContent>
@@ -278,27 +279,27 @@ export default function CalendarPage() {
           
           {/* Легенда */}
           <Card className="bg-gray-50">
-            <CardContent className="py-4">
-              <div className="flex items-center justify-center gap-6 flex-wrap text-sm">
-                <div className="flex items-center gap-2">
-                  <div className="w-6 h-6 bg-green-50 border border-green-200 rounded" />
-                  <span className="text-gray-700">🟢 Свободно (0-3ч)</span>
+            <CardContent className="py-3 sm:py-4">
+              <div className="flex items-center justify-center gap-2 sm:gap-4 md:gap-6 flex-wrap text-xs sm:text-sm">
+                <div className="flex items-center gap-1 sm:gap-2">
+                  <div className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6 bg-green-50 border border-green-200 rounded flex-shrink-0" />
+                  <span className="text-gray-700 whitespace-nowrap">🟢 <span className="hidden sm:inline">Свободно</span> (0-3ч)</span>
                 </div>
-                <div className="flex items-center gap-2">
-                  <div className="w-6 h-6 bg-yellow-50 border border-yellow-200 rounded" />
-                  <span className="text-gray-700">🟡 Частично (4-7ч)</span>
+                <div className="flex items-center gap-1 sm:gap-2">
+                  <div className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6 bg-yellow-50 border border-yellow-200 rounded flex-shrink-0" />
+                  <span className="text-gray-700 whitespace-nowrap">🟡 <span className="hidden sm:inline">Частично</span> (4-7ч)</span>
                 </div>
-                <div className="flex items-center gap-2">
-                  <div className="w-6 h-6 bg-red-50 border border-red-200 rounded" />
-                  <span className="text-gray-700">🔴 Полностью (8ч)</span>
+                <div className="flex items-center gap-1 sm:gap-2">
+                  <div className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6 bg-red-50 border border-red-200 rounded flex-shrink-0" />
+                  <span className="text-gray-700 whitespace-nowrap">🔴 <span className="hidden sm:inline">Полностью</span> (8ч)</span>
                 </div>
-                <div className="flex items-center gap-2 border-l pl-6">
-                  <div className="w-6 h-6 bg-white border border-gray-300 rounded" />
-                  <span className="text-gray-700">Заявка</span>
+                <div className="flex items-center gap-1 sm:gap-2 sm:border-l sm:pl-4 md:pl-6">
+                  <div className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6 bg-white border border-gray-300 rounded flex-shrink-0" />
+                  <span className="text-gray-700 whitespace-nowrap">Заявка</span>
                 </div>
-                <div className="flex items-center gap-2">
-                  <div className="w-6 h-6 bg-blue-50 border border-blue-200 rounded" />
-                  <span className="text-blue-700">Тур</span>
+                <div className="flex items-center gap-1 sm:gap-2">
+                  <div className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6 bg-blue-50 border border-blue-200 rounded flex-shrink-0" />
+                  <span className="text-blue-700 whitespace-nowrap">Тур</span>
                 </div>
               </div>
             </CardContent>
