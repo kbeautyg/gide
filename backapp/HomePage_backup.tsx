@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
-import { Star, Users, Shield, Clock, ChevronLeft, ChevronRight, ArrowRight, Play } from 'lucide-react'
+import { Star, Users, Shield, Clock, ChevronLeft, ChevronRight, ArrowRight } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { useQuery } from '@tanstack/react-query'
 import { toursApi, api } from '@/lib/api'
@@ -12,6 +12,8 @@ import { TourCardSkeleton } from '@/components/TourCardSkeleton'
 import { LiveStats } from '@/components/LiveStats'
 import { WorldMap } from '@/components/WorldMap'
 import { AnimatedFeatures } from '@/components/AnimatedFeatures'
+import { TypewriterHero } from '@/components/TypewriterHero'
+import { SearchBar } from '@/components/SearchBar'
 
 // Анимационные варианты
 const containerVariants = {
@@ -114,7 +116,7 @@ export default function HomePage() {
       photo: 'https://i.pravatar.cc/150?img=33',
       rating: 5,
       text: 'Лучшая экскурсия! Увидели бухту Майя Бэй, поплавали с рыбками, романтический ужин на закате. Потрясающе!',
-      tour: 'Острова Пхи-Пхи — к селу Кanobi',
+      tour: 'Острова Пхи-Пхи — к селу Кanoби',
       experience: 1
     },
     {
@@ -128,130 +130,105 @@ export default function HomePage() {
   ]
 
   return (
-    <div className="min-h-screen bg-black">
+    <div className="min-h-screen bg-white">
       <PublicHeader />
 
-      {/* HERO SECTION - FLOATING OVERLAY DESIGN */}
-      <section className="relative h-screen overflow-hidden">
-        {/* Фоновое видео/изображение с параллакс эффектом */}
-        <motion.div 
-          className="absolute inset-0"
-          initial={{ scale: 1.1 }}
-          animate={{ scale: 1 }}
-          transition={{ duration: 1.5, ease: "easeOut" }}
-        >
-          {/* Фоновое изображение */}
-          <div 
-            className="absolute inset-0 bg-cover bg-center"
-            style={{
-              backgroundImage: `url('https://images.unsplash.com/photo-1528181304800-259b08848526?w=1920&h=1080&fit=crop')`,
+      {/* Hero Section - 3D объекты фон */}
+      <section className="relative text-white overflow-hidden min-h-[500px] sm:min-h-[600px] lg:h-[85vh] flex items-center bg-gradient-to-br from-gray-900 via-gray-800 to-black">
+        {/* Анимированные blob градиенты */}
+        <div className="absolute inset-0 overflow-hidden">
+          <motion.div
+            animate={{
+              scale: [1, 1.2, 1],
+              rotate: [0, 90, 0],
+              borderRadius: ['30%', '50%', '30%']
             }}
+            transition={{
+              duration: 20,
+              repeat: Infinity,
+              ease: 'linear'
+            }}
+            className="absolute -top-40 -left-40 w-96 h-96 bg-gradient-to-br from-airbnb-rausch/30 to-purple-500/30 blur-3xl"
           />
-          
-          {/* Градиентные оверлеи для читаемости */}
-          <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/40 to-black/80" />
-          <div className="absolute inset-0 bg-gradient-to-r from-black/50 via-transparent to-black/50" />
-        </motion.div>
-
-        {/* Плавающий контент БЕЗ блоков и рамок */}
-        <div className="relative h-full flex flex-col items-start justify-center container mx-auto px-8 md:px-16">
-          {/* Маленький бейдж */}
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.3 }}
-            className="mb-6"
-          >
-            <span className="text-white/90 text-sm md:text-base font-medium tracking-wider uppercase">
-              Путешествия по Азии
-            </span>
-          </motion.div>
-
-          {/* Главный заголовок - ОГРОМНЫЙ и плавающий */}
-          <motion.h1
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.5 }}
-            className="text-5xl md:text-7xl lg:text-8xl xl:text-9xl font-bold text-white mb-6 leading-[0.9] max-w-5xl"
-            style={{
-              textShadow: '0 4px 30px rgba(0,0,0,0.8), 0 8px 60px rgba(0,0,0,0.5)'
+            animate={{
+              scale: [1.2, 1, 1.2],
+              rotate: [90, 0, 90],
+              borderRadius: ['50%', '30%', '50%']
             }}
-          >
-            Экскурсии<br />
-            <span className="text-airbnb-rausch">мечты</span>
-          </motion.h1>
-
-          {/* Описание */}
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.7 }}
-            className="text-lg md:text-2xl text-white/90 mb-10 max-w-2xl font-light"
-            style={{
-              textShadow: '0 2px 20px rgba(0,0,0,0.8)'
+            transition={{
+              duration: 15,
+              repeat: Infinity,
+              ease: 'linear'
             }}
-          >
-            Откройте для себя уникальные места Азии с местными гидами
-          </motion.p>
-
-          {/* Кнопки действий - плавающие */}
+            className="absolute -bottom-40 -right-40 w-96 h-96 bg-gradient-to-br from-blue-500/30 to-cyan-500/30 blur-3xl"
+          />
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.9 }}
-            className="flex flex-wrap gap-4 mb-12"
-          >
-            <Link to="/tours">
-              <Button 
-                size="lg"
-                className="bg-white text-black hover:bg-white/90 font-semibold text-lg px-10 py-7 rounded-full shadow-2xl hover:scale-105 transition-all"
-              >
-                Смотреть экскурсии
-              </Button>
-            </Link>
-            
-            <Button 
-              size="lg"
-              variant="outline"
-              className="bg-transparent border-2 border-white text-white hover:bg-white/10 font-semibold text-lg px-10 py-7 rounded-full backdrop-blur-sm"
+            animate={{
+              scale: [1, 1.3, 1],
+              x: [0, 100, 0],
+              y: [0, -100, 0]
+            }}
+            transition={{
+              duration: 25,
+              repeat: Infinity,
+              ease: 'easeInOut'
+            }}
+            className="absolute top-1/2 left-1/2 w-96 h-96 bg-gradient-to-br from-pink-500/20 to-orange-500/20 blur-3xl"
+          />
+        </div>
+
+        {/* 3D объекты разбросаны по экрану */}
+        <div className="absolute inset-0 hidden lg:block pointer-events-none">
+          {[
+            { emoji: '🗿', x: '5%', y: '15%' },
+            { emoji: '🍜', x: '15%', y: '70%' },
+            { emoji: '🗺️', x: '85%', y: '20%' },
+            { emoji: '🏯', x: '90%', y: '65%' },
+            { emoji: '🎭', x: '10%', y: '45%' },
+            { emoji: '🏔️', x: '80%', y: '85%' },
+          ].map((obj, i) => (
+            <motion.div
+              key={i}
+              initial={{ opacity: 0, scale: 0 }}
+              animate={{ 
+                opacity: 0.7, 
+                scale: 1, 
+                y: [0, -30, 0],
+              }}
+              transition={{ 
+                opacity: { duration: 1, delay: i * 0.15 },
+                scale: { duration: 1, delay: i * 0.15 },
+                y: { duration: 5 + i, repeat: Infinity, ease: 'easeInOut' }
+              }}
+              whileHover={{
+                scale: 1.5,
+                rotate: 25,
+                opacity: 1,
+                transition: { duration: 0.3 }
+              }}
+              className="absolute text-7xl md:text-9xl cursor-pointer pointer-events-auto"
+              style={{
+                left: obj.x,
+                top: obj.y,
+                filter: 'drop-shadow(0 10px 40px rgba(0,0,0,0.6))'
+              }}
             >
-              <Play className="mr-2" size={20} />
-              Как это работает
-            </Button>
-          </motion.div>
-
-          {/* Живая статистика - плавающая */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 1.1 }}
-            className="flex flex-wrap gap-8 text-white"
-          >
-            <div>
-              <div className="text-3xl md:text-4xl font-bold mb-1" style={{ textShadow: '0 2px 20px rgba(0,0,0,0.8)' }}>
-                500+
-              </div>
-              <div className="text-white/80 text-sm" style={{ textShadow: '0 2px 20px rgba(0,0,0,0.8)' }}>
-                Экскурсий
-              </div>
+              {obj.emoji}
+            </motion.div>
+          ))}
+        </div>
+        
+        <div className="container mx-auto px-4 relative z-10">
+          <div className="max-w-4xl mx-auto text-center">
+            {/* TypewriterHero - анимированный текст */}
+            <TypewriterHero />
+            
+            {/* SearchBar - статичный в hero секции */}
+            <div className="mb-8 mt-10">
+              <SearchBar variant="hero" />
             </div>
-            <div>
-              <div className="text-3xl md:text-4xl font-bold mb-1" style={{ textShadow: '0 2px 20px rgba(0,0,0,0.8)' }}>
-                10K+
-              </div>
-              <div className="text-white/80 text-sm" style={{ textShadow: '0 2px 20px rgba(0,0,0,0.8)' }}>
-                Путешественников
-              </div>
-            </div>
-            <div>
-              <div className="text-3xl md:text-4xl font-bold mb-1" style={{ textShadow: '0 2px 20px rgba(0,0,0,0.8)' }}>
-                4.9 ⭐
-              </div>
-              <div className="text-white/80 text-sm" style={{ textShadow: '0 2px 20px rgba(0,0,0,0.8)' }}>
-                Средний рейтинг
-              </div>
-            </div>
-          </motion.div>
+          </div>
         </div>
 
         {/* Scroll indicator */}
@@ -259,12 +236,12 @@ export default function HomePage() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1, y: [0, 10, 0] }}
           transition={{ 
-            opacity: { delay: 1.5 },
+            opacity: { delay: 2 },
             y: { duration: 1.5, repeat: Infinity }
           }}
           className="absolute bottom-10 left-1/2 -translate-x-1/2 text-white/60 text-sm flex flex-col items-center gap-2"
         >
-          <div style={{ textShadow: '0 2px 10px rgba(0,0,0,0.8)' }}>Прокрутите вниз</div>
+          <div>Прокрутите вниз</div>
           <div className="w-6 h-10 border-2 border-white/40 rounded-full p-1">
             <motion.div
               animate={{ y: [0, 12, 0] }}
