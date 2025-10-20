@@ -132,7 +132,7 @@ export default function HomePage() {
       <PublicHeader />
 
       {/* HERO SECTION - FLOATING OVERLAY DESIGN */}
-      <section className="relative h-screen overflow-hidden">
+      <section className="relative h-screen overflow-hidden -mt-24">
         {/* Фоновое видео/изображение с параллакс эффектом */}
         <motion.div 
           className="absolute inset-0"

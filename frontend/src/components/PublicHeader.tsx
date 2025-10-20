@@ -13,85 +13,115 @@ export function PublicHeader() {
 
   return (
     <>
-      <header className="bg-white border-b sticky top-0 z-50 shadow-sm">
-        <div className="container mx-auto px-4 py-4 flex items-center justify-between">
-        {/* Hamburger кнопка для мобильных */}
-        <button
-          onClick={() => setMobileMenuOpen(true)}
-          className="md:hidden p-2 hover:bg-gray-100 rounded-lg transition-colors"
-        >
-          <Menu size={24} />
-        </button>
+      {/* Floating Glassmorphism Header */}
+      <header className="fixed top-4 left-4 right-4 z-50 transition-all duration-300">
+        <div className="container mx-auto px-0 flex items-center justify-between gap-4">
+          {/* Logo в капсуле слева с белым фоном */}
+          <div className="flex items-center gap-4">
+            {/* Hamburger для мобильных */}
+            <button
+              onClick={() => setMobileMenuOpen(true)}
+              className="md:hidden p-3 bg-white rounded-full shadow-lg hover:shadow-xl transition-all backdrop-blur-xl border border-gray-200/50"
+            >
+              <Menu size={20} />
+            </button>
 
-        <Logo size="md" linkTo="/" />
-        <nav className="hidden md:flex items-center gap-6">
-          <Link 
-            to="/" 
-            className={`hover:text-airbnb-rausch transition-colors ${
-              location.pathname === '/' ? 'text-airbnb-rausch font-semibold' : ''
-            }`}
-          >
-            Главная
-          </Link>
-          <Link 
-            to="/tours" 
-            className={`hover:text-airbnb-rausch transition-colors ${
-              location.pathname === '/tours' ? 'text-airbnb-rausch font-semibold' : ''
-            }`}
-          >
-            Экскурсии
-          </Link>
-          <Link 
-            to="/journal" 
-            className={`hover:text-airbnb-rausch transition-colors ${
-              location.pathname.startsWith('/journal') ? 'text-airbnb-rausch font-semibold' : ''
-            }`}
-          >
-            Журнал
-          </Link>
-          <Link 
-            to="/about" 
-            className={`hover:text-airbnb-rausch transition-colors ${
-              location.pathname === '/about' ? 'text-airbnb-rausch font-semibold' : ''
-            }`}
-          >
-            О нас
-          </Link>
-          <Link 
-            to="/become-guide" 
-            className={`hover:text-airbnb-rausch transition-colors ${
-              location.pathname === '/become-guide' ? 'text-airbnb-rausch font-semibold' : ''
-            }`}
-          >
-            Стать гидом
-          </Link>
-        </nav>
-        <div className="flex items-center gap-3">
-          {isAuthenticated && user ? (
-            <>
-              <Link to="/dashboard">
-                <Button variant="ghost" className="gap-2">
-                  <UserCircle size={20} />
-                  {user.name || user.phone}
-                </Button>
-              </Link>
-              <Link to="/dashboard">
-                <Button variant="tropical">Личный кабинет</Button>
-              </Link>
-            </>
-          ) : (
-            <>
-              <Link to="/login">
-                <Button variant="ghost">Войти</Button>
-              </Link>
-              <Link to="/register">
-                <Button variant="tropical">Регистрация</Button>
-              </Link>
-            </>
-          )}
-        </div>
+            {/* Лого в белой капсуле */}
+            <div className="bg-white rounded-full px-6 py-3 shadow-lg border border-gray-200/50 hover:shadow-xl transition-all">
+              <Logo size="sm" linkTo="/" />
+            </div>
+          </div>
+
+          {/* Навигация - эффект жидкого стекла (glassmorphism) */}
+          <nav className="hidden md:flex items-center gap-2 bg-white/80 backdrop-blur-xl rounded-full px-6 py-3 shadow-lg border border-white/50">
+            <Link 
+              to="/" 
+              className={`px-4 py-2 rounded-full transition-all hover:bg-gray-100/80 ${
+                location.pathname === '/' 
+                  ? 'bg-airbnb-rausch text-white font-semibold' 
+                  : 'text-gray-700'
+              }`}
+            >
+              Главная
+            </Link>
+            <Link 
+              to="/tours" 
+              className={`px-4 py-2 rounded-full transition-all hover:bg-gray-100/80 ${
+                location.pathname === '/tours' 
+                  ? 'bg-airbnb-rausch text-white font-semibold' 
+                  : 'text-gray-700'
+              }`}
+            >
+              Экскурсии
+            </Link>
+            <Link 
+              to="/journal" 
+              className={`px-4 py-2 rounded-full transition-all hover:bg-gray-100/80 ${
+                location.pathname.startsWith('/journal') 
+                  ? 'bg-airbnb-rausch text-white font-semibold' 
+                  : 'text-gray-700'
+              }`}
+            >
+              Журнал
+            </Link>
+            <Link 
+              to="/about" 
+              className={`px-4 py-2 rounded-full transition-all hover:bg-gray-100/80 ${
+                location.pathname === '/about' 
+                  ? 'bg-airbnb-rausch text-white font-semibold' 
+                  : 'text-gray-700'
+              }`}
+            >
+              О нас
+            </Link>
+            <Link 
+              to="/become-guide" 
+              className={`px-4 py-2 rounded-full transition-all hover:bg-gray-100/80 ${
+                location.pathname === '/become-guide' 
+                  ? 'bg-airbnb-rausch text-white font-semibold' 
+                  : 'text-gray-700'
+              }`}
+            >
+              Стать гидом
+            </Link>
+          </nav>
+
+          {/* Кнопки авторизации - эффект жидкого стекла */}
+          <div className="flex items-center gap-3 bg-white/80 backdrop-blur-xl rounded-full px-4 py-3 shadow-lg border border-white/50">
+            {isAuthenticated && user ? (
+              <>
+                <Link to="/dashboard" className="hidden md:block">
+                  <button className="flex items-center gap-2 px-4 py-2 rounded-full hover:bg-gray-100/80 transition-all text-gray-700">
+                    <UserCircle size={20} />
+                    <span className="text-sm font-medium">{user.name || user.phone}</span>
+                  </button>
+                </Link>
+                <Link to="/dashboard">
+                  <button className="bg-gradient-to-r from-airbnb-rausch to-pink-600 text-white px-6 py-2 rounded-full font-semibold hover:shadow-lg hover:scale-105 transition-all">
+                    Кабинет
+                  </button>
+                </Link>
+              </>
+            ) : (
+              <>
+                <Link to="/login" className="hidden md:block">
+                  <button className="px-4 py-2 rounded-full hover:bg-gray-100/80 transition-all text-gray-700 font-medium">
+                    Войти
+                  </button>
+                </Link>
+                <Link to="/register">
+                  <button className="bg-gradient-to-r from-airbnb-rausch to-pink-600 text-white px-6 py-2 rounded-full font-semibold hover:shadow-lg hover:scale-105 transition-all">
+                    Регистрация
+                  </button>
+                </Link>
+              </>
+            )}
+          </div>
         </div>
       </header>
+
+      {/* Отступ для контента под fixed header */}
+      <div className="h-24" />
 
       {/* Мобильное меню */}
       <MobileMenu isOpen={mobileMenuOpen} onClose={() => setMobileMenuOpen(false)} />
