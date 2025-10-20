@@ -1,7 +1,7 @@
 """Add categories and collections tables
 
 Revision ID: 012_add_categories
-Revises: 2025_10_15_1100_011_add_client_telegram
+Revises: 011
 Create Date: 2025-10-20 12:00:00.000000
 
 """
@@ -11,7 +11,7 @@ from sqlalchemy.dialects import postgresql
 
 # revision identifiers, used by Alembic.
 revision = '012_add_categories'
-down_revision = '2025_10_15_1100_011_add_client_telegram'
+down_revision = '011'
 branch_labels = None
 depends_on = None
 
