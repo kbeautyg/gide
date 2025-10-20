@@ -850,7 +850,9 @@ async def get_smart_recommendations(
     - Если указана location: популярные туры в локации
     - Иначе: глобально популярные туры
     """
-    tours = await RecommendationService.get_smart_recommendations(
+    from app.models.review import Review
+    
+    tours_db = await RecommendationService.get_smart_recommendations(
         db,
         tour_id=tour_id,
         user_id=user_id,
@@ -858,7 +860,34 @@ async def get_smart_recommendations(
         limit=limit
     )
     
-    return {"tours": tours, "total": len(tours), "algorithm": "smart_recommendations"}
+    # Преобразуем в сериализуемый формат
+    tours_list = []
+    for tour_db in tours_db:
+        # Считаем реальное количество отзывов
+        reviews_count_result = await db.execute(
+            select(func.count(Review.id)).where(Review.tour_id == tour_db.id)
+        )
+        real_reviews_count = reviews_count_result.scalar() or 0
+        
+        tours_list.append({
+            "id": tour_db.id,
+            "title": tour_db.title,
+            "description": tour_db.description,
+            "price": tour_db.price,
+            "duration": tour_db.duration,
+            "location": tour_db.location,
+            "category": tour_db.category,
+            "photos": tour_db.photos or [],
+            "rating": tour_db.rating,
+            "reviews_count": real_reviews_count,
+            "guide_id": tour_db.guide_id,
+            "active": tour_db.active,
+            "is_public": tour_db.is_public,
+            "share_code": tour_db.share_code,
+            "created_at": tour_db.created_at.isoformat() if tour_db.created_at else None,
+        })
+    
+    return {"tours": tours_list, "total": len(tours_list), "algorithm": "smart_recommendations"}
 
 
 @router.get("/collaborative-recommendations/{tour_id}")
@@ -871,15 +900,43 @@ async def get_collaborative_recommendations(
     Рекомендации на основе совместной фильтрации
     "Пользователи, которые заказывали этот тур, также заказывали..."
     """
-    tours = await RecommendationService.get_collaborative_recommendations(
+    from app.models.review import Review
+    
+    tours_db = await RecommendationService.get_collaborative_recommendations(
         db,
         tour_id=tour_id,
         limit=limit
     )
     
+    # Преобразуем в сериализуемый формат
+    tours_list = []
+    for tour_db in tours_db:
+        reviews_count_result = await db.execute(
+            select(func.count(Review.id)).where(Review.tour_id == tour_db.id)
+        )
+        real_reviews_count = reviews_count_result.scalar() or 0
+        
+        tours_list.append({
+            "id": tour_db.id,
+            "title": tour_db.title,
+            "description": tour_db.description,
+            "price": tour_db.price,
+            "duration": tour_db.duration,
+            "location": tour_db.location,
+            "category": tour_db.category,
+            "photos": tour_db.photos or [],
+            "rating": tour_db.rating,
+            "reviews_count": real_reviews_count,
+            "guide_id": tour_db.guide_id,
+            "active": tour_db.active,
+            "is_public": tour_db.is_public,
+            "share_code": tour_db.share_code,
+            "created_at": tour_db.created_at.isoformat() if tour_db.created_at else None,
+        })
+    
     return {
-        "tours": tours,
-        "total": len(tours),
+        "tours": tours_list,
+        "total": len(tours_list),
         "algorithm": "collaborative_filtering",
         "message": "Пользователи, которые заказывали этот тур, также заказывали..."
     }
