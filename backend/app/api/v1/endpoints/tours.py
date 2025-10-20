@@ -10,6 +10,7 @@ from sqlalchemy import select, func
 
 from app.db.session import get_db
 from app.services.tour_service import TourService
+from app.services.recommendation_service import RecommendationService
 from app.models.booking import Booking
 from app.core.deps import get_current_user, get_current_user_optional
 from app.models.user import User, UserRole
@@ -830,4 +831,70 @@ async def get_categories(db: AsyncSession = Depends(get_db)):
         },
         "themes": themes_count,
         "formats": formats_count
+    }
+
+
+@router.get("/smart-recommendations")
+async def get_smart_recommendations(
+    tour_id: Optional[int] = Query(None, description="ID тура для похожих рекомендаций"),
+    user_id: Optional[int] = Query(None, description="ID пользователя для персонализации"),
+    location: Optional[str] = Query(None, description="Локация для популярных туров"),
+    limit: int = Query(6, description="Количество рекомендаций"),
+    db: AsyncSession = Depends(get_db)
+):
+    """
+    Умные рекомендации на основе ML-алгоритмов
+    
+    - Если указан tour_id: похожие туры на основе контентной схожести
+    - Если указан user_id: персонализированные рекомендации
+    - Если указана location: популярные туры в локации
+    - Иначе: глобально популярные туры
+    """
+    tours = await RecommendationService.get_smart_recommendations(
+        db,
+        tour_id=tour_id,
+        user_id=user_id,
+        location=location,
+        limit=limit
+    )
+    
+    return {"tours": tours, "total": len(tours), "algorithm": "smart_recommendations"}
+
+
+@router.get("/collaborative-recommendations/{tour_id}")
+async def get_collaborative_recommendations(
+    tour_id: int,
+    limit: int = Query(6, description="Количество рекомендаций"),
+    db: AsyncSession = Depends(get_db)
+):
+    """
+    Рекомендации на основе совместной фильтрации
+    "Пользователи, которые заказывали этот тур, также заказывали..."
+    """
+    tours = await RecommendationService.get_collaborative_recommendations(
+        db,
+        tour_id=tour_id,
+        limit=limit
+    )
+    
+    return {
+        "tours": tours,
+        "total": len(tours),
+        "algorithm": "collaborative_filtering",
+        "message": "Пользователи, которые заказывали этот тур, также заказывали..."
+    }
+
+
+@router.get("/dynamic-navigation")
+async def get_dynamic_navigation(db: AsyncSession = Depends(get_db)):
+    """
+    Динамическая навигация на основе реальных данных туров
+    Автоматически создает категории из landmarks, tags, themes
+    """
+    navigation_data = await RecommendationService.get_dynamic_categories_from_tours(db)
+    
+    return {
+        "success": True,
+        "data": navigation_data,
+        "message": "Динамическая навигация сгенерирована на основе реальных данных"
     }

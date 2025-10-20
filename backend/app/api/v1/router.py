@@ -5,7 +5,7 @@ from fastapi import APIRouter
 
 from app.api.v1.endpoints import (
     auth, users, tours, bookings, admin, requests, user_profile,
-    destinations, reviews, articles, custom_tours
+    destinations, reviews, articles, custom_tours, categories
 )
 
 api_router = APIRouter()
@@ -22,3 +22,4 @@ api_router.include_router(custom_tours.router, prefix="/custom-tours", tags=["К
 api_router.include_router(destinations.router, prefix="/destinations", tags=["Направления"])
 api_router.include_router(reviews.router, prefix="/reviews", tags=["Отзывы"])
 api_router.include_router(articles.router, prefix="/articles", tags=["Статьи"])
+api_router.include_router(categories.router, tags=["Категории и Коллекции"])

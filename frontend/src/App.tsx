@@ -33,6 +33,7 @@ import NotFoundPage from './pages/NotFoundPage'
 import DashboardLayout from './pages/dashboard/DashboardLayout'
 import ManagerDashboard from './pages/dashboard/ManagerDashboard'
 import AdminDashboard from './pages/dashboard/AdminDashboard'
+import CategoriesManagement from './pages/admin/CategoriesManagement'
 import MyToursPage from './pages/dashboard/MyToursPage'
 import EditTourPage from './pages/dashboard/EditTourPage'
 import CalendarPage from './pages/dashboard/CalendarPage'
@@ -90,6 +91,7 @@ function App() {
       >
         <Route index element={<ManagerDashboard />} />
         <Route path="admin" element={<AdminDashboard />} />
+        <Route path="admin/categories" element={<CategoriesManagement />} />
         <Route path="my-tours" element={<MyToursPage />} />
         <Route path="tours/edit/:id" element={<EditTourPage />} />
         <Route path="requests" element={<RequestsPage />} />

@@ -1,8 +1,9 @@
 import { useState } from 'react'
+import { Link } from 'react-router-dom'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
-import { MapPin, Users, DollarSign, Calendar, Edit, Trash2, CheckCircle, XCircle, Sparkles } from 'lucide-react'
+import { MapPin, Users, DollarSign, Calendar, Edit, Trash2, CheckCircle, XCircle, Sparkles, Grid } from 'lucide-react'
 import { api } from '@/lib/api'
 
 interface AdminStats {
@@ -73,14 +74,25 @@ export default function AdminDashboard() {
           <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">Админ-панель</h1>
           <p className="text-sm sm:text-base text-gray-600">Управление контентом и статистикой платформы</p>
         </div>
-        <Button
-          onClick={handleBulkEnhance}
-          disabled={enhancing}
-          className="bg-airbnb-rausch hover:bg-airbnb-rausch/90 w-full sm:w-auto"
-        >
-          <Sparkles size={16} className="mr-2" />
-          {enhancing ? 'Обработка...' : 'Дозаполнить все туры'}
-        </Button>
+        <div className="flex gap-2">
+          <Link to="/dashboard/admin/categories">
+            <Button
+              variant="outline"
+              className="w-full sm:w-auto"
+            >
+              <Grid size={16} className="mr-2" />
+              Категории
+            </Button>
+          </Link>
+          <Button
+            onClick={handleBulkEnhance}
+            disabled={enhancing}
+            className="bg-airbnb-rausch hover:bg-airbnb-rausch/90 w-full sm:w-auto"
+          >
+            <Sparkles size={16} className="mr-2" />
+            {enhancing ? 'Обработка...' : 'Дозаполнить все туры'}
+          </Button>
+        </div>
       </div>
 
       {/* Статистика */}
