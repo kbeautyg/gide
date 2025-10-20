@@ -1,6 +1,5 @@
 import { useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
-import { Button } from '@/components/ui/button'
 import { UserCircle, Menu } from 'lucide-react'
 import { useAuthStore } from '@/lib/store'
 import { MobileMenu } from '@/components/MobileMenu'
