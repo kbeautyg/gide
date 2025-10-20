@@ -100,11 +100,6 @@ VALUES
      TRUE, '{"category": "Гастрономия", "min_rating": 4.6}'::jsonb, 10, TRUE, 3, TRUE, '[]'::jsonb)
 ON CONFLICT (slug) DO NOTHING;
 
--- 7. Обновляем запись в alembic_version для миграции 012
-INSERT INTO alembic_version (version_num) 
-VALUES ('012_add_categories')
-ON CONFLICT (version_num) DO NOTHING;
-
 -- ============================================================
 -- ГОТОВО! Таблицы созданы и заполнены базовыми данными
 -- ============================================================
