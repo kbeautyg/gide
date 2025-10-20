@@ -118,7 +118,7 @@ export function SmartRecommendations({
             }
           }}
         >
-          {displayTours.map((tour: any, index: number) => (
+          {displayTours.map((tour: any) => (
             <motion.div
               key={tour.id}
               variants={{

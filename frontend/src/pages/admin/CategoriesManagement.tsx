@@ -1,10 +1,9 @@
 import { useState } from 'react'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { motion } from 'framer-motion'
-import { Plus, Edit, Trash2, Save, X, Eye, EyeOff } from 'lucide-react'
+import { Plus, Edit, Trash2, Save, X, EyeOff } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { api } from '@/lib/api'
-import { toast } from 'react-hot-toast'
 
 interface Category {
   id: number
@@ -40,11 +39,11 @@ export default function CategoriesManagement() {
     mutationFn: (data: any) => api.post('/admin/categories', data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['admin-categories'] })
-      toast.success('Категория создана!')
+      alert('✅ Категория создана!')
       setIsCreating(false)
     },
     onError: () => {
-      toast.error('Ошибка создания категории')
+      alert('❌ Ошибка создания категории')
     }
   })
 
@@ -54,11 +53,11 @@ export default function CategoriesManagement() {
       api.put(`/admin/categories/${id}`, data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['admin-categories'] })
-      toast.success('Категория обновлена!')
+      alert('✅ Категория обновлена!')
       setEditingCategory(null)
     },
     onError: () => {
-      toast.error('Ошибка обновления категории')
+      alert('❌ Ошибка обновления категории')
     }
   })
 
@@ -67,10 +66,10 @@ export default function CategoriesManagement() {
     mutationFn: (id: number) => api.delete(`/admin/categories/${id}`),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['admin-categories'] })
-      toast.success('Категория удалена!')
+      alert('✅ Категория удалена!')
     },
     onError: () => {
-      toast.error('Ошибка удаления категории')
+      alert('❌ Ошибка удаления категории')
     }
   })
 

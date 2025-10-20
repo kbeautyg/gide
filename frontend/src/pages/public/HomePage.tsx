@@ -32,19 +32,6 @@ const itemVariants = {
 export default function HomePage() {
   const [seasonalIndex, setSeasonalIndex] = useState(0)
   const [reviewIndex, setReviewIndex] = useState(0)
-  
-  // Загрузка популярных экскурсий
-  const { data: toursData } = useQuery({
-    queryKey: ['tours', 'popular'],
-    queryFn: async () => {
-      const response = await toursApi.getList({ page: 1, page_size: 6 })
-      console.log('Popular tours API response:', response.data)
-      return response.data
-    },
-  })
-
-  const popularTours = toursData?.tours || []
-  console.log('Popular tours array:', popularTours, 'Length:', popularTours.length)
 
   // Сезонные идеи для осени (ТОЛЬКО АЗИЯ!)
   const seasonalIdeas = [
