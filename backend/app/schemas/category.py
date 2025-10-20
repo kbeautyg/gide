@@ -15,7 +15,7 @@ class CategoryBase(BaseModel):
     icon: Optional[str] = None
     image_url: Optional[str] = None
     filters: Dict[str, Any] = Field(default_factory=dict)
-    metadata: Dict[str, Any] = Field(default_factory=dict)
+    extra_data: Dict[str, Any] = Field(default_factory=dict)
     seo_title: Optional[str] = None
     seo_description: Optional[str] = None
     display_order: int = 0
@@ -37,7 +37,7 @@ class CategoryUpdate(BaseModel):
     icon: Optional[str] = None
     image_url: Optional[str] = None
     filters: Optional[Dict[str, Any]] = None
-    metadata: Optional[Dict[str, Any]] = None
+    extra_data: Optional[Dict[str, Any]] = None
     seo_title: Optional[str] = None
     seo_description: Optional[str] = None
     display_order: Optional[int] = None

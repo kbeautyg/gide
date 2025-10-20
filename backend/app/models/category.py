@@ -26,7 +26,7 @@ class Category(Base):
     
     # Фильтр и метаданные
     filters = Column(JSON, default=dict)  # {"location": "Бангкок", "min_rating": 4.5}
-    metadata = Column(JSON, default=dict)  # Дополнительная информация
+    extra_data = Column(JSON, default=dict)  # Дополнительная информация
     
     # SEO
     seo_title = Column(String, nullable=True)

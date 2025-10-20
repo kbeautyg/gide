@@ -28,7 +28,7 @@ def upgrade() -> None:
         sa.Column('icon', sa.String(), nullable=True),
         sa.Column('image_url', sa.String(), nullable=True),
         sa.Column('filters', sa.JSON(), nullable=True),
-        sa.Column('metadata', sa.JSON(), nullable=True),
+        sa.Column('extra_data', sa.JSON(), nullable=True),
         sa.Column('seo_title', sa.String(), nullable=True),
         sa.Column('seo_description', sa.Text(), nullable=True),
         sa.Column('display_order', sa.Integer(), nullable=True, default=0),
