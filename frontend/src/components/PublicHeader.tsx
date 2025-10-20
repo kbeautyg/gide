@@ -35,50 +35,50 @@ export function PublicHeader() {
           <nav className="hidden md:flex items-center gap-2 bg-white/80 backdrop-blur-xl rounded-full px-6 py-3 shadow-lg border border-white/50">
             <Link 
               to="/" 
-              className={`px-4 py-2 rounded-full transition-all hover:bg-gray-100/80 ${
+              className={`px-4 py-2 rounded-full transition-all ${
                 location.pathname === '/' 
-                  ? 'bg-airbnb-rausch text-white font-semibold' 
-                  : 'text-gray-700'
+                  ? 'bg-airbnb-rausch text-white font-semibold hover:bg-airbnb-rausch' 
+                  : 'text-gray-700 hover:bg-gray-100/80 hover:text-gray-900'
               }`}
             >
               Главная
             </Link>
             <Link 
               to="/tours" 
-              className={`px-4 py-2 rounded-full transition-all hover:bg-gray-100/80 ${
+              className={`px-4 py-2 rounded-full transition-all ${
                 location.pathname === '/tours' 
-                  ? 'bg-airbnb-rausch text-white font-semibold' 
-                  : 'text-gray-700'
+                  ? 'bg-airbnb-rausch text-white font-semibold hover:bg-airbnb-rausch' 
+                  : 'text-gray-700 hover:bg-gray-100/80 hover:text-gray-900'
               }`}
             >
               Экскурсии
             </Link>
             <Link 
               to="/journal" 
-              className={`px-4 py-2 rounded-full transition-all hover:bg-gray-100/80 ${
+              className={`px-4 py-2 rounded-full transition-all ${
                 location.pathname.startsWith('/journal') 
-                  ? 'bg-airbnb-rausch text-white font-semibold' 
-                  : 'text-gray-700'
+                  ? 'bg-airbnb-rausch text-white font-semibold hover:bg-airbnb-rausch' 
+                  : 'text-gray-700 hover:bg-gray-100/80 hover:text-gray-900'
               }`}
             >
               Журнал
             </Link>
             <Link 
               to="/about" 
-              className={`px-4 py-2 rounded-full transition-all hover:bg-gray-100/80 ${
+              className={`px-4 py-2 rounded-full transition-all ${
                 location.pathname === '/about' 
-                  ? 'bg-airbnb-rausch text-white font-semibold' 
-                  : 'text-gray-700'
+                  ? 'bg-airbnb-rausch text-white font-semibold hover:bg-airbnb-rausch' 
+                  : 'text-gray-700 hover:bg-gray-100/80 hover:text-gray-900'
               }`}
             >
               О нас
             </Link>
             <Link 
               to="/become-guide" 
-              className={`px-4 py-2 rounded-full transition-all hover:bg-gray-100/80 ${
+              className={`px-4 py-2 rounded-full transition-all ${
                 location.pathname === '/become-guide' 
-                  ? 'bg-airbnb-rausch text-white font-semibold' 
-                  : 'text-gray-700'
+                  ? 'bg-airbnb-rausch text-white font-semibold hover:bg-airbnb-rausch' 
+                  : 'text-gray-700 hover:bg-gray-100/80 hover:text-gray-900'
               }`}
             >
               Стать гидом
