@@ -14,7 +14,9 @@ if [ "$FORCE_RESET" = "true" ]; then
 fi
 
 echo "🔄 Применяем миграции Alembic..."
-python -m alembic upgrade head || echo "⚠️ Миграции не применены (возможно уже применены)"
+# Пропускаем автомиграции - таблицы уже созданы в Supabase вручную
+# python -m alembic upgrade head || echo "⚠️ Миграции не применены (возможно уже применены)"
+echo "⏭️ Пропускаем Alembic миграции - используем ручное управление через Supabase SQL"
 
 echo "🔧 Проверяю и применяю миграцию 009 вручную..."
 python apply_migration_009.py || echo "⚠️ Миграция 009 уже применена или ошибка"
