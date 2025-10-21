@@ -7,11 +7,11 @@ import { useQuery } from '@tanstack/react-query'
 import { api } from '@/lib/api'
 import { PublicHeader } from '@/components/PublicHeader'
 import { PublicFooter } from '@/components/PublicFooter'
-import { TourCard } from '@/components/TourCard'
-import { TourCardSkeleton } from '@/components/TourCardSkeleton'
 import { LiveStats } from '@/components/LiveStats'
 import { WorldMap } from '@/components/WorldMap'
 import { AnimatedFeatures } from '@/components/AnimatedFeatures'
+import { DynamicNavigation } from '@/components/DynamicNavigation'
+import { SmartRecommendations } from '@/components/SmartRecommendations'
 
 // Анимационные варианты
 const containerVariants = {
@@ -56,17 +56,6 @@ export default function HomePage() {
       link: '/tours?location=Дубай'
     },
   ]
-
-  // Загрузка популярных экскурсий
-  const { data: toursData } = useQuery({
-    queryKey: ['tours', 'popular'],
-    queryFn: async () => {
-      const response = await api.get('/tours/?page=1&page_size=6')
-      return response.data
-    },
-  })
-
-  const popularTours = toursData?.tours || []
 
   // Загружаем направления с реальным подсчетом туров из API
   const { data: destinationsData } = useQuery({
@@ -323,6 +312,26 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* Динамическая навигация по направлениям */}
+      <section className="py-20 bg-gray-50">
+        <div className="container mx-auto px-4">
+          <div className="flex items-center justify-between mb-8">
+            <h2 className="text-3xl font-bold text-gray-900">Изучайте по категориям</h2>
+            <Link to="/tours">
+              <Button variant="outline" className="rounded-full">
+                Все экскурсии <ArrowRight className="ml-2" size={16} />
+              </Button>
+            </Link>
+          </div>
+          
+          <DynamicNavigation 
+            section="landmarks"
+            limit={8}
+            showIcons={true}
+          />
+        </div>
+      </section>
+
       {/* Популярные направления (города) */}
       <section className="py-20 bg-white">
         <div className="container mx-auto px-4">
@@ -357,40 +366,14 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Популярные экскурсии */}
-      <section className="py-20 bg-white">
-        <div className="container mx-auto px-4">
-          <div className="flex items-center justify-between mb-8">
-            <h2 className="text-3xl font-bold text-gray-900">Популярные экскурсии</h2>
-            <Link to="/tours">
-              <Button variant="outline" className="rounded-full">
-                Все экскурсии <ArrowRight className="ml-2" size={16} />
-              </Button>
-            </Link>
-          </div>
-
-          <motion.div
-            className="grid md:grid-cols-2 lg:grid-cols-3 gap-6"
-            variants={containerVariants}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-          >
-            {popularTours.length > 0 ? (
-              popularTours.map((tour: any) => (
-                <motion.div key={tour.id} variants={itemVariants}>
-                  <TourCard tour={tour} />
-                </motion.div>
-              ))
-            ) : (
-              // Skeleton loaders
-              Array.from({ length: 6 }).map((_, idx) => (
-                <TourCardSkeleton key={idx} />
-              ))
-            )}
-          </motion.div>
-        </div>
-      </section>
+      {/* Умные рекомендации */}
+      <div className="bg-white">
+        <SmartRecommendations 
+          limit={6}
+          title="Популярные экскурсии"
+          showAlgorithm={false}
+        />
+      </div>
 
       {/* LiveStats - Живая статистика */}
       <LiveStats />
