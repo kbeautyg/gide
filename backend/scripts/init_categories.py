@@ -47,7 +47,7 @@ async def init_categories():
                 display_order=data["display_order"],
                 is_active=True,
                 filters={},
-                metadata={}
+                extra_data={}
             )
             db.add(category)
         

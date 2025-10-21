@@ -25,3 +25,4 @@ API endpoints should return 200 OK:
 - /api/v1/tours/dynamic-navigation
 - /api/v1/categories?with_counts=true
 
+
