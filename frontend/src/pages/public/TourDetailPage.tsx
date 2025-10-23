@@ -453,33 +453,66 @@ export default function TourDetailPage() {
             {/* Отзывы */}
             {reviews.length > 0 && (
               <div id="reviews">
-                <h2 className="text-2xl font-bold text-gray-900 mb-4">Отзывы</h2>
-                <div className="space-y-4">
-                  {reviews.slice(0, 3).map((review: any, index: number) => (
-                    <Card key={index} className="border-0 shadow-lg">
-                      <CardContent className="p-6">
-                        <div className="flex items-center gap-4 mb-3">
-                          <div className="w-12 h-12 bg-gradient-to-br from-purple-500 to-pink-500 rounded-full flex items-center justify-center text-white font-bold">
-                            {review.client_name?.charAt(0) || 'А'}
-                          </div>
-                          <div>
-                            <p className="font-semibold text-gray-900">{review.client_name || 'Аноним'}</p>
-                            <div className="flex items-center gap-1">
-                              {[...Array(5)].map((_, i) => (
-                                <Star
-                                  key={i}
-                                  size={14}
-                                  className={i < review.rating ? 'fill-yellow-400 text-yellow-400' : 'text-gray-300'}
-                                />
-                              ))}
+                <Card className="bg-white shadow-lg border-0">
+                  <CardContent className="p-6">
+                    <div className="flex items-center gap-3 mb-6">
+                      <div className="w-10 h-10 bg-yellow-500 rounded-lg flex items-center justify-center">
+                        <Star className="w-5 h-5 text-white" />
+                      </div>
+                      <h2 className="text-2xl font-bold text-gray-900">Отзывы ({reviews.length})</h2>
+                    </div>
+                    
+                    <div className="space-y-4">
+                      {reviews.slice(0, 3).map((review: any, index: number) => (
+                        <div key={index} className="p-5 bg-gradient-to-br from-gray-50 to-gray-100 rounded-xl border-2 border-gray-200">
+                          <div className="flex items-center gap-4 mb-4">
+                            <div className="w-14 h-14 bg-gradient-to-br from-purple-500 to-pink-500 rounded-full flex items-center justify-center text-white text-xl font-bold flex-shrink-0 shadow-lg">
+                              {review.client_name?.charAt(0)?.toUpperCase() || 'А'}
                             </div>
+                            <div className="flex-1">
+                              <p className="font-bold text-gray-900 text-lg">{review.client_name || 'Аноним'}</p>
+                              <div className="flex items-center gap-1 mt-1">
+                                {[...Array(5)].map((_, i) => (
+                                  <Star
+                                    key={i}
+                                    size={16}
+                                    className={i < (review.rating || 5) ? 'fill-yellow-400 text-yellow-400' : 'fill-gray-300 text-gray-300'}
+                                  />
+                                ))}
+                                <span className="text-sm text-gray-600 ml-2">
+                                  {review.rating || 5}.0
+                                </span>
+                              </div>
+                            </div>
+                            {review.created_at && (
+                              <span className="text-sm text-gray-500">
+                                {new Date(review.created_at).toLocaleDateString('ru')}
+                              </span>
+                            )}
                           </div>
+                          
+                          {review.comment ? (
+                            <p className="text-gray-700 leading-relaxed">
+                              {review.comment}
+                            </p>
+                          ) : (
+                            <p className="text-gray-400 italic">
+                              Гость не оставил комментарий
+                            </p>
+                          )}
                         </div>
-                        <p className="text-gray-700 leading-relaxed">{review.comment}</p>
-                      </CardContent>
-                    </Card>
-                  ))}
-                </div>
+                      ))}
+                    </div>
+                    
+                    {reviews.length > 3 && (
+                      <div className="mt-6 text-center">
+                        <Button variant="outline" className="border-2 border-gray-300">
+                          Показать все отзывы ({reviews.length})
+                        </Button>
+                      </div>
+                    )}
+                  </CardContent>
+                </Card>
               </div>
             )}
           </div>
