@@ -2,8 +2,8 @@ import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { 
-  MapPin, Star, Heart, Clock, ChevronLeft, ChevronRight, User,
-  DollarSign, Trophy, Sparkles
+  MapPin, Star, Heart, Clock, ChevronLeft, ChevronRight,
+  Trophy, Sparkles
 } from 'lucide-react'
 import { Card } from '@/components/ui/card'
 import { ViewersCount } from '@/components/ViewersCount'
