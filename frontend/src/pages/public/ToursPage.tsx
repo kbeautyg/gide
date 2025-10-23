@@ -530,7 +530,12 @@ export default function ToursPage() {
             <div>
               <h2 className="text-2xl font-bold text-gray-900 mb-1">Все туры</h2>
               <p className="text-gray-600">
-                Показано {sortedTours.length} из {toursData?.total || sortedTours.length} экскурси{sortedTours.length === 1 ? 'я' : sortedTours.length < 5 ? 'й' : 'й'}
+                {toursData?.total || sortedTours.length} {(() => {
+                  const count = toursData?.total || sortedTours.length;
+                  if (count === 1) return 'экскурсия';
+                  if (count < 5) return 'экскурсии';
+                  return 'экскурсий';
+                })()} • Показано {sortedTours.length}
               </p>
             </div>
             
