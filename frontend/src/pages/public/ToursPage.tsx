@@ -47,7 +47,8 @@ export default function ToursPage() {
   const [dateFilter, setDateFilter] = useState('any')
   const [durationFilter, setDurationFilter] = useState('any')
   const [priceFilter, setPriceFilter] = useState('any')
-  const currentPage = 1  // TODO: добавить пагинацию позже
+  const [currentPage, setCurrentPage] = useState(1)
+  const PAGE_SIZE = 50
   
   // Читаем параметры из URL при загрузке
   const locationParam = searchParams.get('location')
@@ -69,7 +70,7 @@ export default function ToursPage() {
       // Преобразуем фильтры в параметры API
       const params: any = {
         page: currentPage,
-        page_size: 100,  // Увеличено с 50 до 100
+        page_size: PAGE_SIZE,
       }
 
       // Добавляем landmarks параметр если есть
@@ -525,32 +526,116 @@ export default function ToursPage() {
       {/* Основной контент */}
       <section className="py-8 bg-gray-50">
         <div className="container mx-auto px-4">
+          {/* Активные фильтры */}
+          {landmarksParam && (
+            <div className="mb-4">
+              <div className="flex items-center gap-2 flex-wrap">
+                <span className="text-sm text-gray-600">Фильтр:</span>
+                <div className="flex items-center gap-2 bg-airbnb-rausch/10 border border-airbnb-rausch/30 rounded-full px-4 py-2">
+                  <span className="text-sm font-medium text-airbnb-rausch">{landmarksParam}</span>
+                  <button
+                    onClick={() => {
+                      const params = new URLSearchParams(searchParams)
+                      params.delete('landmarks')
+                      setSearchParams(params)
+                    }}
+                    className="text-airbnb-rausch hover:text-airbnb-rausch/70"
+                  >
+                    <X size={16} />
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
+
           {/* Заголовок и сортировка */}
           <div className="flex items-center justify-between mb-6">
             <div>
               <h2 className="text-2xl font-bold text-gray-900 mb-1">Все туры</h2>
               <p className="text-gray-600">
-                {toursData?.total || sortedTours.length} {(() => {
+                Показано {sortedTours.length} из {toursData?.total || sortedTours.length} {(() => {
                   const count = toursData?.total || sortedTours.length;
-                  if (count === 1) return 'экскурсия';
-                  if (count < 5) return 'экскурсии';
+                  if (count === 1) return 'экскурсии';
+                  if (count < 5) return 'экскурсий';
                   return 'экскурсий';
-                })()} • Показано {sortedTours.length}
+                })()}
               </p>
             </div>
             
-            <select
-              value={sortBy}
-              onChange={(e) => setSortBy(e.target.value)}
-              className="px-4 py-2 rounded-lg border border-gray-300 bg-white text-gray-900 cursor-pointer hover:border-gray-900 transition-colors"
-            >
-              <option value="popular">По популярности</option>
-              <option value="price_asc">Сначала дешёвые</option>
-              <option value="price_desc">Сначала дорогие</option>
-              <option value="rating">По рейтингу</option>
-              <option value="new">Сначала новые</option>
-            </select>
+            <div className="flex items-center gap-4">
+              <select
+                value={sortBy}
+                onChange={(e) => setSortBy(e.target.value)}
+                className="px-4 py-2 rounded-lg border border-gray-300 bg-white text-gray-900 cursor-pointer hover:border-gray-900 transition-colors"
+              >
+                <option value="popular">По популярности</option>
+                <option value="price_asc">Сначала дешёвые</option>
+                <option value="price_desc">Сначала дорогие</option>
+                <option value="rating">По рейтингу</option>
+                <option value="new">Сначала новые</option>
+              </select>
+            </div>
           </div>
+
+          {/* Пагинация сверху */}
+          {toursData && toursData.total > PAGE_SIZE && (
+            <div className="flex items-center justify-center gap-2 mb-6">
+              <button
+                onClick={() => setCurrentPage(p => Math.max(1, p - 1))}
+                disabled={currentPage === 1}
+                className="px-4 py-2 rounded-lg border border-gray-300 bg-white text-gray-900 disabled:opacity-50 disabled:cursor-not-allowed hover:border-gray-900 transition-colors"
+              >
+                Назад
+              </button>
+              
+              <div className="flex items-center gap-2">
+                {Array.from({ length: Math.ceil(toursData.total / PAGE_SIZE) }, (_, i) => i + 1)
+                  .filter(page => {
+                    const current = currentPage
+                    return page === 1 || page === Math.ceil(toursData.total / PAGE_SIZE) || Math.abs(page - current) <= 2
+                  })
+                  .map((page, index, array) => {
+                    if (index > 0 && page - array[index - 1] > 1) {
+                      return [
+                        <span key={`ellipsis-${page}`} className="px-2 text-gray-400">...</span>,
+                        <button
+                          key={page}
+                          onClick={() => setCurrentPage(page)}
+                          className={`px-4 py-2 rounded-lg border transition-colors ${
+                            currentPage === page
+                              ? 'bg-airbnb-rausch text-white border-airbnb-rausch'
+                              : 'bg-white text-gray-900 border-gray-300 hover:border-gray-900'
+                          }`}
+                        >
+                          {page}
+                        </button>
+                      ]
+                    }
+                    return (
+                      <button
+                        key={page}
+                        onClick={() => setCurrentPage(page)}
+                        className={`px-4 py-2 rounded-lg border transition-colors ${
+                          currentPage === page
+                            ? 'bg-airbnb-rausch text-white border-airbnb-rausch'
+                            : 'bg-white text-gray-900 border-gray-300 hover:border-gray-900'
+                        }`}
+                      >
+                        {page}
+                      </button>
+                    )
+                  })}
+              </div>
+              
+              <button
+                onClick={() => setCurrentPage(p => Math.min(Math.ceil(toursData.total / PAGE_SIZE), p + 1))}
+                disabled={currentPage >= Math.ceil(toursData.total / PAGE_SIZE)}
+                className="px-4 py-2 rounded-lg border border-gray-300 bg-white text-gray-900 disabled:opacity-50 disabled:cursor-not-allowed hover:border-gray-900 transition-colors"
+              >
+                Вперёд
+              </button>
+            </div>
+          )}
 
           {/* Сетка туров */}
           {isLoading ? (
@@ -591,6 +676,78 @@ export default function ToursPage() {
                 </motion.div>
               ))}
             </motion.div>
+          )}
+
+          {/* Пагинация снизу */}
+          {toursData && toursData.total > PAGE_SIZE && (
+            <div className="flex items-center justify-center gap-2 mt-8">
+              <button
+                onClick={() => {
+                  setCurrentPage(p => Math.max(1, p - 1))
+                  window.scrollTo({ top: 0, behavior: 'smooth' })
+                }}
+                disabled={currentPage === 1}
+                className="px-4 py-2 rounded-lg border border-gray-300 bg-white text-gray-900 disabled:opacity-50 disabled:cursor-not-allowed hover:border-gray-900 transition-colors"
+              >
+                Назад
+              </button>
+              
+              <div className="flex items-center gap-2">
+                {Array.from({ length: Math.ceil(toursData.total / PAGE_SIZE) }, (_, i) => i + 1)
+                  .filter(page => {
+                    const current = currentPage
+                    return page === 1 || page === Math.ceil(toursData.total / PAGE_SIZE) || Math.abs(page - current) <= 2
+                  })
+                  .map((page, index, array) => {
+                    if (index > 0 && page - array[index - 1] > 1) {
+                      return [
+                        <span key={`ellipsis-${page}`} className="px-2 text-gray-400">...</span>,
+                        <button
+                          key={page}
+                          onClick={() => {
+                            setCurrentPage(page)
+                            window.scrollTo({ top: 0, behavior: 'smooth' })
+                          }}
+                          className={`px-4 py-2 rounded-lg border transition-colors ${
+                            currentPage === page
+                              ? 'bg-airbnb-rausch text-white border-airbnb-rausch'
+                              : 'bg-white text-gray-900 border-gray-300 hover:border-gray-900'
+                          }`}
+                        >
+                          {page}
+                        </button>
+                      ]
+                    }
+                    return (
+                      <button
+                        key={page}
+                        onClick={() => {
+                          setCurrentPage(page)
+                          window.scrollTo({ top: 0, behavior: 'smooth' })
+                        }}
+                        className={`px-4 py-2 rounded-lg border transition-colors ${
+                          currentPage === page
+                            ? 'bg-airbnb-rausch text-white border-airbnb-rausch'
+                            : 'bg-white text-gray-900 border-gray-300 hover:border-gray-900'
+                        }`}
+                      >
+                        {page}
+                      </button>
+                    )
+                  })}
+              </div>
+              
+              <button
+                onClick={() => {
+                  setCurrentPage(p => Math.min(Math.ceil(toursData.total / PAGE_SIZE), p + 1))
+                  window.scrollTo({ top: 0, behavior: 'smooth' })
+                }}
+                disabled={currentPage >= Math.ceil(toursData.total / PAGE_SIZE)}
+                className="px-4 py-2 rounded-lg border border-gray-300 bg-white text-gray-900 disabled:opacity-50 disabled:cursor-not-allowed hover:border-gray-900 transition-colors"
+              >
+                Вперёд
+              </button>
+            </div>
           )}
         </div>
       </section>
