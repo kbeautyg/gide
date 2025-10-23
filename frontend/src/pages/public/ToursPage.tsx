@@ -35,7 +35,7 @@ const ASIAN_CITIES = [
 ]
 
 export default function ToursPage() {
-  const [searchParams] = useSearchParams()
+  const [searchParams, setSearchParams] = useSearchParams()
   const [selectedThemes, setSelectedThemes] = useState<string[]>([])
   const [selectedCountries, setSelectedCountries] = useState<string[]>([])
   const [selectedCities, setSelectedCities] = useState<string[]>([])
