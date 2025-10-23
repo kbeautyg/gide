@@ -183,11 +183,11 @@ export default function TourDetailPage() {
               <div className="flex items-center justify-between mb-4">
                 <div className="flex items-center gap-3">
                   <div className="flex items-center gap-2 px-3 py-1.5 bg-blue-100 text-blue-700 rounded-full text-sm font-medium">
-                    <MapPin size={16} />
-                    <span>{tour.location}</span>
+                  <MapPin size={16} />
+                  <span>{tour.location}</span>
                   </div>
                   <div className="flex items-center gap-2 px-3 py-1.5 bg-green-100 text-green-700 rounded-full text-sm font-medium">
-                    <Clock size={16} />
+                  <Clock size={16} />
                     <span>{tour.duration} ч</span>
                   </div>
                 </div>
@@ -313,11 +313,11 @@ export default function TourDetailPage() {
                     </div>
                     <h2 className="text-2xl font-bold text-gray-900">Что вас ожидает</h2>
                   </div>
-                  <p className="text-gray-700 leading-relaxed whitespace-pre-line">
-                    {tour.what_to_expect}
-                  </p>
-                </CardContent>
-              </Card>
+                      <p className="text-gray-700 leading-relaxed whitespace-pre-line">
+                        {tour.what_to_expect}
+                      </p>
+                  </CardContent>
+                </Card>
             )}
 
             {/* Организационные детали - Блочный дизайн */}
@@ -385,7 +385,7 @@ export default function TourDetailPage() {
             )}
 
             {/* Дополнительная информация - Блоки */}
-            {(tour.meeting_point || tour.max_group_size || tour.min_age || tour.difficulty_level || (tour.languages && tour.languages.length > 0)) && (
+                  {(tour.meeting_point || tour.max_group_size || tour.min_age || tour.difficulty_level || (tour.languages && tour.languages.length > 0)) && (
               <Card className="bg-white shadow-lg border-0">
                 <CardContent className="p-6">
                   <div className="flex items-center gap-3 mb-6">
@@ -416,7 +416,7 @@ export default function TourDetailPage() {
                       </div>
                     )}
 
-                    {tour.min_age && (
+                    {tour.min_age !== null && tour.min_age !== undefined && (
                       <div className="p-4 bg-pink-50 rounded-xl border-2 border-pink-200">
                         <div className="flex items-center gap-2 mb-2">
                           <Shield className="w-5 h-5 text-pink-600" />
@@ -453,66 +453,37 @@ export default function TourDetailPage() {
             {/* Отзывы */}
             {reviews.length > 0 && (
               <div id="reviews">
-                <Card className="bg-white shadow-lg border-0">
-                  <CardContent className="p-6">
-                    <div className="flex items-center gap-3 mb-6">
-                      <div className="w-10 h-10 bg-yellow-500 rounded-lg flex items-center justify-center">
-                        <Star className="w-5 h-5 text-white" />
-                      </div>
-                      <h2 className="text-2xl font-bold text-gray-900">Отзывы ({reviews.length})</h2>
-                    </div>
-                    
-                    <div className="space-y-4">
-                      {reviews.slice(0, 3).map((review: any, index: number) => (
-                        <div key={index} className="p-5 bg-gradient-to-br from-gray-50 to-gray-100 rounded-xl border-2 border-gray-200">
-                          <div className="flex items-center gap-4 mb-4">
-                            <div className="w-14 h-14 bg-gradient-to-br from-purple-500 to-pink-500 rounded-full flex items-center justify-center text-white text-xl font-bold flex-shrink-0 shadow-lg">
-                              {review.client_name?.charAt(0)?.toUpperCase() || 'А'}
-                            </div>
-                            <div className="flex-1">
-                              <p className="font-bold text-gray-900 text-lg">{review.client_name || 'Аноним'}</p>
-                              <div className="flex items-center gap-1 mt-1">
-                                {[...Array(5)].map((_, i) => (
-                                  <Star
-                                    key={i}
-                                    size={16}
-                                    className={i < (review.rating || 5) ? 'fill-yellow-400 text-yellow-400' : 'fill-gray-300 text-gray-300'}
-                                  />
-                                ))}
-                                <span className="text-sm text-gray-600 ml-2">
-                                  {review.rating || 5}.0
-                                </span>
-                              </div>
-                            </div>
-                            {review.created_at && (
-                              <span className="text-sm text-gray-500">
-                                {new Date(review.created_at).toLocaleDateString('ru')}
-                              </span>
-                            )}
+                <h2 className="text-2xl font-bold text-gray-900 mb-4">Отзывы</h2>
+                <div className="space-y-4">
+                  {reviews.slice(0, 3).map((review: any, index: number) => (
+                    <Card key={index} className="border-0 shadow-lg">
+                      <CardContent className="p-6">
+                        <div className="flex items-center gap-4 mb-3">
+                          <div className="w-12 h-12 bg-gradient-to-br from-purple-500 to-pink-500 rounded-full flex items-center justify-center text-white font-bold">
+                            {review.client_name?.charAt(0)?.toUpperCase() || 'А'}
                           </div>
-                          
-                          {review.comment ? (
-                            <p className="text-gray-700 leading-relaxed">
-                              {review.comment}
-                            </p>
-                          ) : (
-                            <p className="text-gray-400 italic">
-                              Гость не оставил комментарий
-                            </p>
-                          )}
+                          <div>
+                            <p className="font-semibold text-gray-900">{review.client_name || 'Аноним'}</p>
+                            <div className="flex items-center gap-1">
+                              {[...Array(5)].map((_, i) => (
+                                <Star
+                                  key={i}
+                                  size={14}
+                                  className={i < (review.rating || 5) ? 'fill-yellow-400 text-yellow-400' : 'text-gray-300'}
+                                />
+                              ))}
+                            </div>
+                          </div>
                         </div>
-                      ))}
-                    </div>
-                    
-                    {reviews.length > 3 && (
-                      <div className="mt-6 text-center">
-                        <Button variant="outline" className="border-2 border-gray-300">
-                          Показать все отзывы ({reviews.length})
-                        </Button>
-                      </div>
-                    )}
-                  </CardContent>
-                </Card>
+                        {review.comment ? (
+                          <p className="text-gray-700 leading-relaxed">{review.comment}</p>
+                        ) : (
+                          <p className="text-gray-400 italic text-sm">Отзыв без комментария</p>
+                        )}
+                      </CardContent>
+                    </Card>
+                  ))}
+                </div>
               </div>
             )}
           </div>
@@ -524,7 +495,7 @@ export default function TourDetailPage() {
                 <div className="bg-gradient-to-r from-airbnb-rausch to-pink-600 p-6 text-white text-center">
                   <p className="text-4xl font-bold mb-2">{formatRUB(tour.price)}</p>
                   <p className="text-white/90">за человека</p>
-                </div>
+                  </div>
 
                 <CardContent className="p-6">
                   {showSuccess ? (
@@ -540,8 +511,8 @@ export default function TourDetailPage() {
                       <p className="text-gray-600">Гид свяжется с вами в ближайшее время</p>
                     </motion.div>
                   ) : (
-                    <div className="space-y-4">
-                      <div>
+                  <div className="space-y-4">
+                    <div>
                         <Label htmlFor="date" className="flex items-center gap-2 mb-2">
                           <CalendarIcon size={16} />
                           Дата экскурсии
@@ -553,9 +524,9 @@ export default function TourDetailPage() {
                           onChange={(e) => setBookingData({ ...bookingData, date: e.target.value })}
                           className="border-2 focus:border-airbnb-rausch"
                         />
-                      </div>
+                    </div>
 
-                      <div>
+                    <div>
                         <Label htmlFor="participants" className="flex items-center gap-2 mb-2">
                           <Users size={16} />
                           Количество участников
@@ -568,42 +539,42 @@ export default function TourDetailPage() {
                           onChange={(e) => setBookingData({ ...bookingData, participants: parseInt(e.target.value) })}
                           className="border-2 focus:border-airbnb-rausch"
                         />
-                      </div>
+                    </div>
 
                       <div>
                         <Label htmlFor="name">Ваше имя</Label>
-                        <Input
+                    <Input
                           id="name"
-                          value={bookingData.clientName}
-                          onChange={(e) => setBookingData({ ...bookingData, clientName: e.target.value })}
+                      value={bookingData.clientName}
+                      onChange={(e) => setBookingData({ ...bookingData, clientName: e.target.value })}
                           placeholder="Иван Иванов"
                           className="border-2 focus:border-airbnb-rausch"
-                        />
+                    />
                       </div>
 
                       <div>
                         <Label htmlFor="phone">Телефон</Label>
-                        <Input
+                    <Input
                           id="phone"
-                          type="tel"
-                          value={bookingData.clientPhone}
-                          onChange={(e) => setBookingData({ ...bookingData, clientPhone: e.target.value })}
+                      type="tel"
+                      value={bookingData.clientPhone}
+                      onChange={(e) => setBookingData({ ...bookingData, clientPhone: e.target.value })}
                           placeholder="+7 (999) 123-45-67"
                           className="border-2 focus:border-airbnb-rausch"
-                        />
+                    />
                       </div>
 
                       <div>
                         <Label htmlFor="email">Email (необязательно)</Label>
-                        <Input
+                    <Input
                           id="email"
-                          type="email"
-                          value={bookingData.clientEmail}
-                          onChange={(e) => setBookingData({ ...bookingData, clientEmail: e.target.value })}
+                      type="email"
+                      value={bookingData.clientEmail}
+                      onChange={(e) => setBookingData({ ...bookingData, clientEmail: e.target.value })}
                           placeholder="ivan@example.com"
                           className="border-2 focus:border-airbnb-rausch"
-                        />
-                      </div>
+                    />
+                  </div>
 
                       <div className="bg-gradient-to-br from-green-50 to-teal-50 p-4 rounded-xl border-2 border-green-200">
                         <div className="flex justify-between text-sm mb-2">
@@ -613,20 +584,20 @@ export default function TourDetailPage() {
                         <div className="flex justify-between text-sm mb-3">
                           <span className="text-gray-700">Участников:</span>
                           <span className="font-semibold">{bookingData.participants}</span>
-                        </div>
+                    </div>
                         <div className="border-t-2 border-green-300 pt-3 flex justify-between items-center">
                           <span className="font-bold text-gray-900">Итого:</span>
                           <span className="text-3xl font-bold text-green-700">{formatRUB(totalPrice)}</span>
-                        </div>
-                      </div>
-
-                      <Button
-                        onClick={handleBooking}
-                        disabled={!bookingData.date || !bookingData.clientName || !bookingData.clientPhone || bookingMutation.isPending}
+                    </div>
+                  </div>
+                  
+                  <Button
+                    onClick={handleBooking}
+                    disabled={!bookingData.date || !bookingData.clientName || !bookingData.clientPhone || bookingMutation.isPending}
                         className="w-full bg-gradient-to-r from-airbnb-rausch to-pink-600 hover:from-airbnb-rausch/90 hover:to-pink-600/90 text-white py-6 text-lg shadow-lg"
-                      >
-                        {bookingMutation.isPending ? 'Обработка...' : 'Забронировать'}
-                      </Button>
+                  >
+                    {bookingMutation.isPending ? 'Обработка...' : 'Забронировать'}
+                  </Button>
 
                       <p className="text-xs text-gray-500 text-center">
                         После бронирования гид свяжется с вами для подтверждения
