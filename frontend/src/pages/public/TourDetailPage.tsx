@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Link, useParams } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 import { useQuery, useMutation } from '@tanstack/react-query'
 import { motion } from 'framer-motion'
 import { 
@@ -37,7 +37,7 @@ export default function TourDetailPage() {
 
   // Автообновление данных
   useAutoRefresh({
-    queryKeys: [['tour', id]],
+    queryKeys: [['tour', id!]],
     intervalMs: 30000,
   })
 
@@ -49,15 +49,6 @@ export default function TourDetailPage() {
   })
 
   const tour = tourData?.data as Tour | undefined
-  
-  // Загрузка отзывов
-  const { data: reviewsData } = useQuery({
-    queryKey: ['reviews', id],
-    queryFn: () => api.get(`/reviews/${id}`).then(res => res.data),
-    enabled: !!id,
-  })
-
-  const reviews = reviewsData || []
 
   // Создание бронирования
   const bookingMutation = useMutation({
