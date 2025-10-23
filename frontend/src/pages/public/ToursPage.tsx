@@ -1,4 +1,4 @@
-import { useState, useMemo, useEffect } from 'react'
+import { useState, useMemo } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import { useSearchParams, Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
@@ -194,6 +194,14 @@ export default function ToursPage() {
   const startIndex = totalTours === 0 ? 0 : (currentPage - 1) * pageSize + 1
   const endIndex = Math.min(currentPage * pageSize, totalTours)
   const paginatedTours = sortedTours.slice((currentPage - 1) * pageSize, currentPage * pageSize)
+
+  // Функция для смены страницы
+  const handlePageChange = (newPage: number) => {
+    if (newPage >= 1 && newPage <= totalPages) {
+      setCurrentPage(newPage)
+      window.scrollTo({ top: 0, behavior: 'smooth' })
+    }
+  }
 
   // Формируем список категорий для чипсов
   const themeCategories = categoriesData?.themes 
