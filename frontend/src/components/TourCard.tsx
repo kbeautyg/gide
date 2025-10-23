@@ -1,12 +1,11 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { 
-  MapPin, Star, Heart, Clock, ChevronLeft, ChevronRight, User,
-  DollarSign, Trophy, Sparkles
+  MapPin, Star, Clock, ChevronLeft, ChevronRight, User,
+  DollarSign
 } from 'lucide-react'
 import { Card } from '@/components/ui/card'
-import { ViewersCount } from '@/components/ViewersCount'
 import { formatRUB } from '@/lib/utils'
 import { cn } from '@/lib/utils'
 import type { Tour } from '@/types/tour'
@@ -18,21 +17,6 @@ interface TourCardProps {
 
 export function TourCard({ tour, className }: TourCardProps) {
   const [currentPhotoIndex, setCurrentPhotoIndex] = useState(0)
-  
-  // Избранное из localStorage
-  const [isFavorite, setIsFavorite] = useState(() => {
-    const favorites = JSON.parse(localStorage.getItem('tour_favorites') || '[]')
-    return favorites.includes(tour.id)
-  })
-  
-  useEffect(() => {
-    const favorites = JSON.parse(localStorage.getItem('tour_favorites') || '[]')
-    if (isFavorite && !favorites.includes(tour.id)) {
-      localStorage.setItem('tour_favorites', JSON.stringify([...favorites, tour.id]))
-    } else if (!isFavorite && favorites.includes(tour.id)) {
-      localStorage.setItem('tour_favorites', JSON.stringify(favorites.filter((id: number) => id !== tour.id)))
-    }
-  }, [isFavorite, tour.id])
   
   const photos = tour.photos?.length > 0 
     ? tour.photos 
@@ -48,12 +32,6 @@ export function TourCard({ tour, className }: TourCardProps) {
     e.preventDefault()
     e.stopPropagation()
     setCurrentPhotoIndex((prev) => (prev - 1 + photos.length) % photos.length)
-  }
-
-  const toggleFavorite = (e: React.MouseEvent) => {
-    e.preventDefault()
-    e.stopPropagation()
-    setIsFavorite(!isFavorite)
   }
 
   // Определяем бейдж (минималистичный дизайн)
