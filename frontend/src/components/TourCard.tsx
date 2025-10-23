@@ -56,28 +56,25 @@ export function TourCard({ tour, className }: TourCardProps) {
     setIsFavorite(!isFavorite)
   }
 
-  // Определяем бейдж (приоритет: скидка > хит > популярное > новое)
+  // Определяем бейдж (минималистичный дизайн)
   const getBadge = () => {
     if (tour.has_discount && tour.discount_percentage) {
       return (
-        <div className="bg-gradient-to-r from-red-500 to-pink-600 text-white px-3 py-1.5 rounded-full text-xs font-bold shadow-lg flex items-center gap-1">
-          <Sparkles className="w-3 h-3" />
-          Скидка {tour.discount_percentage}%
+        <div className="bg-red-500 text-white px-2.5 py-1 rounded-md text-xs font-semibold">
+          -{tour.discount_percentage}%
         </div>
       )
     }
     if (tour.total_bookings && tour.total_bookings > 100) {
       return (
-        <div className="bg-gradient-to-r from-yellow-500 to-amber-600 text-white px-3 py-1.5 rounded-full text-xs font-bold shadow-lg flex items-center gap-1">
-          <Trophy className="w-3 h-3" />
-          Хит продаж
+        <div className="bg-gray-900 text-white px-2.5 py-1 rounded-md text-xs font-semibold">
+          Хит
         </div>
       )
     }
     if (tour.total_bookings && tour.total_bookings > 50) {
       return (
-        <div className="bg-gradient-to-r from-orange-500 to-red-600 text-white px-3 py-1.5 rounded-full text-xs font-bold shadow-lg flex items-center gap-1">
-          <Sparkles className="w-3 h-3" />
+        <div className="bg-gray-700 text-white px-2.5 py-1 rounded-md text-xs font-semibold">
           Популярное
         </div>
       )
@@ -88,8 +85,7 @@ export function TourCard({ tour, className }: TourCardProps) {
       const daysSinceCreation = Math.floor((Date.now() - createdDate.getTime()) / (1000 * 60 * 60 * 24))
       if (daysSinceCreation < 7) {
         return (
-          <div className="bg-gradient-to-r from-green-500 to-teal-600 text-white px-3 py-1.5 rounded-full text-xs font-bold shadow-lg flex items-center gap-1">
-            <Sparkles className="w-3 h-3" />
+          <div className="bg-green-600 text-white px-2.5 py-1 rounded-md text-xs font-semibold">
             Новое
           </div>
         )
@@ -102,10 +98,10 @@ export function TourCard({ tour, className }: TourCardProps) {
     <Link to={`/tours/${tour.id}`}>
       <motion.div
         className={cn("group", className)}
-        whileHover={{ y: -8 }}
-        transition={{ duration: 0.3, type: "spring" }}
+        whileHover={{ y: -4 }}
+        transition={{ duration: 0.2 }}
       >
-        <Card className="overflow-hidden border-2 border-white/50 shadow-xl hover:shadow-2xl transition-all duration-300 bg-white/90 backdrop-blur-sm">
+        <Card className="overflow-hidden border border-gray-200 hover:border-gray-300 shadow-sm hover:shadow-md transition-all duration-200 bg-white">
           {/* Галерея изображений */}
           <div className="relative aspect-[4/3] overflow-hidden bg-gradient-to-br from-gray-100 to-gray-200">
             <motion.img
@@ -120,42 +116,12 @@ export function TourCard({ tour, className }: TourCardProps) {
               style={{ objectFit: 'cover' }}
             />
             
-            {/* Gradient overlay */}
-            <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-            
             {/* Бейдж */}
             {getBadge() && (
-              <motion.div 
-                initial={{ x: -20, opacity: 0 }}
-                animate={{ x: 0, opacity: 1 }}
-                className="absolute top-3 left-3 z-10"
-              >
+              <div className="absolute top-2 left-2 z-10">
                 {getBadge()}
-              </motion.div>
+              </div>
             )}
-            
-            {/* Viewers Count */}
-            <div className="absolute bottom-3 left-3 z-10">
-              <ViewersCount tourId={tour.id} />
-            </div>
-
-            {/* Heart иконка */}
-            <motion.button
-              whileHover={{ scale: 1.2 }}
-              whileTap={{ scale: 0.9 }}
-              onClick={toggleFavorite}
-              className="absolute top-3 right-3 z-10 w-10 h-10 bg-white/90 backdrop-blur-sm rounded-full flex items-center justify-center shadow-lg hover:bg-white transition-all"
-            >
-              <Heart
-                size={20}
-                className={cn(
-                  "transition-all",
-                  isFavorite 
-                    ? "fill-red-500 stroke-red-500" 
-                    : "stroke-gray-700"
-                )}
-              />
-            </motion.button>
             
             {/* Кнопки навигации по фото */}
             {photos.length > 1 && (

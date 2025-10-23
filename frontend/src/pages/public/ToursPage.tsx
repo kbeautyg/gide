@@ -530,7 +530,8 @@ export default function ToursPage() {
             <div>
               <h2 className="text-2xl font-bold text-gray-900 mb-1">Все туры</h2>
               <p className="text-gray-600">
-                {sortedTours.length} предложени{sortedTours.length === 1 ? 'е' : sortedTours.length < 5 ? 'я' : 'й'}
+                {toursData?.total || sortedTours.length} {(toursData?.total || sortedTours.length) === 1 ? 'экскурсия' : (toursData?.total || sortedTours.length) < 5 ? 'экскурсии' : 'экскурсий'}
+                {sortedTours.length < (toursData?.total || 0) && ` (показано ${sortedTours.length})`}
               </p>
             </div>
             
