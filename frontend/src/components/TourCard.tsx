@@ -1,13 +1,6 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
-import { motion } from 'framer-motion'
-import { 
-  MapPin, Star, Clock, ChevronLeft, ChevronRight, User,
-  DollarSign
-} from 'lucide-react'
-import { Card } from '@/components/ui/card'
-import { formatRUB } from '@/lib/utils'
-import { cn } from '@/lib/utils'
+import { Star, MapPin, Clock, ChevronLeft, ChevronRight } from 'lucide-react'
 import type { Tour } from '@/types/tour'
 
 interface TourCardProps {
@@ -15,7 +8,7 @@ interface TourCardProps {
   className?: string
 }
 
-export function TourCard({ tour, className }: TourCardProps) {
+export function TourCard({ tour, className = '' }: TourCardProps) {
   const [currentPhotoIndex, setCurrentPhotoIndex] = useState(0)
   
   const photos = tour.photos?.length > 0 
@@ -34,215 +27,97 @@ export function TourCard({ tour, className }: TourCardProps) {
     setCurrentPhotoIndex((prev) => (prev - 1 + photos.length) % photos.length)
   }
 
-  // Определяем бейдж (минималистичный дизайн)
-  const getBadge = () => {
-    if (tour.has_discount && tour.discount_percentage) {
-      return (
-        <div className="bg-red-500 text-white px-2.5 py-1 rounded-md text-xs font-semibold">
-          -{tour.discount_percentage}%
-        </div>
-      )
-    }
-    if (tour.total_bookings && tour.total_bookings > 100) {
-      return (
-        <div className="bg-gray-900 text-white px-2.5 py-1 rounded-md text-xs font-semibold">
-          Хит
-        </div>
-      )
-    }
-    if (tour.total_bookings && tour.total_bookings > 50) {
-      return (
-        <div className="bg-gray-700 text-white px-2.5 py-1 rounded-md text-xs font-semibold">
-          Популярное
-        </div>
-      )
-    }
-    // Новое - если создано менее 7 дней назад
-    if (tour.created_at) {
-      const createdDate = new Date(tour.created_at)
-      const daysSinceCreation = Math.floor((Date.now() - createdDate.getTime()) / (1000 * 60 * 60 * 24))
-      if (daysSinceCreation < 7) {
-        return (
-          <div className="bg-green-600 text-white px-2.5 py-1 rounded-md text-xs font-semibold">
-            Новое
-          </div>
-        )
-      }
-    }
-    return null
-  }
-
   return (
-    <Link to={`/tours/${tour.id}`}>
-      <motion.div
-        className={cn("group", className)}
-        whileHover={{ y: -4 }}
-        transition={{ duration: 0.2 }}
-      >
-        <Card className="overflow-hidden border border-gray-200 hover:border-gray-300 shadow-sm hover:shadow-md transition-all duration-200 bg-white">
-          {/* Галерея изображений */}
-          <div className="relative aspect-[4/3] overflow-hidden bg-gradient-to-br from-gray-100 to-gray-200">
-            <motion.img
-              key={currentPhotoIndex}
-              src={photos[currentPhotoIndex]}
-              alt={tour.title}
-              loading="lazy"
-              className="w-full h-full object-cover object-center group-hover:scale-110 transition-transform duration-500"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.3 }}
-              style={{ objectFit: 'cover' }}
-            />
-            
-            {/* Бейдж */}
-            {getBadge() && (
-              <div className="absolute top-2 left-2 z-10">
-                {getBadge()}
-              </div>
-            )}
-            
-            {/* Кнопки навигации по фото */}
-            {photos.length > 1 && (
-              <>
-                <button
-                  onClick={prevPhoto}
-                  className={cn(
-                    "absolute left-2 top-1/2 -translate-y-1/2 bg-white/95 rounded-full p-2 opacity-0 group-hover:opacity-100 transition-all shadow-lg hover:bg-white hover:scale-110",
-                    currentPhotoIndex === 0 && "hidden"
-                  )}
-                >
-                  <ChevronLeft size={18} className="text-gray-800" />
-                </button>
-                <button
-                  onClick={nextPhoto}
-                  className={cn(
-                    "absolute right-2 top-1/2 -translate-y-1/2 bg-white/95 rounded-full p-2 opacity-0 group-hover:opacity-100 transition-all shadow-lg hover:bg-white hover:scale-110",
-                    currentPhotoIndex === photos.length - 1 && "hidden"
-                  )}
-                >
-                  <ChevronRight size={18} className="text-gray-800" />
-                </button>
-              </>
-            )}
-            
-            {/* Точки навигации */}
-            {photos.length > 1 && (
-              <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-1.5">
-                {photos.map((_, index) => (
-                  <button
-                    key={index}
-                    onClick={(e) => {
-                      e.preventDefault()
-                      e.stopPropagation()
-                      setCurrentPhotoIndex(index)
-                    }}
-                    className={cn(
-                      "rounded-full transition-all",
-                      index === currentPhotoIndex
-                        ? "bg-white w-6 h-2"
-                        : "bg-white/60 w-2 h-2 hover:bg-white/80"
-                    )}
+    <Link to={`/tours/${tour.id}`} className={`block group ${className}`}>
+      <div className="bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-all duration-300">
+        {/* Изображение */}
+        <div className="relative aspect-[4/3] overflow-hidden bg-gray-100">
+          <img
+            src={photos[currentPhotoIndex]}
+            alt={tour.title}
+            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+            onError={(e) => {
+              e.currentTarget.src = 'https://images.unsplash.com/photo-1488646953014-85cb44e24d5e?w=800&h=600&fit=crop'
+            }}
+          />
+          
+          {/* Навигация по фото */}
+          {photos.length > 1 && (
+            <>
+              <button
+                onClick={prevPhoto}
+                className="absolute left-2 top-1/2 -translate-y-1/2 bg-white/90 hover:bg-white p-1.5 rounded-full shadow-md opacity-0 group-hover:opacity-100 transition-opacity"
+              >
+                <ChevronLeft size={16} />
+              </button>
+              <button
+                onClick={nextPhoto}
+                className="absolute right-2 top-1/2 -translate-y-1/2 bg-white/90 hover:bg-white p-1.5 rounded-full shadow-md opacity-0 group-hover:opacity-100 transition-opacity"
+              >
+                <ChevronRight size={16} />
+              </button>
+              
+              {/* Индикаторы */}
+              <div className="absolute bottom-2 left-1/2 -translate-x-1/2 flex gap-1">
+                {photos.slice(0, 5).map((_, idx) => (
+                  <div
+                    key={idx}
+                    className={`w-1.5 h-1.5 rounded-full transition-all ${
+                      idx === currentPhotoIndex ? 'bg-white w-4' : 'bg-white/60'
+                    }`}
                   />
                 ))}
               </div>
+            </>
+          )}
+        </div>
+
+        {/* Информация */}
+        <div className="p-4">
+          {/* Локация и категория */}
+          <div className="flex items-center gap-2 text-xs text-gray-600 mb-2">
+            <MapPin size={14} className="text-gray-400" />
+            <span>{tour.location}</span>
+            <span className="text-gray-300">•</span>
+            <span>{tour.category}</span>
+          </div>
+
+          {/* Название */}
+          <h3 className="font-semibold text-gray-900 mb-2 line-clamp-2 group-hover:text-airbnb-rausch transition-colors">
+            {tour.title}
+          </h3>
+
+          {/* Детали */}
+          <div className="flex items-center gap-3 mb-3 text-sm text-gray-600">
+            <div className="flex items-center gap-1">
+              <Clock size={14} className="text-gray-400" />
+              <span>{tour.duration}ч</span>
+            </div>
+            {tour.rating > 0 && (
+              <>
+                <span className="text-gray-300">•</span>
+                <div className="flex items-center gap-1">
+                  <Star size={14} className="text-yellow-400 fill-yellow-400" />
+                  <span className="font-medium">{tour.rating.toFixed(1)}</span>
+                  {tour.reviews_count > 0 && (
+                    <span className="text-gray-500">({tour.reviews_count})</span>
+                  )}
+                </div>
+              </>
             )}
           </div>
 
-          {/* Контент карточки */}
-          <div className="p-4 space-y-4">
-            {/* Название */}
-            <h3 className="font-bold text-gray-900 line-clamp-2 text-lg min-h-[56px] leading-tight">
-              {tour.title}
-            </h3>
-
-            {/* Блочная информация */}
-            <div className="grid grid-cols-2 gap-2">
-              {/* Локация */}
-              <div className="bg-gradient-to-br from-blue-50 to-indigo-100 border-2 border-blue-200 rounded-xl p-3 flex items-center gap-2">
-                <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-lg flex items-center justify-center flex-shrink-0">
-                  <MapPin className="w-4 h-4 text-white" />
-                </div>
-                <div className="min-w-0 flex-1">
-                  <p className="text-[10px] text-blue-700 font-semibold uppercase">Локация</p>
-                  <p className="text-sm font-bold text-blue-900 truncate">{tour.location}</p>
-                </div>
-              </div>
-
-              {/* Длительность */}
-              <div className="bg-gradient-to-br from-green-50 to-emerald-100 border-2 border-green-200 rounded-xl p-3 flex items-center gap-2">
-                <div className="w-8 h-8 bg-gradient-to-br from-green-500 to-emerald-600 rounded-lg flex items-center justify-center flex-shrink-0">
-                  <Clock className="w-4 h-4 text-white" />
-                </div>
-                <div className="min-w-0 flex-1">
-                  <p className="text-[10px] text-green-700 font-semibold uppercase">Время</p>
-                  <p className="text-sm font-bold text-green-900">{tour.duration}ч</p>
-                </div>
-              </div>
-
-              {/* Рейтинг */}
-              <div className="bg-gradient-to-br from-yellow-50 to-amber-100 border-2 border-yellow-200 rounded-xl p-3 flex items-center gap-2">
-                <div className="w-8 h-8 bg-gradient-to-br from-yellow-500 to-amber-600 rounded-lg flex items-center justify-center flex-shrink-0">
-                  <Star className="w-4 h-4 text-white fill-white" />
-                </div>
-                <div className="min-w-0 flex-1">
-                  <p className="text-[10px] text-yellow-700 font-semibold uppercase">Рейтинг</p>
-                  <div className="flex items-baseline gap-1">
-                    <p className="text-sm font-bold text-yellow-900">{tour.rating.toFixed(1)}</p>
-                    <p className="text-[10px] text-yellow-700">({tour.reviews_count})</p>
-                  </div>
-                </div>
-              </div>
-
-              {/* Цена */}
-              <div className="bg-gradient-to-br from-purple-50 to-pink-100 border-2 border-purple-200 rounded-xl p-3 flex items-center gap-2">
-                <div className="w-8 h-8 bg-gradient-to-br from-purple-500 to-pink-600 rounded-lg flex items-center justify-center flex-shrink-0">
-                  <DollarSign className="w-4 h-4 text-white" />
-                </div>
-                <div className="min-w-0 flex-1">
-                  <p className="text-[10px] text-purple-700 font-semibold uppercase">Цена</p>
-                  {tour.has_discount && tour.original_price ? (
-                    <div className="flex flex-col">
-                      <p className="text-[10px] text-purple-600 line-through">{formatRUB(tour.original_price)}</p>
-                      <p className="text-sm font-bold text-purple-900">{formatRUB(tour.price)}</p>
-                    </div>
-                  ) : (
-                    <p className="text-sm font-bold text-purple-900">{formatRUB(tour.price)}</p>
-                  )}
-                </div>
-              </div>
-            </div>
-
-            {/* Гид */}
-            <div className="bg-gradient-to-r from-gray-50 to-gray-100 border-2 border-gray-200 rounded-xl p-3 flex items-center gap-3">
-              <div className="w-10 h-10 bg-gradient-to-br from-airbnb-rausch to-pink-600 rounded-full flex items-center justify-center flex-shrink-0">
-                <User className="w-5 h-5 text-white" />
-              </div>
-              <div className="min-w-0 flex-1">
-                <p className="text-[10px] text-gray-600 font-semibold uppercase">Ваш гид</p>
-                <p className="text-sm font-bold text-gray-900 truncate">{tour.guide_name || 'Профессиональный гид'}</p>
-              </div>
-              {tour.total_bookings && tour.total_bookings > 0 && (
-                <div className="text-right">
-                  <p className="text-[10px] text-gray-600 uppercase">Заказов</p>
-                  <p className="text-sm font-bold text-airbnb-rausch">{tour.total_bookings}</p>
-                </div>
-              )}
-            </div>
-
-            {/* Кнопка "Подробнее" */}
-            <motion.div
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-              className="bg-gradient-to-r from-airbnb-rausch to-pink-600 text-white rounded-xl p-3 text-center font-bold shadow-lg group-hover:shadow-xl transition-all"
-            >
-              <span className="flex items-center justify-center gap-2">
-                <Sparkles className="w-4 h-4" />
-                Подробнее
+          {/* Цена */}
+          <div className="flex items-center justify-between">
+            <div>
+              <span className="text-2xl font-bold text-gray-900">
+                {new Intl.NumberFormat('ru-RU').format(tour.price)} ₽
               </span>
-            </motion.div>
+              <span className="text-sm text-gray-500 ml-1">/ чел</span>
+            </div>
           </div>
-        </Card>
-      </motion.div>
+        </div>
+      </div>
     </Link>
   )
 }
