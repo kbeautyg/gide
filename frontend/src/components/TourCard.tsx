@@ -36,7 +36,7 @@ export function TourCard({ tour, className }: TourCardProps) {
   
   const photos = tour.photos?.length > 0 
     ? tour.photos 
-    : ['https://images.unsplash.com/photo-1589394815804-964ed0be2eb5?w=800&h=600&fit=crop']
+    : ['https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=600&fit=crop']
 
   const nextPhoto = (e: React.MouseEvent) => {
     e.preventDefault()
@@ -105,7 +105,7 @@ export function TourCard({ tour, className }: TourCardProps) {
         whileHover={{ y: -8 }}
         transition={{ duration: 0.3, type: "spring" }}
       >
-        <Card className="overflow-hidden border-2 border-white/50 shadow-xl hover:shadow-2xl transition-all duration-300 bg-white/90 backdrop-blur-sm">
+        <Card className="overflow-hidden border border-gray-200 shadow-sm hover:shadow-md transition-all duration-300 bg-white h-full flex flex-col">
           {/* Галерея изображений */}
           <div className="relative aspect-[4/3] overflow-hidden bg-gradient-to-br from-gray-100 to-gray-200">
             <motion.img
@@ -205,9 +205,9 @@ export function TourCard({ tour, className }: TourCardProps) {
           </div>
 
           {/* Контент карточки - ПРОСТОЙ ДИЗАЙН */}
-          <div className="p-4">
-            {/* Название */}
-            <h3 className="font-semibold text-gray-900 line-clamp-2 text-base mb-3 group-hover:text-airbnb-rausch transition-colors">
+          <div className="p-4 flex flex-col flex-1">
+            {/* Название - ФИКСИРОВАННАЯ ВЫСОТА */}
+            <h3 className="font-semibold text-gray-900 line-clamp-2 text-base mb-3 group-hover:text-airbnb-rausch transition-colors min-h-[48px]">
               {tour.title}
             </h3>
 
@@ -234,10 +234,10 @@ export function TourCard({ tour, className }: TourCardProps) {
             </div>
 
             {/* Разделитель */}
-            <div className="border-t border-gray-200 my-3"></div>
+            <div className="border-t border-gray-200 my-3 mt-auto"></div>
 
             {/* Цена и гид - одна строка */}
-            <div className="flex items-center justify-between">
+            <div className="flex items-center justify-between mt-auto">
               <div>
                 <p className="text-xs text-gray-500 mb-0.5">Цена</p>
                 <div className="flex items-baseline gap-2">
