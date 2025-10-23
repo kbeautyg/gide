@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import { useSearchParams, Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
@@ -36,7 +36,7 @@ const ASIAN_CITIES = [
 ]
 
 export default function ToursPage() {
-  const [searchParams, setSearchParams] = useSearchParams()
+  const [searchParams] = useSearchParams()
   const [selectedThemes, setSelectedThemes] = useState<string[]>([])
   const [selectedCountries, setSelectedCountries] = useState<string[]>([])
   const [selectedCities, setSelectedCities] = useState<string[]>([])
