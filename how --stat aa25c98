@@ -1,0 +1,20 @@
+[33maa25c98[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m fix: Disable Alembic auto-migrations to fix startup errors - Migrations cause DuplicateObject errors on Railway - Tables already exist in Supabase from manual SQL - Use manual SQL management instead of Alembic
+[33ma375dee[m trigger: Force Railway redeploy NOW - Add .railway-trigger file - This MUST trigger new deployment - Deploy commit 3a6a9de with all navigation fixes
+[33m3a6a9de[m fix: Force Railway redeploy - CRITICAL FIX - Update deployment logs and migration scripts - Railway must deploy commit 362fb4b with debug logging - Current deploy 3658dfa3 is missing fixes
+[33m362fb4b[m debug: Add detailed logging to recommendation endpoints - Add try-except blocks with error details - Print debug info for troubleshooting 422 errors - Return error details in response for debugging
+[33mcbf9c5a[m Revert " Fix: удалены компоненты SmartRecommendations и DynamicNavigation, вызывавшие ошибки 422. Заменены на обычную загрузку туров"
+[33m225f554[m  Fix: удалены компоненты SmartRecommendations и DynamicNavigation, вызывавшие ошибки 422. Заменены на обычную загрузку туров
+[33m4849e45[m chore: Trigger Railway redeploy with latest fixes - Force deployment of commit 6a11a9e with JSON serialization fixes - Current Railway deploy is outdated (8fa52c62) - This commit will trigger automatic redeploy
+[33m6a11a9e[m fix: Remove alembic_version insert from SQL script - Supabase doesn't have alembic_version table - Categories will work without it
+[33m75a915d[m feat: Add SQL script for manual database setup - CREATE_CATEGORIES_TABLES.sql for direct Supabase execution - Creates categories and collections tables - Inserts 17 base categories and 3 collections - Includes instructions in APPLY_SQL_MANUALLY.md
+[33m8c2358d[m fix: Correct migration revision reference from full name to short ID - Change down_revision from '2025_10_15_1100_011_add_client_telegram' to '011' - Fixes KeyError in Alembic migration chain
+[33m601d04e[m fix: Add proper JSON serialization for recommendation endpoints - Convert Tour objects to dict for JSON response - Fix 422 Unprocessable Entity errors - Add review count calculation for recommendations
+[33m88bf10e[m fix: Rename 'metadata' to 'extra_data' to avoid SQLAlchemy reserved keyword - SQLAlchemy reserves 'metadata' in Declarative API - Updated models, schemas, migrations, and scripts - This fixes the production deployment error
+[33mcc95988[m fix: Resolve TypeScript build errors - Remove unused imports and variables - Replace react-hot-toast with alert for compatibility - Remove unused toursApi reference in HomePage
+[33mefcee21[m feat: Complete navigation and recommendations system overhaul - Add Category and Collection models with database migrations - Implement ML-like recommendation algorithm with Jaccard similarity - Add smart recommendations, collaborative filtering, and personalization - Create dynamic navigation from real tour data - Add admin panel for category management (CRUD) - Add DynamicNavigation and SmartRecommendations components - Update HomePage with smart recommendations - Add API endpoints for categories and recommendations - Add init_categories.py script for base data
+[33m0d0b837[m  Fix: улучшен hover эффект в навигации - активная ссылка остается белой, неактивные становятся черными при наведении
+[33md1dda9d[m  Fix: убран неиспользуемый импорт Button из PublicHeader
+[33m8ce780d[m  Floating Glassmorphism Header - лого в белой капсуле слева, навигация и кнопки с эффектом жидкого стекла
+[33m101e345[m  Переделан главный экран в стиле Floating/Overlay Design - текст без блоков на фоне, как в Kinopoisk/Netflix
+[33mc87106f[m fix: СѓР»СѓС‡С€РµРЅР° Р°РґР°РїС‚РёРІРЅРѕСЃС‚СЊ РєР°Р»РµРЅРґР°СЂСЏ РґР»СЏ РјРѕР±РёР»СЊРЅС‹С… СѓСЃС‚СЂРѕР№СЃС‚РІ
+[33m672b8a3[m fix: СѓР»СѓС‡С€РµРЅР° Р°РґР°РїС‚РёРІРЅРѕСЃС‚СЊ Р»РёС‡РЅРѕРіРѕ РєР°Р±РёРЅРµС‚Р° РЅР° РІСЃРµС… СѓСЃС‚СЂРѕР№СЃС‚РІР°С…

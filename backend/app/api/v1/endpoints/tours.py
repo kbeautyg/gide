@@ -369,8 +369,8 @@ async def get_tour_by_code(
         seo_title=tour_db.seo_title,
         seo_description=tour_db.seo_description,
         long_description=tour_db.long_description,
-        start_date=tour_db.start_date,
-        end_date=tour_db.end_date,
+        start_date=str(tour_db.start_date) if tour_db.start_date else None,
+        end_date=str(tour_db.end_date) if tour_db.end_date else None,
         total_bookings=tour_db.total_bookings or 0,
     )
     
@@ -379,6 +379,144 @@ async def get_tour_by_code(
         "client_data": client_data,  # Данные клиента из заявки для предзаполнения
     }
 
+
+# ============= СТАТИЧЕСКИЕ РОУТЫ (ДОЛЖНЫ БЫТЬ ПЕРЕД /{tour_id}!) =============
+
+@router.get("/categories")
+async def get_categories(db: AsyncSession = Depends(get_db)):
+    """Получить список категорий с количеством туров"""
+    tours = await TourService.get_all_tours(db)
+    
+    # Подсчёт по быстрым фильтрам
+    all_count = len([t for t in tours if t.is_public])
+    discount_count = len([t for t in tours if t.is_public and t.has_discount])
+    new_count = len([t for t in tours if t.is_public and t.is_new])
+    
+    # Подсчёт по темам
+    themes_count = {}
+    for tour in tours:
+        if tour.is_public and tour.themes:
+            for theme in tour.themes:
+                themes_count[theme] = themes_count.get(theme, 0) + 1
+    
+    # Подсчёт по форматам
+    formats_count = {}
+    for tour in tours:
+        if tour.is_public and tour.formats:
+            for format_type in tour.formats:
+                formats_count[format_type] = formats_count.get(format_type, 0) + 1
+    
+    return {
+        "quick_filters": {
+            "all": all_count,
+            "with_discount": discount_count,
+            "new": new_count
+        },
+        "themes": themes_count,
+        "formats": formats_count
+    }
+
+
+@router.get("/smart-recommendations")
+async def get_smart_recommendations(
+    tour_id: Optional[int] = Query(None, description="ID тура для похожих рекомендаций"),
+    user_id: Optional[int] = Query(None, description="ID пользователя для персонализации"),
+    location: Optional[str] = Query(None, description="Локация для популярных туров"),
+    limit: int = Query(6, description="Количество рекомендаций"),
+    db: AsyncSession = Depends(get_db)
+):
+    """
+    Умные рекомендации на основе ML-алгоритмов
+    
+    - Если указан tour_id: похожие туры на основе контентной схожести
+    - Если указан user_id: персонализированные рекомендации
+    - Если указана location: популярные туры в локации
+    - Иначе: глобально популярные туры
+    """
+    from app.models.review import Review
+    
+    try:
+        print(f"🔍 DEBUG: Smart recommendations - tour_id={tour_id}, user_id={user_id}, location={location}, limit={limit}")
+        tours_db = await RecommendationService.get_smart_recommendations(
+            db,
+            tour_id=tour_id,
+            user_id=user_id,
+            location=location,
+            limit=limit
+        )
+        print(f"✅ DEBUG: Got {len(tours_db)} tours from recommendation service")
+        
+        # Преобразуем в сериализуемый формат
+        tours_list = []
+        for tour_db in tours_db:
+            # Считаем реальное количество отзывов
+            reviews_count_result = await db.execute(
+                select(func.count(Review.id)).where(Review.tour_id == tour_db.id)
+            )
+            real_reviews_count = reviews_count_result.scalar() or 0
+            
+            tours_list.append({
+                "id": tour_db.id,
+                "title": tour_db.title,
+                "description": tour_db.description,
+                "price": tour_db.price,
+                "duration": tour_db.duration,
+                "location": tour_db.location,
+                "category": tour_db.category,
+                "photos": tour_db.photos or [],
+                "rating": tour_db.rating,
+                "reviews_count": real_reviews_count,
+                "guide_id": tour_db.guide_id,
+                "active": tour_db.active,
+                "is_public": tour_db.is_public,
+                "share_code": tour_db.share_code,
+                "created_at": tour_db.created_at.isoformat() if tour_db.created_at else None,
+            })
+        
+        print(f"✅ DEBUG: Serialized {len(tours_list)} tours successfully")
+        return {"tours": tours_list, "total": len(tours_list), "algorithm": "smart_recommendations"}
+    
+    except Exception as e:
+        print(f"❌ ERROR in smart-recommendations: {type(e).__name__}: {str(e)}")
+        import traceback
+        traceback.print_exc()
+        return {
+            "success": False,
+            "tours": [],
+            "total": 0,
+            "error": str(e),
+            "type": type(e).__name__
+        }
+
+
+@router.get("/dynamic-navigation")
+async def get_dynamic_navigation(db: AsyncSession = Depends(get_db)):
+    """
+    Динамическая навигация на основе реальных данных туров
+    Автоматически создает категории из landmarks, tags, themes
+    """
+    try:
+        print("🔍 DEBUG: Starting dynamic navigation generation...")
+        navigation_data = await RecommendationService.get_dynamic_categories_from_tours(db)
+        print(f"✅ DEBUG: Navigation data generated: {len(navigation_data)} sections")
+        
+        return {
+            "success": True,
+            "data": navigation_data,
+            "message": "Динамическая навигация сгенерирована на основе реальных данных"
+        }
+    except Exception as e:
+        print(f"❌ ERROR in dynamic-navigation: {type(e).__name__}: {str(e)}")
+        import traceback
+        traceback.print_exc()
+        return {
+            "success": False,
+            "error": str(e),
+            "type": type(e).__name__
+        }
+
+
+# ============= ДИНАМИЧЕСКИЕ РОУТЫ (ПОСЛЕ СТАТИЧЕСКИХ!) =============
 
 @router.get("/{tour_id}", response_model=Tour)
 async def get_tour(
@@ -797,189 +935,3 @@ async def get_tour_recommendations(
         ))
     
     return {"tours": tours_list, "total": len(tours_list)}
-
-
-@router.get("/categories")
-async def get_categories(db: AsyncSession = Depends(get_db)):
-    """Получить список категорий с количеством туров"""
-    tours = await TourService.get_all_tours(db)
-    
-    # Подсчёт по быстрым фильтрам
-    all_count = len([t for t in tours if t.is_public])
-    discount_count = len([t for t in tours if t.is_public and t.has_discount])
-    new_count = len([t for t in tours if t.is_public and t.is_new])
-    
-    # Подсчёт по темам
-    themes_count = {}
-    for tour in tours:
-        if tour.is_public and tour.themes:
-            for theme in tour.themes:
-                themes_count[theme] = themes_count.get(theme, 0) + 1
-    
-    # Подсчёт по форматам
-    formats_count = {}
-    for tour in tours:
-        if tour.is_public and tour.formats:
-            for format_type in tour.formats:
-                formats_count[format_type] = formats_count.get(format_type, 0) + 1
-    
-    return {
-        "quick_filters": {
-            "all": all_count,
-            "with_discount": discount_count,
-            "new": new_count
-        },
-        "themes": themes_count,
-        "formats": formats_count
-    }
-
-
-@router.get("/smart-recommendations")
-async def get_smart_recommendations(
-    tour_id: Optional[int] = Query(None, description="ID тура для похожих рекомендаций"),
-    user_id: Optional[int] = Query(None, description="ID пользователя для персонализации"),
-    location: Optional[str] = Query(None, description="Локация для популярных туров"),
-    limit: int = Query(6, description="Количество рекомендаций"),
-    db: AsyncSession = Depends(get_db)
-):
-    """
-    Умные рекомендации на основе ML-алгоритмов
-    
-    - Если указан tour_id: похожие туры на основе контентной схожести
-    - Если указан user_id: персонализированные рекомендации
-    - Если указана location: популярные туры в локации
-    - Иначе: глобально популярные туры
-    """
-    from app.models.review import Review
-    
-    try:
-        print(f"🔍 DEBUG: Smart recommendations - tour_id={tour_id}, user_id={user_id}, location={location}, limit={limit}")
-        tours_db = await RecommendationService.get_smart_recommendations(
-            db,
-            tour_id=tour_id,
-            user_id=user_id,
-            location=location,
-            limit=limit
-        )
-        print(f"✅ DEBUG: Got {len(tours_db)} tours from recommendation service")
-        
-        # Преобразуем в сериализуемый формат
-        tours_list = []
-        for tour_db in tours_db:
-            # Считаем реальное количество отзывов
-            reviews_count_result = await db.execute(
-                select(func.count(Review.id)).where(Review.tour_id == tour_db.id)
-            )
-            real_reviews_count = reviews_count_result.scalar() or 0
-            
-            tours_list.append({
-                "id": tour_db.id,
-                "title": tour_db.title,
-                "description": tour_db.description,
-                "price": tour_db.price,
-                "duration": tour_db.duration,
-                "location": tour_db.location,
-                "category": tour_db.category,
-                "photos": tour_db.photos or [],
-                "rating": tour_db.rating,
-                "reviews_count": real_reviews_count,
-                "guide_id": tour_db.guide_id,
-                "active": tour_db.active,
-                "is_public": tour_db.is_public,
-                "share_code": tour_db.share_code,
-                "created_at": tour_db.created_at.isoformat() if tour_db.created_at else None,
-            })
-        
-        print(f"✅ DEBUG: Serialized {len(tours_list)} tours successfully")
-        return {"tours": tours_list, "total": len(tours_list), "algorithm": "smart_recommendations"}
-    
-    except Exception as e:
-        print(f"❌ ERROR in smart-recommendations: {type(e).__name__}: {str(e)}")
-        import traceback
-        traceback.print_exc()
-        return {
-            "success": False,
-            "tours": [],
-            "total": 0,
-            "error": str(e),
-            "type": type(e).__name__
-        }
-
-
-@router.get("/collaborative-recommendations/{tour_id}")
-async def get_collaborative_recommendations(
-    tour_id: int,
-    limit: int = Query(6, description="Количество рекомендаций"),
-    db: AsyncSession = Depends(get_db)
-):
-    """
-    Рекомендации на основе совместной фильтрации
-    "Пользователи, которые заказывали этот тур, также заказывали..."
-    """
-    from app.models.review import Review
-    
-    tours_db = await RecommendationService.get_collaborative_recommendations(
-        db,
-        tour_id=tour_id,
-        limit=limit
-    )
-    
-    # Преобразуем в сериализуемый формат
-    tours_list = []
-    for tour_db in tours_db:
-        reviews_count_result = await db.execute(
-            select(func.count(Review.id)).where(Review.tour_id == tour_db.id)
-        )
-        real_reviews_count = reviews_count_result.scalar() or 0
-        
-        tours_list.append({
-            "id": tour_db.id,
-            "title": tour_db.title,
-            "description": tour_db.description,
-            "price": tour_db.price,
-            "duration": tour_db.duration,
-            "location": tour_db.location,
-            "category": tour_db.category,
-            "photos": tour_db.photos or [],
-            "rating": tour_db.rating,
-            "reviews_count": real_reviews_count,
-            "guide_id": tour_db.guide_id,
-            "active": tour_db.active,
-            "is_public": tour_db.is_public,
-            "share_code": tour_db.share_code,
-            "created_at": tour_db.created_at.isoformat() if tour_db.created_at else None,
-        })
-    
-    return {
-        "tours": tours_list,
-        "total": len(tours_list),
-        "algorithm": "collaborative_filtering",
-        "message": "Пользователи, которые заказывали этот тур, также заказывали..."
-    }
-
-
-@router.get("/dynamic-navigation")
-async def get_dynamic_navigation(db: AsyncSession = Depends(get_db)):
-    """
-    Динамическая навигация на основе реальных данных туров
-    Автоматически создает категории из landmarks, tags, themes
-    """
-    try:
-        print("🔍 DEBUG: Starting dynamic navigation generation...")
-        navigation_data = await RecommendationService.get_dynamic_categories_from_tours(db)
-        print(f"✅ DEBUG: Navigation data generated: {len(navigation_data)} sections")
-        
-        return {
-            "success": True,
-            "data": navigation_data,
-            "message": "Динамическая навигация сгенерирована на основе реальных данных"
-        }
-    except Exception as e:
-        print(f"❌ ERROR in dynamic-navigation: {type(e).__name__}: {str(e)}")
-        import traceback
-        traceback.print_exc()
-        return {
-            "success": False,
-            "error": str(e),
-            "type": type(e).__name__
-        }
