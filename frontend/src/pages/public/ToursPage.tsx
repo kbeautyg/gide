@@ -1,9 +1,9 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import { useSearchParams, Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { X } from 'lucide-react'
-import { toursApi } from '@/lib/api'
+import { toursApi, api } from '@/lib/api'
 import { PublicHeader } from '@/components/PublicHeader'
 import { PublicFooter } from '@/components/PublicFooter'
 import { SearchBar } from '@/components/SearchBar'
@@ -13,6 +13,7 @@ import { TourCard } from '@/components/TourCard'
 import { TourCardSkeleton } from '@/components/TourCardSkeleton'
 import { CityHero } from '@/components/CityHero'
 import { LandmarksSection } from '@/components/LandmarksSection'
+import { Pagination } from '@/components/Pagination'
 
 // Азиатские страны и города (ТОЛЬКО АЗИЯ!)
 const ASIAN_COUNTRIES = [
@@ -35,20 +36,21 @@ const ASIAN_CITIES = [
 ]
 
 export default function ToursPage() {
-  const [searchParams] = useSearchParams()
+  const [searchParams, setSearchParams] = useSearchParams()
   const [selectedThemes, setSelectedThemes] = useState<string[]>([])
   const [selectedCountries, setSelectedCountries] = useState<string[]>([])
   const [selectedCities, setSelectedCities] = useState<string[]>([])
   const [selectedPriceRanges, setSelectedPriceRanges] = useState<string[]>([])
   const [selectedDurations, setSelectedDurations] = useState<string[]>([])
   const [selectedRatings, setSelectedRatings] = useState<string[]>([])
-  const [showFilters, setShowFilters] = useState(true)  // Показываем категории по умолчанию
+  const [selectedLandmarks, setSelectedLandmarks] = useState<string[]>([])
+  const [showFilters, setShowFilters] = useState(false)
   const [sortBy, setSortBy] = useState('popular')
   const [dateFilter, setDateFilter] = useState('any')
   const [durationFilter, setDurationFilter] = useState('any')
   const [priceFilter, setPriceFilter] = useState('any')
   const [currentPage, setCurrentPage] = useState(1)
-  const toursPerPage = 50  // 50 туров на странице
+  const TOURS_PER_PAGE = 50
   
   // Читаем параметры из URL при загрузке
   const locationParam = searchParams.get('location')
@@ -62,15 +64,21 @@ export default function ToursPage() {
     queryKey: ['categories'],
     queryFn: () => fetch('/api/v1/tours/categories').then(res => res.json()),
   })
+  
+  // Загрузка динамической навигации (достопримечательности и тд)
+  const { data: navigationData } = useQuery({
+    queryKey: ['dynamic-navigation'],
+    queryFn: () => api.get('/tours/dynamic-navigation').then(res => res.data.data),
+  })
 
   // Загрузка экскурсий с фильтрами
   const { data: toursData, isLoading } = useQuery({
     queryKey: ['tours', selectedThemes, selectedCountries, selectedCities, selectedPriceRanges, selectedDurations, selectedRatings, currentPage, landmarksParam],
     queryFn: async () => {
-      // Преобразуем категории в параметры API
+      // Преобразуем фильтры в параметры API
       const params: any = {
-        page: 1,  // Загружаем все, пагинация на клиенте
-        page_size: 500,  // Загружаем все туры для клиентской фильтрации
+        page: currentPage,
+        page_size: 500,  // Получаем все для клиентской пагинации
       }
 
       // Добавляем landmarks параметр если есть
@@ -127,6 +135,15 @@ export default function ToursPage() {
       )
       if (!matchesCity) return false
     }
+    
+    // Достопримечательности
+    if (selectedLandmarks.length > 0) {
+      const tourLandmarks = tour.landmarks || []
+      const matchesLandmark = selectedLandmarks.some(landmark =>
+        tourLandmarks.includes(landmark)
+      )
+      if (!matchesLandmark) return false
+    }
 
     // Фильтр длительности из select
     if (durationFilter !== 'any') {
@@ -169,6 +186,12 @@ export default function ToursPage() {
 
   console.log('Sorted tours:', sortedTours.length, 'Sort by:', sortBy)
 
+  // Пагинация - разбиваем на страницы
+  const totalPages = Math.ceil(sortedTours.length / TOURS_PER_PAGE)
+  const startIndex = (currentPage - 1) * TOURS_PER_PAGE
+  const endIndex = startIndex + TOURS_PER_PAGE
+  const paginatedTours = sortedTours.slice(startIndex, endIndex)
+
   // Формируем список категорий для чипсов
   const themeCategories = categoriesData?.themes 
     ? Object.entries(categoriesData.themes).map(([name, count]) => ({ name, count: count as number }))
@@ -180,6 +203,16 @@ export default function ToursPage() {
         ? prev.filter(t => t !== theme)
         : [...prev, theme]
     )
+    setCurrentPage(1)  // Сброс на первую страницу
+  }
+  
+  const handleLandmarkSelect = (landmark: string) => {
+    setSelectedLandmarks(prev =>
+      prev.includes(landmark)
+        ? prev.filter(l => l !== landmark)
+        : [...prev, landmark]
+    )
+    setCurrentPage(1)
   }
 
   const handleFilterApply = (filters: any) => {
@@ -187,7 +220,7 @@ export default function ToursPage() {
     // Здесь будет логика применения фильтров
   }
 
-  // Подсчет активных категорий
+  // Подсчет активных фильтров
   const activeFiltersCount = 
     selectedCountries.length + 
     selectedCities.length + 
@@ -196,7 +229,7 @@ export default function ToursPage() {
     selectedDurations.length + 
     selectedRatings.length
 
-  // Сброс всех категорий
+  // Сброс всех фильтров
   const handleResetFilters = () => {
     setSelectedCountries([])
     setSelectedCities([])
@@ -204,7 +237,6 @@ export default function ToursPage() {
     setSelectedPriceRanges([])
     setSelectedDurations([])
     setSelectedRatings([])
-    setCurrentPage(1)  // Сброс на первую страницу
   }
 
   // Определяем город и страну из первого тура (если есть locationParam)
@@ -276,7 +308,7 @@ export default function ToursPage() {
         <div className="bg-blue-50 border-b border-blue-100">
           <div className="container mx-auto px-4 py-3">
             <div className="flex items-center gap-2">
-              <span className="text-sm text-gray-700">Категория:</span>
+              <span className="text-sm text-gray-700">Фильтр по достопримечательности:</span>
               <div className="flex items-center gap-2 bg-airbnb-rausch text-white px-3 py-1 rounded-full text-sm font-medium">
                 {landmarksParam}
                 <button onClick={removeLandmarksFilter} className="hover:opacity-80">
@@ -307,7 +339,7 @@ export default function ToursPage() {
         </section>
       )}
 
-      {/* Категории и сортировка */}
+      {/* Фильтры и сортировка */}
       <div className="bg-white border-b sticky top-[72px] z-20">
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between gap-4 flex-wrap">
@@ -360,7 +392,7 @@ export default function ToursPage() {
           {activeFiltersCount > 0 && (
             <div className="flex items-center justify-between">
               <p className="text-sm text-gray-600">
-                Выбрано категорий: <span className="font-bold text-airbnb-rausch">{activeFiltersCount}</span>
+                Активных фильтров: <span className="font-bold text-airbnb-rausch">{activeFiltersCount}</span>
               </p>
               <button
                 onClick={handleResetFilters}
@@ -371,7 +403,7 @@ export default function ToursPage() {
                 </div>
           )}
 
-          {/* Категория: Страны */}
+          {/* Фильтр по странам */}
                 <div>
             <h3 className="text-sm font-semibold text-gray-700 mb-2">🌏 Страны</h3>
             <div className="flex gap-2 overflow-x-auto scrollbar-hide pb-2">
@@ -398,7 +430,7 @@ export default function ToursPage() {
             </div>
                 </div>
 
-          {/* Категория: Города */}
+          {/* Фильтр по городам */}
                 <div>
             <h3 className="text-sm font-semibold text-gray-700 mb-2">📍 Города</h3>
             <div className="flex gap-2 overflow-x-auto scrollbar-hide pb-2">
@@ -425,8 +457,21 @@ export default function ToursPage() {
                   </div>
                 </div>
 
+          {/* Достопримечательности как категории */}
+          {navigationData?.landmarks && navigationData.landmarks.length > 0 && (
+            <div>
+              <h2 className="text-xl font-bold text-gray-900 mb-4">🏛️ Достопримечательности</h2>
+              <CategoryChips
+                categories={navigationData.landmarks.map((l: any) => ({ name: l.name, count: l.count }))}
+                selected={selectedLandmarks}
+                onSelect={handleLandmarkSelect}
+                maxVisible={12}
+              />
+            </div>
+          )}
+
           <div>
-            <h2 className="text-xl font-bold text-gray-900 mb-4">Категории</h2>
+            <h2 className="text-xl font-bold text-gray-900 mb-4">🎨 Категории</h2>
             <CategoryChips
               categories={themeCategories}
               selected={selectedThemes}
@@ -532,7 +577,7 @@ export default function ToursPage() {
             <div>
               <h2 className="text-2xl font-bold text-gray-900 mb-1">Все туры</h2>
               <p className="text-gray-600">
-                Показано {Math.min((currentPage - 1) * toursPerPage + 1, sortedTours.length)}-{Math.min(currentPage * toursPerPage, sortedTours.length)} из {sortedTours.length} {(() => {
+                Показано {paginatedTours.length} из {sortedTours.length} {(() => {
                   const count = sortedTours.length;
                   if (count === 1) return 'экскурсии';
                   if (count < 5) return 'экскурсий';
@@ -541,42 +586,17 @@ export default function ToursPage() {
               </p>
             </div>
             
-            <div className="flex items-center gap-4">
-              <select
-                value={sortBy}
-                onChange={(e) => setSortBy(e.target.value)}
-                className="px-4 py-2 rounded-lg border border-gray-300 bg-white text-gray-900 cursor-pointer hover:border-gray-900 transition-colors"
-              >
-                <option value="popular">По популярности</option>
-                <option value="price_asc">Сначала дешёвые</option>
-                <option value="price_desc">Сначала дорогие</option>
-                <option value="rating">По рейтингу</option>
-                <option value="new">Сначала новые</option>
-              </select>
-              
-              {/* Пагинация справа */}
-              {Math.ceil(sortedTours.length / toursPerPage) > 1 && (
-                <div className="flex items-center gap-2">
-                  <button
-                    onClick={() => setCurrentPage(p => Math.max(1, p - 1))}
-                    disabled={currentPage === 1}
-                    className="px-3 py-2 rounded-lg border border-gray-300 bg-white hover:bg-gray-50 disabled:opacity-30 disabled:cursor-not-allowed transition-all"
-                  >
-                    ←
-                  </button>
-                  <span className="text-sm text-gray-700">
-                    {currentPage} / {Math.ceil(sortedTours.length / toursPerPage)}
-                  </span>
-                  <button
-                    onClick={() => setCurrentPage(p => Math.min(Math.ceil(sortedTours.length / toursPerPage), p + 1))}
-                    disabled={currentPage >= Math.ceil(sortedTours.length / toursPerPage)}
-                    className="px-3 py-2 rounded-lg border border-gray-300 bg-white hover:bg-gray-50 disabled:opacity-30 disabled:cursor-not-allowed transition-all"
-                  >
-                    →
-                  </button>
-                </div>
-              )}
-            </div>
+            <select
+              value={sortBy}
+              onChange={(e) => setSortBy(e.target.value)}
+              className="px-4 py-2 rounded-lg border border-gray-300 bg-white text-gray-900 cursor-pointer hover:border-gray-900 transition-colors"
+            >
+              <option value="popular">По популярности</option>
+              <option value="price_asc">Сначала дешёвые</option>
+              <option value="price_desc">Сначала дорогие</option>
+              <option value="rating">По рейтингу</option>
+              <option value="new">Сначала новые</option>
+            </select>
           </div>
 
           {/* Сетка туров */}
@@ -589,97 +609,51 @@ export default function ToursPage() {
           ) : sortedTours.length === 0 ? (
             <div className="text-center py-20">
               <p className="text-gray-600 text-lg">Экскурсии не найдены</p>
-              <p className="text-gray-500 mt-2">Попробуйте изменить категории</p>
+              <p className="text-gray-500 mt-2">Попробуйте изменить фильтры</p>
             </div>
           ) : (
-            <>
-              <motion.div
-                className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"
-                initial="hidden"
-                animate="visible"
-                variants={{
-                  hidden: { opacity: 0 },
-                  visible: {
-                    opacity: 1,
-                    transition: {
-                      staggerChildren: 0.05
-                    }
+            <motion.div
+              className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"
+              initial="hidden"
+              animate="visible"
+              variants={{
+                hidden: { opacity: 0 },
+                visible: {
+                  opacity: 1,
+                  transition: {
+                    staggerChildren: 0.05
                   }
+                }
+              }}
+            >
+              {paginatedTours.map((tour) => (
+                <motion.div
+                  key={tour.id}
+                  variants={{
+                    hidden: { opacity: 0, y: 20 },
+                    visible: { opacity: 1, y: 0 }
+                  }}
+                >
+                  <TourCard tour={tour} />
+                </motion.div>
+              ))}
+            </motion.div>
+          )}
+
+          {/* Пагинация снизу */}
+          {!isLoading && sortedTours.length > 0 && (
+            <div className="mt-12">
+              <Pagination
+                currentPage={currentPage}
+                totalPages={totalPages}
+                onPageChange={(page) => {
+                  setCurrentPage(page)
+                  window.scrollTo({ top: 0, behavior: 'smooth' })
                 }}
-              >
-                {sortedTours
-                  .slice((currentPage - 1) * toursPerPage, currentPage * toursPerPage)
-                  .map((tour) => (
-                    <motion.div
-                      key={tour.id}
-                      variants={{
-                        hidden: { opacity: 0, y: 20 },
-                        visible: { opacity: 1, y: 0 }
-                      }}
-                    >
-                      <TourCard tour={tour} />
-                    </motion.div>
-                  ))}
-              </motion.div>
-              
-              {/* Пагинация снизу */}
-              {Math.ceil(sortedTours.length / toursPerPage) > 1 && (
-                <div className="flex items-center justify-center gap-2 mt-8">
-                  <button
-                    onClick={() => {
-                      setCurrentPage(p => Math.max(1, p - 1))
-                      window.scrollTo({ top: 0, behavior: 'smooth' })
-                    }}
-                    disabled={currentPage === 1}
-                    className="px-4 py-2 rounded-lg border border-gray-300 bg-white hover:bg-gray-50 disabled:opacity-30 disabled:cursor-not-allowed transition-all font-medium"
-                  >
-                    ← Назад
-                  </button>
-                  
-                  <div className="flex items-center gap-1">
-                    {Array.from({ length: Math.ceil(sortedTours.length / toursPerPage) }, (_, i) => i + 1)
-                      .filter(page => {
-                        // Показываем первую, последнюю и 2 вокруг текущей
-                        const totalPages = Math.ceil(sortedTours.length / toursPerPage)
-                        return page === 1 || 
-                               page === totalPages || 
-                               Math.abs(page - currentPage) <= 1
-                      })
-                      .map((page, index, array) => (
-                        <div key={page} className="flex items-center">
-                          {index > 0 && array[index - 1] !== page - 1 && (
-                            <span className="px-2 text-gray-400">...</span>
-                          )}
-                          <button
-                            onClick={() => {
-                              setCurrentPage(page)
-                              window.scrollTo({ top: 0, behavior: 'smooth' })
-                            }}
-                            className={`px-3 py-2 rounded-lg transition-all ${
-                              currentPage === page
-                                ? 'bg-airbnb-rausch text-white font-bold'
-                                : 'bg-white border border-gray-300 hover:bg-gray-50 text-gray-700'
-                            }`}
-                          >
-                            {page}
-                          </button>
-                        </div>
-                      ))}
-                  </div>
-                  
-                  <button
-                    onClick={() => {
-                      setCurrentPage(p => Math.min(Math.ceil(sortedTours.length / toursPerPage), p + 1))
-                      window.scrollTo({ top: 0, behavior: 'smooth' })
-                    }}
-                    disabled={currentPage >= Math.ceil(sortedTours.length / toursPerPage)}
-                    className="px-4 py-2 rounded-lg border border-gray-300 bg-white hover:bg-gray-50 disabled:opacity-30 disabled:cursor-not-allowed transition-all font-medium"
-                  >
-                    Вперед →
-                  </button>
-                </div>
-              )}
-            </>
+                totalItems={sortedTours.length}
+                itemsPerPage={TOURS_PER_PAGE}
+              />
+            </div>
           )}
         </div>
       </section>
