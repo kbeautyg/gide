@@ -3,10 +3,9 @@ import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { 
   MapPin, Star, Heart, Clock, ChevronLeft, ChevronRight, User,
-  DollarSign, Calendar, Trophy, Sparkles
+  DollarSign, Trophy, Sparkles
 } from 'lucide-react'
 import { Card } from '@/components/ui/card'
-import { Badge } from '@/components/ui/badge'
 import { ViewersCount } from '@/components/ViewersCount'
 import { formatRUB } from '@/lib/utils'
 import { cn } from '@/lib/utils'
