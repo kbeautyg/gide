@@ -65,7 +65,7 @@ export default function ToursPage() {
 
   // Загрузка экскурсий с фильтрами
   const { data: toursData, isLoading } = useQuery({
-    queryKey: ['tours', selectedThemes, selectedCountries, selectedCities, selectedPriceRanges, selectedDurations, selectedRatings, currentPage, landmarksParam],
+    queryKey: ['tours', selectedThemes, selectedCountries, selectedCities, selectedPriceRanges, selectedDurations, selectedRatings, currentPage, landmarksParam, locationParam, guestsParam, dateFilter, durationFilter, priceFilter],
     queryFn: async () => {
       // Преобразуем фильтры в параметры API
       const params: any = {
@@ -78,13 +78,62 @@ export default function ToursPage() {
         params.landmarks = landmarksParam
       }
 
-      // Цена
+      // Location из URL
+      if (locationParam) {
+        params.location = locationParam
+      }
+
+      // Guests из URL
+      if (guestsParam) {
+        params.min_group_size = parseInt(guestsParam)
+      }
+
+      // Страны
+      if (selectedCountries.length > 0) {
+        params.countries = selectedCountries.join(',')
+      }
+
+      // Города
+      if (selectedCities.length > 0) {
+        params.cities = selectedCities.join(',')
+      }
+
+      // Темы/категории
+      if (selectedThemes.length > 0) {
+        params.themes = selectedThemes.join(',')
+      }
+
+      // Цена из чипсов
       if (selectedPriceRanges.includes('До 5000₽')) params.max_price = 5000
       if (selectedPriceRanges.includes('5000-10000₽')) {
         params.min_price = 5000
         params.max_price = 10000
       }
       if (selectedPriceRanges.includes('10000+₽')) params.min_price = 10000
+
+      // Цена из select
+      if (priceFilter === 'cheap') params.max_price = 3000
+      if (priceFilter === 'medium') {
+        params.min_price = 3000
+        params.max_price = 7000
+      }
+      if (priceFilter === 'expensive') {
+        params.min_price = 7000
+        params.max_price = 15000
+      }
+      if (priceFilter === 'luxury') params.min_price = 15000
+
+      // Длительность из select
+      if (durationFilter === 'short') params.max_duration = 2
+      if (durationFilter === 'medium') {
+        params.min_duration = 2
+        params.max_duration = 4
+      }
+      if (durationFilter === 'long') {
+        params.min_duration = 4
+        params.max_duration = 8
+      }
+      if (durationFilter === 'fullday') params.min_duration = 7
 
       const response = await toursApi.getList(params)
       console.log('Tours API response:', response.data)
@@ -94,61 +143,8 @@ export default function ToursPage() {
 
   const tours = toursData?.tours || []
   
-  // Клиентская фильтрация (страны, города, select фильтры + URL параметры)
-  const filteredTours = tours.filter((tour: any) => {
-    // Фильтр по location из URL
-    if (locationParam) {
-      const locationLower = tour.location?.toLowerCase() || ''
-      if (!locationLower.includes(locationParam.toLowerCase())) {
-        return false
-      }
-    }
-    
-    // Фильтр по guests из URL
-    if (guestsParam) {
-      const guests = parseInt(guestsParam)
-      if (tour.max_group_size && tour.max_group_size < guests) {
-        return false
-      }
-    }
-    
-    // Страны
-    if (selectedCountries.length > 0) {
-      const matchesCountry = selectedCountries.some(country => 
-        tour.country === country || tour.location?.includes(country)
-      )
-      if (!matchesCountry) return false
-    }
-
-    // Города
-    if (selectedCities.length > 0) {
-      const matchesCity = selectedCities.some(city => 
-        tour.location === city || tour.location?.includes(city)
-      )
-      if (!matchesCity) return false
-    }
-
-    // Фильтр длительности из select
-    if (durationFilter !== 'any') {
-      if (durationFilter === 'short' && tour.duration > 2) return false
-      if (durationFilter === 'medium' && (tour.duration < 2 || tour.duration > 4)) return false
-      if (durationFilter === 'long' && (tour.duration < 4 || tour.duration > 8)) return false
-      if (durationFilter === 'fullday' && tour.duration < 7) return false
-    }
-
-    // Фильтр цены из select
-    if (priceFilter !== 'any') {
-      if (priceFilter === 'cheap' && tour.price > 3000) return false
-      if (priceFilter === 'medium' && (tour.price < 3000 || tour.price > 7000)) return false
-      if (priceFilter === 'expensive' && (tour.price < 7000 || tour.price > 15000)) return false
-      if (priceFilter === 'luxury' && tour.price < 15000) return false
-    }
-
-    return true
-  })
-
-  // Сортировка
-  const sortedTours = [...filteredTours].sort((a: any, b: any) => {
+  // Сортировка (фильтрация теперь на бэкенде)
+  const sortedTours = [...tours].sort((a: any, b: any) => {
     switch (sortBy) {
       case 'price_asc':
         return a.price - b.price
@@ -187,14 +183,12 @@ export default function ToursPage() {
     // Здесь будет логика применения фильтров
   }
 
-  // Подсчет активных фильтров
+  // Подсчет активных категорий (только видимые в блоке "Активные категории")
   const activeFiltersCount = 
     selectedCountries.length + 
     selectedCities.length + 
     selectedThemes.length + 
-    selectedPriceRanges.length + 
-    selectedDurations.length + 
-    selectedRatings.length
+    (landmarksParam ? 1 : 0)
 
   // Сброс всех фильтров
   const handleResetFilters = () => {
@@ -409,7 +403,7 @@ export default function ToursPage() {
                 </div>
 
           <div>
-            <h2 className="text-xl font-bold text-gray-900 mb-4">Категории</h2>
+            <h2 className="text-xl font-bold text-airbnb-rausch mb-4">Категории</h2>
             <CategoryChips
               categories={themeCategories}
               selected={selectedThemes}
@@ -615,7 +609,7 @@ export default function ToursPage() {
           </div>
 
           {/* Пагинация сверху */}
-          {toursData?.total && toursData.total > 50 && (
+          {toursData?.total && toursData.total > 50 && sortedTours.length > 0 && (
             <div className="mb-6">
               <Pagination
                 currentPage={currentPage}
@@ -670,7 +664,7 @@ export default function ToursPage() {
           )}
 
           {/* Пагинация снизу */}
-          {toursData?.total && toursData.total > 50 && (
+          {toursData?.total && toursData.total > 50 && sortedTours.length > 0 && (
             <div className="mt-8">
               <Pagination
                 currentPage={currentPage}
