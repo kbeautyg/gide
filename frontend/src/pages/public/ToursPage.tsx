@@ -339,7 +339,7 @@ export default function ToursPage() {
                 onClick={handleResetFilters}
                 className="text-sm text-airbnb-rausch hover:underline font-medium"
               >
-                Сбросить всё
+                Сбросить все категории
               </button>
                 </div>
           )}
@@ -399,7 +399,7 @@ export default function ToursPage() {
                 </div>
 
           <div>
-            <h2 className="text-xl font-bold text-airbnb-rausch mb-4">Категории</h2>
+            <h3 className="text-sm font-semibold text-gray-700 mb-2">Категории</h3>
             <CategoryChips
               categories={themeCategories}
               selected={selectedThemes}
@@ -608,7 +608,7 @@ export default function ToursPage() {
           </div>
 
           {/* Пагинация сверху */}
-          {toursData?.total && toursData.total > 50 && sortedTours.length > 0 && (
+          {toursData && toursData.total > 50 && sortedTours.length > 0 && (
             <div className="mb-6">
               <Pagination
                 currentPage={currentPage}
@@ -663,7 +663,7 @@ export default function ToursPage() {
           )}
 
           {/* Пагинация снизу */}
-          {toursData?.total && toursData.total > 50 && sortedTours.length > 0 && (
+          {toursData && toursData.total > 50 && sortedTours.length > 0 && (
             <div className="mt-8">
               <Pagination
                 currentPage={currentPage}
