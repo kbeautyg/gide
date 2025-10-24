@@ -1,9 +1,9 @@
-import { useState, useMemo } from 'react'
+import { useState } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import { useSearchParams, Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { X } from 'lucide-react'
-import { toursApi } from '@/lib/api'
+import { toursApi, api } from '@/lib/api'
 import { PublicHeader } from '@/components/PublicHeader'
 import { PublicFooter } from '@/components/PublicFooter'
 import { SearchBar } from '@/components/SearchBar'
@@ -13,6 +13,7 @@ import { TourCard } from '@/components/TourCard'
 import { TourCardSkeleton } from '@/components/TourCardSkeleton'
 import { CityHero } from '@/components/CityHero'
 import { LandmarksSection } from '@/components/LandmarksSection'
+import { Pagination } from '@/components/Pagination'
 
 // Азиатские страны и города (ТОЛЬКО АЗИЯ!)
 const ASIAN_COUNTRIES = [
@@ -36,7 +37,7 @@ const ASIAN_CITIES = [
 
 export default function ToursPage() {
   const [searchParams] = useSearchParams()
-  const [selectedCategories, setSelectedCategories] = useState<string[]>([])
+  const [selectedThemes, setSelectedThemes] = useState<string[]>([])
   const [selectedCountries, setSelectedCountries] = useState<string[]>([])
   const [selectedCities, setSelectedCities] = useState<string[]>([])
   const [selectedPriceRanges, setSelectedPriceRanges] = useState<string[]>([])
@@ -48,7 +49,6 @@ export default function ToursPage() {
   const [durationFilter, setDurationFilter] = useState('any')
   const [priceFilter, setPriceFilter] = useState('any')
   const [currentPage, setCurrentPage] = useState(1)
-  const pageSize = 50
   
   // Читаем параметры из URL при загрузке
   const locationParam = searchParams.get('location')
@@ -57,25 +57,20 @@ export default function ToursPage() {
   // const dateStartParam = searchParams.get('date_start')  // TODO: использовать для фильтрации по датам
   // const dateEndParam = searchParams.get('date_end')  // TODO: использовать для фильтрации по датам
 
-  // Загрузка категорий
-  const { data: categoriesData } = useQuery({
-    queryKey: ['categories'],
-    queryFn: () => fetch('/api/v1/tours/categories').then(res => res.json()),
-  })
-
+  // Загрузка динамических категорий из navigation API
   const { data: navigationData } = useQuery({
-    queryKey: ['tours-dynamic-navigation'],
-    queryFn: () => fetch('/api/v1/tours/dynamic-navigation').then(res => res.json()),
+    queryKey: ['dynamic-navigation'],
+    queryFn: () => api.get('/tours/dynamic-navigation').then(res => res.data.data),
   })
 
   // Загрузка экскурсий с фильтрами
   const { data: toursData, isLoading } = useQuery({
-    queryKey: ['tours', selectedCountries, selectedCities, selectedPriceRanges, selectedDurations, selectedRatings, locationParam, landmarksParam],
+    queryKey: ['tours', selectedThemes, selectedCountries, selectedCities, selectedPriceRanges, selectedDurations, selectedRatings, currentPage, landmarksParam],
     queryFn: async () => {
       // Преобразуем фильтры в параметры API
       const params: any = {
-        page: 1,
-        page_size: 500,
+        page: currentPage,
+        page_size: 50,  // 50 туров на страницу
       }
 
       // Добавляем landmarks параметр если есть
@@ -133,19 +128,6 @@ export default function ToursPage() {
       if (!matchesCity) return false
     }
 
-    // Категории (темы/теги/landmarks)
-    if (selectedCategories.length > 0) {
-      const matchesCategory = selectedCategories.some(category => {
-        const lower = category.toLowerCase()
-        const themes = (tour.themes || []).map((t: string) => t.toLowerCase())
-        const tags = (tour.tags || []).map((t: string) => t.toLowerCase())
-        const landmarks = (tour.landmarks || []).map((t: string) => t.toLowerCase())
-        const mainCategory = (tour.category || '').toLowerCase()
-        return themes.includes(lower) || tags.includes(lower) || landmarks.includes(lower) || mainCategory === lower
-      })
-      if (!matchesCategory) return false
-    }
-
     // Фильтр длительности из select
     if (durationFilter !== 'any') {
       if (durationFilter === 'short' && tour.duration > 2) return false
@@ -166,68 +148,37 @@ export default function ToursPage() {
   })
 
   // Сортировка
-  const sortedTours = useMemo(() => {
-    return [...filteredTours].sort((a: any, b: any) => {
-      switch (sortBy) {
-        case 'price_asc':
-          return a.price - b.price
-        case 'price_desc':
-          return b.price - a.price
-        case 'rating':
-          return b.rating - a.rating
-        case 'new':
-          return new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
-        case 'popular':
-        default:
-          const scoreA = (a.total_bookings || 0) * 2 + (a.views_count || 0) * 0.1 + (a.rating || 0) * 10
-          const scoreB = (b.total_bookings || 0) * 2 + (b.views_count || 0) * 0.1 + (b.rating || 0) * 10
-          return scoreB - scoreA
-      }
-    })
-  }, [filteredTours, sortBy])
+  const sortedTours = [...filteredTours].sort((a: any, b: any) => {
+    switch (sortBy) {
+      case 'price_asc':
+        return a.price - b.price
+      case 'price_desc':
+        return b.price - a.price
+      case 'rating':
+        return b.rating - a.rating
+      case 'new':
+        return new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
+      case 'popular':
+      default:
+        // Формула популярности: бронирования * 2 + просмотры * 0.1 + рейтинг * 10
+        const scoreA = (a.total_bookings || 0) * 2 + (a.views_count || 0) * 0.1 + (a.rating || 0) * 10
+        const scoreB = (b.total_bookings || 0) * 2 + (b.views_count || 0) * 0.1 + (b.rating || 0) * 10
+        return scoreB - scoreA
+    }
+  })
 
   console.log('Sorted tours:', sortedTours.length, 'Sort by:', sortBy)
 
-  // Пагинация
-  const totalTours = sortedTours.length
-  const totalPages = Math.max(1, Math.ceil(totalTours / pageSize))
-  const startIndex = totalTours === 0 ? 0 : (currentPage - 1) * pageSize + 1
-  const endIndex = Math.min(currentPage * pageSize, totalTours)
-  const paginatedTours = sortedTours.slice((currentPage - 1) * pageSize, currentPage * pageSize)
-
-  // Функция для смены страницы
-  const handlePageChange = (newPage: number) => {
-    if (newPage >= 1 && newPage <= totalPages) {
-      setCurrentPage(newPage)
-      window.scrollTo({ top: 0, behavior: 'smooth' })
-    }
-  }
-
-  // Формируем список категорий для чипсов
-  const themeCategories = categoriesData?.themes 
-    ? Object.entries(categoriesData.themes).map(([name, count]) => ({ name, count: count as number }))
+  // Формируем список категорий для чипсов из динамических данных
+  const themeCategories = navigationData?.themes 
+    ? navigationData.themes.map((item: any) => ({ name: item.name, count: item.count }))
     : []
 
-  const dynamicLandmarkCategories = navigationData?.data?.landmarks
-    ? navigationData.data.landmarks.slice(0, 30)
-    : []
-
-  const combinedCategories = useMemo(() => {
-    const map = new Map<string, number>()
-    dynamicLandmarkCategories.forEach((item: any) => {
-      map.set(item.name, (map.get(item.name) || 0) + item.count)
-    })
-    themeCategories.forEach((item: any) => {
-      map.set(item.name, (map.get(item.name) || 0) + item.count)
-    })
-    return Array.from(map.entries()).map(([name, count]) => ({ name, count }))
-  }, [dynamicLandmarkCategories, themeCategories])
-
-  const handleCategorySelect = (category: string) => {
-    setSelectedCategories(prev =>
-      prev.includes(category)
-        ? prev.filter(c => c !== category)
-        : [...prev, category]
+  const handleThemeSelect = (theme: string) => {
+    setSelectedThemes(prev =>
+      prev.includes(theme)
+        ? prev.filter(t => t !== theme)
+        : [...prev, theme]
     )
   }
 
@@ -240,7 +191,7 @@ export default function ToursPage() {
   const activeFiltersCount = 
     selectedCountries.length + 
     selectedCities.length + 
-    selectedCategories.length + 
+    selectedThemes.length + 
     selectedPriceRanges.length + 
     selectedDurations.length + 
     selectedRatings.length
@@ -249,7 +200,7 @@ export default function ToursPage() {
   const handleResetFilters = () => {
     setSelectedCountries([])
     setSelectedCities([])
-    setSelectedCategories([])
+    setSelectedThemes([])
     setSelectedPriceRanges([])
     setSelectedDurations([])
     setSelectedRatings([])
@@ -319,22 +270,6 @@ export default function ToursPage() {
         </div>
       </div>
 
-      {/* Активный фильтр по достопримечательности */}
-      {landmarksParam && (
-        <div className="bg-blue-50 border-b border-blue-100">
-          <div className="container mx-auto px-4 py-3">
-            <div className="flex items-center gap-2">
-              <span className="text-sm text-gray-700">Фильтр по достопримечательности:</span>
-              <div className="flex items-center gap-2 bg-airbnb-rausch text-white px-3 py-1 rounded-full text-sm font-medium">
-                {landmarksParam}
-                <button onClick={removeLandmarksFilter} className="hover:opacity-80">
-                  <X size={16} />
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
 
       {/* Landmarks Section - показываем только если есть locationParam и нет активного фильтра по landmarks */}
       {locationParam && !landmarksParam && (
@@ -401,14 +336,14 @@ export default function ToursPage() {
                   </div>
                 </div>
 
-      {/* Секция категорий (Рубрики) */}
+      {/* Секция категорий */}
       <div className="bg-white border-b">
         <div className="container mx-auto px-4 py-6 space-y-4">
           {/* Заголовок с кнопкой сброса */}
           {activeFiltersCount > 0 && (
             <div className="flex items-center justify-between">
-            <p className="text-sm text-gray-600">
-              Выбрано категорий: <span className="font-bold text-airbnb-rausch">{activeFiltersCount}</span>
+              <p className="text-sm text-gray-600">
+                Активных категорий: <span className="font-bold text-airbnb-rausch">{activeFiltersCount}</span>
               </p>
               <button
                 onClick={handleResetFilters}
@@ -420,8 +355,8 @@ export default function ToursPage() {
           )}
 
           {/* Фильтр по странам */}
-          <div>
-            <h3 className="text-sm font-semibold text-gray-700 mb-2">🌏 Категории по странам</h3>
+                <div>
+            <h3 className="text-sm font-semibold text-gray-700 mb-2">🌏 Страны</h3>
             <div className="flex gap-2 overflow-x-auto scrollbar-hide pb-2">
               {ASIAN_COUNTRIES.map((country, index) => (
                 <motion.button
@@ -447,8 +382,8 @@ export default function ToursPage() {
                 </div>
 
           {/* Фильтр по городам */}
-          <div>
-            <h3 className="text-sm font-semibold text-gray-700 mb-2">📍 Категории по городам</h3>
+                <div>
+            <h3 className="text-sm font-semibold text-gray-700 mb-2">📍 Города</h3>
             <div className="flex gap-2 overflow-x-auto scrollbar-hide pb-2">
               {ASIAN_CITIES.map((city, index) => (
                 <motion.button
@@ -475,12 +410,12 @@ export default function ToursPage() {
 
           <div>
             <h2 className="text-xl font-bold text-gray-900 mb-4">Категории</h2>
-          <CategoryChips
-            categories={combinedCategories}
-            selected={selectedCategories}
-            onSelect={handleCategorySelect}
-            maxVisible={18}
-          />
+            <CategoryChips
+              categories={themeCategories}
+              selected={selectedThemes}
+              onSelect={handleThemeSelect}
+              maxVisible={12}
+            />
           </div>
 
           {/* Фильтр по цене */}
@@ -555,74 +490,143 @@ export default function ToursPage() {
                 </div>
           </div>
 
-          {/* Сброс фильтров */}
-          {(selectedCategories.length > 0 || selectedPriceRanges.length > 0 || selectedDurations.length > 0 || selectedRatings.length > 0) && (
+          {/* Сброс категорий */}
+          {(selectedThemes.length > 0 || selectedPriceRanges.length > 0 || selectedDurations.length > 0 || selectedRatings.length > 0) && (
             <button
               onClick={() => {
-                setSelectedCategories([])
+                setSelectedThemes([])
                 setSelectedPriceRanges([])
                 setSelectedDurations([])
                 setSelectedRatings([])
               }}
               className="text-sm text-airbnb-rausch hover:underline font-medium"
             >
-              Сбросить все фильтры
+              Сбросить все категории
             </button>
           )}
         </div>
       </div>
 
+      {/* Активные категории - отображение выбранных */}
+      {(selectedThemes.length > 0 || selectedCountries.length > 0 || selectedCities.length > 0 || landmarksParam) && (
+        <div className="bg-gray-50 border-b">
+          <div className="container mx-auto px-4 py-4">
+            <div className="flex items-center gap-2 flex-wrap">
+              <span className="text-sm font-semibold text-gray-700">Активные категории:</span>
+              
+              {/* Landmarks из URL */}
+              {landmarksParam && (
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  className="flex items-center gap-2 bg-airbnb-rausch text-white px-3 py-1.5 rounded-full text-sm font-medium"
+                >
+                  {landmarksParam}
+                  <button onClick={removeLandmarksFilter} className="hover:opacity-80">
+                    <X size={16} />
+                  </button>
+                </motion.div>
+              )}
+
+              {/* Выбранные темы */}
+              {selectedThemes.map((theme) => (
+                <motion.div
+                  key={theme}
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  className="flex items-center gap-2 bg-airbnb-rausch text-white px-3 py-1.5 rounded-full text-sm font-medium"
+                >
+                  {theme}
+                  <button onClick={() => handleThemeSelect(theme)} className="hover:opacity-80">
+                    <X size={16} />
+                  </button>
+                </motion.div>
+              ))}
+
+              {/* Выбранные страны */}
+              {selectedCountries.map((country) => (
+                <motion.div
+                  key={country}
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  className="flex items-center gap-2 bg-airbnb-rausch text-white px-3 py-1.5 rounded-full text-sm font-medium"
+                >
+                  {country}
+                  <button
+                    onClick={() => setSelectedCountries(prev => prev.filter(c => c !== country))}
+                    className="hover:opacity-80"
+                  >
+                    <X size={16} />
+                  </button>
+                </motion.div>
+              ))}
+
+              {/* Выбранные города */}
+              {selectedCities.map((city) => (
+                <motion.div
+                  key={city}
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  className="flex items-center gap-2 bg-airbnb-rausch text-white px-3 py-1.5 rounded-full text-sm font-medium"
+                >
+                  {city}
+                  <button
+                    onClick={() => setSelectedCities(prev => prev.filter(c => c !== city))}
+                    className="hover:opacity-80"
+                  >
+                    <X size={16} />
+                  </button>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Основной контент */}
       <section className="py-8 bg-gray-50">
         <div className="container mx-auto px-4">
           {/* Заголовок и сортировка */}
-          <div className="flex items-center justify-between gap-4 flex-wrap mb-6">
+          <div className="flex items-center justify-between mb-6">
             <div>
               <h2 className="text-2xl font-bold text-gray-900 mb-1">Все туры</h2>
               <p className="text-gray-600">
-                {totalTours} {(() => {
-                  if (totalTours === 1) return 'экскурсия'
-                  if (totalTours > 1 && totalTours < 5) return 'экскурсии'
-                  return 'экскурсий'
-                })()} • Показано {totalTours === 0 ? 0 : `${startIndex}-${endIndex}`}
+                {(() => {
+                  const total = toursData?.total || sortedTours.length;
+                  const start = (currentPage - 1) * 50 + 1;
+                  const end = Math.min(currentPage * 50, total);
+                  const countWord = total === 1 ? 'экскурсия' : total < 5 ? 'экскурсии' : 'экскурсий';
+                  return `Показано ${start}-${end} из ${total} ${countWord}`;
+                })()}
               </p>
             </div>
-
-            <div className="flex items-center gap-3">
-              {totalPages > 1 && (
-                <div className="flex items-center gap-2">
-                  <button
-                    onClick={() => handlePageChange(currentPage - 1)}
-                    disabled={currentPage === 1}
-                    className="px-3 py-2 border border-gray-300 rounded-lg text-sm text-gray-600 hover:border-gray-900 disabled:opacity-40 disabled:cursor-default"
-                  >
-                    Назад
-                  </button>
-                  <span className="text-sm text-gray-600">
-                    Страница {currentPage} из {totalPages}
-                  </span>
-                  <button
-                    onClick={() => handlePageChange(currentPage + 1)}
-                    disabled={currentPage === totalPages}
-                    className="px-3 py-2 border border-gray-300 rounded-lg text-sm text-gray-600 hover:border-gray-900 disabled:opacity-40 disabled:cursor-default"
-                  >
-                    Вперёд
-                  </button>
-                </div>
-              )}
-              <select
-                value={sortBy}
-                onChange={(e) => setSortBy(e.target.value)}
-                className="px-4 py-2 rounded-lg border border-gray-300 bg-white text-gray-900 cursor-pointer hover:border-gray-900 transition-colors"
-              >
-                <option value="popular">По популярности</option>
-                <option value="price_asc">Сначала дешёвые</option>
-                <option value="price_desc">Сначала дорогие</option>
-                <option value="rating">По рейтингу</option>
-                <option value="new">Сначала новые</option>
-              </select>
-            </div>
+            
+            <select
+              value={sortBy}
+              onChange={(e) => setSortBy(e.target.value)}
+              className="px-4 py-2 rounded-lg border border-gray-300 bg-white text-gray-900 cursor-pointer hover:border-gray-900 transition-colors"
+            >
+              <option value="popular">По популярности</option>
+              <option value="price_asc">Сначала дешёвые</option>
+              <option value="price_desc">Сначала дорогие</option>
+              <option value="rating">По рейтингу</option>
+              <option value="new">Сначала новые</option>
+            </select>
           </div>
+
+          {/* Пагинация сверху */}
+          {toursData?.total && toursData.total > 50 && (
+            <div className="mb-6">
+              <Pagination
+                currentPage={currentPage}
+                totalPages={Math.ceil(toursData.total / 50)}
+                onPageChange={(page) => {
+                  setCurrentPage(page)
+                  window.scrollTo({ top: 0, behavior: 'smooth' })
+                }}
+              />
+            </div>
+          )}
 
           {/* Сетка туров */}
           {isLoading ? (
@@ -634,7 +638,7 @@ export default function ToursPage() {
           ) : sortedTours.length === 0 ? (
             <div className="text-center py-20">
               <p className="text-gray-600 text-lg">Экскурсии не найдены</p>
-              <p className="text-gray-500 mt-2">Попробуйте изменить фильтры</p>
+              <p className="text-gray-500 mt-2">Попробуйте изменить категории</p>
             </div>
           ) : (
             <motion.div
@@ -651,7 +655,7 @@ export default function ToursPage() {
                 }
               }}
             >
-          {paginatedTours.map((tour: any) => (
+              {sortedTours.map((tour) => (
                 <motion.div
                   key={tour.id}
                   variants={{
@@ -663,6 +667,20 @@ export default function ToursPage() {
                 </motion.div>
               ))}
             </motion.div>
+          )}
+
+          {/* Пагинация снизу */}
+          {toursData?.total && toursData.total > 50 && (
+            <div className="mt-8">
+              <Pagination
+                currentPage={currentPage}
+                totalPages={Math.ceil(toursData.total / 50)}
+                onPageChange={(page) => {
+                  setCurrentPage(page)
+                  window.scrollTo({ top: 0, behavior: 'smooth' })
+                }}
+              />
+            </div>
           )}
         </div>
       </section>

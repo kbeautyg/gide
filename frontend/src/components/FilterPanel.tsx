@@ -108,7 +108,7 @@ export function FilterPanel({ isOpen, onClose, onApply }: FilterPanelProps) {
             <div className="flex items-center justify-between p-6 border-b">
               <h2 className="text-lg font-semibold flex items-center gap-2">
                 <SlidersHorizontal size={20} />
-                Фильтры
+                Категории
               </h2>
               <button
                 onClick={onClose}
