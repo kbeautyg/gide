@@ -78,24 +78,20 @@ export default function ToursPage() {
         params.landmarks = landmarksParam
       }
 
-      // Location из URL
+      // Location из URL или выбранные города/страны
       if (locationParam) {
         params.location = locationParam
+      } else if (selectedCities.length > 0) {
+        // Если выбраны города, используем первый город для location
+        params.location = selectedCities[0]
+      } else if (selectedCountries.length > 0) {
+        // Если выбраны страны, используем первую страну для location
+        params.location = selectedCountries[0]
       }
 
       // Guests из URL
       if (guestsParam) {
-        params.min_group_size = parseInt(guestsParam)
-      }
-
-      // Страны
-      if (selectedCountries.length > 0) {
-        params.countries = selectedCountries.join(',')
-      }
-
-      // Города
-      if (selectedCities.length > 0) {
-        params.cities = selectedCities.join(',')
+        params.guests = parseInt(guestsParam)
       }
 
       // Темы/категории
@@ -124,16 +120,16 @@ export default function ToursPage() {
       if (priceFilter === 'luxury') params.min_price = 15000
 
       // Длительность из select
-      if (durationFilter === 'short') params.max_duration = 2
+      if (durationFilter === 'short') params.duration_max = 2
       if (durationFilter === 'medium') {
-        params.min_duration = 2
-        params.max_duration = 4
+        params.duration_min = 2
+        params.duration_max = 4
       }
       if (durationFilter === 'long') {
-        params.min_duration = 4
-        params.max_duration = 8
+        params.duration_min = 4
+        params.duration_max = 8
       }
-      if (durationFilter === 'fullday') params.min_duration = 7
+      if (durationFilter === 'fullday') params.duration_min = 7
 
       const response = await toursApi.getList(params)
       console.log('Tours API response:', response.data)
@@ -586,7 +582,10 @@ export default function ToursPage() {
               <h2 className="text-2xl font-bold text-gray-900 mb-1">Все туры</h2>
               <p className="text-gray-600">
                 {(() => {
-                  const total = toursData?.total || sortedTours.length;
+                  const total = toursData?.total || 0;
+                  if (total === 0) {
+                    return 'Экскурсий не найдено';
+                  }
                   const start = (currentPage - 1) * 50 + 1;
                   const end = Math.min(currentPage * 50, total);
                   const countWord = total === 1 ? 'экскурсия' : total < 5 ? 'экскурсии' : 'экскурсий';
