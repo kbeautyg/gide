@@ -489,8 +489,8 @@ export default function TourDetailPage() {
           </div>
 
           {/* Sidebar - форма бронирования */}
-          <div className="lg:w-[360px] lg:flex-shrink-0 lg:self-start mt-8 lg:mt-0">
-            <div className="sticky top-32">
+          <div className="mt-8 lg:mt-0 lg:w-[360px] lg:flex-shrink-0">
+            <div className="sticky top-[132px]">
               <Card className="shadow-2xl border-2 border-airbnb-rausch/20 overflow-hidden">
                 <div className="bg-gradient-to-r from-airbnb-rausch to-pink-600 p-6 text-white text-center">
                   <p className="text-4xl font-bold mb-2">{formatRUB(tour.price)}</p>
@@ -606,7 +606,8 @@ export default function TourDetailPage() {
                   )}
                 </CardContent>
               </Card>
-            </aside>
+            </div>
+            </div>
           </div>
         </div>
 
