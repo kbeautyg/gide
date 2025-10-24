@@ -139,7 +139,7 @@ export default function TourDetailPage() {
         </div>
       </div>
 
-      <div className="container mx-auto px-4 py-8">
+      <div className="container mx-auto px-4 py-8 relative">
         {/* Hero галерея 2×2 */}
         <div className="mb-8">
           <div className="grid grid-cols-4 gap-2 h-[500px] rounded-xl overflow-hidden shadow-xl">
@@ -490,7 +490,7 @@ export default function TourDetailPage() {
 
           {/* Sidebar - форма бронирования */}
           <div className="lg:w-1/3 flex-shrink-0">
-            <div className="sticky top-24">
+            <div className="sticky top-24 max-h-[calc(100vh-6rem)] overflow-auto">
               <Card className="shadow-2xl border-2 border-airbnb-rausch/20 overflow-hidden">
                 <div className="bg-gradient-to-r from-airbnb-rausch to-pink-600 p-6 text-white text-center">
                   <p className="text-4xl font-bold mb-2">{formatRUB(tour.price)}</p>
