@@ -175,9 +175,9 @@ export default function TourDetailPage() {
           </div>
         </div>
 
-        <div className="flex flex-col lg:flex-row gap-8">
+        <div className="lg:grid lg:grid-cols-3 lg:gap-8 lg:items-start">
           {/* Основной контент */}
-          <div className="flex-1 lg:w-2/3 space-y-6">
+          <div className="lg:col-span-2 space-y-6">
             {/* Заголовок и действия */}
             <div className="bg-white rounded-2xl shadow-lg p-6">
               <div className="flex items-center justify-between mb-4">
@@ -489,8 +489,8 @@ export default function TourDetailPage() {
           </div>
 
           {/* Sidebar - форма бронирования */}
-          <div className="lg:w-1/3 flex-shrink-0">
-            <div className="sticky top-24 max-h-[calc(100vh-6rem)] overflow-auto">
+          <div className="lg:col-span-1">
+            <aside className="lg:sticky lg:top-24">
               <Card className="shadow-2xl border-2 border-airbnb-rausch/20 overflow-hidden">
                 <div className="bg-gradient-to-r from-airbnb-rausch to-pink-600 p-6 text-white text-center">
                   <p className="text-4xl font-bold mb-2">{formatRUB(tour.price)}</p>
@@ -606,7 +606,7 @@ export default function TourDetailPage() {
                   )}
                 </CardContent>
               </Card>
-            </div>
+            </aside>
           </div>
         </div>
 
