@@ -490,9 +490,9 @@ export default function TourDetailPage() {
 
           {/* Sidebar - форма бронирования */}
           <div className="mt-8 lg:mt-0 lg:w-[360px] lg:flex-shrink-0">
-            <div className="sticky top-[132px]">
+            <div className="lg:sticky lg:top-[132px]">
               <Card className="shadow-2xl border-2 border-airbnb-rausch/20 overflow-hidden">
-                <div className="bg-gradient-to-r from-airbnb-rausch to-pink-600 p-6 text-white text-center">
+                <div className="bg-gradient-to-r from-airbnb-rausch to-pink-600 p-6 text-white текст-center">
                   <p className="text-4xl font-bold mb-2">{formatRUB(tour.price)}</p>
                   <p className="text-white/90">за человека</p>
                   </div>
@@ -606,7 +606,6 @@ export default function TourDetailPage() {
                   )}
                 </CardContent>
               </Card>
-            </div>
             </div>
           </div>
         </div>
