@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import { useQuery, useMutation } from '@tanstack/react-query'
 import { motion } from 'framer-motion'
@@ -8,6 +8,7 @@ import {
   Shield, Calendar as CalendarIcon, Gift, Sparkles,
   AlertCircle, Info, Navigation, Globe
 } from 'lucide-react'
+import { useScrollPosition } from '@/hooks/useScrollPosition'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
@@ -31,6 +32,24 @@ export default function TourDetailPage() {
     telegram: '',
   })
   const [showSuccess, setShowSuccess] = useState(false)
+  
+  // Отслеживание скролла и позиции галереи
+  const scrollY = useScrollPosition()
+  const galleryRef = useRef<HTMLDivElement>(null)
+  const [galleryBottom, setGalleryBottom] = useState(0)
+
+  useEffect(() => {
+    if (galleryRef.current) {
+      const rect = galleryRef.current.getBoundingClientRect()
+      setGalleryBottom(rect.bottom + window.scrollY)
+    }
+  }, [])
+
+  // Вычислить позицию карточки
+  const cardTop = Math.max(
+    galleryBottom, // Не выше галереи
+    scrollY + (window.innerHeight / 2) - 300 // Центр viewport минус половина высоты карточки
+  )
 
   // Загрузка экскурсии
   const { data: tourData, isLoading } = useQuery({
@@ -141,7 +160,7 @@ export default function TourDetailPage() {
 
       <div className="container mx-auto px-4 py-8 relative">
         {/* Hero галерея 2×2 */}
-        <div className="mb-8">
+        <div ref={galleryRef} className="mb-8">
           <div className="grid grid-cols-4 gap-2 h-[500px] rounded-xl overflow-hidden shadow-xl">
             {/* Большое фото слева */}
             <div className="col-span-2 row-span-2 cursor-pointer relative group">
@@ -175,7 +194,7 @@ export default function TourDetailPage() {
           </div>
         </div>
 
-        <div className="lg:flex lg:items-start lg:gap-8">
+        <div className="lg:grid lg:grid-cols-[1fr_360px] lg:gap-8 lg:relative">
           {/* Основной контент */}
           <div className="flex-1 space-y-6">
             {/* Заголовок и действия */}
@@ -489,10 +508,17 @@ export default function TourDetailPage() {
           </div>
 
           {/* Sidebar - форма бронирования */}
-          <div className="mt-8 lg:mt-0 lg:w-[360px] lg:flex-shrink-0">
-            <div className="lg:sticky lg:top-[132px]">
-              <Card className="shadow-2xl border-2 border-airbnb-rausch/20 overflow-hidden">
-                <div className="bg-gradient-to-r from-airbnb-rausch to-pink-600 p-6 text-white текст-center">
+          <aside 
+            className="mt-8 lg:mt-0"
+            style={{
+              position: typeof window !== 'undefined' && window.innerWidth >= 1024 ? 'absolute' : 'relative',
+              top: typeof window !== 'undefined' && window.innerWidth >= 1024 ? `${cardTop}px` : 'auto',
+              right: 0,
+              width: typeof window !== 'undefined' && window.innerWidth >= 1024 ? '360px' : 'auto'
+            }}
+          >
+            <Card className="shadow-2xl border-2 border-airbnb-rausch/20 overflow-hidden">
+              <div className="bg-gradient-to-r from-airbnb-rausch to-pink-600 p-6 text-white text-center">
                   <p className="text-4xl font-bold mb-2">{formatRUB(tour.price)}</p>
                   <p className="text-white/90">за человека</p>
                   </div>
@@ -606,8 +632,7 @@ export default function TourDetailPage() {
                   )}
                 </CardContent>
               </Card>
-            </div>
-          </div>
+          </aside>
         </div>
 
         {/* Похожие туры */}
