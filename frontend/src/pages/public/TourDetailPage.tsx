@@ -40,35 +40,6 @@ export default function TourDetailPage() {
   const [galleryBottom, setGalleryBottom] = useState(0)
   const [contentBottom, setContentBottom] = useState(0)
 
-  useEffect(() => {
-    const updatePositions = () => {
-      if (galleryRef.current) {
-        const rect = galleryRef.current.getBoundingClientRect()
-        setGalleryBottom(rect.bottom + window.scrollY)
-      }
-      if (contentRef.current) {
-        const rect = contentRef.current.getBoundingClientRect()
-        setContentBottom(rect.bottom + window.scrollY)
-      }
-    }
-    
-    updatePositions()
-    window.addEventListener('resize', updatePositions)
-    return () => window.removeEventListener('resize', updatePositions)
-  }, [])
-
-  // Вычислить позицию карточки
-  const cardHeight = 600 // Примерная высота карточки
-  const headerOffset = 100 // Отступ от верха (header)
-  
-  const cardTop = Math.max(
-    galleryBottom, // Не выше галереи
-    Math.min(
-      scrollY + headerOffset, // Прилипает к верху с отступом
-      contentBottom - cardHeight - 50 // Не ниже контента (с отступом 50px)
-    )
-  )
-
   // Загрузка экскурсии
   const { data: tourData, isLoading } = useQuery({
     queryKey: ['tour', id],
@@ -104,6 +75,50 @@ export default function TourDetailPage() {
 
   const reviews = reviewsData || []
   const relatedTours = relatedToursData?.tours || []
+
+  // Обновление позиций для sticky карточки
+  useEffect(() => {
+    const updatePositions = () => {
+      if (galleryRef.current) {
+        const rect = galleryRef.current.getBoundingClientRect()
+        setGalleryBottom(rect.bottom + window.scrollY)
+      }
+      if (contentRef.current) {
+        const rect = contentRef.current.getBoundingClientRect()
+        setContentBottom(rect.bottom + window.scrollY)
+      }
+    }
+    
+    // Обновляем позиции с задержкой для загрузки контента
+    const timer = setTimeout(updatePositions, 100)
+    updatePositions()
+    
+    window.addEventListener('resize', updatePositions)
+    return () => {
+      clearTimeout(timer)
+      window.removeEventListener('resize', updatePositions)
+    }
+  }, [tour])
+
+  // Вычислить позицию карточки
+  const cardHeight = 650 // Примерная высота карточки
+  const headerOffset = 100 // Отступ от верха (header)
+  
+  // Базовая позиция - прилипает к верху с отступом
+  let calculatedTop = scrollY + headerOffset
+  
+  // Не выше галереи
+  if (galleryBottom > 0) {
+    calculatedTop = Math.max(calculatedTop, galleryBottom)
+  }
+  
+  // Не ниже контента (только если contentBottom уже рассчитан)
+  if (contentBottom > 0) {
+    const maxTop = contentBottom - cardHeight - 50
+    calculatedTop = Math.min(calculatedTop, maxTop)
+  }
+  
+  const cardTop = calculatedTop
 
   // Создание бронирования
   const bookingMutation = useMutation({
