@@ -34,7 +34,8 @@ export default function TourDetailPage() {
   
   // Refs для sticky sidebar
   const sidebarRef = useRef<HTMLElement>(null)
-  const [sidebarTop, setSidebarTop] = useState(0)
+  const contentRef = useRef<HTMLDivElement>(null)
+  const [sidebarStyle, setSidebarStyle] = useState<React.CSSProperties>({})
 
   // Загрузка экскурсии
   const { data: tourData, isLoading } = useQuery({
@@ -72,48 +73,85 @@ export default function TourDetailPage() {
   const reviews = reviewsData || []
   const relatedTours = relatedToursData?.tours || []
 
-  // Sticky sidebar logic
+  // Sticky sidebar logic - используем requestAnimationFrame для плавности
   useEffect(() => {
+    if (!sidebarRef.current || !contentRef.current) return
+
+    let ticking = false
+
     const handleScroll = () => {
-      if (!sidebarRef.current) return
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          updateSidebarPosition()
+          ticking = false
+        })
+        ticking = true
+      }
+    }
+
+    const updateSidebarPosition = () => {
+      if (!sidebarRef.current || !contentRef.current) return
       
       const isLargeScreen = window.innerWidth >= 1024
       if (!isLargeScreen) {
-        setSidebarTop(0)
+        setSidebarStyle({})
         return
       }
 
-      const headerHeight = 80 // Высота хедера
-      const scrollY = window.scrollY
-      const viewportHeight = window.innerHeight
-      const sidebarHeight = sidebarRef.current.offsetHeight
+      const headerHeight = 100 // Высота хедера + отступ
+      const sidebar = sidebarRef.current
+      const content = contentRef.current
       
-      // Начальная позиция sidebar (когда страница загружена)
-      const sidebarInitialTop = sidebarRef.current.getBoundingClientRect().top + scrollY - headerHeight
+      const sidebarHeight = sidebar.offsetHeight
+      const contentRect = content.getBoundingClientRect()
+      const contentBottom = contentRect.bottom
       
-      // Рассчитываем позицию так, чтобы sidebar оставался видимым
-      const maxScroll = document.documentElement.scrollHeight - viewportHeight
-      const sidebarMaxTop = maxScroll - sidebarHeight - headerHeight
-      
-      // Sidebar начинает двигаться только после того, как пользователь проскроллил до него
-      if (scrollY < sidebarInitialTop) {
-        setSidebarTop(0)
-      } else {
-        // Ограничиваем движение sidebar
-        const calculatedTop = Math.min(scrollY - sidebarInitialTop + headerHeight, sidebarMaxTop)
-        setSidebarTop(Math.max(0, calculatedTop))
+      // Если sidebar выше чем контент, используем sticky
+      if (contentBottom - headerHeight < sidebarHeight) {
+        setSidebarStyle({
+          position: 'sticky',
+          top: `${headerHeight}px`,
+        })
+        return
       }
+
+      const scrollY = window.scrollY
+      const sidebarTop = sidebar.getBoundingClientRect().top + scrollY
+      
+      // Если sidebar еще не достиг верха viewport
+      if (scrollY + headerHeight < sidebarTop) {
+        setSidebarStyle({})
+        return
+      }
+      
+      // Если sidebar достиг низа контента
+      if (contentBottom <= sidebarHeight + headerHeight) {
+        const offset = contentRect.top + contentRect.height - sidebarHeight
+        setSidebarStyle({
+          position: 'sticky',
+          top: `${offset}px`,
+        })
+        return
+      }
+      
+      // Нормальное sticky поведение
+      setSidebarStyle({
+        position: 'sticky',
+        top: `${headerHeight}px`,
+      })
     }
 
-    handleScroll() // Вызываем сразу
+    // Инициализация
+    updateSidebarPosition()
+    
     window.addEventListener('scroll', handleScroll, { passive: true })
-    window.addEventListener('resize', handleScroll)
+    window.addEventListener('resize', updateSidebarPosition)
 
     return () => {
       window.removeEventListener('scroll', handleScroll)
-      window.removeEventListener('resize', handleScroll)
+      window.removeEventListener('resize', updateSidebarPosition)
     }
-  }, [])
+  }, [tour])
 
   // Создание бронирования
   const bookingMutation = useMutation({
@@ -224,7 +262,7 @@ export default function TourDetailPage() {
 
         <div className="lg:grid lg:grid-cols-3 lg:gap-8">
           {/* Основной контент */}
-          <div className="lg:col-span-2 space-y-6">
+          <div ref={contentRef} className="lg:col-span-2 space-y-6">
             {/* Заголовок и действия */}
             <div className="bg-white rounded-2xl shadow-lg p-6">
               <div className="flex items-center justify-between mb-4">
@@ -538,11 +576,8 @@ export default function TourDetailPage() {
           {/* Sidebar - форма бронирования */}
           <aside
             ref={sidebarRef}
-            className="mt-8 lg:mt-0 lg:col-span-1 lg:row-span-5 lg:self-start [transition:none!important]"
-            style={{
-              transform: `translateY(${sidebarTop}px)`,
-              willChange: 'transform'
-            }}
+            className="mt-8 lg:mt-0 lg:col-span-1 lg:self-start"
+            style={sidebarStyle}
           >
               <Card className="shadow-2xl border-2 border-airbnb-rausch/20 overflow-hidden">
               <div className="bg-gradient-to-r from-airbnb-rausch to-pink-600 p-6 text-white text-center">
