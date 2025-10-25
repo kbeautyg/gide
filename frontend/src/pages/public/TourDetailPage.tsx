@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react'
+import { useState, useRef } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import { useQuery, useMutation } from '@tanstack/react-query'
 import { motion } from 'framer-motion'
@@ -8,7 +8,6 @@ import {
   Shield, Calendar as CalendarIcon, Gift, Sparkles,
   AlertCircle, Info, Navigation, Globe
 } from 'lucide-react'
-import { useScrollPosition } from '@/hooks/useScrollPosition'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
@@ -33,12 +32,9 @@ export default function TourDetailPage() {
   })
   const [showSuccess, setShowSuccess] = useState(false)
   
-  // Отслеживание скролла и позиции галереи
-  const scrollY = useScrollPosition()
+  // Refs для sticky карточки (не используются, но оставлены для совместимости)
   const galleryRef = useRef<HTMLDivElement>(null)
   const contentRef = useRef<HTMLDivElement>(null)
-  const [galleryBottom, setGalleryBottom] = useState(0)
-  const [contentBottom, setContentBottom] = useState(0)
 
   // Загрузка экскурсии
   const { data: tourData, isLoading } = useQuery({
@@ -75,52 +71,6 @@ export default function TourDetailPage() {
 
   const reviews = reviewsData || []
   const relatedTours = relatedToursData?.tours || []
-
-  // Обновление позиций для sticky карточки
-  useEffect(() => {
-    const updatePositions = () => {
-      if (galleryRef.current) {
-        const rect = galleryRef.current.getBoundingClientRect()
-        setGalleryBottom(rect.bottom + window.scrollY)
-      }
-      if (contentRef.current) {
-        const rect = contentRef.current.getBoundingClientRect()
-        setContentBottom(rect.bottom + window.scrollY)
-      }
-    }
-    
-    // Обновляем позиции с задержкой для загрузки контента
-    const timer = setTimeout(updatePositions, 100)
-    updatePositions()
-    
-    window.addEventListener('resize', updatePositions)
-    return () => {
-      clearTimeout(timer)
-      window.removeEventListener('resize', updatePositions)
-    }
-  }, [tour])
-
-  // Вычислить позицию карточки
-  const cardHeight = 700 // Примерная высота карточки (увеличена для запаса)
-  const headerOffset = 120 // Отступ от верха (header + отступ для видимости всей карточки)
-  
-  // Базовая позиция - прилипает к верху с отступом
-  let calculatedTop = scrollY + headerOffset
-  
-  // Не выше галереи
-  if (galleryBottom > 0) {
-    calculatedTop = Math.max(calculatedTop, galleryBottom)
-  }
-  
-  // Не ниже контента (только если contentBottom уже рассчитан)
-  if (contentBottom > 0) {
-    const maxTop = contentBottom - cardHeight - 100 // Увеличен отступ снизу
-    if (maxTop > galleryBottom) { // Только если есть место
-      calculatedTop = Math.min(calculatedTop, maxTop)
-    }
-  }
-  
-  const cardTop = calculatedTop
 
   // Создание бронирования
   const bookingMutation = useMutation({
@@ -229,7 +179,7 @@ export default function TourDetailPage() {
           </div>
         </div>
 
-        <div className="lg:grid lg:grid-cols-[1fr_360px] lg:gap-8 lg:relative">
+        <div className="lg:flex lg:gap-8">
           {/* Основной контент */}
           <div ref={contentRef} className="flex-1 space-y-6">
             {/* Заголовок и действия */}
@@ -543,16 +493,9 @@ export default function TourDetailPage() {
           </div>
 
           {/* Sidebar - форма бронирования */}
-          <aside 
-            className="mt-8 lg:mt-0 [transition:none!important]"
-            style={{
-              position: typeof window !== 'undefined' && window.innerWidth >= 1024 ? 'absolute' : 'relative',
-              top: typeof window !== 'undefined' && window.innerWidth >= 1024 ? `${cardTop}px` : 'auto',
-              right: 0,
-              width: typeof window !== 'undefined' && window.innerWidth >= 1024 ? '360px' : 'auto'
-            }}
-          >
-            <Card className="shadow-2xl border-2 border-airbnb-rausch/20 overflow-hidden">
+          <aside className="mt-8 lg:mt-0 lg:w-[360px] lg:shrink-0">
+            <div className="lg:sticky lg:top-24 [transition:none!important]">
+              <Card className="shadow-2xl border-2 border-airbnb-rausch/20 overflow-hidden">
               <div className="bg-gradient-to-r from-airbnb-rausch to-pink-600 p-6 text-white text-center">
                   <p className="text-4xl font-bold mb-2">{formatRUB(tour.price)}</p>
                   <p className="text-white/90">за человека</p>
@@ -667,6 +610,7 @@ export default function TourDetailPage() {
                   )}
                 </CardContent>
               </Card>
+            </div>
           </aside>
         </div>
 
