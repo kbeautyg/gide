@@ -101,8 +101,8 @@ export default function TourDetailPage() {
   }, [tour])
 
   // Вычислить позицию карточки
-  const cardHeight = 650 // Примерная высота карточки
-  const headerOffset = 100 // Отступ от верха (header)
+  const cardHeight = 700 // Примерная высота карточки (увеличена для запаса)
+  const headerOffset = 120 // Отступ от верха (header + отступ для видимости всей карточки)
   
   // Базовая позиция - прилипает к верху с отступом
   let calculatedTop = scrollY + headerOffset
@@ -114,8 +114,10 @@ export default function TourDetailPage() {
   
   // Не ниже контента (только если contentBottom уже рассчитан)
   if (contentBottom > 0) {
-    const maxTop = contentBottom - cardHeight - 50
-    calculatedTop = Math.min(calculatedTop, maxTop)
+    const maxTop = contentBottom - cardHeight - 100 // Увеличен отступ снизу
+    if (maxTop > galleryBottom) { // Только если есть место
+      calculatedTop = Math.min(calculatedTop, maxTop)
+    }
   }
   
   const cardTop = calculatedTop
@@ -542,13 +544,12 @@ export default function TourDetailPage() {
 
           {/* Sidebar - форма бронирования */}
           <aside 
-            className="mt-8 lg:mt-0"
+            className="mt-8 lg:mt-0 [transition:none!important]"
             style={{
               position: typeof window !== 'undefined' && window.innerWidth >= 1024 ? 'absolute' : 'relative',
               top: typeof window !== 'undefined' && window.innerWidth >= 1024 ? `${cardTop}px` : 'auto',
               right: 0,
-              width: typeof window !== 'undefined' && window.innerWidth >= 1024 ? '360px' : 'auto',
-              transition: 'none'
+              width: typeof window !== 'undefined' && window.innerWidth >= 1024 ? '360px' : 'auto'
             }}
           >
             <Card className="shadow-2xl border-2 border-airbnb-rausch/20 overflow-hidden">
