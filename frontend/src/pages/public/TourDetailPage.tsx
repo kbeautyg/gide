@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import { useQuery, useMutation } from '@tanstack/react-query'
 import { motion } from 'framer-motion'
@@ -32,6 +32,10 @@ export default function TourDetailPage() {
   })
   const [showSuccess, setShowSuccess] = useState(false)
   
+  // Refs для плавающей карточки
+  const galleryRef = useRef<HTMLDivElement>(null)
+  const sidebarRef = useRef<HTMLElement>(null)
+  const [sidebarTop, setSidebarTop] = useState(0)
 
   // Загрузка экскурсии
   const { data: tourData, isLoading } = useQuery({
@@ -68,6 +72,41 @@ export default function TourDetailPage() {
 
   const reviews = reviewsData || []
   const relatedTours = relatedToursData?.tours || []
+
+  // Плавающая карточка - следует за скроллом
+  useEffect(() => {
+    const handleScroll = () => {
+      if (!galleryRef.current || !sidebarRef.current) return
+      
+      const isLargeScreen = window.innerWidth >= 1024
+      if (!isLargeScreen) {
+        setSidebarTop(0)
+        return
+      }
+
+      const galleryRect = galleryRef.current.getBoundingClientRect()
+      const galleryBottom = galleryRect.bottom + window.scrollY
+      const viewportCenter = window.scrollY + window.innerHeight / 2
+      const sidebarHeight = sidebarRef.current.offsetHeight
+      
+      // Карточка следует за центром экрана, но не выше галереи
+      const calculatedTop = Math.max(
+        galleryBottom + 20, // Минимум - под галереей
+        viewportCenter - sidebarHeight / 2 // Центр экрана
+      )
+      
+      setSidebarTop(calculatedTop)
+    }
+
+    handleScroll()
+    window.addEventListener('scroll', handleScroll, { passive: true })
+    window.addEventListener('resize', handleScroll)
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll)
+      window.removeEventListener('resize', handleScroll)
+    }
+  }, [tour])
 
   // Создание бронирования
   const bookingMutation = useMutation({
@@ -142,7 +181,7 @@ export default function TourDetailPage() {
 
       <div className="container mx-auto px-4 py-8 relative">
         {/* Hero галерея 2×2 */}
-        <div className="mb-8">
+        <div ref={galleryRef} className="mb-8">
           <div className="grid grid-cols-4 gap-2 h-[500px] rounded-xl overflow-hidden shadow-xl">
             {/* Большое фото слева */}
             <div className="col-span-2 row-span-2 cursor-pointer relative group">
@@ -176,9 +215,9 @@ export default function TourDetailPage() {
           </div>
         </div>
 
-        <div className="lg:grid lg:grid-cols-3 lg:gap-8">
+        <div className="lg:grid lg:grid-cols-[1fr_360px] lg:gap-8 lg:relative">
           {/* Основной контент */}
-          <div className="lg:col-span-2 col-span-3 space-y-6">
+          <div className="space-y-6">
             {/* Заголовок и действия */}
             <div className="bg-white rounded-2xl shadow-lg p-6">
               <div className="flex items-center justify-between mb-4">
@@ -490,8 +529,16 @@ export default function TourDetailPage() {
           </div>
 
           {/* Sidebar - форма бронирования */}
-          <aside className="mt-8 lg:mt-0 lg:col-span-1 lg:row-span-5 col-span-3">
-            <div className="lg:sticky lg:top-20">
+          <aside 
+            ref={sidebarRef}
+            className="mt-8 lg:mt-0"
+            style={{
+              position: typeof window !== 'undefined' && window.innerWidth >= 1024 ? 'absolute' : 'relative',
+              top: typeof window !== 'undefined' && window.innerWidth >= 1024 ? `${sidebarTop}px` : 'auto',
+              right: 0,
+              width: typeof window !== 'undefined' && window.innerWidth >= 1024 ? '360px' : 'auto'
+            }}
+          >
               <Card className="shadow-2xl border-2 border-airbnb-rausch/20 overflow-hidden">
               <div className="bg-gradient-to-r from-airbnb-rausch to-pink-600 p-6 text-white text-center">
                   <p className="text-4xl font-bold mb-2">{formatRUB(tour.price)}</p>
@@ -607,7 +654,6 @@ export default function TourDetailPage() {
                   )}
                 </CardContent>
               </Card>
-            </div>
           </aside>
         </div>
 
