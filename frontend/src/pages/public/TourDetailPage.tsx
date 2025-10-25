@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react'
+import { useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import { useQuery, useMutation } from '@tanstack/react-query'
 import { motion } from 'framer-motion'
@@ -32,10 +32,6 @@ export default function TourDetailPage() {
   })
   const [showSuccess, setShowSuccess] = useState(false)
   
-  // Refs для sticky sidebar
-  const sidebarRef = useRef<HTMLElement>(null)
-  const contentRef = useRef<HTMLDivElement>(null)
-  const [sidebarStyle, setSidebarStyle] = useState<React.CSSProperties>({})
 
   // Загрузка экскурсии
   const { data: tourData, isLoading } = useQuery({
@@ -72,86 +68,6 @@ export default function TourDetailPage() {
 
   const reviews = reviewsData || []
   const relatedTours = relatedToursData?.tours || []
-
-  // Sticky sidebar logic - используем requestAnimationFrame для плавности
-  useEffect(() => {
-    if (!sidebarRef.current || !contentRef.current) return
-
-    let ticking = false
-
-    const handleScroll = () => {
-      if (!ticking) {
-        window.requestAnimationFrame(() => {
-          updateSidebarPosition()
-          ticking = false
-        })
-        ticking = true
-      }
-    }
-
-    const updateSidebarPosition = () => {
-      if (!sidebarRef.current || !contentRef.current) return
-      
-      const isLargeScreen = window.innerWidth >= 1024
-      if (!isLargeScreen) {
-        setSidebarStyle({})
-        return
-      }
-
-      const headerHeight = 100 // Высота хедера + отступ
-      const sidebar = sidebarRef.current
-      const content = contentRef.current
-      
-      const sidebarHeight = sidebar.offsetHeight
-      const contentRect = content.getBoundingClientRect()
-      const contentBottom = contentRect.bottom
-      
-      // Если sidebar выше чем контент, используем sticky
-      if (contentBottom - headerHeight < sidebarHeight) {
-        setSidebarStyle({
-          position: 'sticky',
-          top: `${headerHeight}px`,
-        })
-        return
-      }
-
-      const scrollY = window.scrollY
-      const sidebarTop = sidebar.getBoundingClientRect().top + scrollY
-      
-      // Если sidebar еще не достиг верха viewport
-      if (scrollY + headerHeight < sidebarTop) {
-        setSidebarStyle({})
-        return
-      }
-      
-      // Если sidebar достиг низа контента
-      if (contentBottom <= sidebarHeight + headerHeight) {
-        const offset = contentRect.top + contentRect.height - sidebarHeight
-        setSidebarStyle({
-          position: 'sticky',
-          top: `${offset}px`,
-        })
-        return
-      }
-      
-      // Нормальное sticky поведение
-      setSidebarStyle({
-        position: 'sticky',
-        top: `${headerHeight}px`,
-      })
-    }
-
-    // Инициализация
-    updateSidebarPosition()
-    
-    window.addEventListener('scroll', handleScroll, { passive: true })
-    window.addEventListener('resize', updateSidebarPosition)
-
-    return () => {
-      window.removeEventListener('scroll', handleScroll)
-      window.removeEventListener('resize', updateSidebarPosition)
-    }
-  }, [tour])
 
   // Создание бронирования
   const bookingMutation = useMutation({
@@ -260,9 +176,9 @@ export default function TourDetailPage() {
           </div>
         </div>
 
-        <div className="lg:grid lg:grid-cols-3 lg:gap-8">
+        <div className="lg:flex lg:items-start lg:gap-8">
           {/* Основной контент */}
-          <div ref={contentRef} className="lg:col-span-2 space-y-6">
+          <div className="flex-1 space-y-6">
             {/* Заголовок и действия */}
             <div className="bg-white rounded-2xl shadow-lg p-6">
               <div className="flex items-center justify-between mb-4">
@@ -574,11 +490,8 @@ export default function TourDetailPage() {
           </div>
 
           {/* Sidebar - форма бронирования */}
-          <aside
-            ref={sidebarRef}
-            className="mt-8 lg:mt-0 lg:col-span-1 lg:self-start"
-            style={sidebarStyle}
-          >
+          <aside className="mt-8 lg:mt-0 lg:w-[360px] lg:flex-shrink-0">
+            <div className="lg:sticky lg:top-24">
               <Card className="shadow-2xl border-2 border-airbnb-rausch/20 overflow-hidden">
               <div className="bg-gradient-to-r from-airbnb-rausch to-pink-600 p-6 text-white text-center">
                   <p className="text-4xl font-bold mb-2">{formatRUB(tour.price)}</p>
@@ -694,6 +607,7 @@ export default function TourDetailPage() {
                   )}
                 </CardContent>
               </Card>
+            </div>
           </aside>
         </div>
 
