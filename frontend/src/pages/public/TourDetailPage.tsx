@@ -18,7 +18,6 @@ import { formatRUB } from '@/lib/utils'
 import { PublicHeader } from '@/components/PublicHeader'
 import { PublicFooter } from '@/components/PublicFooter'
 import { TourCard } from '@/components/TourCard'
-import type { CSSProperties } from 'react'
 
 export default function TourDetailPage() {
   const { id } = useParams<{ id: string }>()
@@ -38,9 +37,9 @@ export default function TourDetailPage() {
   const contentRef = useRef<HTMLDivElement>(null)
   const sidebarWrapperRef = useRef<HTMLElement>(null)
   const sidebarRef = useRef<HTMLDivElement>(null)
-  const [sidebarStyle, setSidebarStyle] = useState<CSSProperties>({})
+  const [sidebarOffset, setSidebarOffset] = useState(0)
   const sidebarRafRef = useRef<number>()
-  const prevSidebarStyleRef = useRef<CSSProperties>()
+  const prevSidebarOffsetRef = useRef<number>()
 
   // Загрузка экскурсии
   const { data: tourData, isLoading } = useQuery({
@@ -83,62 +82,49 @@ export default function TourDetailPage() {
     const updateSidebarPosition = () => {
       sidebarRafRef.current = undefined
       const wrapper = sidebarWrapperRef.current
-
-      const isDesktop = typeof window !== 'undefined' && window.innerWidth >= 1024
-      if (!isDesktop) {
-        setSidebarStyle({ position: 'static', width: '100%' })
-        if (wrapper) {
-          wrapper.style.height = 'auto'
-        }
-        prevSidebarStyleRef.current = undefined
-        return
-      }
-
       const sidebar = sidebarRef.current
       const gallery = galleryRef.current
       const content = contentRef.current
 
       if (!wrapper || !sidebar || !gallery || !content) return
 
-      const headerOffset = 112
-      const bottomOffset = 48
-      const wrapperTop = wrapper.offsetTop
-      const galleryBottom = gallery.offsetTop + gallery.offsetHeight
-      const contentBottom = content.offsetTop + content.offsetHeight
-      const scrollY = window.scrollY
-      const sidebarHeight = sidebar.offsetHeight
-      const wrapperRect = wrapper.getBoundingClientRect()
-      const desiredTop = scrollY + headerOffset
-      const epsilon = 4
-
-      const minTop = galleryBottom + 24
-      const maxTop = contentBottom - sidebarHeight - bottomOffset
-      const widthPx = Math.round(wrapperRect.width)
-      const leftPx = Math.round(wrapperRect.left + window.scrollX)
-
-      let style: CSSProperties
-
-      if (minTop >= maxTop || desiredTop <= minTop + epsilon) {
-        style = { position: 'absolute', top: `${minTop - wrapperTop}px`, left: '0px', width: `${widthPx}px` }
-      } else if (desiredTop >= maxTop - epsilon) {
-        style = { position: 'absolute', top: `${maxTop - wrapperTop}px`, left: '0px', width: `${widthPx}px` }
-      } else {
-        style = { position: 'fixed', top: `${headerOffset}px`, left: `${leftPx}px`, width: `${widthPx}px` }
-      }
-
-      const prevStyle = prevSidebarStyleRef.current
-      if (
-        prevStyle &&
-        prevStyle.position === style.position &&
-        prevStyle.top === style.top &&
-        prevStyle.left === style.left &&
-        prevStyle.width === style.width
-      ) {
+      const isDesktop = typeof window !== 'undefined' && window.innerWidth >= 1024
+      if (!isDesktop) {
+        wrapper.style.height = 'auto'
+        prevSidebarOffsetRef.current = undefined
+        if (sidebarOffset !== 0) {
+          setSidebarOffset(0)
+        }
         return
       }
 
-      prevSidebarStyleRef.current = style
-      setSidebarStyle(style)
+      const headerOffset = 112
+      const gap = 24
+      const bottomOffset = 48
+
+      const wrapperTop = wrapper.offsetTop
+      const galleryBottom = gallery.offsetTop + gallery.offsetHeight
+      const contentBottom = content.offsetTop + content.offsetHeight
+      const scrollTop = window.scrollY + headerOffset
+      const sidebarHeight = sidebar.offsetHeight
+
+      const start = galleryBottom + gap
+      const end = contentBottom - bottomOffset
+
+      const minTranslate = start - wrapperTop
+      const maxTranslate = end - sidebarHeight - wrapperTop
+
+      const effectiveMin = Math.max(minTranslate, 0)
+      const effectiveMax = Math.max(maxTranslate, effectiveMin)
+
+      let translate = scrollTop - wrapperTop
+      translate = Math.min(Math.max(translate, effectiveMin), effectiveMax)
+
+      if (prevSidebarOffsetRef.current !== translate) {
+        prevSidebarOffsetRef.current = translate
+        setSidebarOffset(translate)
+      }
+
       wrapper.style.height = `${sidebarHeight}px`
     }
 
@@ -163,11 +149,11 @@ export default function TourDetailPage() {
       if (sidebarRafRef.current !== undefined) {
         window.cancelAnimationFrame(sidebarRafRef.current)
       }
-      prevSidebarStyleRef.current = undefined
+      prevSidebarOffsetRef.current = undefined
       window.removeEventListener('scroll', requestUpdate)
       window.removeEventListener('resize', handleResize)
     }
-  }, [tour])
+  }, [tour, sidebarOffset])
 
   // Создание бронирования
   const bookingMutation = useMutation({
@@ -597,7 +583,9 @@ export default function TourDetailPage() {
             <div
               ref={sidebarRef}
               className="[transition:none!important]"
-              style={sidebarStyle}
+              style={{
+                transform: `translate3d(0, ${sidebarOffset}px, 0)`
+              }}
             >
               <Card className="shadow-2xl border-2 border-airbnb-rausch/20 overflow-hidden">
               <div className="bg-gradient-to-r from-airbnb-rausch to-pink-600 p-6 text-white text-center">
