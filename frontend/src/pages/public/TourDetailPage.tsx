@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import { useQuery, useMutation } from '@tanstack/react-query'
 import { motion } from 'framer-motion'
@@ -31,6 +31,10 @@ export default function TourDetailPage() {
     telegram: '',
   })
   const [showSuccess, setShowSuccess] = useState(false)
+  
+  // Refs для sticky sidebar
+  const sidebarRef = useRef<HTMLElement>(null)
+  const [sidebarTop, setSidebarTop] = useState(0)
 
   // Загрузка экскурсии
   const { data: tourData, isLoading } = useQuery({
@@ -67,6 +71,49 @@ export default function TourDetailPage() {
 
   const reviews = reviewsData || []
   const relatedTours = relatedToursData?.tours || []
+
+  // Sticky sidebar logic
+  useEffect(() => {
+    const handleScroll = () => {
+      if (!sidebarRef.current) return
+      
+      const isLargeScreen = window.innerWidth >= 1024
+      if (!isLargeScreen) {
+        setSidebarTop(0)
+        return
+      }
+
+      const headerHeight = 80 // Высота хедера
+      const scrollY = window.scrollY
+      const viewportHeight = window.innerHeight
+      const sidebarHeight = sidebarRef.current.offsetHeight
+      
+      // Начальная позиция sidebar (когда страница загружена)
+      const sidebarInitialTop = sidebarRef.current.getBoundingClientRect().top + scrollY - headerHeight
+      
+      // Рассчитываем позицию так, чтобы sidebar оставался видимым
+      const maxScroll = document.documentElement.scrollHeight - viewportHeight
+      const sidebarMaxTop = maxScroll - sidebarHeight - headerHeight
+      
+      // Sidebar начинает двигаться только после того, как пользователь проскроллил до него
+      if (scrollY < sidebarInitialTop) {
+        setSidebarTop(0)
+      } else {
+        // Ограничиваем движение sidebar
+        const calculatedTop = Math.min(scrollY - sidebarInitialTop + headerHeight, sidebarMaxTop)
+        setSidebarTop(Math.max(0, calculatedTop))
+      }
+    }
+
+    handleScroll() // Вызываем сразу
+    window.addEventListener('scroll', handleScroll, { passive: true })
+    window.addEventListener('resize', handleScroll)
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll)
+      window.removeEventListener('resize', handleScroll)
+    }
+  }, [])
 
   // Создание бронирования
   const bookingMutation = useMutation({
@@ -490,7 +537,12 @@ export default function TourDetailPage() {
 
           {/* Sidebar - форма бронирования */}
           <aside
-            className="mt-8 lg:mt-0 lg:col-span-1 lg:row-span-5 lg:sticky lg:top-5 lg:self-start [transition:none!important]"
+            ref={sidebarRef}
+            className="mt-8 lg:mt-0 lg:col-span-1 lg:row-span-5 lg:self-start [transition:none!important]"
+            style={{
+              transform: `translateY(${sidebarTop}px)`,
+              willChange: 'transform'
+            }}
           >
               <Card className="shadow-2xl border-2 border-airbnb-rausch/20 overflow-hidden">
               <div className="bg-gradient-to-r from-airbnb-rausch to-pink-600 p-6 text-white text-center">
