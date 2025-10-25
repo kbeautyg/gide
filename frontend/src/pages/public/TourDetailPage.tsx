@@ -36,19 +36,37 @@ export default function TourDetailPage() {
   // Отслеживание скролла и позиции галереи
   const scrollY = useScrollPosition()
   const galleryRef = useRef<HTMLDivElement>(null)
+  const contentRef = useRef<HTMLDivElement>(null)
   const [galleryBottom, setGalleryBottom] = useState(0)
+  const [contentBottom, setContentBottom] = useState(0)
 
   useEffect(() => {
-    if (galleryRef.current) {
-      const rect = galleryRef.current.getBoundingClientRect()
-      setGalleryBottom(rect.bottom + window.scrollY)
+    const updatePositions = () => {
+      if (galleryRef.current) {
+        const rect = galleryRef.current.getBoundingClientRect()
+        setGalleryBottom(rect.bottom + window.scrollY)
+      }
+      if (contentRef.current) {
+        const rect = contentRef.current.getBoundingClientRect()
+        setContentBottom(rect.bottom + window.scrollY)
+      }
     }
+    
+    updatePositions()
+    window.addEventListener('resize', updatePositions)
+    return () => window.removeEventListener('resize', updatePositions)
   }, [])
 
   // Вычислить позицию карточки
+  const cardHeight = 600 // Примерная высота карточки
+  const headerOffset = 100 // Отступ от верха (header)
+  
   const cardTop = Math.max(
     galleryBottom, // Не выше галереи
-    scrollY + (window.innerHeight / 2) - 300 // Центр viewport минус половина высоты карточки
+    Math.min(
+      scrollY + headerOffset, // Прилипает к верху с отступом
+      contentBottom - cardHeight - 50 // Не ниже контента (с отступом 50px)
+    )
   )
 
   // Загрузка экскурсии
@@ -196,7 +214,7 @@ export default function TourDetailPage() {
 
         <div className="lg:grid lg:grid-cols-[1fr_360px] lg:gap-8 lg:relative">
           {/* Основной контент */}
-          <div className="flex-1 space-y-6">
+          <div ref={contentRef} className="flex-1 space-y-6">
             {/* Заголовок и действия */}
             <div className="bg-white rounded-2xl shadow-lg p-6">
               <div className="flex items-center justify-between mb-4">
@@ -514,7 +532,8 @@ export default function TourDetailPage() {
               position: typeof window !== 'undefined' && window.innerWidth >= 1024 ? 'absolute' : 'relative',
               top: typeof window !== 'undefined' && window.innerWidth >= 1024 ? `${cardTop}px` : 'auto',
               right: 0,
-              width: typeof window !== 'undefined' && window.innerWidth >= 1024 ? '360px' : 'auto'
+              width: typeof window !== 'undefined' && window.innerWidth >= 1024 ? '360px' : 'auto',
+              transition: 'none'
             }}
           >
             <Card className="shadow-2xl border-2 border-airbnb-rausch/20 overflow-hidden">
