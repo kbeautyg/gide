@@ -18,6 +18,7 @@ import { formatRUB } from '@/lib/utils'
 import { PublicHeader } from '@/components/PublicHeader'
 import { PublicFooter } from '@/components/PublicFooter'
 import { TourCard } from '@/components/TourCard'
+import type { CSSProperties } from 'react'
 
 export default function TourDetailPage() {
   const { id } = useParams<{ id: string }>()
@@ -32,10 +33,14 @@ export default function TourDetailPage() {
   })
   const [showSuccess, setShowSuccess] = useState(false)
   
-  // Refs для плавающей карточки
+  // Refs для sticky sidebar
   const galleryRef = useRef<HTMLDivElement>(null)
-  const sidebarRef = useRef<HTMLElement>(null)
-  const [sidebarTop, setSidebarTop] = useState(0)
+  const contentRef = useRef<HTMLDivElement>(null)
+  const sidebarWrapperRef = useRef<HTMLElement>(null)
+  const sidebarRef = useRef<HTMLDivElement>(null)
+  const [sidebarStyle, setSidebarStyle] = useState<CSSProperties>({})
+  const sidebarRafRef = useRef<number>()
+  const prevSidebarStyleRef = useRef<CSSProperties>()
 
   // Загрузка экскурсии
   const { data: tourData, isLoading } = useQuery({
@@ -73,38 +78,94 @@ export default function TourDetailPage() {
   const reviews = reviewsData || []
   const relatedTours = relatedToursData?.tours || []
 
-  // Плавающая карточка - следует за скроллом
+  // Sticky sidebar logic
   useEffect(() => {
-    const handleScroll = () => {
-      if (!galleryRef.current || !sidebarRef.current) return
-      
-      const isLargeScreen = window.innerWidth >= 1024
-      if (!isLargeScreen) {
-        setSidebarTop(0)
+    const updateSidebarPosition = () => {
+      sidebarRafRef.current = undefined
+      const wrapper = sidebarWrapperRef.current
+
+      const isDesktop = typeof window !== 'undefined' && window.innerWidth >= 1024
+      if (!isDesktop) {
+        setSidebarStyle({ position: 'static', width: '100%' })
+        if (wrapper) {
+          wrapper.style.height = 'auto'
+        }
+        prevSidebarStyleRef.current = undefined
         return
       }
 
-      const galleryRect = galleryRef.current.getBoundingClientRect()
-      const galleryBottom = galleryRect.bottom + window.scrollY
-      const viewportCenter = window.scrollY + window.innerHeight / 2
-      const sidebarHeight = sidebarRef.current.offsetHeight
-      
-      // Карточка следует за центром экрана, но не выше галереи
-      const calculatedTop = Math.max(
-        galleryBottom + 20, // Минимум - под галереей
-        viewportCenter - sidebarHeight / 2 // Центр экрана
-      )
-      
-      setSidebarTop(calculatedTop)
+      const sidebar = sidebarRef.current
+      const gallery = galleryRef.current
+      const content = contentRef.current
+
+      if (!wrapper || !sidebar || !gallery || !content) return
+
+      const headerOffset = 112
+      const bottomOffset = 48
+      const wrapperTop = wrapper.offsetTop
+      const galleryBottom = gallery.offsetTop + gallery.offsetHeight
+      const contentBottom = content.offsetTop + content.offsetHeight
+      const scrollY = window.scrollY
+      const sidebarHeight = sidebar.offsetHeight
+      const wrapperRect = wrapper.getBoundingClientRect()
+      const desiredTop = scrollY + headerOffset
+      const epsilon = 4
+
+      const minTop = galleryBottom + 24
+      const maxTop = contentBottom - sidebarHeight - bottomOffset
+      const widthPx = Math.round(wrapperRect.width)
+      const leftPx = Math.round(wrapperRect.left + window.scrollX)
+
+      let style: CSSProperties
+
+      if (minTop >= maxTop || desiredTop <= minTop + epsilon) {
+        style = { position: 'absolute', top: `${minTop - wrapperTop}px`, left: '0px', width: `${widthPx}px` }
+      } else if (desiredTop >= maxTop - epsilon) {
+        style = { position: 'absolute', top: `${maxTop - wrapperTop}px`, left: '0px', width: `${widthPx}px` }
+      } else {
+        style = { position: 'fixed', top: `${headerOffset}px`, left: `${leftPx}px`, width: `${widthPx}px` }
+      }
+
+      const prevStyle = prevSidebarStyleRef.current
+      if (
+        prevStyle &&
+        prevStyle.position === style.position &&
+        prevStyle.top === style.top &&
+        prevStyle.left === style.left &&
+        prevStyle.width === style.width
+      ) {
+        return
+      }
+
+      prevSidebarStyleRef.current = style
+      setSidebarStyle(style)
+      wrapper.style.height = `${sidebarHeight}px`
     }
 
-    handleScroll()
-    window.addEventListener('scroll', handleScroll, { passive: true })
-    window.addEventListener('resize', handleScroll)
+    const requestUpdate = () => {
+      if (sidebarRafRef.current !== undefined) return
+      sidebarRafRef.current = window.requestAnimationFrame(updateSidebarPosition)
+    }
+
+    const handleResize = () => {
+      if (sidebarRafRef.current !== undefined) {
+        window.cancelAnimationFrame(sidebarRafRef.current)
+        sidebarRafRef.current = undefined
+      }
+      updateSidebarPosition()
+    }
+
+    updateSidebarPosition()
+    window.addEventListener('scroll', requestUpdate, { passive: true })
+    window.addEventListener('resize', handleResize)
 
     return () => {
-      window.removeEventListener('scroll', handleScroll)
-      window.removeEventListener('resize', handleScroll)
+      if (sidebarRafRef.current !== undefined) {
+        window.cancelAnimationFrame(sidebarRafRef.current)
+      }
+      prevSidebarStyleRef.current = undefined
+      window.removeEventListener('scroll', requestUpdate)
+      window.removeEventListener('resize', handleResize)
     }
   }, [tour])
 
@@ -217,7 +278,7 @@ export default function TourDetailPage() {
 
         <div className="lg:grid lg:grid-cols-[1fr_360px] lg:gap-8 lg:relative">
           {/* Основной контент */}
-          <div className="space-y-6">
+          <div ref={contentRef} className="lg:col-span-1 space-y-6">
             {/* Заголовок и действия */}
             <div className="bg-white rounded-2xl shadow-lg p-6">
               <div className="flex items-center justify-between mb-4">
@@ -529,16 +590,15 @@ export default function TourDetailPage() {
           </div>
 
           {/* Sidebar - форма бронирования */}
-          <aside 
-            ref={sidebarRef}
-            className="mt-8 lg:mt-0"
-            style={{
-              position: typeof window !== 'undefined' && window.innerWidth >= 1024 ? 'absolute' : 'relative',
-              top: typeof window !== 'undefined' && window.innerWidth >= 1024 ? `${sidebarTop}px` : 'auto',
-              right: 0,
-              width: typeof window !== 'undefined' && window.innerWidth >= 1024 ? '360px' : 'auto'
-            }}
+          <aside
+            ref={sidebarWrapperRef}
+            className="mt-8 lg:mt-0 lg:relative"
           >
+            <div
+              ref={sidebarRef}
+              className="[transition:none!important]"
+              style={sidebarStyle}
+            >
               <Card className="shadow-2xl border-2 border-airbnb-rausch/20 overflow-hidden">
               <div className="bg-gradient-to-r from-airbnb-rausch to-pink-600 p-6 text-white text-center">
                   <p className="text-4xl font-bold mb-2">{formatRUB(tour.price)}</p>
@@ -654,6 +714,7 @@ export default function TourDetailPage() {
                   )}
                 </CardContent>
               </Card>
+            </div>
           </aside>
         </div>
 
