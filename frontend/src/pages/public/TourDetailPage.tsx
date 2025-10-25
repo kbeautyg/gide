@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react'
+import { useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import { useQuery, useMutation } from '@tanstack/react-query'
 import { motion } from 'framer-motion'
@@ -31,15 +31,6 @@ export default function TourDetailPage() {
     telegram: '',
   })
   const [showSuccess, setShowSuccess] = useState(false)
-  
-  // Refs для sticky sidebar
-  const galleryRef = useRef<HTMLDivElement>(null)
-  const contentRef = useRef<HTMLDivElement>(null)
-  const sidebarWrapperRef = useRef<HTMLElement>(null)
-  const sidebarRef = useRef<HTMLDivElement>(null)
-  const [sidebarOffset, setSidebarOffset] = useState(0)
-  const sidebarRafRef = useRef<number>()
-  const prevSidebarOffsetRef = useRef<number>()
 
   // Загрузка экскурсии
   const { data: tourData, isLoading } = useQuery({
@@ -76,84 +67,6 @@ export default function TourDetailPage() {
 
   const reviews = reviewsData || []
   const relatedTours = relatedToursData?.tours || []
-
-  // Sticky sidebar logic
-  useEffect(() => {
-    const updateSidebarPosition = () => {
-      sidebarRafRef.current = undefined
-      const wrapper = sidebarWrapperRef.current
-      const sidebar = sidebarRef.current
-      const gallery = galleryRef.current
-      const content = contentRef.current
-
-      if (!wrapper || !sidebar || !gallery || !content) return
-
-      const isDesktop = typeof window !== 'undefined' && window.innerWidth >= 1024
-      if (!isDesktop) {
-        wrapper.style.height = 'auto'
-        prevSidebarOffsetRef.current = undefined
-        if (sidebarOffset !== 0) {
-          setSidebarOffset(0)
-        }
-        return
-      }
-
-      const headerOffset = 112
-      const gap = 24
-      const bottomOffset = 48
-
-      const wrapperTop = wrapper.offsetTop
-      const galleryBottom = gallery.offsetTop + gallery.offsetHeight
-      const contentBottom = content.offsetTop + content.offsetHeight
-      const scrollTop = window.scrollY + headerOffset
-      const sidebarHeight = sidebar.offsetHeight
-
-      const start = galleryBottom + gap
-      const end = contentBottom - bottomOffset
-
-      const minTranslate = start - wrapperTop
-      const maxTranslate = end - sidebarHeight - wrapperTop
-
-      const effectiveMin = Math.max(minTranslate, 0)
-      const effectiveMax = Math.max(maxTranslate, effectiveMin)
-
-      let translate = scrollTop - wrapperTop
-      translate = Math.min(Math.max(translate, effectiveMin), effectiveMax)
-
-      if (prevSidebarOffsetRef.current !== translate) {
-        prevSidebarOffsetRef.current = translate
-        setSidebarOffset(translate)
-      }
-
-      wrapper.style.height = `${sidebarHeight}px`
-    }
-
-    const requestUpdate = () => {
-      if (sidebarRafRef.current !== undefined) return
-      sidebarRafRef.current = window.requestAnimationFrame(updateSidebarPosition)
-    }
-
-    const handleResize = () => {
-      if (sidebarRafRef.current !== undefined) {
-        window.cancelAnimationFrame(sidebarRafRef.current)
-        sidebarRafRef.current = undefined
-      }
-      updateSidebarPosition()
-    }
-
-    updateSidebarPosition()
-    window.addEventListener('scroll', requestUpdate, { passive: true })
-    window.addEventListener('resize', handleResize)
-
-    return () => {
-      if (sidebarRafRef.current !== undefined) {
-        window.cancelAnimationFrame(sidebarRafRef.current)
-      }
-      prevSidebarOffsetRef.current = undefined
-      window.removeEventListener('scroll', requestUpdate)
-      window.removeEventListener('resize', handleResize)
-    }
-  }, [tour, sidebarOffset])
 
   // Создание бронирования
   const bookingMutation = useMutation({
@@ -228,7 +141,7 @@ export default function TourDetailPage() {
 
       <div className="container mx-auto px-4 py-8 relative">
         {/* Hero галерея 2×2 */}
-        <div ref={galleryRef} className="mb-8">
+        <div className="mb-8">
           <div className="grid grid-cols-4 gap-2 h-[500px] rounded-xl overflow-hidden shadow-xl">
             {/* Большое фото слева */}
             <div className="col-span-2 row-span-2 cursor-pointer relative group">
@@ -264,7 +177,7 @@ export default function TourDetailPage() {
 
         <div className="lg:grid lg:grid-cols-[1fr_360px] lg:gap-8 lg:relative">
           {/* Основной контент */}
-          <div ref={contentRef} className="lg:col-span-1 space-y-6">
+          <div className="lg:col-span-1 space-y-6">
             {/* Заголовок и действия */}
             <div className="bg-white rounded-2xl shadow-lg p-6">
               <div className="flex items-center justify-between mb-4">
@@ -577,15 +490,10 @@ export default function TourDetailPage() {
 
           {/* Sidebar - форма бронирования */}
           <aside
-            ref={sidebarWrapperRef}
             className="mt-8 lg:mt-0 lg:relative"
           >
             <div
-              ref={sidebarRef}
-              className="[transition:none!important]"
-              style={{
-                transform: `translate3d(0, ${sidebarOffset}px, 0)`
-              }}
+              className="lg:sticky lg:top-24 lg:self-start"
             >
               <Card className="shadow-2xl border-2 border-airbnb-rausch/20 overflow-hidden">
               <div className="bg-gradient-to-r from-airbnb-rausch to-pink-600 p-6 text-white text-center">
