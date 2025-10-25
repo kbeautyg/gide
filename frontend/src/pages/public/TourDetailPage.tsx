@@ -492,7 +492,7 @@ export default function TourDetailPage() {
           <aside
             className="mt-8 lg:mt-0"
           >
-            <div className="lg:sticky lg:top-24 [transition:none!important]">
+            <div className="lg:sticky lg:top-24 lg:z-40 [transition:none!important]">
               <Card className="shadow-2xl border-2 border-airbnb-rausch/20 overflow-hidden">
               <div className="bg-gradient-to-r from-airbnb-rausch to-pink-600 p-6 text-white text-center">
                   <p className="text-4xl font-bold mb-2">{formatRUB(tour.price)}</p>
