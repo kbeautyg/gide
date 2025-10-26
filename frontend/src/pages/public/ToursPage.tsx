@@ -4,7 +4,7 @@ import { useSearchParams, Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { X } from 'lucide-react'
 import { toursApi, api } from '@/lib/api'
-import { PublicHeader } from '@/components/PublicHeader'
+// import { PublicHeader } from '@/components/PublicHeader'
 import { PublicFooter } from '@/components/PublicFooter'
 import { SearchBar } from '@/components/SearchBar'
 import { CategoryChips } from '@/components/CategoryChips'
@@ -220,10 +220,10 @@ export default function ToursPage() {
 
   return (
     <div className="min-h-screen bg-white">
-      <PublicHeader />
+      {/* <PublicHeader /> */}
 
       {/* Sticky поисковая панель */}
-      <div className="sticky top-[100px] z-40 bg-white border-b shadow-sm">
+      <div className="sticky top-0 z-50 bg-white border-b shadow-sm will-change-transform">
         <div className="container mx-auto px-4 py-3">
           <SearchBar variant="sticky" />
         </div>
@@ -281,7 +281,7 @@ export default function ToursPage() {
       )}
 
       {/* Фильтры и сортировка */}
-      <div className="bg-white border-b sticky top-[160px] z-30">
+      <div className="bg-white border-b sticky top-[73px] z-40 will-change-transform">
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between gap-4 flex-wrap">
             {/* Быстрые фильтры в виде select */}
@@ -323,8 +323,8 @@ export default function ToursPage() {
               </select>
             </div>
           </div>
-                  </div>
-                </div>
+        </div>
+      </div>
 
       {/* Секция категорий */}
       <div className="bg-white border-b">

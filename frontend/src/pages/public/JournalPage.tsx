@@ -95,7 +95,7 @@ export default function JournalPage() {
       </section>
 
       {/* Фильтры по странам */}
-      <div className="bg-white border-b sticky top-0 z-20">
+      <div className="bg-white border-b sticky top-0 z-50 will-change-transform">
         <div className="container mx-auto px-4 py-4">
           <div className="flex gap-3 overflow-x-auto scrollbar-hide">
             <button

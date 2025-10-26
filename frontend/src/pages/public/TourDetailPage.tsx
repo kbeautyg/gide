@@ -15,7 +15,7 @@ import { Label } from '@/components/ui/label'
 import { toursApi, bookingsApi, api } from '@/lib/api'
 import type { Tour } from '@/types/tour'
 import { formatRUB } from '@/lib/utils'
-import { PublicHeader } from '@/components/PublicHeader'
+// import { PublicHeader } from '@/components/PublicHeader'
 import { PublicFooter } from '@/components/PublicFooter'
 import { TourCard } from '@/components/TourCard'
 
@@ -124,7 +124,7 @@ export default function TourDetailPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
-      <PublicHeader />
+      {/* <PublicHeader /> */}
 
       {/* Breadcrumbs */}
       <div className="bg-white border-b">
@@ -492,7 +492,7 @@ export default function TourDetailPage() {
           <aside
             className="mt-8 lg:mt-0"
           >
-            <div className="lg:sticky lg:top-[100px] lg:z-40 [transition:none!important]">
+            <div className="lg:sticky lg:top-4 lg:z-40 [transition:none!important]">
               <Card className="shadow-2xl border-2 border-airbnb-rausch/20 overflow-hidden">
               <div className="bg-gradient-to-r from-airbnb-rausch to-pink-600 p-6 text-white text-center">
                   <p className="text-4xl font-bold mb-2">{formatRUB(tour.price)}</p>
