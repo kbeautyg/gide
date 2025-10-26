@@ -1,60 +1,126 @@
-import { Link } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
+import { useQuery } from '@tanstack/react-query'
 import { Clock, Calendar, ArrowLeft } from 'lucide-react'
 import { PublicHeader } from '@/components/PublicHeader'
 import { PublicFooter } from '@/components/PublicFooter'
 import { Button } from '@/components/ui/button'
+import { TourCard } from '@/components/TourCard'
+import { toursApi } from '@/lib/api'
 
 export default function ArticlePage() {
+  const { slug } = useParams<{ slug: string }>()
 
-  // Mock статья
-  const article = {
-    title: 'Как добраться до Китайской стены: поездка из Пекина',
-    preview: 'Удобные маршруты к популярным участкам',
-    photo: 'https://images.unsplash.com/photo-1508804185872-d7badad00f7d?w=1920&h=800&fit=crop',
-    readTime: 10,
-    publishedAt: '20 августа 2025',
-    countryTag: 'Китай',
-    content: `
-      Великая Китайская стена — одна из самых известных достопримечательностей мира. 
-      Это грандиозное сооружение протянулось на тысячи километров через горы и долины северного Китая.
-      
-      В этой статье мы расскажем о лучших способах добраться до самых популярных участков стены из Пекина.
-      
-      ## Участок Мутяньюй
-      
-      Мутяньюй — один из наиболее хорошо сохранившихся и живописных участков стены. 
-      Он находится в 70 км от Пекина и идеально подходит для первого знакомства.
-      
-      **Как добраться:**
-      - На автобусе: от станции Dongzhimen до Huairou (2 часа), затем такси
-      - На туристическом автобусе: прямые рейсы от центра Пекина
-      - На такси: ~600-800 юаней в обе стороны
-      - С экскурсией: удобно и информативно
-      
-      ## Участок Бадалин
-      
-      Бадалин — самый популярный и доступный участок, но часто очень многолюдный.
-      
-      **Преимущества:**
-      - Отличная транспортная доступность
-      - Развитая инфраструктура
-      - Можно совместить с посещением гробниц династии Мин
-      
-      ## Советы путешественникам
-      
-      1. Приезжайте рано утром (до 9:00), чтобы избежать толп
-      2. Возьмите с собой воду и перекус
-      3. Наденьте удобную обувь — будет много подъёмов
-      4. Не забудьте солнцезащитный крем
-      5. Лучшее время для посещения — весна и осень
-    `
+  // База статей (та же что в JournalPage)
+  const articlesDatabase: Record<string, any> = {
+    'plyazhi-phuketa': {
+      title: '10 лучших пляжей Пхукета: от Патонга до секретных бухт',
+      preview: 'Откройте для себя райские уголки острова',
+      photo: 'https://images.unsplash.com/photo-1589394815804-964ed0be2eb5?w=1920&h=800&fit=crop',
+      readTime: 12,
+      publishedAt: '15 октября 2025',
+      countryTag: 'Таиланд',
+      location: 'Пхукет, Таиланд',
+      content: `
+Пхукет — крупнейший остров Таиланда, известный своими великолепными пляжами с белым песком и бирюзовой водой. В этом гиде мы расскажем о лучших пляжах острова.
+
+## 1. Патонг — сердце ночной жизни
+
+Самый популярный и оживлённый пляж Пхукета. Идеален для тех, кто любит активный отдых, шопинг и ночные развлечения.
+
+**Что здесь делать:**
+- Водные виды спорта
+- Ночные клубы и бары
+- Магазины и рестораны
+- Наблюдать за закатами
+
+## 2. Карон — для семейного отдыха
+
+Более спокойная альтернатива Патонгу с чистым песком и пологим входом в море.
+
+## 3. Ката Ной — для серфинга
+
+Небольшая бухта с отличными волнами для серфинга в сезон дождей.
+
+## 4. Freedom Beach — райский уголок
+
+Секретный пляж, доступный только на лодке. Кристально чистая вода и никаких толп туристов.
+
+**Как добраться:** на лонгтейл боте от Патонга (400-500 бат)
+
+## 5. Най Харн — для снорклинга
+
+Живописная бухта на юге острова с коралловыми рифами.
+
+## Советы путешественникам
+
+1. Лучшее время для посещения: ноябрь-апрель (сухой сезон)
+2. Арендуйте байк для перемещения между пляжами
+3. Используйте солнцезащитный крем — солнце очень активное
+4. Пробуйте местную еду на пляжах — вкусно и недорого
+      `
+    },
+    'ulichnaya-eda-bangkoka': {
+      title: 'Уличная еда Бангкока: гид по лучшим рынкам',
+      preview: 'Погружение в гастрономическую культуру столицы Таиланда',
+      photo: 'https://images.unsplash.com/photo-1598515214211-89d3c73ae83b?w=1920&h=800&fit=crop',
+      readTime: 8,
+      publishedAt: '12 октября 2025',
+      countryTag: 'Таиланд',
+      location: 'Бангкок, Таиланд',
+      content: `
+Бангкок — мировая столица уличной еды. Здесь можно попробовать сотни блюд традиционной тайской кухни за копейки.
+
+## Yaowarat Road (Чайнатаун)
+
+Легендарная улица с лучшей уличной едой в городе.
+
+**Что попробовать:**
+- Pad Thai от уличных поваров
+- Свежие морепродукты на гриле
+- Манго с липким рисом
+- Жареные каштаны
+
+## Or Tor Kor Market
+
+Один из лучших продуктовых рынков Азии по версии CNN.
+
+## Rot Fai Market
+
+Винтажный ночной рынок с ретро-атмосферой и отличной едой.
+
+## Khao San Road
+
+Туристическая Мекка с огромным выбором еды на любой вкус.
+
+## Советы
+
+1. Ешьте там, где едят местные
+2. Не бойтесь экспериментировать
+3. Начинайте с небольших порций
+4. Всегда имейте при себе наличные
+5. Пик активности рынков — после 18:00
+      `
+    }
   }
 
-  // Mock похожие туры
-  const relatedTours = [
-    { id: 1, title: 'Визитные карточки Пекина + Великая Китайская стена', location: 'Пекин' },
-    { id: 2, title: 'Запретный город и чайная церемония', location: 'Пекин' },
-  ]
+  const article = articlesDatabase[slug || ''] || articlesDatabase['plyazhi-phuketa']
+
+  // Загрузка туров по локации
+  const { data: toursData } = useQuery({
+    queryKey: ['related-tours', article.location],
+    queryFn: async () => {
+      if (!article.location) return { tours: [] }
+      const response = await toursApi.getList({
+        page: 1,
+        page_size: 3,
+        location: article.location.split(',')[0].trim(),
+      })
+      return response.data
+    },
+    enabled: !!article.location,
+  })
+
+  const relatedTours = toursData?.tours || []
 
   return (
     <div className="min-h-screen bg-white">
@@ -107,7 +173,7 @@ export default function ArticlePage() {
       <div className="container mx-auto px-4 py-16">
         <div className="max-w-4xl mx-auto">
           <div className="prose prose-lg max-w-none">
-            {article.content.split('\n\n').map((paragraph, i) => {
+            {article.content.split('\n\n').map((paragraph: string, i: number) => {
               if (paragraph.startsWith('##')) {
                 return (
                   <h2 key={i} className="text-3xl font-bold text-gray-900 mt-12 mb-4">
@@ -126,7 +192,7 @@ export default function ArticlePage() {
                 const items = paragraph.split('\n')
                 return (
                   <ul key={i} className="space-y-2 my-6 ml-6">
-                    {items.map((item, j) => (
+                    {items.map((item: string, j: number) => (
                       <li key={j} className="text-gray-700">
                         {item.replace('- ', '')}
                       </li>
@@ -138,7 +204,7 @@ export default function ArticlePage() {
                 const items = paragraph.split('\n')
                 return (
                   <ol key={i} className="space-y-2 my-6 ml-6 list-decimal">
-                    {items.map((item, j) => (
+                    {items.map((item: string, j: number) => (
                       <li key={j} className="text-gray-700">
                         {item.replace(/^\d+\.\s/, '')}
                       </li>
@@ -155,16 +221,26 @@ export default function ArticlePage() {
           </div>
 
           {/* Связанные экскурсии */}
-          <div className="mt-16 pt-16 border-t">
-            <h2 className="text-3xl font-bold text-gray-900 mb-8">
-              Экскурсии в {article.countryTag}
-            </h2>
-            <div className="grid md:grid-cols-2 gap-6">
-              {relatedTours.map((tour) => (
-                <div key={tour.id} className="skeleton rounded-xl h-[360px]" />
-              ))}
+          {relatedTours.length > 0 && (
+            <div className="mt-16 pt-16 border-t">
+              <div className="flex items-center justify-between mb-8">
+                <h2 className="text-3xl font-bold text-gray-900">
+                  Экскурсии в {article.location?.split(',')[0]}
+                </h2>
+                <Link 
+                  to={`/tours?location=${encodeURIComponent(article.location?.split(',')[0] || article.countryTag)}`}
+                  className="text-airbnb-rausch hover:underline font-medium flex items-center gap-2"
+                >
+                  Смотреть все <ArrowLeft className="rotate-180" size={16} />
+                </Link>
+              </div>
+              <div className="grid md:grid-cols-3 gap-6">
+                {relatedTours.map((tour: any) => (
+                  <TourCard key={tour.id} tour={tour} />
+                ))}
+              </div>
             </div>
-          </div>
+          )}
         </div>
       </div>
 

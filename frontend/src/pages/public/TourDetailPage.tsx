@@ -15,7 +15,7 @@ import { Label } from '@/components/ui/label'
 import { toursApi, bookingsApi, api } from '@/lib/api'
 import type { Tour } from '@/types/tour'
 import { formatRUB } from '@/lib/utils'
-// import { PublicHeader } from '@/components/PublicHeader'
+import { PublicHeader } from '@/components/PublicHeader'
 import { PublicFooter } from '@/components/PublicFooter'
 import { TourCard } from '@/components/TourCard'
 
@@ -124,7 +124,7 @@ export default function TourDetailPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
-      {/* <PublicHeader /> */}
+      <PublicHeader />
 
       {/* Breadcrumbs */}
       <div className="bg-white border-b">

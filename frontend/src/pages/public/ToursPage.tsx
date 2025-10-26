@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import { useSearchParams, Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
@@ -26,14 +26,19 @@ const ASIAN_COUNTRIES = [
   { name: 'Сингапур', flag: '🇸🇬' },
 ]
 
-const ASIAN_CITIES = [
-  'Бангкок', 'Пхукет', 'Паттайя', 'Краби', 'Чиангмай', 'Ко Тао',
-  'Токио', 'Киото', 'Осака',
-  'Убуд', 'Семиньяк', 'Нуса-Дуа',
-  'Ханой', 'Хошимин', 'Халонг',
-  'Сеул', 'Пусан',
-  'Сингапур', 'Дубай',
-]
+// Маппинг стран → города для умной фильтрации
+const COUNTRY_CITIES_MAP: Record<string, string[]> = {
+  'Таиланд': ['Бангкок', 'Пхукет', 'Паттайя', 'Краби', 'Чиангмай', 'Ко Тао', 'Ко Самуи'],
+  'Япония': ['Токио', 'Киото', 'Осака', 'Хиросима', 'Нара', 'Фукуока', 'Саппоро'],
+  'ОАЭ': ['Дубай', 'Абу-Даби', 'Шарджа', 'Аджман'],
+  'Индонезия': ['Убуд', 'Семиньяк', 'Нуса-Дуа', 'Джакарта', 'Бали'],
+  'Вьетнам': ['Ханой', 'Хошимин', 'Халонг', 'Нячанг', 'Хойан', 'Далат'],
+  'Корея': ['Сеул', 'Пусан', 'Чеджу', 'Инчхон'],
+  'Сингапур': ['Сингапур'],
+}
+
+// Все города для отображения (когда не выбрана страна)
+const ALL_ASIAN_CITIES = Object.values(COUNTRY_CITIES_MAP).flat()
 
 export default function ToursPage() {
   const [searchParams] = useSearchParams()
@@ -45,17 +50,34 @@ export default function ToursPage() {
   const [selectedRatings, setSelectedRatings] = useState<string[]>([])
   const [showFilters, setShowFilters] = useState(false)
   const [sortBy, setSortBy] = useState('popular')
-  const [dateFilter, setDateFilter] = useState('any')
-  const [durationFilter, setDurationFilter] = useState('any')
-  const [priceFilter, setPriceFilter] = useState('any')
   const [currentPage, setCurrentPage] = useState(1)
   
   // Читаем параметры из URL при загрузке
   const locationParam = searchParams.get('location')
   const guestsParam = searchParams.get('guests')
   const landmarksParam = searchParams.get('landmarks')
-  // const dateStartParam = searchParams.get('date_start')  // TODO: использовать для фильтрации по датам
-  // const dateEndParam = searchParams.get('date_end')  // TODO: использовать для фильтрации по датам
+  const dateStartParam = searchParams.get('date_start')
+  const dateEndParam = searchParams.get('date_end')
+
+  // Синхронизация location параметра с фильтрами (только при загрузке)
+  useEffect(() => {
+    if (locationParam) {
+      // Проверяем, является ли это страной
+      const isCountry = ASIAN_COUNTRIES.some(c => c.name === locationParam)
+      if (isCountry && !selectedCountries.includes(locationParam)) {
+        setSelectedCountries([locationParam])
+      } else if (!isCountry && !selectedCities.includes(locationParam)) {
+        // Это город - находим его страну и выбираем оба
+        for (const [country, cities] of Object.entries(COUNTRY_CITIES_MAP)) {
+          if (cities.includes(locationParam)) {
+            setSelectedCountries([country])
+            setSelectedCities([locationParam])
+            break
+          }
+        }
+      }
+    }
+  }, [locationParam]) // Выполняем только при изменении locationParam
 
   // Загрузка динамических категорий из navigation API
   const { data: navigationData } = useQuery({
@@ -65,7 +87,7 @@ export default function ToursPage() {
 
   // Загрузка экскурсий с фильтрами
   const { data: toursData, isLoading } = useQuery({
-    queryKey: ['tours', selectedThemes, selectedCountries, selectedCities, selectedPriceRanges, selectedDurations, selectedRatings, currentPage, landmarksParam, locationParam, guestsParam, dateFilter, durationFilter, priceFilter],
+    queryKey: ['tours', selectedThemes, selectedCountries, selectedCities, selectedPriceRanges, selectedDurations, selectedRatings, currentPage, landmarksParam, locationParam, guestsParam, dateStartParam, dateEndParam],
     queryFn: async () => {
       // Преобразуем фильтры в параметры API
       const params: any = {
@@ -89,9 +111,17 @@ export default function ToursPage() {
         params.location = selectedCountries[0]
       }
 
-      // Guests из URL
+      // Guests из URL (количество участников)
       if (guestsParam) {
         params.guests = parseInt(guestsParam)
+      }
+
+      // Даты из URL (для поиска)
+      if (dateStartParam) {
+        params.date_start = dateStartParam
+      }
+      if (dateEndParam) {
+        params.date_end = dateEndParam
       }
 
       // Темы/категории
@@ -107,29 +137,18 @@ export default function ToursPage() {
       }
       if (selectedPriceRanges.includes('10000+₽')) params.min_price = 10000
 
-      // Цена из select
-      if (priceFilter === 'cheap') params.max_price = 3000
-      if (priceFilter === 'medium') {
-        params.min_price = 3000
-        params.max_price = 7000
-      }
-      if (priceFilter === 'expensive') {
-        params.min_price = 7000
-        params.max_price = 15000
-      }
-      if (priceFilter === 'luxury') params.min_price = 15000
-
-      // Длительность из select
-      if (durationFilter === 'short') params.duration_max = 2
-      if (durationFilter === 'medium') {
-        params.duration_min = 2
-        params.duration_max = 4
-      }
-      if (durationFilter === 'long') {
+      // Длительность из чипсов
+      if (selectedDurations.includes('1-3 часа')) params.duration_max = 3
+      if (selectedDurations.includes('4-6 часов')) {
         params.duration_min = 4
-        params.duration_max = 8
+        params.duration_max = 6
       }
-      if (durationFilter === 'fullday') params.duration_min = 7
+      if (selectedDurations.includes('Полный день (7+ч)')) params.duration_min = 7
+
+      // Рейтинг из чипсов
+      if (selectedRatings.includes('4.5+ звёзд')) params.min_rating = 4.5
+      if (selectedRatings.includes('4.7+')) params.min_rating = 4.7
+      if (selectedRatings.includes('4.9+ (топ)')) params.min_rating = 4.9
 
       const response = await toursApi.getList(params)
       console.log('Tours API response:', response.data)
@@ -223,7 +242,7 @@ export default function ToursPage() {
       <PublicHeader />
 
       {/* Поисковая панель */}
-      <div className="sticky top-[72px] z-50 bg-white border-b shadow-sm will-change-transform">
+      <div className="sticky top-[80px] z-50 bg-white border-b shadow-sm">
         <div className="container mx-auto px-4 py-3">
           <SearchBar variant="sticky" />
         </div>
@@ -239,7 +258,7 @@ export default function ToursPage() {
       )}
 
       {/* Breadcrumbs */}
-      <div className="bg-gray-50 border-b">
+      <div className="bg-gray-50">
         <div className="container mx-auto px-4 py-3">
           <div className="text-sm text-gray-600">
             <Link to="/" className="hover:underline">Главная</Link>
@@ -279,52 +298,6 @@ export default function ToursPage() {
           </div>
         </section>
       )}
-
-      {/* Фильтры и сортировка */}
-      <div className="bg-white border-b">
-        <div className="container mx-auto px-4 py-4">
-          <div className="flex items-center justify-between gap-4 flex-wrap">
-            {/* Быстрые фильтры в виде select */}
-            <div className="flex items-center gap-3 flex-wrap">
-              <select 
-                value={dateFilter} 
-                onChange={(e) => setDateFilter(e.target.value)}
-                className="px-4 py-2 rounded-lg border border-gray-300 hover:border-gray-900 transition-colors bg-white cursor-pointer"
-              >
-                <option value="any">Любые даты</option>
-                <option value="today">Сегодня</option>
-                <option value="tomorrow">Завтра</option>
-                <option value="weekend">Эти выходные</option>
-                <option value="thisweek">На этой неделе</option>
-              </select>
-
-              <select 
-                value={durationFilter} 
-                onChange={(e) => setDurationFilter(e.target.value)}
-                className="px-4 py-2 rounded-lg border border-gray-300 hover:border-gray-900 transition-colors bg-white cursor-pointer"
-              >
-                <option value="any">Любая длительность</option>
-                <option value="short">До 2 часов</option>
-                <option value="medium">2-4 часа</option>
-                <option value="long">4-8 часов</option>
-                <option value="fullday">Полный день</option>
-              </select>
-
-              <select 
-                value={priceFilter} 
-                onChange={(e) => setPriceFilter(e.target.value)}
-                className="px-4 py-2 rounded-lg border border-gray-300 hover:border-gray-900 transition-colors bg-white cursor-pointer"
-              >
-                <option value="any">Любая цена</option>
-                <option value="cheap">До 3000₽</option>
-                <option value="medium">3000-7000₽</option>
-                <option value="expensive">7000-15000₽</option>
-                <option value="luxury">15000+₽</option>
-              </select>
-            </div>
-          </div>
-        </div>
-      </div>
 
       {/* Секция категорий */}
       <div className="bg-white border-b">
@@ -373,9 +346,27 @@ export default function ToursPage() {
 
           {/* Фильтр по городам */}
                 <div>
-            <h3 className="text-sm font-semibold text-gray-700 mb-2">📍 Города</h3>
+            <div className="flex items-center justify-between mb-2">
+              <h3 className="text-sm font-semibold text-gray-700">📍 Города</h3>
+              {selectedCountries.length > 0 && (
+                <span className="text-xs text-gray-500">
+                  Доступно {(() => {
+                    const citiesForSelectedCountries = selectedCountries.flatMap(
+                      country => COUNTRY_CITIES_MAP[country] || []
+                    )
+                    return citiesForSelectedCountries.length
+                  })()} городов
+                </span>
+              )}
+            </div>
             <div className="flex gap-2 overflow-x-auto scrollbar-hide pb-2">
-              {ASIAN_CITIES.map((city, index) => (
+              {(() => {
+                // Умная фильтрация городов
+                const citiesToShow = selectedCountries.length > 0
+                  ? selectedCountries.flatMap(country => COUNTRY_CITIES_MAP[country] || [])
+                  : ALL_ASIAN_CITIES
+                
+                return citiesToShow.map((city, index) => (
                 <motion.button
                   key={city}
                   initial={{ opacity: 0, y: 10 }}
@@ -394,7 +385,8 @@ export default function ToursPage() {
                 >
                   {city}
                 </motion.button>
-              ))}
+                ))
+              })()}
                   </div>
                 </div>
 
