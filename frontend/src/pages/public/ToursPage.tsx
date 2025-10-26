@@ -223,7 +223,7 @@ export default function ToursPage() {
       <PublicHeader />
 
       {/* Sticky поисковая панель */}
-      <div className="sticky top-24 z-40 bg-white border-b shadow-sm">
+      <div className="sticky top-[100px] z-40 bg-white border-b shadow-sm">
         <div className="container mx-auto px-4 py-3">
           <SearchBar variant="sticky" />
         </div>
@@ -281,7 +281,7 @@ export default function ToursPage() {
       )}
 
       {/* Фильтры и сортировка */}
-      <div className="bg-white border-b sticky top-[136px] z-30">
+      <div className="bg-white border-b sticky top-[160px] z-30">
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between gap-4 flex-wrap">
             {/* Быстрые фильтры в виде select */}
