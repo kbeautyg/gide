@@ -4,27 +4,6 @@ import { Logo } from '@/components/Logo'
 export function PublicFooter() {
   return (
     <footer className="bg-gray-900 text-white">
-      {/* Newsletter Section */}
-      <div className="bg-airbnb-rausch py-12">
-        <div className="container mx-auto px-4 text-center">
-          <h3 className="text-3xl font-bold mb-3">Экскурсии и туры от экспертов</h3>
-          <p className="text-white/90 mb-6 text-lg">Классные места, скидки и интересные события у вас в почте</p>
-          <div className="flex gap-3 max-w-md mx-auto">
-            <input
-              type="email"
-              placeholder="Эл. почта"
-              className="flex-1 px-6 py-3 rounded-full text-gray-900 placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-white"
-            />
-            <button className="px-8 py-3 bg-gray-900 hover:bg-gray-800 text-white rounded-full font-semibold transition-colors whitespace-nowrap">
-              Подписаться
-            </button>
-          </div>
-          <p className="text-sm text-white/70 mt-3">
-            Нажимая «Подписаться», вы даёте согласие на получение рекламных сообщений
-          </p>
-        </div>
-      </div>
-
       {/* Main Footer */}
       <div className="py-12">
         <div className="container mx-auto px-4">
