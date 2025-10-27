@@ -1,5 +1,5 @@
 import { useParams, Link } from 'react-router-dom'
-import { Clock, Calendar, ArrowLeft, Share2, Bookmark, TrendingUp, Eye } from 'lucide-react'
+import { Clock, Calendar, ArrowLeft, Share2, Bookmark, TrendingUp, Eye, Sparkles } from 'lucide-react'
 import { PublicHeader } from '@/components/PublicHeader'
 import { PublicFooter } from '@/components/PublicFooter'
 import { Button } from '@/components/ui/button'
