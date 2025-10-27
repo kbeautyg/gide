@@ -99,7 +99,7 @@ export default function BecomeGuidePage() {
                 href="#application-form"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                className="px-10 py-5 bg-white text-[#111827] rounded-full font-bold text-lg shadow-2xl hover:shadow-3xl transition-all cursor-pointer"
+                className="px-10 py-5 bg-white text-airbnb-rausch rounded-full font-bold text-lg shadow-2xl hover:shadow-3xl transition-all cursor-pointer"
               >
                 🚀 Начать сейчас
               </motion.a>
@@ -107,7 +107,7 @@ export default function BecomeGuidePage() {
                 href="#demo"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                className="px-10 py-5 bg-transparent border-2 border-white text-white rounded-full font-bold text-lg hover:bg-white hover:text-[#111827] transition-all cursor-pointer"
+                className="px-10 py-5 bg-transparent border-2 border-white text-white rounded-full font-bold text-lg hover:bg-white hover:text-airbnb-rausch transition-all cursor-pointer"
               >
                 📱 Посмотреть демо
               </motion.a>
@@ -885,7 +885,7 @@ export default function BecomeGuidePage() {
                   />
                 </div>
 
-                <Button type="submit" className="w-full text-lg py-6 gap-2 bg-[#111827] hover:bg-[#1f2937] text-white">
+                <Button type="submit" variant="tropical" className="w-full text-lg py-6 gap-2">
                   <Send size={20} />
                   Отправить заявку
                 </Button>
@@ -1050,26 +1050,18 @@ export default function BecomeGuidePage() {
         </Card>
 
         {/* CTA */}
-        <div className="text-center bg-gradient-to-br from-gray-900 via-gray-800 to-[#111827] text-white rounded-3xl p-12 max-w-5xl mx-auto">
+        <div className="text-center bg-airbnb-rausch text-white rounded-3xl p-12 max-w-5xl mx-auto">
           <h2 className="text-4xl font-bold mb-4">Готовы начать зарабатывать?</h2>
           <p className="text-xl mb-8 opacity-90">
             Присоединяйтесь к 500+ гидам, которые уже работают с ThaiGuide Pro
           </p>
           <div className="flex justify-center gap-4 flex-wrap">
-            <a
-              href="#application-form"
-              className="inline-flex items-center justify-center px-8 py-6 bg-white text-[#111827] hover:bg-gray-100 text-lg font-semibold rounded-lg transition-colors cursor-pointer"
-            >
-              Заполнить заявку
-            </a>
-            <a
-              href="https://t.me/yourtelegram"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center justify-center px-8 py-6 border-2 border-white text-white hover:bg-white/10 text-lg font-semibold rounded-lg transition-colors cursor-pointer"
-            >
-              Написать в Telegram
-            </a>
+            <Button asChild size="lg" className="bg-[#111827] text-white hover:bg-[#1f2937] text-lg px-8 py-6">
+              <a href="#application-form">Заполнить заявку</a>
+            </Button>
+            <Button asChild size="lg" className="bg-[#111827] text-white hover:bg-[#1f2937] text-lg px-8 py-6">
+              <a href="https://t.me/turexpro" target="_blank" rel="noopener noreferrer">Написать в Telegram</a>
+            </Button>
           </div>
           <p className="text-sm mt-6 opacity-75">
             Первые 50 гидов получают 0% комиссии за первый месяц работы! 🎉
