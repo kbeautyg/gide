@@ -248,8 +248,8 @@ export default function ToursPage() {
       <PublicHeader />
 
       {/* Поисковая панель - sticky */}
-      <div className="sticky top-24 z-50 bg-white border-b shadow-md will-change-transform">
-        <div className="container mx-auto px-4 py-3">
+      <div className="sticky top-24 z-40 bg-white/95 backdrop-blur-md border-b shadow-sm will-change-transform">
+        <div className="container mx-auto px-4 py-2">
           <SearchBar variant="sticky" />
         </div>
       </div>
@@ -264,7 +264,7 @@ export default function ToursPage() {
       )}
 
       {/* Breadcrumbs */}
-      <div className="bg-gray-50">
+      <div className="bg-gray-50 relative z-10">
         <div className="container mx-auto px-4 py-3">
           <div className="text-sm text-gray-600">
             <Link to="/" className="hover:underline">Главная</Link>
