@@ -8,7 +8,6 @@ import { api } from '@/lib/api'
 import { PublicHeader } from '@/components/PublicHeader'
 import { PublicFooter } from '@/components/PublicFooter'
 import { LiveStats } from '@/components/LiveStats'
-import { WorldMap } from '@/components/WorldMap'
 import { AnimatedFeatures } from '@/components/AnimatedFeatures'
 import { DynamicNavigation } from '@/components/DynamicNavigation'
 import { SmartRecommendations } from '@/components/SmartRecommendations'
@@ -377,9 +376,6 @@ export default function HomePage() {
 
       {/* LiveStats - Живая статистика */}
       <LiveStats />
-
-      {/* WorldMap - Карта городов Азии */}
-      <WorldMap />
 
       {/* AnimatedFeatures - Преимущества */}
       <AnimatedFeatures />
