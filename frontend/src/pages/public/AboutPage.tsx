@@ -97,22 +97,6 @@ export default function AboutPage() {
             Мы не просто продаем туры.<br />
             Мы создаем воспоминания на всю жизнь.
           </p>
-          
-          {/* Бейджи доверия */}
-          <div className="flex flex-wrap justify-center gap-4 mt-8">
-            <div className="flex items-center gap-2 bg-white/10 backdrop-blur-sm px-4 py-2 rounded-full">
-              <BadgeCheck size={20} className="text-green-400" />
-              <span className="text-sm">Лицензированный туроператор</span>
-            </div>
-            <div className="flex items-center gap-2 bg-white/10 backdrop-blur-sm px-4 py-2 rounded-full">
-              <Shield size={20} className="text-blue-400" />
-              <span className="text-sm">Застрахованная ответственность</span>
-            </div>
-            <div className="flex items-center gap-2 bg-white/10 backdrop-blur-sm px-4 py-2 rounded-full">
-              <Award size={20} className="text-yellow-400" />
-              <span className="text-sm">Сертификат ISO 9001</span>
-            </div>
-          </div>
         </motion.div>
 
         {/* Scroll indicator */}
