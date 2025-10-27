@@ -1,246 +1,416 @@
-import { Link, useParams } from 'react-router-dom'
-import { useQuery } from '@tanstack/react-query'
-import { Clock, Calendar, ArrowLeft } from 'lucide-react'
+import { useParams, Link } from 'react-router-dom'
+import { Clock, Calendar, ArrowLeft, Share2, Bookmark, TrendingUp, Eye } from 'lucide-react'
 import { PublicHeader } from '@/components/PublicHeader'
 import { PublicFooter } from '@/components/PublicFooter'
 import { Button } from '@/components/ui/button'
-import { TourCard } from '@/components/TourCard'
-import { toursApi } from '@/lib/api'
+import { motion } from 'framer-motion'
 
 export default function ArticlePage() {
   const { slug } = useParams<{ slug: string }>()
 
-  // База статей (та же что в JournalPage)
+  // База статей (должна совпадать с JournalPage)
   const articlesDatabase: Record<string, any> = {
-    'plyazhi-phuketa': {
-      title: '10 лучших пляжей Пхукета: от Патонга до секретных бухт',
-      preview: 'Откройте для себя райские уголки острова',
-      photo: 'https://images.unsplash.com/photo-1589394815804-964ed0be2eb5?w=1920&h=800&fit=crop',
-      readTime: 12,
-      publishedAt: '15 октября 2025',
+    'tailand-polnyj-gid': {
+      title: 'Таиланд: полный гид по стране улыбок',
+      preview: 'Откройте для себя удивительный Таиланд: от шумного Бангкока до райских пляжей Пхукета',
+      photo: 'https://images.unsplash.com/photo-1552465011-b4e21bf6e79a?w=1920&h=1080&fit=crop',
+      readTime: 18,
+      publishedAt: '15 октября 2024',
       countryTag: 'Таиланд',
-      location: 'Пхукет, Таиланд',
+      views: 12500,
+      category: 'Путеводители',
       content: `
-Пхукет — крупнейший остров Таиланда, известный своими великолепными пляжами с белым песком и бирюзовой водой. В этом гиде мы расскажем о лучших пляжах острова.
+Таиланд — это страна контрастов, где древние храмы соседствуют с современными небоскрёбами, а тропические джунгли граничат с белоснежными пляжами. Эта удивительная страна в Юго-Восточной Азии привлекает миллионы туристов ежегодно своей уникальной культурой, вкусной кухней и гостеприимством местных жителей.
 
-## 1. Патонг — сердце ночной жизни
+## Бангкок: сердце Таиланда
 
-Самый популярный и оживлённый пляж Пхукета. Идеален для тех, кто любит активный отдых, шопинг и ночные развлечения.
+Столица Таиланда — это мегаполис, который никогда не спит. Здесь вы найдёте величественные храмы, шумные рынки и современные торговые центры.
 
-**Что здесь делать:**
-- Водные виды спорта
-- Ночные клубы и бары
-- Магазины и рестораны
-- Наблюдать за закатами
+**Главные достопримечательности:**
+- Большой королевский дворец — жемчужина тайской архитектуры
+- Храм Ват Арун — храм рассвета с потрясающими видами
+- Плавучий рынок Дамноен Садуак — аутентичный опыт тайской торговли
+- Улица Каосан Роуд — центр бэкпекерской жизни
 
-## 2. Карон — для семейного отдыха
+Бангкок также известен своей уличной едой. Обязательно попробуйте пад тай, том ям и манговый рис с кокосовым молоком.
 
-Более спокойная альтернатива Патонгу с чистым песком и пологим входом в море.
+## Пхукет: тропический рай
 
-## 3. Ката Ной — для серфинга
+Крупнейший остров Таиланда славится своими пляжами и ночной жизнью. Пхукет предлагает развлечения на любой вкус — от спокойного пляжного отдыха до активных водных видов спорта.
 
-Небольшая бухта с отличными волнами для серфинга в сезон дождей.
+**Лучшие пляжи:**
+- Патонг — для любителей вечеринок
+- Карон — идеален для семейного отдыха
+- Ката — отличные условия для сёрфинга
+- Камала — тихий и уединённый
 
-## 4. Freedom Beach — райский уголок
+Не пропустите экскурсию на острова Пхи-Пхи — одно из самых красивых мест в мире.
 
-Секретный пляж, доступный только на лодке. Кристально чистая вода и никаких толп туристов.
+## Чиангмай: культурная столица
 
-**Как добраться:** на лонгтейл боте от Патонга (400-500 бат)
+Город на севере Таиланда известен своими древними храмами и традициями. Здесь более спокойный ритм жизни по сравнению с Бангкоком.
 
-## 5. Най Харн — для снорклинга
+**Что посмотреть:**
+- Храм Дой Сутхеп на горе с панорамным видом
+- Старый город с сотнями храмов
+- Ночной базар — рай для шопинга
+- Деревни горных племён
 
-Живописная бухта на юге острова с коралловыми рифами.
+Чиангмай также известен своими кулинарными курсами, где можно научиться готовить традиционные тайские блюда.
 
-## Советы путешественникам
+## Практические советы
 
-1. Лучшее время для посещения: ноябрь-апрель (сухой сезон)
-2. Арендуйте байк для перемещения между пляжами
-3. Используйте солнцезащитный крем — солнце очень активное
-4. Пробуйте местную еду на пляжах — вкусно и недорого
+**Лучшее время для посещения:**
+Ноябрь-февраль — прохладный сезон с минимумом дождей. Это идеальное время для путешествия по всей стране.
+
+**Виза:**
+Граждане России могут находиться в Таиланде без визы до 30 дней при въезде по воздуху.
+
+**Валюта:**
+Тайский бат (THB). 1 USD ≈ 35 бат. Обменивайте деньги в официальных обменниках, а не в аэропорту.
+
+**Транспорт:**
+- Внутри городов: тук-туки, такси Grab, мотобайки
+- Между городами: автобусы, поезда, внутренние рейсы
+- Острова: паромы и скоростные катера
+
+**Безопасность:**
+Таиланд — безопасная страна для туристов. Соблюдайте стандартные меры предосторожности и уважайте местные традиции.
+
+## Тайская кухня
+
+Кулинария — это отдельная причина посетить Таиланд. Тайская кухня известна своим балансом вкусов: острого, сладкого, кислого и солёного.
+
+**Обязательно попробуйте:**
+- Том ям — острый суп с креветками
+- Пад тай — жареная лапша с арахисом
+- Массаман карри — мягкое карри с картофелем
+- Сом там — острый салат из папайи
+- Манго стики райс — десерт из манго и клейкого риса
+
+Уличная еда в Таиланде не только вкусная, но и безопасная. Выбирайте места, где много местных жителей.
+
+## Культура и традиции
+
+Тайцы — очень дружелюбный и улыбчивый народ. Уважение к королевской семье и буддизму — основа тайского общества.
+
+**Правила этикета:**
+- Снимайте обувь при входе в храмы и дома
+- Не прикасайтесь к голове тайцев — это священная часть тела
+- Одевайтесь скромно при посещении храмов
+- Не повышайте голос и не проявляйте агрессию
+
+## Заключение
+
+Таиланд — это страна, которая влюбляет в себя с первого визита. Здесь каждый найдёт что-то своё: любители пляжного отдыха, ценители культуры, гурманы или искатели приключений. Страна улыбок ждёт вас!
       `
     },
-    'ulichnaya-eda-bangkoka': {
-      title: 'Уличная еда Бангкока: гид по лучшим рынкам',
-      preview: 'Погружение в гастрономическую культуру столицы Таиланда',
-      photo: 'https://images.unsplash.com/photo-1598515214211-89d3c73ae83b?w=1920&h=800&fit=crop',
-      readTime: 8,
-      publishedAt: '12 октября 2025',
-      countryTag: 'Таиланд',
-      location: 'Бангкок, Таиланд',
+    'yaponiya-puteshestvie': {
+      title: 'Япония: путешествие в страну восходящего солнца',
+      preview: 'Древние храмы Киото, неоновые огни Токио и священная гора Фудзи',
+      photo: 'https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?w=1920&h=1080&fit=crop',
+      readTime: 22,
+      publishedAt: '10 октября 2024',
+      countryTag: 'Япония',
+      views: 15800,
+      category: 'Культура',
       content: `
-Бангкок — мировая столица уличной еды. Здесь можно попробовать сотни блюд традиционной тайской кухни за копейки.
+Япония — это страна, где тысячелетние традиции гармонично сочетаются с передовыми технологиями. От священных храмов Киото до неоновых улиц Токио, от снежных вершин Хоккайдо до тропических пляжей Окинавы — Япония предлагает невероятное разнообразие впечатлений.
 
-## Yaowarat Road (Чайнатаун)
+## Токио: город будущего
 
-Легендарная улица с лучшей уличной едой в городе.
+Столица Японии — это мегаполис, который поражает воображение своими масштабами и контрастами. Здесь футуристические небоскрёбы соседствуют с традиционными святилищами.
+
+**Главные районы:**
+- Синдзюку — деловой центр с небоскрёбами
+- Сибуя — молодёжная мода и знаменитый перекрёсток
+- Акихабара — рай для любителей аниме и электроники
+- Асакуса — традиционный район с храмом Сэнсо-дзи
+
+Не пропустите рыбный рынок Тоёсу и смотровую площадку Tokyo Skytree.
+
+## Киото: душа Японии
+
+Древняя столица Японии — это город храмов, садов и гейш. Здесь сохранилась атмосфера старой Японии.
+
+**Обязательно посетите:**
+- Золотой павильон Кинкаку-дзи
+- Бамбуковую рощу Арасияма
+- Храм тысячи ворот Фусими Инари
+- Район гейш Гион
+
+Киото особенно прекрасен весной во время цветения сакуры и осенью, когда листья клёнов окрашиваются в красный цвет.
+
+## Гора Фудзи
+
+Священная гора Фудзи — символ Японии. Её идеальный конус виден за сотни километров в ясную погоду.
+
+**Лучшие места для просмотра:**
+- Озеро Кавагути — классический вид с отражением
+- Пагода Чурейто — знаменитая открыточная композиция
+- Хаконе — горячие источники с видом на Фудзи
+
+Сезон восхождения: июль-сентябрь. Подъём занимает 5-8 часов.
+
+## Японская кухня
+
+Японская кухня — это искусство. Здесь важны не только вкус, но и презентация.
 
 **Что попробовать:**
-- Pad Thai от уличных поваров
-- Свежие морепродукты на гриле
-- Манго с липким рисом
-- Жареные каштаны
+- Суши и сашими — свежайшая рыба
+- Рамен — горячий суп с лапшой
+- Темпура — овощи и морепродукты в кляре
+- Окономияки — японская пицца
+- Вагю — мраморная говядина
 
-## Or Tor Kor Market
+Обязательно посетите суши-бар с конвейерной лентой и попробуйте настоящий японский рамен.
 
-Один из лучших продуктовых рынков Азии по версии CNN.
+## Культура и этикет
 
-## Rot Fai Market
+Японцы известны своей вежливостью и уважением к традициям.
 
-Винтажный ночной рынок с ретро-атмосферой и отличной едой.
+**Важные правила:**
+- Снимайте обувь при входе в дома и некоторые рестораны
+- Не оставляйте чаевых — это может быть воспринято как оскорбление
+- Говорите тихо в общественном транспорте
+- Не ешьте на ходу
+- Кланяйтесь при приветствии
 
-## Khao San Road
+## Практическая информация
 
-Туристическая Мекка с огромным выбором еды на любой вкус.
+**Лучшее время:**
+- Весна (март-май) — цветение сакуры
+- Осень (сентябрь-ноябрь) — красные клёны
 
-## Советы
+**Транспорт:**
+JR Pass — безлимитный проездной на поезда. Покупайте до приезда в Японию.
 
-1. Ешьте там, где едят местные
-2. Не бойтесь экспериментировать
-3. Начинайте с небольших порций
-4. Всегда имейте при себе наличные
-5. Пик активности рынков — после 18:00
+**Язык:**
+Английский знают немногие, но японцы очень помогают туристам. Скачайте переводчик офлайн.
+
+**Интернет:**
+Арендуйте карманный Wi-Fi роутер в аэропорту.
+
+Япония — это страна, которая меняет восприятие мира. Здесь каждая деталь продумана, каждый момент особенный. Добро пожаловать в страну восходящего солнца!
       `
-    }
+    },
   }
 
-  const article = articlesDatabase[slug || ''] || articlesDatabase['plyazhi-phuketa']
+  const article = slug ? articlesDatabase[slug] : null
 
-  // Загрузка туров по локации
-  const { data: toursData } = useQuery({
-    queryKey: ['related-tours', article.location],
-    queryFn: async () => {
-      if (!article.location) return { tours: [] }
-      const response = await toursApi.getList({
-        page: 1,
-        page_size: 3,
-        location: article.location.split(',')[0].trim(),
-      })
-      return response.data
-    },
-    enabled: !!article.location,
-  })
+  if (!article) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gray-50">
+        <PublicHeader />
+        <div className="text-center py-20">
+          <h1 className="text-3xl font-bold text-gray-900 mb-4">Статья не найдена</h1>
+          <Link to="/journal">
+            <Button>Вернуться к журналу</Button>
+          </Link>
+        </div>
+        <PublicFooter />
+      </div>
+    )
+  }
 
-  const relatedTours = toursData?.tours || []
+  // Разбиваем контент на параграфы
+  const renderContent = (content: string) => {
+    return content.split('\n\n').map((paragraph, i) => {
+      // Заголовки H2
+      if (paragraph.startsWith('##')) {
+        return (
+          <motion.h2
+            key={i}
+            initial={{ opacity: 0, x: -20 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            className="text-3xl font-bold text-gray-900 mt-12 mb-6 flex items-center gap-3"
+          >
+            <span className="w-2 h-8 bg-gradient-to-b from-airbnb-rausch to-pink-600 rounded-full" />
+            {paragraph.replace('## ', '')}
+          </motion.h2>
+        )
+      }
+      
+      // Жирный текст
+      if (paragraph.startsWith('**') && paragraph.endsWith('**')) {
+        return (
+          <p key={i} className="font-bold text-xl text-gray-900 my-6">
+            {paragraph.replace(/\*\*/g, '')}
+          </p>
+        )
+      }
+      
+      // Списки
+      if (paragraph.startsWith('-')) {
+        const items = paragraph.split('\n')
+        return (
+          <motion.ul
+            key={i}
+            initial={{ opacity: 0, y: 10 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="space-y-3 my-6 ml-6"
+          >
+            {items.map((item, j) => (
+              <li key={j} className="text-gray-700 text-lg leading-relaxed flex items-start gap-3">
+                <span className="w-2 h-2 bg-airbnb-rausch rounded-full mt-2.5 flex-shrink-0" />
+                <span>{item.replace('- ', '')}</span>
+              </li>
+            ))}
+          </motion.ul>
+        )
+      }
+      
+      // Обычный параграф
+      return (
+        <motion.p
+          key={i}
+          initial={{ opacity: 0, y: 10 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="text-gray-700 text-lg leading-relaxed my-6"
+        >
+          {paragraph}
+        </motion.p>
+      )
+    })
+  }
 
   return (
     <div className="min-h-screen bg-white">
       <PublicHeader />
 
-      {/* Hero с фото */}
-      <div className="relative h-[500px] overflow-hidden">
+      {/* Hero с фото - улучшенный дизайн */}
+      <div className="relative h-[600px] overflow-hidden">
         <img
           src={article.photo}
           alt={article.title}
           className="w-full h-full object-cover"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
-        <div className="absolute bottom-0 left-0 right-0">
-          <div className="container mx-auto px-4 pb-12">
-            <Link to="/journal">
-              <Button variant="secondary" size="sm" className="mb-6 bg-white/90 hover:bg-white">
-                <ArrowLeft className="mr-2" size={16} />
-                Назад к журналу
-              </Button>
-            </Link>
-            
+        <div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent" />
+        
+        {/* Кнопка назад */}
+        <div className="absolute top-8 left-8 z-10">
+          <Link to="/journal">
+            <Button variant="secondary" size="lg" className="bg-white/90 hover:bg-white backdrop-blur-sm shadow-lg">
+              <ArrowLeft className="mr-2" size={20} />
+              Назад к журналу
+            </Button>
+          </Link>
+        </div>
+
+        {/* Действия */}
+        <div className="absolute top-8 right-8 z-10 flex gap-3">
+          <button className="p-3 bg-white/90 hover:bg-white backdrop-blur-sm rounded-full shadow-lg transition-all hover:scale-110">
+            <Share2 size={20} className="text-gray-900" />
+          </button>
+          <button className="p-3 bg-white/90 hover:bg-white backdrop-blur-sm rounded-full shadow-lg transition-all hover:scale-110">
+            <Bookmark size={20} className="text-gray-900" />
+          </button>
+        </div>
+        
+        {/* Контент Hero */}
+        <div className="absolute bottom-0 left-0 right-0 pb-12">
+          <div className="container mx-auto px-4">
             <div className="max-w-4xl">
-              <div className="flex items-center gap-4 text-white/90 text-sm mb-4">
-                <div className="flex items-center gap-1">
-                  <Clock size={14} />
-                  <span>Читать {article.readTime} минут</span>
+              {/* Мета-информация */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.2 }}
+                className="flex flex-wrap items-center gap-4 text-white/90 text-sm mb-6"
+              >
+                <span className="px-4 py-2 bg-white/20 backdrop-blur-sm rounded-full font-semibold">
+                  {article.category}
+                </span>
+                <div className="flex items-center gap-2">
+                  <Clock size={16} />
+                  <span>{article.readTime} минут чтения</span>
                 </div>
                 <span>·</span>
-                <div className="flex items-center gap-1">
-                  <Calendar size={14} />
+                <div className="flex items-center gap-2">
+                  <Calendar size={16} />
                   <span>{article.publishedAt}</span>
                 </div>
                 <span>·</span>
-                <span className="text-airbnb-babu">#{article.countryTag}</span>
-              </div>
+                <div className="flex items-center gap-2">
+                  <Eye size={16} />
+                  <span>{article.views.toLocaleString()} просмотров</span>
+                </div>
+              </motion.div>
               
-              <h1 className="text-5xl font-bold text-white mb-4">
+              {/* Заголовок */}
+              <motion.h1
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.3 }}
+                className="text-5xl md:text-6xl font-bold text-white mb-6 leading-tight"
+              >
                 {article.title}
-              </h1>
-              <p className="text-xl text-white/90">
+              </motion.h1>
+              
+              {/* Превью */}
+              <motion.p
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.4 }}
+                className="text-xl text-white/90 leading-relaxed"
+              >
                 {article.preview}
-              </p>
+              </motion.p>
+
+              {/* Тег страны */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.5 }}
+                className="mt-6"
+              >
+                <span className="inline-flex items-center gap-2 px-4 py-2 bg-blue-500/90 backdrop-blur-sm text-white rounded-full font-semibold">
+                  <TrendingUp size={16} />
+                  #{article.countryTag}
+                </span>
+              </motion.div>
             </div>
           </div>
         </div>
       </div>
 
-      {/* Контент статьи */}
+      {/* Контент статьи - улучшенная типографика */}
       <div className="container mx-auto px-4 py-16">
         <div className="max-w-4xl mx-auto">
-          <div className="prose prose-lg max-w-none">
-            {article.content.split('\n\n').map((paragraph: string, i: number) => {
-              if (paragraph.startsWith('##')) {
-                return (
-                  <h2 key={i} className="text-3xl font-bold text-gray-900 mt-12 mb-4">
-                    {paragraph.replace('## ', '')}
-                  </h2>
-                )
-              }
-              if (paragraph.startsWith('**') && paragraph.endsWith('**')) {
-                return (
-                  <p key={i} className="font-semibold text-gray-900 my-4">
-                    {paragraph.replace(/\*\*/g, '')}
-                  </p>
-                )
-              }
-              if (paragraph.startsWith('-')) {
-                const items = paragraph.split('\n')
-                return (
-                  <ul key={i} className="space-y-2 my-6 ml-6">
-                    {items.map((item: string, j: number) => (
-                      <li key={j} className="text-gray-700">
-                        {item.replace('- ', '')}
-                      </li>
-                    ))}
-                  </ul>
-                )
-              }
-              if (paragraph.match(/^\d+\./)) {
-                const items = paragraph.split('\n')
-                return (
-                  <ol key={i} className="space-y-2 my-6 ml-6 list-decimal">
-                    {items.map((item: string, j: number) => (
-                      <li key={j} className="text-gray-700">
-                        {item.replace(/^\d+\.\s/, '')}
-                      </li>
-                    ))}
-                  </ol>
-                )
-              }
-              return (
-                <p key={i} className="text-gray-700 leading-relaxed my-6">
-                  {paragraph}
-                </p>
-              )
-            })}
+          {/* Основной контент */}
+          <article className="prose prose-lg max-w-none">
+            {renderContent(article.content)}
+          </article>
+
+          {/* Разделитель */}
+          <div className="my-16 flex items-center gap-4">
+            <div className="flex-1 h-px bg-gradient-to-r from-transparent via-gray-300 to-transparent" />
+            <Sparkles className="text-airbnb-rausch" size={24} />
+            <div className="flex-1 h-px bg-gradient-to-r from-transparent via-gray-300 to-transparent" />
           </div>
 
-          {/* Связанные экскурсии */}
-          {relatedTours.length > 0 && (
-            <div className="mt-16 pt-16 border-t">
-              <div className="flex items-center justify-between mb-8">
-                <h2 className="text-3xl font-bold text-gray-900">
-                  Экскурсии в {article.location?.split(',')[0]}
-                </h2>
-                <Link 
-                  to={`/tours?location=${encodeURIComponent(article.location?.split(',')[0] || article.countryTag)}`}
-                  className="text-airbnb-rausch hover:underline font-medium flex items-center gap-2"
-                >
-                  Смотреть все <ArrowLeft className="rotate-180" size={16} />
-                </Link>
-              </div>
-              <div className="grid md:grid-cols-3 gap-6">
-                {relatedTours.map((tour: any) => (
-                  <TourCard key={tour.id} tour={tour} />
-                ))}
-              </div>
-            </div>
-          )}
+          {/* Призыв к действию */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="bg-gradient-to-r from-airbnb-rausch to-pink-600 rounded-3xl p-8 md:p-12 text-white text-center"
+          >
+            <h3 className="text-3xl font-bold mb-4">
+              Готовы отправиться в путешествие?
+            </h3>
+            <p className="text-xl text-white/90 mb-8 max-w-2xl mx-auto">
+              Найдите идеальную экскурсию в {article.countryTag} с местными гидами
+            </p>
+            <Link to={`/tours?location=${article.countryTag}`}>
+              <Button size="lg" variant="secondary" className="bg-white text-airbnb-rausch hover:bg-gray-50 font-semibold text-lg px-8 py-6">
+                Смотреть экскурсии в {article.countryTag}
+              </Button>
+            </Link>
+          </motion.div>
         </div>
       </div>
 
@@ -248,4 +418,3 @@ export default function ArticlePage() {
     </div>
   )
 }
-

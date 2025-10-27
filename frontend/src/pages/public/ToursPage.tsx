@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import { useSearchParams, Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
@@ -15,7 +15,7 @@ import { CityHero } from '@/components/CityHero'
 import { LandmarksSection } from '@/components/LandmarksSection'
 import { Pagination } from '@/components/Pagination'
 
-// Азиатские страны и города (ТОЛЬКО АЗИЯ!)
+// Азиатские страны и города (ТОЛЬКО АЗИЯ!) - Профессиональный маппинг
 const ASIAN_COUNTRIES = [
   { name: 'Таиланд', flag: '🇹🇭' },
   { name: 'ОАЭ', flag: '🇦🇪' },
@@ -24,21 +24,24 @@ const ASIAN_COUNTRIES = [
   { name: 'Индонезия', flag: '🇮🇩' },
   { name: 'Вьетнам', flag: '🇻🇳' },
   { name: 'Сингапур', flag: '🇸🇬' },
+  { name: 'Китай', flag: '🇨🇳' },
+  { name: 'Индия', flag: '🇮🇳' },
+  { name: 'Малайзия', flag: '🇲🇾' },
 ]
 
-// Маппинг стран → города для умной фильтрации
-const COUNTRY_CITIES_MAP: Record<string, string[]> = {
-  'Таиланд': ['Бангкок', 'Пхукет', 'Паттайя', 'Краби', 'Чиангмай', 'Ко Тао', 'Ко Самуи'],
-  'Япония': ['Токио', 'Киото', 'Осака', 'Хиросима', 'Нара', 'Фукуока', 'Саппоро'],
+// Маппинг городов к странам
+const CITIES_BY_COUNTRY: Record<string, string[]> = {
+  'Таиланд': ['Бангкок', 'Пхукет', 'Паттайя', 'Краби', 'Чиангмай', 'Ко Тао', 'Ко Самуи', 'Хуа Хин'],
   'ОАЭ': ['Дубай', 'Абу-Даби', 'Шарджа', 'Аджман'],
-  'Индонезия': ['Убуд', 'Семиньяк', 'Нуса-Дуа', 'Джакарта', 'Бали'],
-  'Вьетнам': ['Ханой', 'Хошимин', 'Халонг', 'Нячанг', 'Хойан', 'Далат'],
+  'Япония': ['Токио', 'Киото', 'Осака', 'Хиросима', 'Нара', 'Фукуока', 'Саппоро'],
   'Корея': ['Сеул', 'Пусан', 'Чеджу', 'Инчхон'],
+  'Индонезия': ['Убуд', 'Семиньяк', 'Нуса-Дуа', 'Джакарта', 'Джокьякарта', 'Ломбок'],
+  'Вьетнам': ['Ханой', 'Хошимин', 'Халонг', 'Нячанг', 'Далат', 'Хойан', 'Хюэ'],
   'Сингапур': ['Сингапур'],
+  'Китай': ['Пекин', 'Шанхай', 'Сиань', 'Гуанчжоу', 'Ченду', 'Гонконг'],
+  'Индия': ['Дели', 'Мумбаи', 'Джайпур', 'Агра', 'Гоа', 'Варанаси', 'Удайпур'],
+  'Малайзия': ['Куала-Лумпур', 'Пенанг', 'Лангкави', 'Малакка'],
 }
-
-// Все города для отображения (когда не выбрана страна)
-const ALL_ASIAN_CITIES = Object.values(COUNTRY_CITIES_MAP).flat()
 
 export default function ToursPage() {
   const [searchParams] = useSearchParams()
@@ -56,28 +59,8 @@ export default function ToursPage() {
   const locationParam = searchParams.get('location')
   const guestsParam = searchParams.get('guests')
   const landmarksParam = searchParams.get('landmarks')
-  const dateStartParam = searchParams.get('date_start')
-  const dateEndParam = searchParams.get('date_end')
-
-  // Синхронизация location параметра с фильтрами (только при загрузке)
-  useEffect(() => {
-    if (locationParam) {
-      // Проверяем, является ли это страной
-      const isCountry = ASIAN_COUNTRIES.some(c => c.name === locationParam)
-      if (isCountry && !selectedCountries.includes(locationParam)) {
-        setSelectedCountries([locationParam])
-      } else if (!isCountry && !selectedCities.includes(locationParam)) {
-        // Это город - находим его страну и выбираем оба
-        for (const [country, cities] of Object.entries(COUNTRY_CITIES_MAP)) {
-          if (cities.includes(locationParam)) {
-            setSelectedCountries([country])
-            setSelectedCities([locationParam])
-            break
-          }
-        }
-      }
-    }
-  }, [locationParam]) // Выполняем только при изменении locationParam
+  // const dateStartParam = searchParams.get('date_start')  // TODO: использовать для фильтрации по датам
+  // const dateEndParam = searchParams.get('date_end')  // TODO: использовать для фильтрации по датам
 
   // Загрузка динамических категорий из navigation API
   const { data: navigationData } = useQuery({
@@ -87,7 +70,7 @@ export default function ToursPage() {
 
   // Загрузка экскурсий с фильтрами
   const { data: toursData, isLoading } = useQuery({
-    queryKey: ['tours', selectedThemes, selectedCountries, selectedCities, selectedPriceRanges, selectedDurations, selectedRatings, currentPage, landmarksParam, locationParam, guestsParam, dateStartParam, dateEndParam],
+    queryKey: ['tours', selectedThemes, selectedCountries, selectedCities, selectedPriceRanges, selectedDurations, selectedRatings, currentPage, landmarksParam, locationParam, guestsParam],
     queryFn: async () => {
       // Преобразуем фильтры в параметры API
       const params: any = {
@@ -100,28 +83,20 @@ export default function ToursPage() {
         params.landmarks = landmarksParam
       }
 
-      // Location из URL или выбранные города/страны
+      // Location из URL или выбранные города/страны (УЛУЧШЕННАЯ ИНТЕГРАЦИЯ)
       if (locationParam) {
         params.location = locationParam
       } else if (selectedCities.length > 0) {
-        // Если выбраны города, используем первый город для location
-        params.location = selectedCities[0]
+        // Поддержка множественных городов - передаем все выбранные города
+        params.location = selectedCities.join(',')
       } else if (selectedCountries.length > 0) {
-        // Если выбраны страны, используем первую страну для location
-        params.location = selectedCountries[0]
+        // Поддержка множественных стран - передаем все выбранные страны
+        params.location = selectedCountries.join(',')
       }
 
-      // Guests из URL (количество участников)
+      // Guests из URL
       if (guestsParam) {
         params.guests = parseInt(guestsParam)
-      }
-
-      // Даты из URL (для поиска)
-      if (dateStartParam) {
-        params.date_start = dateStartParam
-      }
-      if (dateEndParam) {
-        params.date_end = dateEndParam
       }
 
       // Темы/категории
@@ -137,18 +112,29 @@ export default function ToursPage() {
       }
       if (selectedPriceRanges.includes('10000+₽')) params.min_price = 10000
 
-      // Длительность из чипсов
-      if (selectedDurations.includes('1-3 часа')) params.duration_max = 3
+      // Длительность из чипсов (УЛУЧШЕННАЯ ЛОГИКА)
+      if (selectedDurations.includes('1-3 часа')) {
+        params.duration_min = 1
+        params.duration_max = 3
+      }
       if (selectedDurations.includes('4-6 часов')) {
         params.duration_min = 4
         params.duration_max = 6
       }
-      if (selectedDurations.includes('Полный день (7+ч)')) params.duration_min = 7
+      if (selectedDurations.includes('Полный день (7+ч)')) {
+        params.duration_min = 7
+      }
 
-      // Рейтинг из чипсов
-      if (selectedRatings.includes('4.5+ звёзд')) params.min_rating = 4.5
-      if (selectedRatings.includes('4.7+')) params.min_rating = 4.7
-      if (selectedRatings.includes('4.9+ (топ)')) params.min_rating = 4.9
+      // Рейтинг из чипсов (НОВАЯ ФУНКЦИОНАЛЬНОСТЬ)
+      if (selectedRatings.includes('4.5+ звёзд')) {
+        params.min_rating = 4.5
+      }
+      if (selectedRatings.includes('4.7+')) {
+        params.min_rating = 4.7
+      }
+      if (selectedRatings.includes('4.9+ (топ)')) {
+        params.min_rating = 4.9
+      }
 
       const response = await toursApi.getList(params)
       console.log('Tours API response:', response.data)
@@ -215,6 +201,26 @@ export default function ToursPage() {
     setSelectedRatings([])
   }
 
+  // Автоматически очищаем города при изменении стран
+  const handleCountrySelect = (country: string) => {
+    setSelectedCountries(prev => {
+      const newCountries = prev.includes(country) 
+        ? prev.filter(c => c !== country) 
+        : [...prev, country]
+      
+      // Если убрали все страны, очищаем города
+      if (newCountries.length === 0) {
+        setSelectedCities([])
+      } else {
+        // Убираем города, которые не принадлежат выбранным странам
+        const validCities = newCountries.flatMap(c => CITIES_BY_COUNTRY[c] || [])
+        setSelectedCities(prev => prev.filter(city => validCities.includes(city)))
+      }
+      
+      return newCountries
+    })
+  }
+
   // Определяем город и страну из первого тура (если есть locationParam)
   const cityInfo = locationParam && sortedTours.length > 0 ? (() => {
     const firstTour = sortedTours[0]
@@ -242,8 +248,8 @@ export default function ToursPage() {
       <PublicHeader />
 
       {/* Поисковая панель */}
-      <div className="sticky top-[80px] z-50 bg-white border-b shadow-sm">
-        <div className="container mx-auto px-4 py-3">
+      <div className="bg-white border-b shadow-sm">
+        <div className="container mx-auto px-4 py-3 sticky top-24 z-50 bg-white will-change-transform">
           <SearchBar variant="sticky" />
         </div>
       </div>
@@ -299,6 +305,7 @@ export default function ToursPage() {
         </section>
       )}
 
+
       {/* Секция категорий */}
       <div className="bg-white border-b">
         <div className="container mx-auto px-4 py-6 space-y-4">
@@ -318,7 +325,7 @@ export default function ToursPage() {
           )}
 
           {/* Фильтр по странам */}
-                <div>
+          <div>
             <h3 className="text-sm font-semibold text-gray-700 mb-2">🌏 Страны</h3>
             <div className="flex gap-2 overflow-x-auto scrollbar-hide pb-2">
               {ASIAN_COUNTRIES.map((country, index) => (
@@ -327,11 +334,7 @@ export default function ToursPage() {
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: index * 0.03 }}
-                  onClick={() => {
-                    setSelectedCountries(prev =>
-                      prev.includes(country.name) ? prev.filter(c => c !== country.name) : [...prev, country.name]
-                    )
-                  }}
+                  onClick={() => handleCountrySelect(country.name)}
                   className={`px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-all ${
                     selectedCountries.includes(country.name)
                       ? 'bg-airbnb-rausch text-white shadow-md scale-105'
@@ -342,53 +345,43 @@ export default function ToursPage() {
                 </motion.button>
               ))}
             </div>
-                </div>
+          </div>
 
-          {/* Фильтр по городам */}
-                <div>
-            <div className="flex items-center justify-between mb-2">
-              <h3 className="text-sm font-semibold text-gray-700">📍 Города</h3>
-              {selectedCountries.length > 0 && (
-                <span className="text-xs text-gray-500">
-                  Доступно {(() => {
-                    const citiesForSelectedCountries = selectedCountries.flatMap(
-                      country => COUNTRY_CITIES_MAP[country] || []
-                    )
-                    return citiesForSelectedCountries.length
-                  })()} городов
-                </span>
-              )}
+          {/* Фильтр по городам - умная фильтрация */}
+          {selectedCountries.length > 0 && (
+            <div>
+              <h3 className="text-sm font-semibold text-gray-700 mb-2">
+                📍 Города {selectedCountries.length === 1 ? `(${selectedCountries[0]})` : '(выбранных стран)'}
+              </h3>
+              <div className="flex gap-2 overflow-x-auto scrollbar-hide pb-2">
+                {(() => {
+                  // Получаем города только из выбранных стран
+                  const availableCities = selectedCountries.flatMap(country => CITIES_BY_COUNTRY[country] || [])
+                  
+                  return availableCities.map((city, index) => (
+                    <motion.button
+                      key={city}
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: index * 0.03 }}
+                      onClick={() => {
+                        setSelectedCities(prev =>
+                          prev.includes(city) ? prev.filter(c => c !== city) : [...prev, city]
+                        )
+                      }}
+                      className={`px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-all ${
+                        selectedCities.includes(city)
+                          ? 'bg-airbnb-rausch text-white shadow-md scale-105'
+                          : 'bg-gray-100 text-gray-700 hover:bg-gray-200 hover:scale-105'
+                      }`}
+                    >
+                      {city}
+                    </motion.button>
+                  ))
+                })()}
+              </div>
             </div>
-            <div className="flex gap-2 overflow-x-auto scrollbar-hide pb-2">
-              {(() => {
-                // Умная фильтрация городов
-                const citiesToShow = selectedCountries.length > 0
-                  ? selectedCountries.flatMap(country => COUNTRY_CITIES_MAP[country] || [])
-                  : ALL_ASIAN_CITIES
-                
-                return citiesToShow.map((city, index) => (
-                <motion.button
-                  key={city}
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: index * 0.03 }}
-                  onClick={() => {
-                    setSelectedCities(prev =>
-                      prev.includes(city) ? prev.filter(c => c !== city) : [...prev, city]
-                    )
-                  }}
-                  className={`px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-all ${
-                    selectedCities.includes(city)
-                      ? 'bg-airbnb-rausch text-white shadow-md scale-105'
-                      : 'bg-gray-100 text-gray-700 hover:bg-gray-200 hover:scale-105'
-                  }`}
-                >
-                  {city}
-                </motion.button>
-                ))
-              })()}
-                  </div>
-                </div>
+          )}
 
           <div>
             <h3 className="text-sm font-semibold text-gray-700 mb-2">Категории</h3>

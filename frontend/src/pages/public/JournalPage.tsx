@@ -1,147 +1,118 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
-import { Clock, Calendar, ArrowRight, Sparkles } from 'lucide-react'
+import { Clock, Calendar, TrendingUp, Sparkles } from 'lucide-react'
 import { PublicHeader } from '@/components/PublicHeader'
 import { PublicFooter } from '@/components/PublicFooter'
 
 export default function JournalPage() {
   const [selectedCountry, setSelectedCountry] = useState<string | null>(null)
 
-  // Азиатские статьи с реальным контентом
+  // Полные статьи про страны Азии
   const articles = [
     {
       id: 1,
-      title: '10 лучших пляжей Пхукета: от Патонга до секретных бухт',
-      slug: 'plyazhi-phuketa',
-      preview: 'Откройте для себя райские уголки острова: от знаменитого Патонга до уединённых бухт для романтического отдыха',
-      photo: 'https://images.unsplash.com/photo-1589394815804-964ed0be2eb5?w=1200&h=800&fit=crop',
-      readTime: 12,
-      publishedAt: '15 окт 2025',
+      title: 'Таиланд: полный гид по стране улыбок',
+      slug: 'tailand-polnyj-gid',
+      preview: 'Откройте для себя удивительный Таиланд: от шумного Бангкока до райских пляжей Пхукета. Узнайте о лучших местах, традициях и секретах путешествия.',
+      photo: 'https://images.unsplash.com/photo-1552465011-b4e21bf6e79a?w=1200&h=800&fit=crop',
+      readTime: 18,
+      publishedAt: '15 окт 2024',
       countryTag: 'Таиланд',
+      views: 12500,
       featured: true,
-      size: 'large'
+      category: 'Путеводители'
     },
     {
       id: 2,
-      title: 'Уличная еда Бангкока: гид по лучшим рынкам',
-      slug: 'ulichnaya-eda-bangkoka',
-      preview: 'Погружение в гастрономическую культуру столицы Таиланда',
-      photo: 'https://images.unsplash.com/photo-1598515214211-89d3c73ae83b?w=800&h=600&fit=crop',
-      readTime: 8,
-      publishedAt: '12 окт 2025',
-      countryTag: 'Таиланд',
-      size: 'medium'
+      title: 'Япония: путешествие в страну восходящего солнца',
+      slug: 'yaponiya-puteshestvie',
+      preview: 'Древние храмы Киото, неоновые огни Токио и священная гора Фудзи. Погрузитесь в уникальную культуру Японии и откройте её секреты.',
+      photo: 'https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?w=1200&h=800&fit=crop',
+      readTime: 22,
+      publishedAt: '10 окт 2024',
+      countryTag: 'Япония',
+      views: 15800,
+      featured: true,
+      category: 'Культура'
     },
     {
       id: 3,
-      title: 'Храмы Чиангмая: духовное сердце Таиланда',
-      slug: 'hramy-chiangmaya',
-      preview: 'Древние святыни в горах северного Таиланда',
-      photo: 'https://images.unsplash.com/photo-1519451241324-20b4ea2c4220?w=800&h=600&fit=crop',
-      readTime: 10,
-      publishedAt: '8 окт 2025',
-      countryTag: 'Таиланд',
-      size: 'small'
+      title: 'Бали: остров богов и бесконечного лета',
+      slug: 'bali-ostrov-bogov',
+      preview: 'Рисовые террасы Убуда, серферские волны Семиньяка и духовные церемонии. Узнайте, почему Бали называют раем на земле.',
+      photo: 'https://images.unsplash.com/photo-1537996194471-e657df975ab4?w=1200&h=800&fit=crop',
+      readTime: 16,
+      publishedAt: '5 окт 2024',
+      countryTag: 'Индонезия',
+      views: 9200,
+      featured: false,
+      category: 'Пляжный отдых'
     },
     {
       id: 4,
-      title: 'Сакура в Токио: лучшие места для ханами',
-      slug: 'sakura-v-tokio',
-      preview: 'Где увидеть цветение сакуры в японской столице',
-      photo: 'https://images.unsplash.com/photo-1522383225653-ed111181a951?w=800&h=600&fit=crop',
-      readTime: 11,
-      publishedAt: '5 окт 2025',
-      countryTag: 'Япония',
-      size: 'medium'
+      title: 'Вьетнам: от бухты Халонг до дельты Меконга',
+      slug: 'vietnam-ot-halong-do-mekonga',
+      preview: 'Изумрудные воды бухты Халонг, древний город Хойан и шумный Хошимин. Откройте многогранный Вьетнам во всей его красе.',
+      photo: 'https://images.unsplash.com/photo-1583417319070-4a69db38a482?w=1200&h=800&fit=crop',
+      readTime: 20,
+      publishedAt: '28 сен 2024',
+      countryTag: 'Вьетнам',
+      views: 8500,
+      featured: false,
+      category: 'Приключения'
     },
     {
       id: 5,
-      title: 'Онсэны Киото: традиционные термальные источники',
-      slug: 'onseny-kioto',
-      preview: 'Японская культура купания в горячих источниках',
-      photo: 'https://images.unsplash.com/photo-1480796927426-f609979314bd?w=800&h=600&fit=crop',
-      readTime: 9,
-      publishedAt: '1 окт 2025',
-      countryTag: 'Япония',
-      size: 'small'
+      title: 'ОАЭ: роскошь и традиции Востока',
+      slug: 'oae-roskosh-i-tradicii',
+      preview: 'Небоскрёбы Дубая, золотые пляжи и древние рынки. Узнайте, как современность сочетается с традициями в Эмиратах.',
+      photo: 'https://images.unsplash.com/photo-1512453979798-5ea266f8880c?w=1200&h=800&fit=crop',
+      readTime: 14,
+      publishedAt: '20 сен 2024',
+      countryTag: 'ОАЭ',
+      views: 11200,
+      featured: false,
+      category: 'Роскошь'
     },
     {
       id: 6,
-      title: 'Уличная культура Осаки: гастрономический рай',
-      slug: 'osaка-gastronomiya',
-      preview: 'Кухня Осаки — лучшая в Японии',
-      photo: 'https://images.unsplash.com/photo-1542051841857-5f90071e7989?w=800&h=600&fit=crop',
-      readTime: 7,
-      publishedAt: '28 сен 2025',
-      countryTag: 'Япония',
-      size: 'small'
+      title: 'Южная Корея: K-pop, кимчи и древние дворцы',
+      slug: 'yuzhnaya-koreya-kpop',
+      preview: 'Современный Сеул, традиционные ханбоки и вулканический остров Чеджу. Погрузитесь в динамичную культуру Кореи.',
+      photo: 'https://images.unsplash.com/photo-1517154421773-0529f29ea451?w=1200&h=800&fit=crop',
+      readTime: 17,
+      publishedAt: '12 сен 2024',
+      countryTag: 'Корея',
+      views: 7800,
+      featured: false,
+      category: 'Культура'
     },
     {
       id: 7,
-      title: 'Дубай за 3 дня: маршрут по главным достопримечательностям',
-      slug: 'dubai-za-3-dnya',
-      preview: 'От Бурдж-Халифа до традиционных рынков',
-      photo: 'https://images.unsplash.com/photo-1512453979798-5ea266f8880c?w=800&h=600&fit=crop',
-      readTime: 14,
-      publishedAt: '25 сен 2025',
-      countryTag: 'ОАЭ',
-      size: 'large'
+      title: 'Сингапур: город будущего в тропиках',
+      slug: 'singapur-gorod-budushchego',
+      preview: 'Футуристические сады у залива, многокультурные кварталы и мишленовские хокер-центры. Откройте уникальный Сингапур.',
+      photo: 'https://images.unsplash.com/photo-1525625293386-3f8f99389edd?w=1200&h=800&fit=crop',
+      readTime: 12,
+      publishedAt: '5 сен 2024',
+      countryTag: 'Сингапур',
+      views: 6500,
+      featured: false,
+      category: 'Городской туризм'
     },
     {
       id: 8,
-      title: 'Пустынное сафари в ОАЭ: что нужно знать',
-      slug: 'pustynnoe-safari-oae',
-      preview: 'Приключения в песчаных дюнах и бедуинский ужин',
-      photo: 'https://images.unsplash.com/photo-1451337516015-6b6e9a44a8a3?w=800&h=600&fit=crop',
-      readTime: 6,
-      publishedAt: '20 сен 2025',
-      countryTag: 'ОАЭ',
-      size: 'small'
-    },
-    {
-      id: 9,
-      title: 'Убуд: йога, рисовые террасы и балийская культура',
-      slug: 'ubud-bali',
-      preview: 'Духовный центр острова Бали',
-      photo: 'https://images.unsplash.com/photo-1537996194471-e657df975ab4?w=800&h=600&fit=crop',
-      readTime: 13,
-      publishedAt: '15 сен 2025',
-      countryTag: 'Индонезия',
-      size: 'medium'
-    },
-    {
-      id: 10,
-      title: 'Серфинг на Бали: лучшие споты для новичков',
-      slug: 'serfing-na-bali',
-      preview: 'Где научиться ловить волны на острове богов',
-      photo: 'https://images.unsplash.com/photo-1505142468610-359e7d316be0?w=800&h=600&fit=crop',
-      readTime: 8,
-      publishedAt: '10 сен 2025',
-      countryTag: 'Индонезия',
-      size: 'small'
-    },
-    {
-      id: 11,
-      title: 'Бухта Халонг: круиз по изумрудным водам',
-      slug: 'buhta-halong',
-      preview: 'Величественные известняковые скалы Вьетнама',
-      photo: 'https://images.unsplash.com/photo-1583417319070-4a69db38a482?w=800&h=600&fit=crop',
-      readTime: 10,
-      publishedAt: '5 сен 2025',
-      countryTag: 'Вьетнам',
-      size: 'medium'
-    },
-    {
-      id: 12,
-      title: 'Ночной рынок Ханоя: атмосфера старого города',
-      slug: 'nochnoy-rynok-hanoya',
-      preview: 'Колорит вьетнамской столицы после заката',
-      photo: 'https://images.unsplash.com/photo-1559592413-7cec4d0cae2b?w=800&h=600&fit=crop',
-      readTime: 7,
-      publishedAt: '1 сен 2025',
-      countryTag: 'Вьетнам',
-      size: 'small'
+      title: 'Малайзия: где встречаются культуры',
+      slug: 'malayziya-gde-vstrechayutsya-kultury',
+      preview: 'Башни Петронас, чайные плантации Камерон Хайлендс и пляжи Лангкави. Исследуйте разнообразную Малайзию.',
+      photo: 'https://images.unsplash.com/photo-1596422846543-75c6fc197f07?w=1200&h=800&fit=crop',
+      readTime: 15,
+      publishedAt: '28 авг 2024',
+      countryTag: 'Малайзия',
+      views: 5200,
+      featured: false,
+      category: 'Природа'
     },
   ]
 
@@ -151,221 +122,254 @@ export default function JournalPage() {
     ? articles.filter(a => a.countryTag === selectedCountry)
     : articles
 
-  const featuredArticle = articles.find(a => a.featured)
-  
-  // Цветовая кодировка стран
-  const countryColors: Record<string, string> = {
-    'Таиланд': 'bg-blue-500',
-    'Япония': 'bg-pink-500',
-    'ОАЭ': 'bg-amber-500',
-    'Индонезия': 'bg-green-500',
-    'Вьетнам': 'bg-red-500',
-    'Корея': 'bg-purple-500',
-  }
+  const featuredArticles = filteredArticles.filter(a => a.featured)
+  const regularArticles = filteredArticles.filter(a => !a.featured)
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-white">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
       <PublicHeader />
 
-      {/* Hero с featured статьёй */}
-      {featuredArticle && !selectedCountry && (
-        <section className="relative h-[600px] overflow-hidden">
-          <img
-            src={featuredArticle.photo}
-            alt={featuredArticle.title}
-            className="w-full h-full object-cover"
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent" />
-          <div className="absolute inset-0 flex items-end">
-            <div className="container mx-auto px-4 pb-16">
-              <motion.div
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
-                className="max-w-3xl"
-              >
-                <div className="flex items-center gap-3 mb-4">
-                  <div className="flex items-center gap-2 px-4 py-2 bg-white/20 backdrop-blur-md rounded-full text-white">
-                    <Sparkles size={16} />
-                    <span className="text-sm font-semibold">Рекомендуем</span>
-                  </div>
-                  <span className={`px-4 py-2 ${countryColors[featuredArticle.countryTag]} text-white rounded-full text-sm font-semibold`}>
-                    {featuredArticle.countryTag}
-                  </span>
-                </div>
-                <h1 className="text-5xl md:text-6xl font-bold text-white mb-6 leading-tight">
-                  {featuredArticle.title}
-                </h1>
-                <p className="text-xl text-white/90 mb-8">
-                  {featuredArticle.preview}
-                </p>
-                <div className="flex items-center gap-6 text-white/80 mb-8">
-                  <div className="flex items-center gap-2">
-                    <Clock size={18} />
-                    <span>{featuredArticle.readTime} мин</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <Calendar size={18} />
-                    <span>{featuredArticle.publishedAt}</span>
-                  </div>
-                </div>
-                <Link to={`/journal/${featuredArticle.slug}`}>
-                  <motion.button
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                    className="flex items-center gap-2 bg-white text-gray-900 px-8 py-4 rounded-full font-semibold hover:shadow-2xl transition-all"
-                  >
-                    Читать статью
-                    <ArrowRight size={20} />
-                  </motion.button>
-                </Link>
-              </motion.div>
+      {/* Hero - современный градиент */}
+      <section className="relative bg-gradient-to-r from-airbnb-rausch via-pink-600 to-purple-600 py-20 overflow-hidden">
+        <div className="absolute inset-0 bg-black/10" />
+        <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiNmZmYiIGZpbGwtb3BhY2l0eT0iMC4wNSI+PHBhdGggZD0iTTM2IDE0YzMuMzEgMCA2LTIuNjkgNi02cy0yLjY5LTYtNi02LTYgMi42OS02IDYgMi42OSA2IDYgNnptMC00YzEuMSAwIDItLjkgMi0ycy0uOS0yLTItMi0yIC45LTIgMiAuOSAyIDIgMnoiLz48L2c+PC9nPjwvc3ZnPg==')] opacity-20" />
+        
+        <div className="container mx-auto px-4 text-center relative z-10">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+          >
+            <div className="inline-flex items-center gap-2 bg-white/20 backdrop-blur-sm px-4 py-2 rounded-full text-white text-sm font-medium mb-6">
+              <Sparkles size={16} />
+              <span>Вдохновляющие истории путешествий</span>
             </div>
-          </div>
-        </section>
-      )}
-
-      {/* Заголовок журнала (если featured скрыт) */}
-      {(!featuredArticle || selectedCountry) && (
-        <section className="bg-white py-16">
-          <div className="container mx-auto px-4 text-center">
-            <h1 className="text-5xl font-bold mb-4 text-gray-900">
+            
+            <h1 className="text-5xl md:text-7xl font-bold mb-6 text-white drop-shadow-lg">
               Журнал путешествий
             </h1>
-            <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-              Вдохновляем на путешествия: советы, гайды и истории от местных экспертов
+            <p className="text-xl md:text-2xl text-white/90 max-w-3xl mx-auto leading-relaxed">
+              Открывайте новые горизонты вместе с нами: гайды, советы и истории от местных экспертов по всей Азии
             </p>
-          </div>
-        </section>
-      )}
+          </motion.div>
+        </div>
 
-      {/* Фильтры по странам - Sticky */}
-      <div className="sticky top-[80px] z-40 bg-white/90 backdrop-blur-xl border-b shadow-sm">
+        {/* Декоративные элементы */}
+        <div className="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-gray-50 to-transparent" />
+      </section>
+
+      {/* Фильтры по странам - улучшенный дизайн */}
+      <div className="sticky top-24 z-40 bg-white/80 backdrop-blur-xl border-b border-gray-200 shadow-sm">
         <div className="container mx-auto px-4 py-4">
-          <div className="flex gap-3 overflow-x-auto scrollbar-hide">
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
+          <div className="flex items-center gap-3 overflow-x-auto scrollbar-hide">
+            <button
               onClick={() => setSelectedCountry(null)}
-              className={`px-6 py-2.5 rounded-full shrink-0 transition-all font-medium ${
+              className={`px-5 py-2.5 rounded-full shrink-0 transition-all font-medium ${
                 !selectedCountry
-                  ? 'bg-gradient-to-r from-airbnb-rausch to-pink-600 text-white shadow-lg'
-                  : 'bg-gray-100 text-gray-800 hover:bg-gray-200'
+                  ? 'bg-gradient-to-r from-airbnb-rausch to-pink-600 text-white shadow-lg scale-105'
+                  : 'bg-white text-gray-700 hover:bg-gray-50 border border-gray-200'
               }`}
             >
-              Все статьи
-            </motion.button>
-            {countries.map((country) => (
-              <motion.button
-                key={country}
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                onClick={() => setSelectedCountry(country)}
-                className={`px-6 py-2.5 rounded-full shrink-0 transition-all font-medium ${
-                  selectedCountry === country
-                    ? `${countryColors[country]} text-white shadow-lg`
-                    : 'bg-gray-100 text-gray-800 hover:bg-gray-200'
-                }`}
-              >
-                {country}
-              </motion.button>
-            ))}
+              Все статьи ({articles.length})
+            </button>
+            {countries.map((country) => {
+              const count = articles.filter(a => a.countryTag === country).length
+              return (
+                <button
+                  key={country}
+                  onClick={() => setSelectedCountry(country)}
+                  className={`px-5 py-2.5 rounded-full shrink-0 transition-all font-medium ${
+                    selectedCountry === country
+                      ? 'bg-gradient-to-r from-airbnb-rausch to-pink-600 text-white shadow-lg scale-105'
+                      : 'bg-white text-gray-700 hover:bg-gray-50 border border-gray-200'
+                  }`}
+                >
+                  {country} ({count})
+                </button>
+              )
+            })}
           </div>
         </div>
       </div>
 
-      {/* Masonry Layout - Pinterest Style */}
-      <section className="py-12 bg-gradient-to-br from-gray-50 to-white">
-        <div className="container mx-auto px-4">
-          <div className="columns-1 md:columns-2 lg:columns-3 xl:columns-4 gap-6 space-y-6">
-            {filteredArticles
-              .filter(a => !a.featured || selectedCountry) // Скрываем featured из списка если она показана сверху
-              .map((article, i) => (
-              <motion.div
-                key={article.id}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.05 }}
-                className="break-inside-avoid"
-              >
-                <Link to={`/journal/${article.slug}`}>
-                  <article className="group cursor-pointer bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-2xl transition-all duration-300 mb-6">
-                    {/* Изображение с разной высотой */}
-                    <div className={`relative overflow-hidden ${
-                      article.size === 'large' ? 'h-96' : 
-                      article.size === 'medium' ? 'h-64' : 
-                      'h-48'
-                    }`}>
-                      <img
-                        src={article.photo}
-                        alt={article.title}
-                        className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-                      />
-                      {/* Overlay градиент */}
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                      
-                      {/* Тег страны */}
-                      <div className="absolute top-4 right-4">
-                        <span className={`px-3 py-1.5 ${countryColors[article.countryTag]} text-white rounded-full text-xs font-bold shadow-lg`}>
-                          {article.countryTag}
-                        </span>
-                      </div>
-                    </div>
-                    
-                    {/* Контент */}
-                    <div className="p-5">
-                      <h3 className="text-lg font-bold text-gray-900 mb-2 group-hover:text-airbnb-rausch transition-colors line-clamp-2 leading-snug">
-                        {article.title}
-                      </h3>
-                      
-                      <p className="text-sm text-gray-600 mb-4 line-clamp-3">
-                        {article.preview}
-                      </p>
-                      
-                      <div className="flex items-center gap-3 text-xs text-gray-500">
-                        <div className="flex items-center gap-1">
-                          <Clock size={12} />
-                          <span>{article.readTime} мин</span>
-                        </div>
-                        <span>•</span>
-                        <div className="flex items-center gap-1">
-                          <Calendar size={12} />
-                          <span>{article.publishedAt}</span>
-                        </div>
-                      </div>
-                    </div>
-                  </article>
-                </Link>
-              </motion.div>
-            ))}
-          </div>
+      {/* Featured статьи - крупные карточки */}
+      {featuredArticles.length > 0 && (
+        <section className="py-12 bg-white">
+          <div className="container mx-auto px-4">
+            <div className="flex items-center gap-3 mb-8">
+              <TrendingUp className="text-airbnb-rausch" size={28} />
+              <h2 className="text-3xl font-bold text-gray-900">Популярные статьи</h2>
+            </div>
 
-          {/* Призыв к действию */}
-          <div className="mt-16 text-center">
-            <div className="inline-block bg-gradient-to-r from-blue-50 to-purple-50 rounded-3xl p-12">
-              <Sparkles className="mx-auto mb-4 text-airbnb-rausch" size={48} />
-              <h2 className="text-3xl font-bold text-gray-900 mb-4">
-                Готовы к путешествию?
-              </h2>
-              <p className="text-gray-600 mb-6 max-w-md mx-auto">
-                Найдите идеальную экскурсию с местным гидом
-              </p>
-              <Link to="/tours">
-                <motion.button
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  className="bg-gradient-to-r from-airbnb-rausch to-pink-600 text-white px-8 py-4 rounded-full font-semibold shadow-lg hover:shadow-xl transition-all"
+            <div className="grid md:grid-cols-2 gap-8">
+              {featuredArticles.map((article, i) => (
+                <motion.div
+                  key={article.id}
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: i * 0.1 }}
                 >
-                  Смотреть экскурсии
-                </motion.button>
-              </Link>
+                  <Link to={`/journal/${article.slug}`}>
+                    <article className="group cursor-pointer bg-white rounded-3xl overflow-hidden shadow-xl hover:shadow-2xl transition-all duration-300 h-full flex flex-col">
+                      <div className="relative aspect-[16/10] overflow-hidden">
+                        <img
+                          src={article.photo}
+                          alt={article.title}
+                          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
+                        
+                        {/* Бейдж категории */}
+                        <div className="absolute top-4 left-4">
+                          <span className="px-4 py-2 bg-white/90 backdrop-blur-sm rounded-full text-sm font-semibold text-gray-900">
+                            {article.category}
+                          </span>
+                        </div>
+
+                        {/* Просмотры */}
+                        <div className="absolute top-4 right-4">
+                          <span className="px-3 py-1.5 bg-black/40 backdrop-blur-sm rounded-full text-xs font-medium text-white flex items-center gap-1">
+                            <TrendingUp size={12} />
+                            {article.views.toLocaleString()}
+                          </span>
+                        </div>
+                      </div>
+                      
+                      <div className="p-6 flex-1 flex flex-col">
+                        <div className="flex items-center gap-4 text-sm text-gray-500 mb-3">
+                          <div className="flex items-center gap-1.5">
+                            <Clock size={16} />
+                            <span>{article.readTime} мин</span>
+                          </div>
+                          <span>·</span>
+                          <div className="flex items-center gap-1.5">
+                            <Calendar size={16} />
+                            <span>{article.publishedAt}</span>
+                          </div>
+                        </div>
+                        
+                        <h3 className="text-2xl font-bold text-gray-900 mb-3 group-hover:text-airbnb-rausch transition-colors line-clamp-2">
+                          {article.title}
+                        </h3>
+                        
+                        <p className="text-gray-600 mb-4 line-clamp-3 leading-relaxed flex-1">
+                          {article.preview}
+                        </p>
+                        
+                        <div className="flex items-center justify-between pt-4 border-t border-gray-100">
+                          <span className="inline-flex items-center gap-2 px-3 py-1.5 bg-blue-50 text-blue-700 rounded-full text-sm font-medium">
+                            #{article.countryTag}
+                          </span>
+                          <span className="text-airbnb-rausch font-semibold group-hover:gap-3 flex items-center gap-2 transition-all">
+                            Читать далее
+                            <span className="group-hover:translate-x-1 transition-transform">→</span>
+                          </span>
+                        </div>
+                      </div>
+                    </article>
+                  </Link>
+                </motion.div>
+              ))}
             </div>
           </div>
-        </div>
-      </section>
+        </section>
+      )}
+
+      {/* Остальные статьи - компактная сетка */}
+      {regularArticles.length > 0 && (
+        <section className="py-12">
+          <div className="container mx-auto px-4">
+            <h2 className="text-3xl font-bold text-gray-900 mb-8">Все статьи</h2>
+
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {regularArticles.map((article, i) => (
+                <motion.div
+                  key={article.id}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: i * 0.05 }}
+                >
+                  <Link to={`/journal/${article.slug}`}>
+                    <article className="group cursor-pointer bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 h-full flex flex-col">
+                      <div className="relative aspect-[16/10] overflow-hidden">
+                        <img
+                          src={article.photo}
+                          alt={article.title}
+                          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
+                        
+                        <div className="absolute top-3 left-3">
+                          <span className="px-3 py-1.5 bg-white/90 backdrop-blur-sm rounded-full text-xs font-semibold text-gray-900">
+                            {article.category}
+                          </span>
+                        </div>
+                      </div>
+                      
+                      <div className="p-5 flex-1 flex flex-col">
+                        <div className="flex items-center gap-3 text-xs text-gray-500 mb-2">
+                          <div className="flex items-center gap-1">
+                            <Clock size={14} />
+                            <span>{article.readTime} мин</span>
+                          </div>
+                          <span>·</span>
+                          <span>{article.publishedAt}</span>
+                        </div>
+                        
+                        <h3 className="text-lg font-bold text-gray-900 mb-2 group-hover:text-airbnb-rausch transition-colors line-clamp-2">
+                          {article.title}
+                        </h3>
+                        
+                        <p className="text-gray-600 text-sm mb-3 line-clamp-2 flex-1">
+                          {article.preview}
+                        </p>
+                        
+                        <div className="flex items-center justify-between pt-3 border-t border-gray-100">
+                          <span className="text-xs text-blue-700 font-medium">
+                            #{article.countryTag}
+                          </span>
+                          <span className="text-xs text-gray-400">
+                            {article.views.toLocaleString()} просмотров
+                          </span>
+                        </div>
+                      </div>
+                    </article>
+                  </Link>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* Пустое состояние */}
+      {filteredArticles.length === 0 && (
+        <section className="py-20">
+          <div className="container mx-auto px-4 text-center">
+            <div className="max-w-md mx-auto">
+              <div className="w-24 h-24 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                <Sparkles size={40} className="text-gray-400" />
+              </div>
+              <h3 className="text-2xl font-bold text-gray-900 mb-3">
+                Статей не найдено
+              </h3>
+              <p className="text-gray-600 mb-6">
+                К сожалению, для выбранной страны пока нет статей. Попробуйте выбрать другую страну.
+              </p>
+              <button
+                onClick={() => setSelectedCountry(null)}
+                className="px-6 py-3 bg-airbnb-rausch text-white rounded-full font-semibold hover:bg-airbnb-rausch/90 transition-colors"
+              >
+                Показать все статьи
+              </button>
+            </div>
+          </div>
+        </section>
+      )}
 
       <PublicFooter />
     </div>
   )
 }
-
