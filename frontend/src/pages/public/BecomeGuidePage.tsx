@@ -1005,50 +1005,6 @@ export default function BecomeGuidePage() {
           </div>
         </div>
 
-        {/* FAQ for guides */}
-        <Card className="max-w-4xl mx-auto mb-16">
-          <CardHeader className="text-center">
-            <CardTitle className="text-3xl">Часто задаваемые вопросы</CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-6">
-            <div className="border-l-4 border-tropical-ocean pl-4 py-2">
-              <p className="font-semibold mb-2 text-lg">Сколько я буду зарабатывать?</p>
-              <p className="text-gray-600">
-                Ваш доход зависит от количества экскурсий, их типа и продолжительности. В среднем наши 
-                гиды зарабатывают от 50,000₽ до 200,000₽ в месяц. Топ-гиды могут зарабатывать более 300,000₽. 
-                За каждую экскурсию вы получаете 80% от стоимости (20% — комиссия платформы).
-              </p>
-            </div>
-
-            <div className="border-l-4 border-blue-500 pl-4 py-2">
-              <p className="font-semibold mb-2 text-lg">Как часто нужно работать?</p>
-              <p className="text-gray-600">
-                График полностью гибкий. Вы сами выбираете, когда и сколько экскурсий проводить. 
-                Можно работать на полную ставку (5-7 экскурсий в неделю) или совмещать с другой деятельностью 
-                (1-2 экскурсии в неделю). Главное — своевременно обновлять календарь доступности.
-              </p>
-            </div>
-
-            <div className="border-l-4 border-green-500 pl-4 py-2">
-              <p className="font-semibold mb-2 text-lg">Какая комиссия платформы?</p>
-              <p className="text-gray-600">
-                Комиссия составляет 20% от стоимости экскурсии. В неё входит: продвижение и реклама, 
-                обработка платежей, техническая поддержка 24/7, страхование участников, хостинг и обслуживание 
-                платформы. Никаких скрытых платежей!
-              </p>
-            </div>
-
-            <div className="border-l-4 border-purple-500 pl-4 py-2">
-              <p className="font-semibold mb-2 text-lg">Как происходит вывод средств?</p>
-              <p className="text-gray-600">
-                Выводите заработанные средства на банковскую карту, PayPal или получайте наличными через 
-                наших обменников. Минимальная сумма вывода — 5,000₽. Заявки на вывод обрабатываются в течение 
-                24 часов в рабочие дни. Комиссия за вывод 2-3% в зависимости от способа.
-              </p>
-            </div>
-          </CardContent>
-        </Card>
-
         {/* CTA */}
         <div className="text-center bg-airbnb-rausch text-white rounded-3xl p-12 max-w-5xl mx-auto">
           <h2 className="text-4xl font-bold mb-4">Готовы начать зарабатывать?</h2>
