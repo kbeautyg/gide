@@ -1,6 +1,6 @@
 import { motion, useScroll, useTransform } from 'framer-motion'
 import { useRef } from 'react'
-import { Users, MapPin, Star, Heart, Shield, Rocket, Target, Zap, Globe, TrendingUp, Sparkles, Award, Lock, Clock, HeadphonesIcon, BadgeCheck, FileCheck, CreditCard, Phone } from 'lucide-react'
+import { Users, MapPin, Star, Heart, Shield, Rocket, Target, Zap, Globe, TrendingUp, Sparkles, Award, Lock, Clock, BadgeCheck, FileCheck } from 'lucide-react'
 import { PublicHeader } from '@/components/PublicHeader'
 import { PublicFooter } from '@/components/PublicFooter'
 import { AnimatedCounter } from '@/components/AnimatedCounter'
@@ -502,40 +502,6 @@ export default function AboutPage() {
                 {partner}
               </motion.div>
             ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Контакты и поддержка */}
-      <section className="py-20 bg-gradient-to-br from-blue-50 to-purple-50">
-        <div className="container mx-auto px-4">
-          <div className="max-w-4xl mx-auto text-center">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-            >
-              <h2 className="text-4xl font-bold text-gray-900 mb-6">Остались вопросы?</h2>
-              <p className="text-xl text-gray-600 mb-8">Наша команда поддержки всегда готова помочь</p>
-              
-              <div className="grid md:grid-cols-2 gap-6 mb-8">
-                <div className="bg-white p-6 rounded-2xl shadow-lg">
-                  <Phone size={32} className="mx-auto mb-4 text-airbnb-rausch" />
-                  <h3 className="font-bold text-gray-900 mb-2">Телефон поддержки</h3>
-                  <p className="text-2xl font-bold text-airbnb-rausch">8 (800) 123-45-67</p>
-                  <p className="text-sm text-gray-600 mt-2">Бесплатно по России, 24/7</p>
-                </div>
-                
-                <div className="bg-white p-6 rounded-2xl shadow-lg">
-                  <HeadphonesIcon size={32} className="mx-auto mb-4 text-airbnb-rausch" />
-                  <h3 className="font-bold text-gray-900 mb-2">Онлайн-чат</h3>
-                  <p className="text-gray-600 mb-3">Средн время ответа: 2 минуты</p>
-                  <button className="px-6 py-2 bg-airbnb-rausch text-white rounded-full font-semibold hover:bg-airbnb-rausch/90 transition-colors">
-                    Начать чат
-                  </button>
-                </div>
-              </div>
-            </motion.div>
           </div>
         </div>
       </section>
