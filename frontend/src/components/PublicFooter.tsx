@@ -1,6 +1,5 @@
 import { Link } from 'react-router-dom'
 import { Logo } from '@/components/Logo'
-import { Mail } from 'lucide-react'
 
 export function PublicFooter() {
   return (
