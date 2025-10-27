@@ -1,6 +1,6 @@
 import { motion, useScroll, useTransform } from 'framer-motion'
 import { useRef } from 'react'
-import { Users, MapPin, Star, Heart, Shield, Rocket, Target, Zap, Globe, TrendingUp, Sparkles, Award, Lock, Clock, BadgeCheck, FileCheck, CreditCard, HeadphonesIcon } from 'lucide-react'
+import { Users, MapPin, Star, Heart, Shield, Rocket, Target, Zap, Globe, TrendingUp, Sparkles, Award, Lock, Clock, BadgeCheck, CreditCard, HeadphonesIcon } from 'lucide-react'
 import { PublicHeader } from '@/components/PublicHeader'
 import { PublicFooter } from '@/components/PublicFooter'
 import { AnimatedCounter } from '@/components/AnimatedCounter'
@@ -49,14 +49,6 @@ export default function AboutPage() {
     { icon: BadgeCheck, title: 'Гарантия качества', description: 'Возврат денег, если тур не оправдал ожиданий', color: 'text-airbnb-rausch' },
     { icon: Lock, title: 'Защита данных', description: 'Ваши личные данные под надежной защитой', color: 'text-orange-600' },
     { icon: Clock, title: 'Гибкая отмена', description: 'Бесплатная отмена за 24 часа до начала тура', color: 'text-teal-600' },
-  ]
-
-  // Сертификаты и лицензии
-  const certifications = [
-    { title: 'Лицензия туроператора', number: 'РТО 123456', year: '2020' },
-    { title: 'Член Российского союза туриндустрии', number: 'РСТ-7890', year: '2021' },
-    { title: 'Сертификат ISO 9001', number: 'ISO-2023-456', year: '2023' },
-    { title: 'Страхование ответственности', number: 'СО-2024-789', year: '2024' },
   ]
 
   // Партнеры
@@ -224,40 +216,6 @@ export default function AboutPage() {
                   />
                 </div>
                 <div className="text-white/80">{stat.label}</div>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Сертификаты и лицензии */}
-      <section className="py-20 bg-gradient-to-br from-blue-50 to-purple-50">
-        <div className="container mx-auto px-4">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="text-center mb-12"
-          >
-            <h2 className="text-4xl font-bold text-gray-900 mb-4">Лицензии и сертификаты</h2>
-            <p className="text-xl text-gray-600">Официально зарегистрированная и сертифицированная компания</p>
-          </motion.div>
-
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto">
-            {certifications.map((cert, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, scale: 0.9 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                viewport={{ once: true }}
-                transition={{ delay: index * 0.1 }}
-                whileHover={{ y: -5 }}
-                className="bg-white p-6 rounded-2xl shadow-lg hover:shadow-2xl transition-all text-center"
-              >
-                <FileCheck size={48} className="mx-auto mb-4 text-green-600" />
-                <h3 className="font-bold text-gray-900 mb-2">{cert.title}</h3>
-                <p className="text-sm text-gray-600 mb-1">№ {cert.number}</p>
-                <p className="text-xs text-gray-500">С {cert.year} года</p>
               </motion.div>
             ))}
           </div>
