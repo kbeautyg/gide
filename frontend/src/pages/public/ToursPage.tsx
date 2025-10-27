@@ -247,9 +247,9 @@ export default function ToursPage() {
     <div className="min-h-screen bg-white">
       <PublicHeader />
 
-      {/* Поисковая панель */}
-      <div className="bg-white border-b shadow-sm">
-        <div className="container mx-auto px-4 py-3 sticky top-24 z-50 bg-white will-change-transform">
+      {/* Поисковая панель - sticky */}
+      <div className="sticky top-24 z-50 bg-white border-b shadow-md will-change-transform">
+        <div className="container mx-auto px-4 py-3">
           <SearchBar variant="sticky" />
         </div>
       </div>
