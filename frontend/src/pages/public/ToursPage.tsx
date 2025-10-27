@@ -250,9 +250,7 @@ export default function ToursPage() {
       {/* Поисковая панель - sticky с прозрачным контейнером */}
       <div className="sticky top-24 z-50 pointer-events-none">
         <div className="container mx-auto px-4 py-3">
-          <div className="pointer-events-auto bg-white/95 backdrop-blur-lg shadow-lg rounded-2xl">
-            <SearchBar variant="sticky" />
-          </div>
+          <SearchBar variant="sticky" />
         </div>
       </div>
 
