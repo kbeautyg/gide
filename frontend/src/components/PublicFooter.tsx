@@ -1,5 +1,4 @@
 import { Link } from 'react-router-dom'
-import { Logo } from '@/components/Logo'
 
 export function PublicFooter() {
   return (
@@ -7,15 +6,7 @@ export function PublicFooter() {
       {/* Main Footer */}
       <div className="py-12">
         <div className="container mx-auto px-4">
-          <div className="grid md:grid-cols-4 gap-8">
-          <div>
-            <div className="mb-4">
-              <Logo size="lg" linkTo="/" className="text-white" />
-            </div>
-            <p className="text-gray-400">
-              Лучшие экскурсии по всему миру с местными гидами
-            </p>
-          </div>
+          <div className="grid md:grid-cols-3 gap-8">
           
           <div>
             <h4 className="font-semibold mb-4">Экскурсии</h4>
