@@ -815,29 +815,30 @@ export default function BecomeGuidePage() {
 
         {/* Application Form */}
         {!submitted ? (
-          <Card id="application-form" className="max-w-3xl mx-auto mb-16 scroll-mt-24">
-            <CardHeader className="text-center">
-              <CardTitle className="text-3xl mb-2">Заявка на позицию гида</CardTitle>
-              <CardDescription className="text-lg">
+          <Card id="application-form" className="max-w-3xl mx-auto mb-16 scroll-mt-24 overflow-hidden">
+            <CardHeader className="text-center px-4 sm:px-6">
+              <CardTitle className="text-2xl sm:text-3xl mb-2">Заявка на позицию гида</CardTitle>
+              <CardDescription className="text-sm sm:text-base">
                 Заполните форму, и мы свяжемся с вами в течение 24 часов
               </CardDescription>
             </CardHeader>
-            <CardContent>
-              <form onSubmit={handleSubmit} className="space-y-6">
-                <div className="grid md:grid-cols-2 gap-6">
+            <CardContent className="px-4 sm:px-6">
+              <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
                   <div>
-                    <Label htmlFor="name">Полное имя *</Label>
+                    <Label htmlFor="name" className="text-sm sm:text-base">Полное имя *</Label>
                     <Input
                       id="name"
                       required
                       value={formData.name}
                       onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                       placeholder="Иван Иванов"
+                      className="text-sm sm:text-base"
                     />
                   </div>
 
                   <div>
-                    <Label htmlFor="phone">Телефон *</Label>
+                    <Label htmlFor="phone" className="text-sm sm:text-base">Телефон *</Label>
                     <Input
                       id="phone"
                       required
@@ -845,13 +846,14 @@ export default function BecomeGuidePage() {
                       value={formData.phone}
                       onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
                       placeholder="+7 (917) 123-45-67"
+                      className="text-sm sm:text-base"
                     />
                   </div>
                 </div>
 
-                <div className="grid md:grid-cols-2 gap-6">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
                   <div>
-                    <Label htmlFor="email">Email *</Label>
+                    <Label htmlFor="email" className="text-sm sm:text-base">Email *</Label>
                     <Input
                       id="email"
                       required
@@ -859,24 +861,26 @@ export default function BecomeGuidePage() {
                       value={formData.email}
                       onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                       placeholder="ivan@example.com"
+                      className="text-sm sm:text-base"
                     />
                   </div>
 
                   <div>
-                    <Label htmlFor="city">Город проживания *</Label>
+                    <Label htmlFor="city" className="text-sm sm:text-base">Город проживания *</Label>
                     <Input
                       id="city"
                       required
                       value={formData.city}
                       onChange={(e) => setFormData({ ...formData, city: e.target.value })}
                       placeholder="Пхукет, Таиланд"
+                      className="text-sm sm:text-base"
                     />
                   </div>
                 </div>
 
-                <div className="grid md:grid-cols-2 gap-6">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
                   <div>
-                    <Label htmlFor="experience">Опыт работы гидом (лет) *</Label>
+                    <Label htmlFor="experience" className="text-sm sm:text-base">Опыт работы гидом (лет) *</Label>
                     <Input
                       id="experience"
                       required
@@ -885,35 +889,37 @@ export default function BecomeGuidePage() {
                       value={formData.experience}
                       onChange={(e) => setFormData({ ...formData, experience: e.target.value })}
                       placeholder="2"
+                      className="text-sm sm:text-base"
                     />
                   </div>
 
                   <div>
-                    <Label htmlFor="languages">Знание языков *</Label>
+                    <Label htmlFor="languages" className="text-sm sm:text-base">Знание языков *</Label>
                     <Input
                       id="languages"
                       required
                       value={formData.languages}
                       onChange={(e) => setFormData({ ...formData, languages: e.target.value })}
                       placeholder="Русский, английский, тайский"
+                      className="text-sm sm:text-base"
                     />
                   </div>
                 </div>
 
                 <div>
-                  <Label htmlFor="message">Расскажите о себе *</Label>
+                  <Label htmlFor="message" className="text-sm sm:text-base">Расскажите о себе *</Label>
                   <textarea
                     id="message"
                     required
-                    className="w-full min-h-[150px] px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-tropical-ocean"
+                    className="w-full min-h-[120px] sm:min-h-[150px] px-3 py-2 text-sm sm:text-base border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-tropical-ocean resize-none"
                     value={formData.message}
                     onChange={(e) => setFormData({ ...formData, message: e.target.value })}
                     placeholder="Ваш опыт, специализация, почему хотите работать с нами..."
                   />
                 </div>
 
-                <Button type="submit" variant="tropical" className="w-full text-lg py-6 gap-2">
-                  <Send size={20} />
+                <Button type="submit" variant="tropical" className="w-full text-base sm:text-lg py-4 sm:py-6 gap-2">
+                  <Send size={18} className="sm:w-5 sm:h-5" />
                   Отправить заявку
                 </Button>
 
