@@ -1,31 +1,43 @@
 import { useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
-import { UserCircle, Menu } from 'lucide-react'
+import { UserCircle, Menu, Search } from 'lucide-react'
 import { useAuthStore } from '@/lib/store'
 import { MobileMenu } from '@/components/MobileMenu'
+import { MobileSearchModal } from '@/components/MobileSearchModal'
 import { Logo } from '@/components/Logo'
 
 export function PublicHeader() {
   const { isAuthenticated, user } = useAuthStore()
   const location = useLocation()
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const [mobileSearchOpen, setMobileSearchOpen] = useState(false)
 
   return (
     <>
       {/* Floating Glassmorphism Header */}
       <header className="fixed top-4 left-4 right-4 z-50 transition-all duration-300">
-        <div className="container mx-auto px-0 flex items-center justify-between gap-4">
-          {/* Logo в капсуле слева с белым фоном */}
-          <div className="flex items-center gap-4">
+        <div className="container mx-auto px-0 flex items-center justify-between gap-2 md:gap-4">
+          {/* Мобильная версия: Меню + Поиск */}
+          <div className="flex items-center gap-2 md:hidden">
             {/* Hamburger для мобильных */}
             <button
               onClick={() => setMobileMenuOpen(true)}
-              className="md:hidden p-3 bg-white rounded-full shadow-lg hover:shadow-xl transition-all backdrop-blur-xl border border-gray-200/50"
+              className="p-3 bg-white rounded-full shadow-lg hover:shadow-xl transition-all backdrop-blur-xl border border-gray-200/50"
             >
               <Menu size={20} />
             </button>
 
-            {/* Лого в белой капсуле */}
+            {/* Иконка поиска для мобильных */}
+            <button
+              onClick={() => setMobileSearchOpen(true)}
+              className="p-3 bg-white rounded-full shadow-lg hover:shadow-xl transition-all backdrop-blur-xl border border-gray-200/50"
+            >
+              <Search size={20} className="text-gray-700" />
+            </button>
+          </div>
+
+          {/* Десктопная версия: Лого в белой капсуле */}
+          <div className="hidden md:block">
             <div className="bg-white rounded-full px-6 py-3 shadow-lg border border-gray-200/50 hover:shadow-xl transition-all">
               <Logo size="sm" linkTo="/" />
             </div>
@@ -95,9 +107,11 @@ export function PublicHeader() {
                     <span className="text-sm font-medium">{user.name || user.phone}</span>
                   </button>
                 </Link>
+                {/* Десктоп: текст "Кабинет", Мобильный: иконка */}
                 <Link to="/dashboard">
-                  <button className="bg-gradient-to-r from-airbnb-rausch to-pink-600 text-white px-6 py-2 rounded-full font-semibold hover:shadow-lg hover:scale-105 transition-all">
-                    Кабинет
+                  <button className="bg-gradient-to-r from-airbnb-rausch to-pink-600 text-white rounded-full font-semibold hover:shadow-lg hover:scale-105 transition-all flex items-center justify-center md:px-6 md:py-2 p-2 md:p-0">
+                    <span className="hidden md:inline">Кабинет</span>
+                    <UserCircle size={20} className="md:hidden" />
                   </button>
                 </Link>
               </>
@@ -108,9 +122,11 @@ export function PublicHeader() {
                     Войти
                   </button>
                 </Link>
+                {/* Десктоп: текст "Регистрация", Мобильный: иконка */}
                 <Link to="/register">
-                  <button className="bg-gradient-to-r from-airbnb-rausch to-pink-600 text-white px-6 py-2 rounded-full font-semibold hover:shadow-lg hover:scale-105 transition-all">
-                    Регистрация
+                  <button className="bg-gradient-to-r from-airbnb-rausch to-pink-600 text-white rounded-full font-semibold hover:shadow-lg hover:scale-105 transition-all flex items-center justify-center md:px-6 md:py-2 p-2 md:p-0">
+                    <span className="hidden md:inline">Регистрация</span>
+                    <UserCircle size={20} className="md:hidden" />
                   </button>
                 </Link>
               </>
@@ -124,6 +140,9 @@ export function PublicHeader() {
 
       {/* Мобильное меню */}
       <MobileMenu isOpen={mobileMenuOpen} onClose={() => setMobileMenuOpen(false)} />
+      
+      {/* Мобильный поиск */}
+      <MobileSearchModal isOpen={mobileSearchOpen} onClose={() => setMobileSearchOpen(false)} />
     </>
   )
 }
