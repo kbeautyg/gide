@@ -118,7 +118,7 @@ export default function HomePage() {
       <PublicHeader />
 
       {/* HERO SECTION - FLOATING OVERLAY DESIGN */}
-      <section className="relative h-screen overflow-hidden -mt-24">
+      <section className="relative h-screen overflow-hidden -mt-16 md:-mt-24">
         {/* Фоновое видео/изображение с параллакс эффектом */}
         <motion.div 
           className="absolute inset-0"
@@ -140,15 +140,15 @@ export default function HomePage() {
         </motion.div>
 
         {/* Плавающий контент БЕЗ блоков и рамок */}
-        <div className="relative h-full flex flex-col items-start justify-center container mx-auto px-8 md:px-16">
+        <div className="relative h-full flex flex-col items-start justify-center container mx-auto px-4 sm:px-6 md:px-8 lg:px-16">
           {/* Маленький бейдж */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.3 }}
-            className="mb-6"
+            className="mb-4 md:mb-6"
           >
-            <span className="text-white/90 text-sm md:text-base font-medium tracking-wider uppercase">
+            <span className="text-white/90 text-xs sm:text-sm md:text-base font-medium tracking-wider uppercase">
               Путешествия по Азии
             </span>
           </motion.div>
@@ -158,7 +158,7 @@ export default function HomePage() {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.5 }}
-            className="text-5xl md:text-7xl lg:text-8xl xl:text-9xl font-bold text-white mb-6 leading-[0.9] max-w-5xl"
+            className="text-4xl sm:text-5xl md:text-7xl lg:text-8xl xl:text-9xl font-bold text-white mb-4 md:mb-6 leading-[0.95] md:leading-[0.9] max-w-5xl"
             style={{
               textShadow: '0 4px 30px rgba(0,0,0,0.8), 0 8px 60px rgba(0,0,0,0.5)'
             }}
@@ -172,7 +172,7 @@ export default function HomePage() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.7 }}
-            className="text-lg md:text-2xl text-white/90 mb-10 max-w-2xl font-light"
+            className="text-base sm:text-lg md:text-2xl text-white/90 mb-6 md:mb-10 max-w-2xl font-light"
             style={{
               textShadow: '0 2px 20px rgba(0,0,0,0.8)'
             }}
@@ -185,12 +185,12 @@ export default function HomePage() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.9 }}
-            className="flex flex-wrap gap-4 mb-12"
+            className="flex flex-wrap gap-3 md:gap-4 mb-8 md:mb-12"
           >
             <Link to="/tours">
               <Button 
                 size="lg"
-                className="bg-white text-black hover:bg-white/90 font-semibold text-lg px-10 py-7 rounded-full shadow-2xl hover:scale-105 transition-all"
+                className="bg-white text-black hover:bg-white/90 font-semibold text-base md:text-lg px-6 py-5 md:px-10 md:py-7 rounded-full shadow-2xl hover:scale-105 transition-all"
               >
                 Смотреть экскурсии
               </Button>
@@ -202,29 +202,29 @@ export default function HomePage() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 1.1 }}
-            className="flex flex-wrap gap-8 text-white"
+            className="flex flex-wrap gap-4 sm:gap-6 md:gap-8 text-white"
           >
             <div>
-              <div className="text-3xl md:text-4xl font-bold mb-1" style={{ textShadow: '0 2px 20px rgba(0,0,0,0.8)' }}>
+              <div className="text-2xl sm:text-3xl md:text-4xl font-bold mb-1" style={{ textShadow: '0 2px 20px rgba(0,0,0,0.8)' }}>
                 500+
               </div>
-              <div className="text-white/80 text-sm" style={{ textShadow: '0 2px 20px rgba(0,0,0,0.8)' }}>
+              <div className="text-white/80 text-xs sm:text-sm" style={{ textShadow: '0 2px 20px rgba(0,0,0,0.8)' }}>
                 Экскурсий
               </div>
             </div>
             <div>
-              <div className="text-3xl md:text-4xl font-bold mb-1" style={{ textShadow: '0 2px 20px rgba(0,0,0,0.8)' }}>
+              <div className="text-2xl sm:text-3xl md:text-4xl font-bold mb-1" style={{ textShadow: '0 2px 20px rgba(0,0,0,0.8)' }}>
                 10K+
               </div>
-              <div className="text-white/80 text-sm" style={{ textShadow: '0 2px 20px rgba(0,0,0,0.8)' }}>
+              <div className="text-white/80 text-xs sm:text-sm" style={{ textShadow: '0 2px 20px rgba(0,0,0,0.8)' }}>
                 Путешественников
               </div>
             </div>
             <div>
-              <div className="text-3xl md:text-4xl font-bold mb-1" style={{ textShadow: '0 2px 20px rgba(0,0,0,0.8)' }}>
+              <div className="text-2xl sm:text-3xl md:text-4xl font-bold mb-1" style={{ textShadow: '0 2px 20px rgba(0,0,0,0.8)' }}>
                 4.9 ⭐
               </div>
-              <div className="text-white/80 text-sm" style={{ textShadow: '0 2px 20px rgba(0,0,0,0.8)' }}>
+              <div className="text-white/80 text-xs sm:text-sm" style={{ textShadow: '0 2px 20px rgba(0,0,0,0.8)' }}>
                 Средний рейтинг
               </div>
             </div>
@@ -239,12 +239,12 @@ export default function HomePage() {
             opacity: { delay: 1.5 },
             y: { duration: 1.5, repeat: Infinity }
           }}
-          className="absolute bottom-10 left-1/2 -translate-x-1/2 text-white/60 text-sm flex flex-col items-center gap-2"
+          className="absolute bottom-6 md:bottom-10 left-1/2 -translate-x-1/2 text-white/60 text-xs sm:text-sm flex flex-col items-center gap-2 hidden sm:flex"
         >
           <div style={{ textShadow: '0 2px 10px rgba(0,0,0,0.8)' }}>Прокрутите вниз</div>
-          <div className="w-6 h-10 border-2 border-white/40 rounded-full p-1">
+          <div className="w-5 h-8 md:w-6 md:h-10 border-2 border-white/40 rounded-full p-1">
             <motion.div
-              animate={{ y: [0, 12, 0] }}
+              animate={{ y: [0, 10, 0] }}
               transition={{ duration: 1.5, repeat: Infinity }}
               className="w-1 h-2 bg-white/60 rounded-full mx-auto"
             />
