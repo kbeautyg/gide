@@ -275,15 +275,15 @@ export default function AboutPage() {
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="text-center mb-20"
+            className="text-center mb-12 md:mb-20 px-4"
           >
-            <h2 className="text-5xl font-bold text-gray-900 mb-4">Наша история</h2>
-            <p className="text-xl text-gray-600">От мечты до реальности</p>
+            <h2 className="text-3xl md:text-5xl font-bold text-gray-900 mb-3 md:mb-4">Наша история</h2>
+            <p className="text-base md:text-xl text-gray-600">От мечты до реальности</p>
           </motion.div>
 
           <div className="max-w-5xl mx-auto relative">
-            {/* Вертикальная линия */}
-            <div className="absolute left-1/2 top-0 bottom-0 w-1 bg-gradient-to-b from-blue-500 via-airbnb-rausch to-purple-500" />
+            {/* Вертикальная линия - по центру на десктопе, слева на мобиле */}
+            <div className="absolute left-4 md:left-1/2 top-0 bottom-0 w-1 bg-gradient-to-b from-blue-500 via-airbnb-rausch to-purple-500" />
 
             {timeline.map((item, index) => (
               <motion.div
@@ -292,31 +292,32 @@ export default function AboutPage() {
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.6, delay: index * 0.2 }}
-                className={`relative flex items-center mb-20 ${index % 2 === 0 ? 'flex-row' : 'flex-row-reverse'}`}
+                className={`relative flex items-center mb-12 md:mb-20 ${index % 2 === 0 ? 'md:flex-row' : 'md:flex-row-reverse'}`}
               >
-                <div className={`w-1/2 ${index % 2 === 0 ? 'pr-12 text-right' : 'pl-12'}`}>
+                {/* На мобиле: карточка справа от линии, на десктопе: чередование */}
+                <div className={`w-full md:w-1/2 pl-12 md:pl-0 ${index % 2 === 0 ? 'md:pr-12 md:text-right' : 'md:pl-12 md:text-left'}`}>
                   <motion.div
                     whileHover={{ scale: 1.05, y: -5 }}
-                    className="inline-block"
+                    className="inline-block w-full md:w-auto"
                   >
-                    <div className={`p-8 rounded-2xl ${item.bg} shadow-lg hover:shadow-2xl transition-all`}>
-                      <div className="flex items-center gap-4 justify-center mb-4">
-                        <item.icon size={32} className={item.color} />
-                        <div className="text-4xl font-black text-gray-900">{item.year}</div>
+                    <div className={`p-6 md:p-8 rounded-2xl ${item.bg} shadow-lg hover:shadow-2xl transition-all`}>
+                      <div className="flex items-center gap-3 md:gap-4 justify-start md:justify-center mb-3 md:mb-4">
+                        <item.icon size={24} className={`${item.color} md:w-8 md:h-8`} />
+                        <div className="text-3xl md:text-4xl font-black text-gray-900">{item.year}</div>
                       </div>
-                      <h3 className="text-2xl font-bold text-gray-900 mb-2">{item.title}</h3>
-                      <p className="text-gray-600">{item.description}</p>
+                      <h3 className="text-xl md:text-2xl font-bold text-gray-900 mb-2">{item.title}</h3>
+                      <p className="text-sm md:text-base text-gray-600">{item.description}</p>
                     </div>
                   </motion.div>
                 </div>
 
-                {/* Центральная точка */}
+                {/* Центральная точка - слева на мобиле, по центру на десктопе */}
                 <motion.div
                   initial={{ scale: 0 }}
                   whileInView={{ scale: 1 }}
                   viewport={{ once: true }}
                   transition={{ delay: index * 0.2 + 0.3 }}
-                  className="absolute left-1/2 -translate-x-1/2 w-6 h-6 bg-white border-4 border-airbnb-rausch rounded-full shadow-lg z-10"
+                  className="absolute left-4 md:left-1/2 -translate-x-1/2 w-5 h-5 md:w-6 md:h-6 bg-white border-3 md:border-4 border-airbnb-rausch rounded-full shadow-lg z-10"
                 />
               </motion.div>
             ))}
