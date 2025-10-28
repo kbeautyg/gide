@@ -448,6 +448,207 @@ export default function AboutPage() {
         </div>
       </section>
 
+      {/* Наши гиды - Увлеченные эксперты */}
+      <section className="py-20 bg-gradient-to-br from-gray-50 to-white">
+        <div className="container mx-auto px-4">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-center mb-16"
+          >
+            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
+              Увлеченные эксперты
+            </h2>
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+              Наши экскурсии проводят не просто гиды — это настоящие профессионалы своего дела
+            </p>
+          </motion.div>
+
+          <div className="grid md:grid-cols-3 gap-8 mb-16">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.1 }}
+              className="bg-white p-8 rounded-2xl shadow-lg hover:shadow-xl transition-all"
+            >
+              <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mb-6">
+                <Users size={32} className="text-blue-600" />
+              </div>
+              <h3 className="text-2xl font-bold text-gray-900 mb-4">Профессионалы с опытом</h3>
+              <p className="text-gray-600 leading-relaxed">
+                Историки, архитекторы, журналисты, искусствоведы и другие эксперты. 
+                Каждый гид — увлеченный и общительный человек с огромным багажом знаний, 
+                готовый поделиться своей страстью к путешествиям.
+              </p>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.2 }}
+              className="bg-white p-8 rounded-2xl shadow-lg hover:shadow-xl transition-all"
+            >
+              <div className="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mb-6">
+                <Sparkles size={32} className="text-purple-600" />
+              </div>
+              <h3 className="text-2xl font-bold text-gray-900 mb-4">Необычные маршруты</h3>
+              <p className="text-gray-600 leading-relaxed">
+                Забудьте о скучных экскурсиях! С нами вы не только узнаете историю города, 
+                но и посетите секретные бары, поднимитесь на крыши, исследуете галереи 
+                современного искусства и даже приготовите обед с местным шеф-поваром.
+              </p>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.3 }}
+              className="bg-white p-8 rounded-2xl shadow-lg hover:shadow-xl transition-all"
+            >
+              <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mb-6">
+                <Heart size={32} className="text-green-600" />
+              </div>
+              <h3 className="text-2xl font-bold text-gray-900 mb-4">Живое общение</h3>
+              <p className="text-gray-600 leading-relaxed">
+                Вся магия и яркие впечатления рождаются в личном общении. 
+                Мы тщательно отбираем гидов и следим за качеством экскурсий. 
+                Никаких скучных заученных программ — только искренний интерес и увлеченность.
+              </p>
+            </motion.div>
+          </div>
+        </div>
+      </section>
+
+      {/* Как мы работаем */}
+      <section className="py-20 bg-white">
+        <div className="container mx-auto px-4">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-center mb-16"
+          >
+            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
+              Как мы работаем
+            </h2>
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+              Простой и прозрачный процесс от выбора до проведения экскурсии
+            </p>
+          </motion.div>
+
+          <div className="max-w-4xl mx-auto space-y-8">
+            {[
+              {
+                step: '1',
+                title: 'Выбирайте экскурсию на сайте',
+                description: 'Все экскурсии авторские — каждую проводит человек, который ее придумал. Читайте описания, знакомьтесь с гидами, изучайте отзывы других путешественников и выбирайте то, что вам ближе всего.',
+                icon: MapPin,
+                color: 'blue'
+              },
+              {
+                step: '2',
+                title: 'Общайтесь с гидом напрямую',
+                description: 'Бронирование через сайт, но общение напрямую с гидом. Задавайте любые вопросы до оплаты. Платить не нужно, пока не прояснятся все важные детали.',
+                icon: Users,
+                color: 'green'
+              },
+              {
+                step: '3',
+                title: 'Удобная система оплаты',
+                description: 'На сайте вы оплачиваете только 22-25% стоимости для бронирования времени. Остальное оплачивается гиду после экскурсии наличными или картой — как вам удобнее.',
+                icon: CreditCard,
+                color: 'purple'
+              }
+            ].map((item, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, x: -20 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: index * 0.1 }}
+                className="flex gap-6 items-start bg-gray-50 p-6 rounded-2xl hover:shadow-lg transition-all"
+              >
+                <div className={`flex-shrink-0 w-16 h-16 rounded-full bg-${item.color}-100 flex items-center justify-center`}>
+                  <item.icon size={28} className={`text-${item.color}-600`} />
+                </div>
+                <div className="flex-1">
+                  <div className="flex items-center gap-3 mb-3">
+                    <span className={`text-3xl font-black text-${item.color}-600`}>{item.step}</span>
+                    <h3 className="text-2xl font-bold text-gray-900">{item.title}</h3>
+                  </div>
+                  <p className="text-gray-600 leading-relaxed">{item.description}</p>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* FAQ - Частые вопросы */}
+      <section className="py-20 bg-gradient-to-br from-gray-50 to-white">
+        <div className="container mx-auto px-4">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-center mb-16"
+          >
+            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
+              Частые вопросы
+            </h2>
+            <p className="text-xl text-gray-600">
+              Ответы на самые популярные вопросы наших путешественников
+            </p>
+          </motion.div>
+
+          <div className="max-w-4xl mx-auto space-y-6">
+            {[
+              {
+                q: 'Какие бывают экскурсии?',
+                a: 'Индивидуальные экскурсии — для вас и вашей компании в удобное время. Групповые — вместе с другими путешественниками по расписанию гида. Мини-группы — до 10 человек максимум для более камерной атмосферы.'
+              },
+              {
+                q: 'Как заказать экскурсию?',
+                a: 'Выберите экскурсию на сайте, нажмите "Заказать", укажите дату, время и контакты. Если есть вопросы — задайте их гиду в комментариях. После подтверждения от гида можете оплатить.'
+              },
+              {
+                q: 'Как происходит оплата?',
+                a: 'Оплата в два этапа: предоплата 22-25% на сайте для бронирования, остальное — гиду наличными или картой после экскурсии. Картой российского банка можно оплатить любую экскурсию, зарубежного — только не в рублях.'
+              },
+              {
+                q: 'Как отменить заказ?',
+                a: 'Бесплатная отмена за 48 часов до начала. При отмене позже предоплата не возвращается. Если отменил гид — полный возврат. Для отмены перейдите на страницу заказа и следуйте инструкции.'
+              },
+              {
+                q: 'Можно ли задать вопросы гиду?',
+                a: 'Да! Задавайте вопросы в комментариях к заказу до оплаты. Гиды обычно отвечают в течение 2-4 часов.'
+              }
+            ].map((faq, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: index * 0.05 }}
+                className="bg-white p-6 rounded-2xl shadow-md hover:shadow-xl transition-all"
+              >
+                <h3 className="text-xl font-bold text-gray-900 mb-3 flex items-start gap-3">
+                  <span className="text-airbnb-rausch flex-shrink-0">Q:</span>
+                  {faq.q}
+                </h3>
+                <p className="text-gray-600 leading-relaxed pl-8">
+                  {faq.a}
+                </p>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* Interactive CTA */}
       <section className="relative py-32 overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-airbnb-rausch via-purple-600 to-blue-600" />
