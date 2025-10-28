@@ -193,10 +193,10 @@ export function TourCard({ tour, className }: TourCardProps) {
                       setCurrentPhotoIndex(index)
                     }}
                     className={cn(
-                      "rounded-full transition-all",
+                      "rounded-full transition-all backdrop-blur-sm",
                       index === currentPhotoIndex
-                        ? "bg-white w-6 h-2"
-                        : "bg-white/60 w-2 h-2 hover:bg-white/80"
+                        ? "bg-gray-400/80 w-6 h-2"
+                        : "bg-gray-300/50 w-2 h-2 hover:bg-gray-400/70"
                     )}
                   />
                 ))}
