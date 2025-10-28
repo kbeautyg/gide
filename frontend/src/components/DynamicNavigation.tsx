@@ -104,7 +104,7 @@ export function DynamicNavigation({
           {getSectionTitle(sectionName)}
         </h3>
         
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
           {displayItems.map((item, index) => (
             <motion.div
               key={item.name}
@@ -113,9 +113,9 @@ export function DynamicNavigation({
               transition={{ delay: index * 0.02 }}
             >
               <Link to={getFilterLink(item)}>
-                <div className="group cursor-pointer bg-white border border-gray-200 rounded-lg p-4 hover:border-airbnb-rausch hover:shadow-md transition-all">
-                  <div className="flex items-start justify-between">
-                    <div className="flex-1">
+                <div className="group cursor-pointer bg-white border border-gray-200 rounded-lg p-4 hover:border-airbnb-rausch hover:shadow-md transition-all h-full">
+                  <div className="flex items-start justify-between gap-2">
+                    <div className="flex-1 min-w-0">
                       <div className="font-semibold text-gray-900 text-sm mb-1 group-hover:text-airbnb-rausch transition-colors line-clamp-2">
                         {item.name}
                       </div>
@@ -124,7 +124,7 @@ export function DynamicNavigation({
                       </div>
                     </div>
                     {showIcons && (
-                      <div className="ml-2">
+                      <div className="flex-shrink-0">
                         {getSectionIcon(item.type)}
                       </div>
                     )}
