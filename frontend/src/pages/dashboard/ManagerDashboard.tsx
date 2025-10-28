@@ -105,54 +105,54 @@ export default function ManagerDashboard() {
       </div>
 
       {/* Stats Cards */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-4 lg:gap-6">
         <Card className="border-green-200 hover:shadow-lg transition-shadow overflow-hidden">
-          <CardHeader className="pb-2 sm:pb-3">
-            <CardTitle className="text-xs sm:text-sm font-medium text-gray-600 flex items-center justify-between gap-1">
-              <span className="truncate">Активных экскурсий</span>
-              <MapPin size={20} className="text-green-600 flex-shrink-0 sm:w-6 sm:h-6" />
+          <CardHeader className="pb-2 px-3 sm:px-6 pt-3 sm:pt-6">
+            <CardTitle className="text-[10px] sm:text-xs font-medium text-gray-600 flex items-center justify-between gap-1">
+              <span className="truncate leading-tight">Активных экскурсий</span>
+              <MapPin size={16} className="text-green-600 flex-shrink-0 sm:w-5 sm:h-5" />
             </CardTitle>
           </CardHeader>
-          <CardContent className="pb-3 sm:pb-6">
-            <p className="text-2xl sm:text-3xl lg:text-4xl font-bold text-green-600 break-words">{activeTours}</p>
+          <CardContent className="pb-3 px-3 sm:pb-6 sm:px-6">
+            <p className="text-xl sm:text-2xl lg:text-3xl font-bold text-green-600">{activeTours}</p>
           </CardContent>
         </Card>
 
         <Card className="border-blue-200 hover:shadow-lg transition-shadow overflow-hidden">
-          <CardHeader className="pb-2 sm:pb-3">
-            <CardTitle className="text-xs sm:text-sm font-medium text-gray-600 flex items-center justify-between gap-1">
-              <span className="truncate">Заказов за месяц</span>
-              <CreditCard size={20} className="text-blue-600 flex-shrink-0 sm:w-6 sm:h-6" />
+          <CardHeader className="pb-2 px-3 sm:px-6 pt-3 sm:pt-6">
+            <CardTitle className="text-[10px] sm:text-xs font-medium text-gray-600 flex items-center justify-between gap-1">
+              <span className="truncate leading-tight">Заказов за месяц</span>
+              <CreditCard size={16} className="text-blue-600 flex-shrink-0 sm:w-5 sm:h-5" />
             </CardTitle>
           </CardHeader>
-          <CardContent className="pb-3 sm:pb-6">
-            <p className="text-2xl sm:text-3xl lg:text-4xl font-bold text-blue-600 break-words">{thisMonthBookings}</p>
+          <CardContent className="pb-3 px-3 sm:pb-6 sm:px-6">
+            <p className="text-xl sm:text-2xl lg:text-3xl font-bold text-blue-600">{thisMonthBookings}</p>
           </CardContent>
         </Card>
 
         <Card className="border-blue-300 hover:shadow-lg transition-shadow overflow-hidden">
-          <CardHeader className="pb-2 sm:pb-3">
-            <CardTitle className="text-xs sm:text-sm font-medium text-gray-600 flex items-center justify-between gap-1">
-              <span className="truncate">Оборот сделок</span>
-              <DollarSign size={20} className="text-blue-500 flex-shrink-0 sm:w-6 sm:h-6" />
+          <CardHeader className="pb-2 px-3 sm:px-6 pt-3 sm:pt-6">
+            <CardTitle className="text-[10px] sm:text-xs font-medium text-gray-600 flex items-center justify-between gap-1">
+              <span className="truncate leading-tight">Оборот сделок</span>
+              <DollarSign size={16} className="text-blue-500 flex-shrink-0 sm:w-5 sm:h-5" />
             </CardTitle>
           </CardHeader>
-          <CardContent className="pb-3 sm:pb-6">
-            <p className="text-lg sm:text-2xl lg:text-3xl font-bold text-blue-500 break-words leading-tight">{formatRUB(monthlyTurnover)}</p>
-            <p className="text-xs text-gray-500 mt-1">Полная стоимость</p>
+          <CardContent className="pb-3 px-3 sm:pb-6 sm:px-6">
+            <p className="text-sm sm:text-lg lg:text-2xl font-bold text-blue-500 break-words leading-tight">{formatRUB(monthlyTurnover)}</p>
+            <p className="text-[10px] sm:text-xs text-gray-500 mt-1 truncate">Полная стоимость</p>
           </CardContent>
         </Card>
 
         <Card className="border-airbnb-rausch/30 hover:shadow-lg transition-shadow overflow-hidden">
-          <CardHeader className="pb-2 sm:pb-3">
-            <CardTitle className="text-xs sm:text-sm font-medium text-gray-600 flex items-center justify-between gap-1">
-              <span className="truncate">Ваш доход (3%)</span>
-              <TrendingUp size={20} className="text-airbnb-rausch flex-shrink-0 sm:w-6 sm:h-6" />
+          <CardHeader className="pb-2 px-3 sm:px-6 pt-3 sm:pt-6">
+            <CardTitle className="text-[10px] sm:text-xs font-medium text-gray-600 flex items-center justify-between gap-1">
+              <span className="truncate leading-tight">Ваш доход (3%)</span>
+              <TrendingUp size={16} className="text-airbnb-rausch flex-shrink-0 sm:w-5 sm:h-5" />
             </CardTitle>
           </CardHeader>
-          <CardContent className="pb-3 sm:pb-6">
-            <p className="text-lg sm:text-2xl lg:text-3xl font-bold text-airbnb-rausch break-words leading-tight">{formatRUB(monthlyIncome)}</p>
-            <p className="text-xs text-gray-500 mt-1">Комиссия от оборота</p>
+          <CardContent className="pb-3 px-3 sm:pb-6 sm:px-6">
+            <p className="text-sm sm:text-lg lg:text-2xl font-bold text-airbnb-rausch break-words leading-tight">{formatRUB(monthlyIncome)}</p>
+            <p className="text-[10px] sm:text-xs text-gray-500 mt-1 truncate">Комиссия от оборота</p>
           </CardContent>
         </Card>
       </div>
