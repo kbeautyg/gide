@@ -213,6 +213,17 @@ JR Pass — безлимитный проездной на поезда. Пок�
     )
   }
 
+  // Функция для обработки жирного текста внутри строки
+  const processBoldText = (text: string) => {
+    const parts = text.split(/(\*\*.*?\*\*)/)
+    return parts.map((part, index) => {
+      if (part.startsWith('**') && part.endsWith('**')) {
+        return <strong key={index} className="font-bold text-gray-900">{part.slice(2, -2)}</strong>
+      }
+      return part
+    })
+  }
+
   // Разбиваем контент на параграфы
   const renderContent = (content: string) => {
     return content.split('\n\n').map((paragraph, i) => {
@@ -232,8 +243,8 @@ JR Pass — безлимитный проездной на поезда. Пок�
         )
       }
       
-      // Жирный текст
-      if (paragraph.startsWith('**') && paragraph.endsWith('**')) {
+      // Жирный текст (целый параграф)
+      if (paragraph.startsWith('**') && paragraph.endsWith('**') && !paragraph.includes('\n')) {
         return (
           <p key={i} className="font-bold text-xl text-gray-900 my-6">
             {paragraph.replace(/\*\*/g, '')}
@@ -255,14 +266,14 @@ JR Pass — безлимитный проездной на поезда. Пок�
             {items.map((item, j) => (
               <li key={j} className="text-gray-700 text-lg leading-relaxed flex items-start gap-3">
                 <span className="w-2 h-2 bg-airbnb-rausch rounded-full mt-2.5 flex-shrink-0" />
-                <span>{item.replace('- ', '')}</span>
+                <span>{processBoldText(item.replace('- ', ''))}</span>
               </li>
             ))}
           </motion.ul>
         )
       }
       
-      // Обычный параграф
+      // Обычный параграф (с поддержкой жирного текста внутри)
       return (
         <motion.p
           key={i}
@@ -271,7 +282,7 @@ JR Pass — безлимитный проездной на поезда. Пок�
           viewport={{ once: true }}
           className="text-gray-700 text-lg leading-relaxed my-6"
         >
-          {paragraph}
+          {processBoldText(paragraph)}
         </motion.p>
       )
     })
