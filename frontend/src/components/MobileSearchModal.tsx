@@ -95,7 +95,7 @@ export function MobileSearchModal({ isOpen, onClose }: MobileSearchModalProps) {
                     : "border-transparent text-gray-500"
                 )}
               >
-                🏛️ Экскурсии
+                Экскурсии
               </button>
               <button
                 onClick={() => setActiveTab('experiences')}
@@ -106,7 +106,7 @@ export function MobileSearchModal({ isOpen, onClose }: MobileSearchModalProps) {
                     : "border-transparent text-gray-500"
                 )}
               >
-                🎭 Впечатления
+                Впечатления
               </button>
             </div>
           </div>
@@ -208,18 +208,42 @@ export function MobileSearchModal({ isOpen, onClose }: MobileSearchModalProps) {
                   initial={{ opacity: 0, height: 0 }}
                   animate={{ opacity: 1, height: 'auto' }}
                   exit={{ opacity: 0, height: 0 }}
-                  className="px-4 pb-4 bg-gray-50"
+                  className="px-2 pb-4 bg-gray-50"
                 >
-                  <DayPicker
-                    mode="range"
-                    selected={dateRange}
-                    onSelect={setDateRange}
-                    numberOfMonths={1}
-                    locale={ru}
-                    disabled={{ before: new Date() }}
-                    className="mx-auto"
-                  />
-                  <div className="mt-4 flex gap-2 flex-wrap">
+                  <div className="bg-white rounded-xl p-3 shadow-sm">
+                    <DayPicker
+                      mode="range"
+                      selected={dateRange}
+                      onSelect={setDateRange}
+                      numberOfMonths={1}
+                      locale={ru}
+                      disabled={{ before: new Date() }}
+                      className="mx-auto"
+                      classNames={{
+                        months: "flex flex-col",
+                        month: "space-y-4",
+                        caption: "flex justify-center pt-1 relative items-center",
+                        caption_label: "text-sm font-medium",
+                        nav: "space-x-1 flex items-center",
+                        nav_button: "h-7 w-7 bg-transparent p-0 opacity-50 hover:opacity-100",
+                        nav_button_previous: "absolute left-1",
+                        nav_button_next: "absolute right-1",
+                        table: "w-full border-collapse space-y-1",
+                        head_row: "flex",
+                        head_cell: "text-gray-500 rounded-md w-9 font-normal text-[0.8rem]",
+                        row: "flex w-full mt-2",
+                        cell: "text-center text-sm p-0 relative [&:has([aria-selected])]:bg-gray-100 first:[&:has([aria-selected])]:rounded-l-md last:[&:has([aria-selected])]:rounded-r-md focus-within:relative focus-within:z-20",
+                        day: "h-9 w-9 p-0 font-normal aria-selected:opacity-100 hover:bg-gray-100 rounded-md transition-colors",
+                        day_selected: "bg-airbnb-rausch text-white hover:bg-airbnb-rausch hover:text-white focus:bg-airbnb-rausch focus:text-white",
+                        day_today: "bg-gray-100 text-gray-900 font-semibold",
+                        day_outside: "text-gray-400 opacity-50",
+                        day_disabled: "text-gray-400 opacity-50",
+                        day_range_middle: "aria-selected:bg-gray-100 aria-selected:text-gray-900",
+                        day_hidden: "invisible",
+                      }}
+                    />
+                  </div>
+                  <div className="mt-3 flex gap-2 flex-wrap px-2">
                     <button 
                       onClick={() => {
                         const today = new Date()
@@ -227,13 +251,26 @@ export function MobileSearchModal({ isOpen, onClose }: MobileSearchModalProps) {
                         nextWeek.setDate(today.getDate() + 7)
                         setDateRange({ from: today, to: nextWeek })
                       }}
-                      className="px-3 py-1.5 text-xs border border-gray-300 rounded-full hover:border-gray-900 transition-colors"
+                      className="flex-1 px-3 py-2 text-xs font-medium bg-white border border-gray-300 rounded-lg hover:border-airbnb-rausch hover:text-airbnb-rausch transition-colors"
                     >
                       Эта неделя
                     </button>
                     <button 
+                      onClick={() => {
+                        const today = new Date()
+                        const weekend = new Date(today)
+                        weekend.setDate(today.getDate() + ((6 - today.getDay() + 7) % 7))
+                        const sunday = new Date(weekend)
+                        sunday.setDate(weekend.getDate() + 1)
+                        setDateRange({ from: weekend, to: sunday })
+                      }}
+                      className="flex-1 px-3 py-2 text-xs font-medium bg-white border border-gray-300 rounded-lg hover:border-airbnb-rausch hover:text-airbnb-rausch transition-colors"
+                    >
+                      Выходные
+                    </button>
+                    <button 
                       onClick={() => setDateRange(undefined)}
-                      className="px-3 py-1.5 text-xs border border-gray-300 rounded-full hover:border-gray-900 transition-colors"
+                      className="flex-1 px-3 py-2 text-xs font-medium bg-white border border-gray-300 rounded-lg hover:border-red-500 hover:text-red-500 transition-colors"
                     >
                       Сбросить
                     </button>
