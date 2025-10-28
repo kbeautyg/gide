@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
-import { Star, Users, Shield, Clock, ChevronLeft, ChevronRight, ArrowRight, Play } from 'lucide-react'
+import { Star, Users, Shield, Clock, ChevronLeft, ChevronRight, ArrowRight } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { useQuery } from '@tanstack/react-query'
 import { api } from '@/lib/api'
@@ -195,15 +195,6 @@ export default function HomePage() {
                 Смотреть экскурсии
               </Button>
             </Link>
-            
-            <Button 
-              size="lg"
-              variant="outline"
-              className="bg-transparent border-2 border-white text-white hover:bg-white/10 font-semibold text-lg px-10 py-7 rounded-full backdrop-blur-sm"
-            >
-              <Play className="mr-2" size={20} />
-              Как это работает
-            </Button>
           </motion.div>
 
           {/* Живая статистика - плавающая */}

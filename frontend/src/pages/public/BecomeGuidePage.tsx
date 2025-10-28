@@ -94,7 +94,7 @@ export default function BecomeGuidePage() {
               вашим бизнесом: бронирования, платежи, статистика и выплаты в одном месте.
             </p>
             
-            <div className="flex justify-center gap-4 flex-wrap">
+            <div className="flex justify-center">
               <motion.a
                 href="#application-form"
                 whileHover={{ scale: 1.05 }}
@@ -102,14 +102,6 @@ export default function BecomeGuidePage() {
                 className="px-10 py-5 bg-white text-airbnb-rausch rounded-full font-bold text-lg shadow-2xl hover:shadow-3xl transition-all cursor-pointer"
               >
                 🚀 Начать сейчас
-              </motion.a>
-              <motion.a
-                href="#demo"
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                className="px-10 py-5 bg-transparent border-2 border-white text-white rounded-full font-bold text-lg hover:bg-white hover:text-airbnb-rausch transition-all cursor-pointer"
-              >
-                📱 Посмотреть демо
               </motion.a>
             </div>
           </motion.div>
@@ -352,26 +344,25 @@ export default function BecomeGuidePage() {
             </div>
 
             {/* Right - QR Code Mockup */}
-            <Card className="bg-white border-2 border-gray-200 shadow-xl">
+            <Card className="bg-white border-2 border-gray-200 shadow-xl max-w-md mx-auto md:mx-0">
               <CardHeader className="bg-airbnb-rausch text-white">
-                <CardTitle>Счет на оплату</CardTitle>
-                <CardDescription className="text-white/90">Заказ #12847 • Обзорная экскурсия</CardDescription>
+                <CardTitle className="text-base sm:text-lg">Счет на оплату</CardTitle>
+                <CardDescription className="text-white/90 text-xs sm:text-sm">Заказ #12847 • Обзорная экскурсия</CardDescription>
               </CardHeader>
-              <CardContent className="pt-6">
-                <div className="text-center mb-6">
-                  <p className="text-sm text-gray-600 mb-2">К оплате</p>
-                  <p className="text-4xl font-bold text-airbnb-rausch mb-1">2,500 ₽</p>
+              <CardContent className="pt-4 sm:pt-6 px-4 sm:px-6 pb-4 sm:pb-6">
+                <div className="text-center mb-4 sm:mb-6">
+                  <p className="text-xs sm:text-sm text-gray-600 mb-2">К оплате</p>
+                  <p className="text-3xl sm:text-4xl font-bold text-airbnb-rausch mb-1">2,500 ₽</p>
                   <p className="text-xs text-gray-500">≈ 900 THB • ≈ $27</p>
                 </div>
 
-                <div className="flex justify-center mb-6">
-                  <div className="w-48 h-48 bg-white border-4 border-gray-200 rounded-xl flex items-center justify-center relative overflow-hidden">
-                    <QrCode size={120} className="text-gray-300" />
-                    <div className="absolute inset-0 bg-gray-50"></div>
+                <div className="flex justify-center mb-4 sm:mb-6">
+                  <div className="w-36 h-36 sm:w-48 sm:h-48 bg-white border-4 border-gray-200 rounded-xl flex items-center justify-center">
+                    <QrCode size={100} className="sm:w-[120px] sm:h-[120px] text-gray-800" />
                   </div>
                 </div>
 
-                <div className="text-center text-sm text-gray-600 mb-4">
+                <div className="text-center text-xs sm:text-sm text-gray-600 mb-3 sm:mb-4">
                   Отсканируйте QR-код или нажмите кнопку ниже
                 </div>
 
@@ -380,8 +371,8 @@ export default function BecomeGuidePage() {
                   Оплатить картой
                 </Button>
 
-                <div className="flex items-center justify-center gap-2 mt-4 text-xs text-gray-500">
-                  <CheckCircle size={14} className="text-green-600" />
+                <div className="flex flex-wrap items-center justify-center gap-2 mt-3 sm:mt-4 text-xs text-gray-500">
+                  <CheckCircle size={14} className="text-green-600 flex-shrink-0" />
                   <span>Защищенный платеж</span>
                   <span>•</span>
                   <span>SSL шифрование</span>
