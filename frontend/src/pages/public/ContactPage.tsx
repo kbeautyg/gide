@@ -1,4 +1,4 @@
-import { MapPin, Phone, Mail, Clock, MessageCircle } from 'lucide-react'
+import { MapPin, Phone, Mail, Clock, MessageCircle, Instagram, Youtube, Send } from 'lucide-react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -6,10 +6,11 @@ import { Textarea } from '@/components/ui/textarea'
 import { Label } from '@/components/ui/label'
 import { PublicHeader } from '@/components/PublicHeader'
 import { PublicFooter } from '@/components/PublicFooter'
+import { motion } from 'framer-motion'
 
 export default function ContactPage() {
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-gray-100">
       <PublicHeader />
       {/* Hero Section */}
       <section className="relative text-white py-20 overflow-hidden">
@@ -192,30 +193,107 @@ export default function ContactPage() {
       </section>
 
       {/* Social Media */}
-      <section className="py-16">
-        <div className="container mx-auto px-4 text-center">
-          <h2 className="text-3xl font-bold mb-8">Мы в социальных сетях</h2>
-          <p className="text-lg text-gray-600 mb-8">
-            Следите за нашими новостями и делитесь впечатлениями
-          </p>
+      <section className="py-16 bg-gray-100">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">Мы в социальных сетях</h2>
+            <p className="text-lg text-gray-600">
+              Следите за нашими новостями и делитесь впечатлениями
+            </p>
+          </div>
           
-          <div className="flex justify-center gap-4">
-            <Button variant="outline" size="lg" className="gap-2">
-              <span>📘</span>
-              Facebook
-            </Button>
-            <Button variant="outline" size="lg" className="gap-2">
-              <span>📷</span>
-              Instagram
-            </Button>
-            <Button variant="outline" size="lg" className="gap-2">
-              <span>📺</span>
-              YouTube
-            </Button>
-            <Button variant="outline" size="lg" className="gap-2">
-              <span>💬</span>
-              Telegram
-            </Button>
+          <div className="max-w-2xl mx-auto grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <motion.a
+              href="https://instagram.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              whileHover={{ scale: 1.02, y: -4 }}
+              whileTap={{ scale: 0.98 }}
+              className="block"
+            >
+              <Card className="bg-white hover:shadow-xl transition-all cursor-pointer border-2 hover:border-pink-500">
+                <CardContent className="p-6">
+                  <div className="flex items-center gap-4">
+                    <div className="w-14 h-14 bg-gradient-to-br from-purple-500 via-pink-500 to-orange-500 rounded-2xl flex items-center justify-center flex-shrink-0">
+                      <Instagram className="text-white" size={28} />
+                    </div>
+                    <div className="flex-1">
+                      <h3 className="text-xl font-bold mb-1">Instagram</h3>
+                      <p className="text-sm text-gray-600">Фото и истории путешествий</p>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </motion.a>
+
+            <motion.a
+              href="https://youtube.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              whileHover={{ scale: 1.02, y: -4 }}
+              whileTap={{ scale: 0.98 }}
+              className="block"
+            >
+              <Card className="bg-white hover:shadow-xl transition-all cursor-pointer border-2 hover:border-red-500">
+                <CardContent className="p-6">
+                  <div className="flex items-center gap-4">
+                    <div className="w-14 h-14 bg-red-600 rounded-2xl flex items-center justify-center flex-shrink-0">
+                      <Youtube className="text-white" size={28} />
+                    </div>
+                    <div className="flex-1">
+                      <h3 className="text-xl font-bold mb-1">YouTube</h3>
+                      <p className="text-sm text-gray-600">Видео-обзоры экскурсий</p>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </motion.a>
+
+            <motion.a
+              href="https://t.me/thaiguide"
+              target="_blank"
+              rel="noopener noreferrer"
+              whileHover={{ scale: 1.02, y: -4 }}
+              whileTap={{ scale: 0.98 }}
+              className="block"
+            >
+              <Card className="bg-white hover:shadow-xl transition-all cursor-pointer border-2 hover:border-blue-500">
+                <CardContent className="p-6">
+                  <div className="flex items-center gap-4">
+                    <div className="w-14 h-14 bg-blue-500 rounded-2xl flex items-center justify-center flex-shrink-0">
+                      <Send className="text-white" size={28} />
+                    </div>
+                    <div className="flex-1">
+                      <h3 className="text-xl font-bold mb-1">Telegram</h3>
+                      <p className="text-sm text-gray-600">Быстрая связь и поддержка</p>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </motion.a>
+
+            <motion.a
+              href="https://wa.me/79991234567"
+              target="_blank"
+              rel="noopener noreferrer"
+              whileHover={{ scale: 1.02, y: -4 }}
+              whileTap={{ scale: 0.98 }}
+              className="block"
+            >
+              <Card className="bg-white hover:shadow-xl transition-all cursor-pointer border-2 hover:border-green-500">
+                <CardContent className="p-6">
+                  <div className="flex items-center gap-4">
+                    <div className="w-14 h-14 bg-green-500 rounded-2xl flex items-center justify-center flex-shrink-0">
+                      <MessageCircle className="text-white" size={28} />
+                    </div>
+                    <div className="flex-1">
+                      <h3 className="text-xl font-bold mb-1">WhatsApp</h3>
+                      <p className="text-sm text-gray-600">Онлайн-консультации</p>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </motion.a>
           </div>
         </div>
       </section>
