@@ -6,7 +6,6 @@ import { X } from 'lucide-react'
 import { toursApi, api } from '@/lib/api'
 import { PublicHeader } from '@/components/PublicHeader'
 import { PublicFooter } from '@/components/PublicFooter'
-import { SearchBar } from '@/components/SearchBar'
 import { CategoryChips } from '@/components/CategoryChips'
 import { FilterPanel } from '@/components/FilterPanel'
 import { TourCard } from '@/components/TourCard'
@@ -247,13 +246,6 @@ export default function ToursPage() {
     <div className="min-h-screen bg-white">
       <PublicHeader />
 
-      {/* Поисковая панель - sticky с прозрачным контейнером */}
-      <div className="sticky top-24 z-50 pointer-events-none">
-        <div className="container mx-auto px-4 py-3">
-          <SearchBar variant="sticky" />
-        </div>
-      </div>
-
       {/* CityHero - показываем только если есть locationParam */}
       {cityInfo && (
         <CityHero 
@@ -264,7 +256,7 @@ export default function ToursPage() {
       )}
 
       {/* Breadcrumbs */}
-      <div className="bg-gray-50">
+      <div className="bg-white">
         <div className="container mx-auto px-4 py-3">
           <div className="text-sm text-gray-600">
             <Link to="/" className="hover:underline">Главная</Link>
@@ -293,7 +285,7 @@ export default function ToursPage() {
 
       {/* Заголовок страницы - показываем только если НЕТ cityInfo */}
       {!cityInfo && (
-        <section className="bg-white py-12 border-b">
+        <section className="bg-white py-12">
           <div className="container mx-auto px-4">
             <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-3">
               Авторские туры по всему миру
@@ -307,7 +299,7 @@ export default function ToursPage() {
 
 
       {/* Секция категорий */}
-      <div className="bg-white border-b">
+      <div className="bg-white">
         <div className="container mx-auto px-4 py-6 space-y-4">
           {/* Заголовок с кнопкой сброса */}
           {activeFiltersCount > 0 && (
@@ -484,7 +476,7 @@ export default function ToursPage() {
 
       {/* Активные категории - отображение выбранных */}
       {(selectedThemes.length > 0 || selectedCountries.length > 0 || selectedCities.length > 0 || landmarksParam) && (
-        <div className="bg-gray-50 border-b">
+        <div className="bg-white">
           <div className="container mx-auto px-4 py-4">
             <div className="flex items-center gap-2 flex-wrap">
               <span className="text-sm font-semibold text-gray-700">Активные категории:</span>
@@ -559,7 +551,7 @@ export default function ToursPage() {
       )}
 
       {/* Основной контент */}
-      <section className="py-8 bg-gray-50">
+      <section className="py-8 bg-white">
         <div className="container mx-auto px-4">
           {/* Заголовок и сортировка */}
           <div className="flex items-center justify-between mb-6">
