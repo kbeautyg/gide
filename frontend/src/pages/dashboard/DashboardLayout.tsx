@@ -249,7 +249,7 @@ export default function DashboardLayout() {
 
       <div className="flex min-h-0">
         {/* Sidebar - только desktop */}
-        <aside className="hidden lg:block w-56 xl:w-64 bg-white border-r min-h-[calc(100vh-73px)] flex-shrink-0">
+        <aside className="hidden lg:block w-56 xl:w-64 bg-white border-r min-h-[calc(100vh-73px)] flex-shrink-0 overflow-hidden">
           <nav className="p-3 xl:p-4 space-y-2">
             {menuItems.map((item) => {
               const Icon = item.icon
@@ -259,14 +259,14 @@ export default function DashboardLayout() {
                 <Link
                   key={item.path}
                   to={item.path}
-                  className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-all ${
+                  className={`flex items-center gap-3 px-3 xl:px-4 py-3 rounded-lg transition-all min-w-0 ${
                     active
                       ? 'bg-airbnb-rausch text-white shadow-md'
                       : 'text-gray-700 hover:bg-gray-100'
                   }`}
                 >
-                  <Icon size={20} />
-                  <span className="font-medium">{item.label}</span>
+                  <Icon size={20} className="flex-shrink-0" />
+                  <span className="font-medium truncate">{item.label}</span>
                 </Link>
               )
             })}

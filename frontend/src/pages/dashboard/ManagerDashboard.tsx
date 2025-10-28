@@ -78,26 +78,26 @@ export default function ManagerDashboard() {
   return (
     <div className="space-y-4 sm:space-y-6 overflow-x-hidden max-w-full">
       {/* Header */}
-      <div className="bg-airbnb-rausch rounded-xl p-4 sm:p-6 text-white shadow-lg">
+      <div className="bg-airbnb-rausch rounded-xl p-4 sm:p-6 text-white shadow-lg overflow-hidden">
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-          <div className="flex items-center gap-3 sm:gap-4">
+          <div className="flex items-center gap-3 sm:gap-4 min-w-0 flex-1">
             <div className="w-12 h-12 sm:w-16 sm:h-16 bg-white/20 rounded-full flex items-center justify-center text-xl sm:text-2xl font-bold flex-shrink-0">
               {user?.name?.[0] || user?.phone?.[0] || 'Г'}
             </div>
-            <div className="min-w-0">
-              <p className="text-xl sm:text-2xl font-bold truncate">{user?.name || 'Гид'}</p>
-              <p className="text-sm sm:text-base text-white/90 truncate">
+            <div className="min-w-0 flex-1">
+              <p className="text-lg sm:text-xl lg:text-2xl font-bold truncate">{user?.name || 'Гид'}</p>
+              <p className="text-xs sm:text-sm text-white/90 truncate">
                 {user?.role === 'admin' ? 'Администратор' : 'Гид'} • ThaiGuide Pro
               </p>
             </div>
           </div>
-          <div className="w-full sm:w-auto sm:text-right space-y-2 sm:space-y-3">
-            <p className="text-white/90 text-xs sm:text-sm">Доход за месяц (3% комиссия)</p>
-            <p className="text-2xl sm:text-3xl font-bold">{formatRUB(monthlyIncome)}</p>
+          <div className="w-full sm:w-auto sm:text-right space-y-2 sm:space-y-3 min-w-0">
+            <p className="text-white/90 text-xs sm:text-sm truncate">Доход за месяц (3% комиссия)</p>
+            <p className="text-xl sm:text-2xl lg:text-3xl font-bold break-words">{formatRUB(monthlyIncome)}</p>
             <Button
-              className="gap-2 bg-white text-tropical-ocean hover:bg-white/90 w-full sm:w-auto"
+              className="gap-2 bg-white text-tropical-ocean hover:bg-white/90 w-full sm:w-auto text-sm sm:text-base"
               onClick={() => alert('Заявка на вывод средств отправлена менеджеру.')}>
-              <ArrowUpRight size={18} />
+              <ArrowUpRight size={16} className="sm:w-[18px] sm:h-[18px]" />
               Вывести средства
             </Button>
           </div>
@@ -200,21 +200,21 @@ export default function ManagerDashboard() {
           {recentBookings.length > 0 ? (
             <div className="space-y-3">
               {recentBookings.map((booking: any) => (
-                <div key={booking.id} className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 p-3 sm:p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
-                  <div className="flex items-center gap-3">
+                <div key={booking.id} className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 p-3 sm:p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors overflow-hidden">
+                  <div className="flex items-center gap-3 min-w-0 flex-1">
                     <div className="w-10 h-10 sm:w-12 sm:h-12 bg-tropical-ocean/10 rounded-full flex items-center justify-center flex-shrink-0">
                       <Users size={18} className="text-tropical-ocean sm:w-5 sm:h-5" />
                     </div>
-                    <div className="min-w-0">
-                      <p className="font-semibold truncate">{booking.client_name || 'Клиент'}</p>
-                      <p className="text-sm text-gray-600 truncate">{booking.client_phone}</p>
+                    <div className="min-w-0 flex-1">
+                      <p className="font-semibold truncate text-sm sm:text-base">{booking.client_name || 'Клиент'}</p>
+                      <p className="text-xs sm:text-sm text-gray-600 truncate">{booking.client_phone}</p>
                     </div>
                   </div>
-                  <div className="text-left sm:text-right">
-                    <p className="font-bold text-tropical-ocean">{formatRUB(booking.total_price)}</p>
+                  <div className="text-left sm:text-right flex-shrink-0">
+                    <p className="font-bold text-tropical-ocean text-sm sm:text-base break-words">{formatRUB(booking.total_price)}</p>
                     <p className="text-xs text-green-600 flex items-center gap-1">
-                      <CheckCircle size={12} />
-                      {booking.payment_status === 'paid' ? 'Оплачено' : 'В ожидании'}
+                      <CheckCircle size={12} className="flex-shrink-0" />
+                      <span className="truncate">{booking.payment_status === 'paid' ? 'Оплачено' : 'В ожидании'}</span>
                     </p>
                   </div>
                 </div>
