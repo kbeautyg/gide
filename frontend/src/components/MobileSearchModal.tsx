@@ -4,14 +4,11 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { X, Search, MapPin, Calendar as CalendarIcon, Users, Minus, Plus } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
-import { DayPicker, DateRange } from 'react-day-picker'
 import { format } from 'date-fns'
 import { ru } from 'date-fns/locale'
 import { cn } from '@/lib/utils'
 import { useQuery } from '@tanstack/react-query'
 import { api } from '@/lib/api'
-
-type Tab = 'tours' | 'experiences'
 
 interface MobileSearchModalProps {
   isOpen: boolean
@@ -20,14 +17,13 @@ interface MobileSearchModalProps {
 
 export function MobileSearchModal({ isOpen, onClose }: MobileSearchModalProps) {
   const navigate = useNavigate()
-  const [activeTab, setActiveTab] = useState<Tab>('tours')
   const [activeField, setActiveField] = useState<'where' | 'when' | 'who'>('where')
   const [searchData, setSearchData] = useState({
     where: '',
     adults: 1,
     children: 0,
   })
-  const [dateRange, setDateRange] = useState<DateRange | undefined>(undefined)
+  const [selectedDate, setSelectedDate] = useState<Date | undefined>(undefined)
 
   // Загрузка городов
   const { data: destinationsData } = useQuery({
@@ -47,17 +43,13 @@ export function MobileSearchModal({ isOpen, onClose }: MobileSearchModalProps) {
     if (searchData.where) {
       params.append('location', searchData.where)
     }
-    if (dateRange?.from) {
-      params.append('date_start', format(dateRange.from, 'yyyy-MM-dd'))
-    }
-    if (dateRange?.to) {
-      params.append('date_end', format(dateRange.to, 'yyyy-MM-dd'))
+    if (selectedDate) {
+      params.append('date', format(selectedDate, 'yyyy-MM-dd'))
     }
     const totalGuests = searchData.adults + searchData.children
     if (totalGuests > 1) {
       params.append('guests', totalGuests.toString())
     }
-    params.append('type', activeTab)
     
     navigate(`/tours${params.toString() ? '?' + params.toString() : ''}`)
     onClose()
@@ -80,39 +72,13 @@ export function MobileSearchModal({ isOpen, onClose }: MobileSearchModalProps) {
               <button onClick={onClose} className="p-2 hover:bg-gray-100 rounded-full">
                 <X size={24} />
               </button>
-              <h2 className="text-lg font-semibold">Поиск</h2>
+              <h2 className="text-lg font-semibold">Поиск экскурсий</h2>
               <div className="w-10" /> {/* Spacer */}
-            </div>
-
-            {/* Tabs */}
-            <div className="flex border-b">
-              <button
-                onClick={() => setActiveTab('tours')}
-                className={cn(
-                  "flex-1 py-3 text-sm font-medium border-b-2 transition-colors",
-                  activeTab === 'tours'
-                    ? "border-gray-900 text-gray-900"
-                    : "border-transparent text-gray-500"
-                )}
-              >
-                Экскурсии
-              </button>
-              <button
-                onClick={() => setActiveTab('experiences')}
-                className={cn(
-                  "flex-1 py-3 text-sm font-medium border-b-2 transition-colors",
-                  activeTab === 'experiences'
-                    ? "border-gray-900 text-gray-900"
-                    : "border-transparent text-gray-500"
-                )}
-              >
-                Впечатления
-              </button>
             </div>
           </div>
 
           {/* Content */}
-          <div className="overflow-y-auto pb-24" style={{ height: 'calc(100vh - 140px)' }}>
+          <div className="overflow-y-auto pb-24" style={{ height: 'calc(100vh - 80px)' }}>
             {/* Field: Куда */}
             <div className="border-b">
               <button
@@ -187,15 +153,7 @@ export function MobileSearchModal({ isOpen, onClose }: MobileSearchModalProps) {
                     <div>
                       <div className="text-xs font-semibold text-gray-500">Когда</div>
                       <div className="text-sm text-gray-900 mt-0.5">
-                        {dateRange?.from ? (
-                          dateRange.to ? (
-                            `${format(dateRange.from, 'd MMM', { locale: ru })} - ${format(dateRange.to, 'd MMM', { locale: ru })}`
-                          ) : (
-                            format(dateRange.from, 'd MMM yyyy', { locale: ru })
-                          )
-                        ) : (
-                          'Любые даты'
-                        )}
+                        {selectedDate ? format(selectedDate, 'd MMMM yyyy', { locale: ru }) : 'Любая дата'}
                       </div>
                     </div>
                   </div>
@@ -208,71 +166,58 @@ export function MobileSearchModal({ isOpen, onClose }: MobileSearchModalProps) {
                   initial={{ opacity: 0, height: 0 }}
                   animate={{ opacity: 1, height: 'auto' }}
                   exit={{ opacity: 0, height: 0 }}
-                  className="px-2 pb-4 bg-gray-50"
+                  className="px-4 pb-4 bg-gray-50"
                 >
-                  <div className="bg-white rounded-xl p-3 shadow-sm">
-                    <DayPicker
-                      mode="range"
-                      selected={dateRange}
-                      onSelect={setDateRange}
-                      numberOfMonths={1}
-                      locale={ru}
-                      disabled={{ before: new Date() }}
-                      className="mx-auto"
-                      classNames={{
-                        months: "flex flex-col",
-                        month: "space-y-4",
-                        caption: "flex justify-center pt-1 relative items-center",
-                        caption_label: "text-sm font-medium",
-                        nav: "space-x-1 flex items-center",
-                        nav_button: "h-7 w-7 bg-transparent p-0 opacity-50 hover:opacity-100",
-                        nav_button_previous: "absolute left-1",
-                        nav_button_next: "absolute right-1",
-                        table: "w-full border-collapse space-y-1",
-                        head_row: "flex",
-                        head_cell: "text-gray-500 rounded-md w-9 font-normal text-[0.8rem]",
-                        row: "flex w-full mt-2",
-                        cell: "text-center text-sm p-0 relative [&:has([aria-selected])]:bg-gray-100 first:[&:has([aria-selected])]:rounded-l-md last:[&:has([aria-selected])]:rounded-r-md focus-within:relative focus-within:z-20",
-                        day: "h-9 w-9 p-0 font-normal aria-selected:opacity-100 hover:bg-gray-100 rounded-md transition-colors",
-                        day_selected: "bg-airbnb-rausch text-white hover:bg-airbnb-rausch hover:text-white focus:bg-airbnb-rausch focus:text-white",
-                        day_today: "bg-gray-100 text-gray-900 font-semibold",
-                        day_outside: "text-gray-400 opacity-50",
-                        day_disabled: "text-gray-400 opacity-50",
-                        day_range_middle: "aria-selected:bg-gray-100 aria-selected:text-gray-900",
-                        day_hidden: "invisible",
-                      }}
-                    />
-                  </div>
-                  <div className="mt-3 flex gap-2 flex-wrap px-2">
+                  <div className="space-y-2 mt-3">
+                    {/* Быстрый выбор дат */}
+                    {[
+                      { label: 'Сегодня', days: 0 },
+                      { label: 'Завтра', days: 1 },
+                      { label: 'Через 2 дня', days: 2 },
+                      { label: 'Через 3 дня', days: 3 },
+                      { label: 'Эта неделя', days: 7 },
+                      { label: 'Следующая неделя', days: 14 },
+                    ].map((option) => {
+                      const date = new Date()
+                      date.setDate(date.getDate() + option.days)
+                      const isSelected = selectedDate && format(selectedDate, 'yyyy-MM-dd') === format(date, 'yyyy-MM-dd')
+                      
+                      return (
+                        <button
+                          key={option.label}
+                          onClick={() => setSelectedDate(date)}
+                          className={cn(
+                            "w-full text-left px-4 py-3 rounded-xl transition-all",
+                            isSelected
+                              ? "bg-airbnb-rausch text-white shadow-md"
+                              : "bg-white hover:bg-gray-100"
+                          )}
+                        >
+                          <div className="flex items-center justify-between">
+                            <div>
+                              <div className={cn("font-semibold", isSelected ? "text-white" : "text-gray-900")}>
+                                {option.label}
+                              </div>
+                              <div className={cn("text-sm", isSelected ? "text-white/90" : "text-gray-600")}>
+                                {format(date, 'd MMMM, EEEE', { locale: ru })}
+                              </div>
+                            </div>
+                            {isSelected && (
+                              <div className="w-6 h-6 bg-white/20 rounded-full flex items-center justify-center">
+                                <div className="w-3 h-3 bg-white rounded-full" />
+                              </div>
+                            )}
+                          </div>
+                        </button>
+                      )
+                    })}
+                    
+                    {/* Сбросить */}
                     <button 
-                      onClick={() => {
-                        const today = new Date()
-                        const nextWeek = new Date(today)
-                        nextWeek.setDate(today.getDate() + 7)
-                        setDateRange({ from: today, to: nextWeek })
-                      }}
-                      className="flex-1 px-3 py-2 text-xs font-medium bg-white border border-gray-300 rounded-lg hover:border-airbnb-rausch hover:text-airbnb-rausch transition-colors"
+                      onClick={() => setSelectedDate(undefined)}
+                      className="w-full px-4 py-3 text-center text-sm font-medium text-gray-600 hover:text-airbnb-rausch transition-colors"
                     >
-                      Эта неделя
-                    </button>
-                    <button 
-                      onClick={() => {
-                        const today = new Date()
-                        const weekend = new Date(today)
-                        weekend.setDate(today.getDate() + ((6 - today.getDay() + 7) % 7))
-                        const sunday = new Date(weekend)
-                        sunday.setDate(weekend.getDate() + 1)
-                        setDateRange({ from: weekend, to: sunday })
-                      }}
-                      className="flex-1 px-3 py-2 text-xs font-medium bg-white border border-gray-300 rounded-lg hover:border-airbnb-rausch hover:text-airbnb-rausch transition-colors"
-                    >
-                      Выходные
-                    </button>
-                    <button 
-                      onClick={() => setDateRange(undefined)}
-                      className="flex-1 px-3 py-2 text-xs font-medium bg-white border border-gray-300 rounded-lg hover:border-red-500 hover:text-red-500 transition-colors"
-                    >
-                      Сбросить
+                      Любая дата
                     </button>
                   </div>
                 </motion.div>
