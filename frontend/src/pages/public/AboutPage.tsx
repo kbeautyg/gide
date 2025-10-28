@@ -64,7 +64,7 @@ export default function AboutPage() {
   ]
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-100">
       <PublicHeader />
 
       {/* Hero - Parallax эффект */}
@@ -116,7 +116,7 @@ export default function AboutPage() {
       </section>
 
       {/* Гарантии и преимущества */}
-      <section className="py-20 bg-gray-50">
+      <section className="py-20 bg-gray-100">
         <div className="container mx-auto px-4">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -207,7 +207,7 @@ export default function AboutPage() {
       </section>
 
       {/* Отзывы клиентов */}
-      <section className="py-20 bg-gray-50">
+      <section className="py-20 bg-gray-100">
         <div className="container mx-auto px-4">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -326,7 +326,7 @@ export default function AboutPage() {
       </section>
 
       {/* Values - Ценности с 3D tilt */}
-      <section className="py-24 bg-gray-50">
+      <section className="py-24 bg-gray-100">
         <div className="container mx-auto px-4">
           <motion.h2
             initial={{ opacity: 0, y: 20 }}
@@ -419,7 +419,7 @@ export default function AboutPage() {
       </section>
 
       {/* Партнеры */}
-      <section className="py-16 bg-gray-50 border-y">
+      <section className="py-16 bg-gray-100 border-y">
         <div className="container mx-auto px-4">
           <motion.div
             initial={{ opacity: 0 }}
@@ -525,7 +525,7 @@ export default function AboutPage() {
       </section>
 
       {/* Как мы работаем */}
-      <section className="py-20 bg-gray-50">
+      <section className="py-20 bg-gray-100">
         <div className="container mx-auto px-4">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
