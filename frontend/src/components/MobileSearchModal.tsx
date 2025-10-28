@@ -1,10 +1,10 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
-import { X, Search, MapPin, Calendar as CalendarIcon, Users, Minus, Plus } from 'lucide-react'
+import { X, Search, MapPin, Calendar as CalendarIcon, Users, Minus, Plus, ChevronLeft, ChevronRight } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
-import { format } from 'date-fns'
+import { format, startOfMonth, endOfMonth, eachDayOfInterval, isSameMonth, isSameDay, addMonths, subMonths, startOfWeek, endOfWeek } from 'date-fns'
 import { ru } from 'date-fns/locale'
 import { cn } from '@/lib/utils'
 import { useQuery } from '@tanstack/react-query'
@@ -24,6 +24,8 @@ export function MobileSearchModal({ isOpen, onClose }: MobileSearchModalProps) {
     children: 0,
   })
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(undefined)
+  const [currentMonth, setCurrentMonth] = useState(new Date())
+  const [showCalendar, setShowCalendar] = useState(false)
 
   // Загрузка городов
   const { data: destinationsData } = useQuery({
@@ -212,9 +214,100 @@ export function MobileSearchModal({ isOpen, onClose }: MobileSearchModalProps) {
                       )
                     })}
                     
+                    {/* Кнопка показать календарь */}
+                    <button 
+                      onClick={() => setShowCalendar(!showCalendar)}
+                      className="w-full px-4 py-3 text-center text-sm font-medium bg-white border-2 border-gray-300 rounded-xl hover:border-airbnb-rausch hover:text-airbnb-rausch transition-colors"
+                    >
+                      {showCalendar ? 'Скрыть календарь' : 'Выбрать другую дату'}
+                    </button>
+
+                    {/* Календарь */}
+                    {showCalendar && (
+                      <motion.div
+                        initial={{ opacity: 0, height: 0 }}
+                        animate={{ opacity: 1, height: 'auto' }}
+                        exit={{ opacity: 0, height: 0 }}
+                        className="bg-white rounded-xl p-4 shadow-md mt-2"
+                      >
+                        {/* Навигация по месяцам */}
+                        <div className="flex items-center justify-between mb-4">
+                          <button
+                            onClick={() => setCurrentMonth(subMonths(currentMonth, 1))}
+                            className="p-2 hover:bg-gray-100 rounded-full transition-colors"
+                          >
+                            <ChevronLeft size={20} />
+                          </button>
+                          <div className="font-semibold text-gray-900">
+                            {format(currentMonth, 'LLLL yyyy', { locale: ru })}
+                          </div>
+                          <button
+                            onClick={() => setCurrentMonth(addMonths(currentMonth, 1))}
+                            className="p-2 hover:bg-gray-100 rounded-full transition-colors"
+                          >
+                            <ChevronRight size={20} />
+                          </button>
+                        </div>
+
+                        {/* Дни недели */}
+                        <div className="grid grid-cols-7 gap-1 mb-2">
+                          {['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'].map((day) => (
+                            <div key={day} className="text-center text-xs font-medium text-gray-500 py-2">
+                              {day}
+                            </div>
+                          ))}
+                        </div>
+
+                        {/* Дни месяца */}
+                        <div className="grid grid-cols-7 gap-1">
+                          {(() => {
+                            const monthStart = startOfMonth(currentMonth)
+                            const monthEnd = endOfMonth(currentMonth)
+                            const startDate = startOfWeek(monthStart, { locale: ru })
+                            const endDate = endOfWeek(monthEnd, { locale: ru })
+                            const days = eachDayOfInterval({ start: startDate, end: endDate })
+                            const today = new Date()
+
+                            return days.map((day, i) => {
+                              const isCurrentMonth = isSameMonth(day, currentMonth)
+                              const isSelected = selectedDate && isSameDay(day, selectedDate)
+                              const isToday = isSameDay(day, today)
+                              const isPast = day < today && !isSameDay(day, today)
+
+                              return (
+                                <button
+                                  key={i}
+                                  onClick={() => {
+                                    if (!isPast) {
+                                      setSelectedDate(day)
+                                      setShowCalendar(false)
+                                    }
+                                  }}
+                                  disabled={isPast}
+                                  className={cn(
+                                    "aspect-square flex items-center justify-center text-sm rounded-lg transition-all",
+                                    !isCurrentMonth && "text-gray-300",
+                                    isCurrentMonth && !isSelected && !isPast && "text-gray-900 hover:bg-gray-100",
+                                    isSelected && "bg-airbnb-rausch text-white font-semibold shadow-md",
+                                    isToday && !isSelected && "bg-blue-50 text-blue-600 font-semibold",
+                                    isPast && "text-gray-300 cursor-not-allowed"
+                                  )}
+                                >
+                                  {format(day, 'd')}
+                                </button>
+                              )
+                            })
+                          })()}
+                        </div>
+                      </motion.div>
+                    )}
+                    
                     {/* Сбросить */}
                     <button 
-                      onClick={() => setSelectedDate(undefined)}
+                      onClick={() => {
+                        setSelectedDate(undefined)
+                        setShowCalendar(false)
+                      }}
                       className="w-full px-4 py-3 text-center text-sm font-medium text-gray-600 hover:text-airbnb-rausch transition-colors"
                     >
                       Любая дата
