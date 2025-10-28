@@ -180,8 +180,9 @@ export default function BookingsPage() {
       ) : (
         <Card>
           <CardContent className="p-0">
-            <div className="overflow-x-auto scrollbar-hide">
-              <table className="w-full min-w-[900px]">
+            <div className="overflow-x-auto scrollbar-hide -mx-4 sm:mx-0">
+              <div className="min-w-full inline-block align-middle px-4 sm:px-0">
+                <table className="w-full min-w-[900px]">
                 <thead className="bg-gray-50 border-b">
                   <tr>
                     <th className="px-2 sm:px-4 py-2 sm:py-3 text-left text-xs font-medium text-gray-500 uppercase whitespace-nowrap">ID</th>
@@ -269,6 +270,7 @@ export default function BookingsPage() {
                   ))}
                 </tbody>
               </table>
+              </div>
             </div>
           </CardContent>
         </Card>
