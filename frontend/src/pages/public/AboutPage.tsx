@@ -1,6 +1,6 @@
 import { motion, useScroll, useTransform } from 'framer-motion'
 import { useRef } from 'react'
-import { Users, MapPin, Star, Heart, Shield, Rocket, Target, Zap, Globe, TrendingUp, Sparkles, Award, Lock, Clock, BadgeCheck, CreditCard, HeadphonesIcon } from 'lucide-react'
+import { Users, MapPin, Star, Heart, Shield, Rocket, Target, Zap, Globe, TrendingUp, Sparkles, Lock, Clock, BadgeCheck, CreditCard, HeadphonesIcon } from 'lucide-react'
 import { PublicHeader } from '@/components/PublicHeader'
 import { PublicFooter } from '@/components/PublicFooter'
 import { AnimatedCounter } from '@/components/AnimatedCounter'
