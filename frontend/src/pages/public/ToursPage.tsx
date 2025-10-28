@@ -243,7 +243,7 @@ export default function ToursPage() {
   }
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-gray-50">
       <PublicHeader />
 
       {/* CityHero - показываем только если есть locationParam */}

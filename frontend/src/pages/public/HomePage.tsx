@@ -253,7 +253,7 @@ export default function HomePage() {
       </section>
 
       {/* Блок "Планы на сезон" */}
-      <section className="py-20 bg-white">
+      <section className="py-20 bg-gray-50">
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-between mb-8">
             <h2 className="text-3xl font-bold text-gray-900">Популярные направления 🌏</h2>
@@ -323,7 +323,7 @@ export default function HomePage() {
       </section>
 
       {/* Популярные направления (города) */}
-      <section className="py-20 bg-white">
+      <section className="py-20 bg-gray-50">
         <div className="container mx-auto px-4">
           <h2 className="text-3xl font-bold text-gray-900 mb-8">Популярные направления</h2>
           
@@ -357,7 +357,7 @@ export default function HomePage() {
       </section>
 
       {/* Умные рекомендации */}
-      <div className="bg-white">
+      <div className="bg-gray-50">
         <SmartRecommendations 
           limit={6}
           title="Популярные экскурсии"
@@ -466,7 +466,7 @@ export default function HomePage() {
       </section>
 
       {/* Свежие отзывы */}
-      <section className="py-20 bg-white">
+      <section className="py-20 bg-gray-50">
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-between mb-8">
             <h2 className="text-3xl font-bold text-gray-900">Свежие отзывы</h2>
@@ -560,7 +560,7 @@ export default function HomePage() {
       </section>
 
       {/* Статистика */}
-      <section className="py-16 bg-white border-t">
+      <section className="py-16 bg-gray-50 border-t">
         <div className="container mx-auto px-4">
           <div className="grid md:grid-cols-3 gap-8 text-center">
             <div>
