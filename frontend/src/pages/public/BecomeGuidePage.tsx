@@ -357,40 +357,42 @@ export default function BecomeGuidePage() {
                 </div>
 
                 <div className="flex justify-center mb-4 sm:mb-6">
-                  <div className="w-36 h-36 sm:w-48 sm:h-48 bg-white border-4 border-gray-200 rounded-xl p-3 sm:p-4">
+                  <div className="w-36 h-36 sm:w-48 sm:h-48 bg-white border-4 border-gray-200 rounded-xl p-2 sm:p-3">
                     {/* QR Code Pattern - визуальная имитация */}
                     <div className="w-full h-full bg-white relative">
                       {/* Угловые маркеры QR-кода */}
-                      <div className="absolute top-0 left-0 w-6 h-6 sm:w-8 sm:h-8 border-4 border-black">
-                        <div className="absolute inset-1 bg-black"></div>
+                      <div className="absolute top-0 left-0 w-7 h-7 sm:w-10 sm:h-10 border-[3px] sm:border-4 border-black">
+                        <div className="absolute inset-[2px] sm:inset-1 bg-black"></div>
                       </div>
-                      <div className="absolute top-0 right-0 w-6 h-6 sm:w-8 sm:h-8 border-4 border-black">
-                        <div className="absolute inset-1 bg-black"></div>
+                      <div className="absolute top-0 right-0 w-7 h-7 sm:w-10 sm:h-10 border-[3px] sm:border-4 border-black">
+                        <div className="absolute inset-[2px] sm:inset-1 bg-black"></div>
                       </div>
-                      <div className="absolute bottom-0 left-0 w-6 h-6 sm:w-8 sm:h-8 border-4 border-black">
-                        <div className="absolute inset-1 bg-black"></div>
+                      <div className="absolute bottom-0 left-0 w-7 h-7 sm:w-10 sm:h-10 border-[3px] sm:border-4 border-black">
+                        <div className="absolute inset-[2px] sm:inset-1 bg-black"></div>
                       </div>
                       
-                      {/* Статичный паттерн QR-кода */}
-                      <div className="absolute inset-0 grid grid-cols-10 grid-rows-10 gap-[1px] sm:gap-[2px] p-8 sm:p-10">
-                        {[1,0,1,1,0,1,0,1,1,0,
-                          0,1,0,0,1,0,1,0,1,1,
-                          1,1,1,0,1,1,0,1,0,0,
-                          0,0,1,1,0,1,1,0,1,1,
-                          1,1,0,1,1,0,0,1,0,1,
-                          1,0,1,0,0,1,1,0,1,0,
-                          0,1,1,1,0,0,1,1,0,1,
-                          1,0,0,1,1,1,0,0,1,0,
-                          0,1,1,0,1,0,1,1,0,1,
-                          1,0,1,1,0,1,0,1,1,0
+                      {/* Плотный паттерн QR-кода */}
+                      <div className="absolute inset-0 grid grid-cols-12 grid-rows-12 gap-[1px] p-8 sm:p-12">
+                        {[1,1,1,1,1,1,1,0,1,0,1,1,
+                          1,0,0,0,0,0,1,0,0,1,0,1,
+                          1,0,1,1,1,0,1,0,1,1,1,0,
+                          1,0,1,1,1,0,1,0,0,1,0,1,
+                          1,0,1,1,1,0,1,0,1,0,1,1,
+                          1,0,0,0,0,0,1,0,1,1,0,0,
+                          1,1,1,1,1,1,1,0,1,0,1,0,
+                          0,0,0,0,0,0,0,0,0,1,1,1,
+                          1,0,1,1,0,1,1,0,1,0,1,0,
+                          0,1,0,1,1,0,0,1,1,1,0,1,
+                          1,1,1,0,1,1,0,1,0,1,1,0,
+                          1,0,0,1,0,1,1,0,1,0,1,1
                         ].map((show, i) => (
-                          <div key={i} className={show ? "bg-black" : "bg-white"}></div>
+                          <div key={i} className={show ? "bg-black rounded-[1px]" : "bg-white"}></div>
                         ))}
                       </div>
                       
                       {/* Центральная иконка */}
-                      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-8 h-8 sm:w-10 sm:h-10 bg-airbnb-rausch rounded-lg flex items-center justify-center shadow-lg">
-                        <QrCode size={16} className="sm:w-5 sm:h-5 text-white" />
+                      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-10 h-10 sm:w-12 sm:h-12 bg-airbnb-rausch rounded-lg flex items-center justify-center shadow-lg border-2 border-white">
+                        <QrCode size={20} className="sm:w-6 sm:h-6 text-white" />
                       </div>
                     </div>
                   </div>

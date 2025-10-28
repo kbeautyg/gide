@@ -137,9 +137,9 @@ export default function ManagerDashboard() {
               <DollarSign size={16} className="text-blue-500 flex-shrink-0 sm:w-5 sm:h-5" />
             </CardTitle>
           </CardHeader>
-          <CardContent className="pb-3 px-3 sm:pb-6 sm:px-6">
-            <p className="text-sm sm:text-lg lg:text-2xl font-bold text-blue-500 break-words leading-tight">{formatRUB(monthlyTurnover)}</p>
-            <p className="text-[10px] sm:text-xs text-gray-500 mt-1 truncate">Полная стоимость</p>
+          <CardContent className="pb-3 px-2 sm:px-6 sm:pb-6">
+            <p className="text-xs sm:text-base lg:text-xl font-bold text-blue-500 break-all leading-tight">{formatRUB(monthlyTurnover)}</p>
+            <p className="text-[9px] sm:text-xs text-gray-500 mt-1 truncate">Полная стоимость</p>
           </CardContent>
         </Card>
 
@@ -150,9 +150,9 @@ export default function ManagerDashboard() {
               <TrendingUp size={16} className="text-airbnb-rausch flex-shrink-0 sm:w-5 sm:h-5" />
             </CardTitle>
           </CardHeader>
-          <CardContent className="pb-3 px-3 sm:pb-6 sm:px-6">
-            <p className="text-sm sm:text-lg lg:text-2xl font-bold text-airbnb-rausch break-words leading-tight">{formatRUB(monthlyIncome)}</p>
-            <p className="text-[10px] sm:text-xs text-gray-500 mt-1 truncate">Комиссия от оборота</p>
+          <CardContent className="pb-3 px-2 sm:px-6 sm:pb-6">
+            <p className="text-xs sm:text-base lg:text-xl font-bold text-airbnb-rausch break-all leading-tight">{formatRUB(monthlyIncome)}</p>
+            <p className="text-[9px] sm:text-xs text-gray-500 mt-1 truncate">Комиссия от оборота</p>
           </CardContent>
         </Card>
       </div>
