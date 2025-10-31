@@ -194,7 +194,7 @@ export default function JournalPage() {
 
       {/* Featured статьи - крупные карточки */}
       {featuredArticles.length > 0 && (
-        <section className="py-12 bg-white">
+        <section className="py-12 bg-gray-100">
           <div className="container mx-auto px-4">
             <div className="flex items-center gap-3 mb-8">
               <TrendingUp className="text-airbnb-rausch" size={28} />

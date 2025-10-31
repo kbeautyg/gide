@@ -383,7 +383,7 @@ export default function HomePage() {
       </section>
 
       {/* Динамическая навигация по направлениям */}
-      <section className="py-12 md:py-20 bg-gray-50">
+      <section className="py-12 md:py-20 bg-gray-100">
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-between mb-6 md:mb-8">
             <h2 className="text-2xl md:text-3xl font-bold text-gray-900">Изучайте по категориям</h2>
@@ -483,7 +483,7 @@ export default function HomePage() {
       </section>
 
       {/* Как мы делаем экскурсии */}
-      <section className="py-12 md:py-20 bg-gray-50">
+      <section className="py-12 md:py-20 bg-gray-100">
         <div className="container mx-auto px-4">
           <div className="max-w-3xl mx-auto text-center mb-8 md:mb-12">
             <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-3 md:mb-4">Как мы делаем экскурсии</h2>

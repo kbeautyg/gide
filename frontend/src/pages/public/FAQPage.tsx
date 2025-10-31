@@ -114,7 +114,7 @@ export default function FAQPage() {
     : faqData.filter((item) => item.category === selectedCategory)
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-gray-100">
       <PublicHeader />
       
       <main className="container mx-auto px-4 py-12">

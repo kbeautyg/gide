@@ -28,7 +28,7 @@ export default function BecomeGuidePage() {
   }
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-gray-100">
       <PublicHeader />
       
       {/* Hero - Анимированный с градиентом */}

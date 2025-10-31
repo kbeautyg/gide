@@ -5,7 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 
 export default function PrivacyPage() {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-white to-pink-50">
+    <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-gray-100 to-pink-50">
       <PublicHeader />
       
       <main className="container mx-auto px-4 py-12">

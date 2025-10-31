@@ -55,7 +55,7 @@ export default function CreateRequestPage() {
   }
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-gray-100">
       <PublicHeader />
       {/* Hero Section */}
       <section className="relative text-white py-20 overflow-hidden">

@@ -200,7 +200,7 @@ JR Pass — безлимитный проездной на поезда. Пок�
 
   if (!article) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50">
+      <div className="min-h-screen flex items-center justify-center bg-gray-100">
         <PublicHeader />
         <div className="text-center py-20">
           <h1 className="text-3xl font-bold text-gray-900 mb-4">Статья не найдена</h1>
@@ -289,7 +289,7 @@ JR Pass — безлимитный проездной на поезда. Пок�
   }
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-gray-100">
       <PublicHeader />
 
       {/* Hero с фото - улучшенный дизайн */}
