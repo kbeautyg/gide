@@ -124,7 +124,7 @@ export default function BookingsPage() {
             <button
               key={filter.value}
               onClick={() => setFilterStatus(filter.value)}
-              className={`px-4 sm:px-6 py-2.5 sm:py-3 rounded-md text-sm sm:text-base font-medium transition-all whitespace-nowrap ${
+              className={`px-4 sm:px-6 py-2.5 sm:py-3 rounded text-sm sm:text-base font-medium transition-all whitespace-nowrap ${
                 filterStatus === filter.value
                   ? 'bg-airbnb-rausch text-white shadow-md'
                   : 'bg-white border border-gray-300 text-gray-700 hover:border-gray-900 hover:bg-gray-50'
@@ -145,7 +145,7 @@ export default function BookingsPage() {
             <select
               value={filterTourId}
               onChange={(e) => setFilterTourId(e.target.value)}
-              className="px-4 sm:px-6 py-2.5 sm:py-3 border border-gray-300 rounded-md text-sm sm:text-base focus:ring-2 focus:ring-airbnb-rausch focus:border-airbnb-rausch bg-white"
+              className="px-4 sm:px-6 py-2.5 sm:py-3 border border-gray-300 rounded text-sm sm:text-base focus:ring-2 focus:ring-airbnb-rausch focus:border-airbnb-rausch bg-white"
             >
               <option value="all">Все туры ({bookings.length})</option>
               {tours.map(tour => (

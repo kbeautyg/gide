@@ -205,7 +205,7 @@ export default function DashboardLayout() {
           <div className="flex gap-2 sm:gap-3 overflow-x-auto scrollbar-hide">
             <Link
               to="/dashboard/requests"
-              className="flex items-center gap-2 px-4 sm:px-5 py-2.5 sm:py-3 bg-white rounded-md border hover:border-airbnb-rausch hover:shadow-md transition-all whitespace-nowrap flex-shrink-0"
+              className="flex items-center gap-2 px-4 sm:px-5 py-2.5 sm:py-3 bg-white rounded border hover:border-airbnb-rausch hover:shadow-md transition-all whitespace-nowrap flex-shrink-0"
             >
               <FileText size={16} className="text-airbnb-rausch" />
               <span className="text-sm sm:text-base font-medium">Заявки</span>
@@ -216,7 +216,7 @@ export default function DashboardLayout() {
 
             <Link
               to="/dashboard/my-tours"
-              className="flex items-center gap-2 px-4 sm:px-5 py-2.5 sm:py-3 bg-white rounded-md border hover:border-blue-500 hover:shadow-md transition-all whitespace-nowrap flex-shrink-0"
+              className="flex items-center gap-2 px-4 sm:px-5 py-2.5 sm:py-3 bg-white rounded border hover:border-blue-500 hover:shadow-md transition-all whitespace-nowrap flex-shrink-0"
             >
               <MapPin size={16} className="text-blue-600" />
               <span className="text-sm sm:text-base font-medium">Мои экскурсии</span>
@@ -227,7 +227,7 @@ export default function DashboardLayout() {
 
             <Link
               to="/dashboard/calendar"
-              className="flex items-center gap-2 px-4 sm:px-5 py-2.5 sm:py-3 bg-white rounded-md border hover:border-green-500 hover:shadow-md transition-all whitespace-nowrap flex-shrink-0"
+              className="flex items-center gap-2 px-4 sm:px-5 py-2.5 sm:py-3 bg-white rounded border hover:border-green-500 hover:shadow-md transition-all whitespace-nowrap flex-shrink-0"
             >
               <Calendar size={16} className="text-green-600" />
               <span className="text-sm sm:text-base font-medium">Календарь</span>
@@ -235,7 +235,7 @@ export default function DashboardLayout() {
 
             <Link
               to="/dashboard/bookings"
-              className="flex items-center gap-2 px-4 sm:px-5 py-2.5 sm:py-3 bg-white rounded-md border hover:border-purple-500 hover:shadow-md transition-all whitespace-nowrap flex-shrink-0"
+              className="flex items-center gap-2 px-4 sm:px-5 py-2.5 sm:py-3 bg-white rounded border hover:border-purple-500 hover:shadow-md transition-all whitespace-nowrap flex-shrink-0"
             >
               <ShoppingBag size={16} className="text-purple-600" />
               <span className="text-sm sm:text-base font-medium">Заказы</span>

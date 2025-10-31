@@ -244,7 +244,7 @@ export default function EditTourPage() {
                       id="category"
                       value={formData.category || ''}
                       onChange={(e) => handleChange('category', e.target.value)}
-                      className="w-full px-3 py-2 border rounded-md"
+                      className="w-full px-3 py-2 border rounded"
                     >
                       <option value="">Выберите категорию</option>
                       <option value="Культура и история">Культура и история</option>
@@ -494,7 +494,7 @@ export default function EditTourPage() {
                       id="difficulty_level"
                       value={formData.difficulty_level || ''}
                       onChange={(e) => handleChange('difficulty_level', e.target.value)}
-                      className="w-full px-3 py-2 border rounded-md"
+                      className="w-full px-3 py-2 border rounded"
                     >
                       <option value="">Выберите</option>
                       <option value="Лёгкая">Лёгкая</option>
