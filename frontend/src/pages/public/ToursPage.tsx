@@ -327,10 +327,10 @@ export default function ToursPage() {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: index * 0.03 }}
                   onClick={() => handleCountrySelect(country.name)}
-                  className={`px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-all ${
+                  className={`px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-all border ${
                     selectedCountries.includes(country.name)
-                      ? 'bg-airbnb-rausch text-white shadow-md scale-105'
-                      : 'bg-gray-100 text-gray-700 hover:bg-gray-200 hover:scale-105'
+                      ? 'bg-airbnb-rausch text-white border-airbnb-rausch shadow-md scale-105'
+                      : 'bg-[#111827] text-white border-[#111827] hover:bg-white hover:text-[#111827] hover:border-[#111827] hover:scale-105'
                   }`}
                 >
                   {country.flag} {country.name}
@@ -361,10 +361,10 @@ export default function ToursPage() {
                           prev.includes(city) ? prev.filter(c => c !== city) : [...prev, city]
                         )
                       }}
-                      className={`px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-all ${
+                      className={`px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-all border ${
                         selectedCities.includes(city)
-                          ? 'bg-airbnb-rausch text-white shadow-md scale-105'
-                          : 'bg-gray-100 text-gray-700 hover:bg-gray-200 hover:scale-105'
+                          ? 'bg-airbnb-rausch text-white border-airbnb-rausch shadow-md scale-105'
+                          : 'bg-[#111827] text-white border-[#111827] hover:bg-white hover:text-[#111827] hover:border-[#111827] hover:scale-105'
                       }`}
                     >
                       {city}
@@ -397,10 +397,10 @@ export default function ToursPage() {
                       prev.includes(range) ? prev.filter(r => r !== range) : [...prev, range]
                     )
                   }}
-                  className={`px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-all ${
+                  className={`px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-all border ${
                     selectedPriceRanges.includes(range)
-                      ? 'bg-airbnb-rausch text-white shadow-md'
-                      : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                      ? 'bg-airbnb-rausch text-white border-airbnb-rausch shadow-md'
+                      : 'bg-[#111827] text-white border-[#111827] hover:bg-white hover:text-[#111827] hover:border-[#111827]'
                   }`}
                 >
                   {range}
@@ -421,10 +421,10 @@ export default function ToursPage() {
                       prev.includes(duration) ? prev.filter(d => d !== duration) : [...prev, duration]
                     )
                   }}
-                  className={`px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-all ${
+                  className={`px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-all border ${
                     selectedDurations.includes(duration)
-                      ? 'bg-airbnb-rausch text-white shadow-md'
-                      : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                      ? 'bg-airbnb-rausch text-white border-airbnb-rausch shadow-md'
+                      : 'bg-[#111827] text-white border-[#111827] hover:bg-white hover:text-[#111827] hover:border-[#111827]'
                   }`}
                 >
                   {duration}
@@ -445,10 +445,10 @@ export default function ToursPage() {
                       prev.includes(rating) ? prev.filter(r => r !== rating) : [...prev, rating]
                     )
                   }}
-                  className={`px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-all ${
+                  className={`px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-all border ${
                     selectedRatings.includes(rating)
-                      ? 'bg-airbnb-rausch text-white shadow-md'
-                      : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                      ? 'bg-airbnb-rausch text-white border-airbnb-rausch shadow-md'
+                      : 'bg-[#111827] text-white border-[#111827] hover:bg-white hover:text-[#111827] hover:border-[#111827]'
                   }`}
                 >
                   ⭐ {rating}

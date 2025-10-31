@@ -38,10 +38,10 @@ export function CategoryChips({
               key={category.name}
               onClick={() => onSelect(category.name)}
               className={cn(
-                "inline-flex items-center whitespace-nowrap rounded-full px-4 py-2 text-sm font-medium transition-all shrink-0",
+                "inline-flex items-center whitespace-nowrap rounded-full px-4 py-2 text-sm font-medium transition-all shrink-0 border",
                 isSelected
-                  ? "bg-airbnb-rausch text-white shadow-md"
-                  : "bg-gray-100 text-gray-800 hover:bg-gray-200 hover:shadow-sm"
+                  ? "bg-airbnb-rausch text-white border-airbnb-rausch shadow-md"
+                  : "bg-[#111827] text-white border-[#111827] hover:bg-white hover:text-[#111827] hover:border-[#111827]"
               )}
               whileHover={{ y: -1 }}
               whileTap={{ scale: 0.98 }}
@@ -65,7 +65,7 @@ export function CategoryChips({
       
       {/* Градиент затухания справа */}
       {!showAll && hasMore && (
-        <div className="absolute right-0 top-0 bottom-0 w-20 bg-gradient-to-l from-white to-transparent pointer-events-none" />
+        <div className="absolute right-0 top-0 bottom-0 w-20 bg-gradient-to-l from-gray-100 to-transparent pointer-events-none" />
       )}
     </div>
   )
