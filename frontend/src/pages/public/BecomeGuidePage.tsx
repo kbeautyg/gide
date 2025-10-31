@@ -1,6 +1,7 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { UserPlus, MapPin, DollarSign, Users, Trophy, CheckCircle, Send, Calendar, CreditCard, TrendingUp, QrCode, Wallet, BarChart3, Clock, Star } from 'lucide-react'
+import { QRCodeSVG } from 'qrcode.react'
 import { PublicHeader } from '@/components/PublicHeader'
 import { PublicFooter } from '@/components/PublicFooter'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
@@ -20,6 +21,16 @@ export default function BecomeGuidePage() {
   })
 
   const [submitted, setSubmitted] = useState(false)
+  const [qrSize, setQrSize] = useState(144)
+
+  useEffect(() => {
+    const updateQrSize = () => {
+      setQrSize(window.innerWidth >= 640 ? 192 : 144)
+    }
+    updateQrSize()
+    window.addEventListener('resize', updateQrSize)
+    return () => window.removeEventListener('resize', updateQrSize)
+  }, [])
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
@@ -357,44 +368,14 @@ export default function BecomeGuidePage() {
                 </div>
 
                 <div className="flex justify-center mb-4 sm:mb-6">
-                  <div className="w-36 h-36 sm:w-48 sm:h-48 bg-white border-4 border-gray-200 rounded-xl p-2 sm:p-3">
-                    {/* QR Code Pattern - визуальная имитация */}
-                    <div className="w-full h-full bg-white relative">
-                      {/* Угловые маркеры QR-кода */}
-                      <div className="absolute top-0 left-0 w-7 h-7 sm:w-10 sm:h-10 border-[3px] sm:border-4 border-black">
-                        <div className="absolute inset-[2px] sm:inset-1 bg-black"></div>
-                      </div>
-                      <div className="absolute top-0 right-0 w-7 h-7 sm:w-10 sm:h-10 border-[3px] sm:border-4 border-black">
-                        <div className="absolute inset-[2px] sm:inset-1 bg-black"></div>
-                      </div>
-                      <div className="absolute bottom-0 left-0 w-7 h-7 sm:w-10 sm:h-10 border-[3px] sm:border-4 border-black">
-                        <div className="absolute inset-[2px] sm:inset-1 bg-black"></div>
-                      </div>
-                      
-                      {/* Плотный паттерн QR-кода */}
-                      <div className="absolute inset-0 grid grid-cols-12 grid-rows-12 gap-[1px] p-8 sm:p-12">
-                        {[1,1,1,1,1,1,1,0,1,0,1,1,
-                          1,0,0,0,0,0,1,0,0,1,0,1,
-                          1,0,1,1,1,0,1,0,1,1,1,0,
-                          1,0,1,1,1,0,1,0,0,1,0,1,
-                          1,0,1,1,1,0,1,0,1,0,1,1,
-                          1,0,0,0,0,0,1,0,1,1,0,0,
-                          1,1,1,1,1,1,1,0,1,0,1,0,
-                          0,0,0,0,0,0,0,0,0,1,1,1,
-                          1,0,1,1,0,1,1,0,1,0,1,0,
-                          0,1,0,1,1,0,0,1,1,1,0,1,
-                          1,1,1,0,1,1,0,1,0,1,1,0,
-                          1,0,0,1,0,1,1,0,1,0,1,1
-                        ].map((show, i) => (
-                          <div key={i} className={show ? "bg-black rounded-[1px]" : "bg-white"}></div>
-                        ))}
-                      </div>
-                      
-                      {/* Центральная иконка */}
-                      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-10 h-10 sm:w-12 sm:h-12 bg-airbnb-rausch rounded-lg flex items-center justify-center shadow-lg border-2 border-white">
-                        <QrCode size={20} className="sm:w-6 sm:h-6 text-white" />
-                      </div>
-                    </div>
+                  <div className="w-36 h-36 sm:w-48 sm:h-48 bg-white border-4 border-gray-200 rounded-xl p-2 sm:p-3 flex items-center justify-center overflow-hidden">
+                    {/* Реальный QR-код */}
+                    <QRCodeSVG
+                      value="https://turex.pro/payment/12847"
+                      size={qrSize}
+                      level="H"
+                      includeMargin={false}
+                    />
                   </div>
                 </div>
 
