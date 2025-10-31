@@ -135,9 +135,6 @@ export function PublicHeader() {
         </div>
       </header>
 
-      {/* Отступ для контента под fixed header */}
-      <div className="h-24" />
-
       {/* Мобильное меню */}
       <MobileMenu isOpen={mobileMenuOpen} onClose={() => setMobileMenuOpen(false)} />
       
