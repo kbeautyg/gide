@@ -256,7 +256,7 @@ export default function ToursPage() {
       )}
 
       {/* Breadcrumbs */}
-      <div className="bg-white">
+      <div className="bg-gray-100">
         <div className="container mx-auto px-4 py-3">
           <div className="text-sm text-gray-600">
             <Link to="/" className="hover:underline">Главная</Link>
@@ -285,7 +285,7 @@ export default function ToursPage() {
 
       {/* Заголовок страницы - показываем только если НЕТ cityInfo */}
       {!cityInfo && (
-        <section className="bg-white py-12">
+        <section className="bg-gray-100 py-12">
           <div className="container mx-auto px-4">
             <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-3">
               Авторские туры по всему миру
