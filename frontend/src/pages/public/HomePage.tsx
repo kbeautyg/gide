@@ -118,7 +118,7 @@ export default function HomePage() {
       <PublicHeader />
 
       {/* HERO SECTION - FLOATING OVERLAY DESIGN */}
-      <section className="relative min-h-[85vh] md:h-screen overflow-x-hidden overflow-y-visible -mt-16 md:-mt-24 bg-black">
+      <section className="relative min-h-[85vh] md:h-screen overflow-hidden -mt-16 md:-mt-24 bg-black">
         {/* Фоновое видео/изображение с параллакс эффектом */}
         <motion.div 
           className="absolute inset-0 -top-16 md:-top-24 h-[calc(100%+4rem)] md:h-[calc(100%+6rem)]"
@@ -158,13 +158,12 @@ export default function HomePage() {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.5 }}
-            className="text-6xl sm:text-7xl md:text-8xl lg:text-9xl xl:text-[10rem] font-bold text-white mb-6 sm:mb-8 md:mb-6 leading-[1.1] sm:leading-[1.05] md:leading-[0.95] max-w-5xl"
+            className="text-6xl sm:text-7xl md:text-8xl lg:text-9xl xl:text-[10rem] font-bold text-white mb-6 sm:mb-8 md:mb-6 leading-tight max-w-5xl"
             style={{
               textShadow: '0 4px 30px rgba(0,0,0,0.8), 0 8px 60px rgba(0,0,0,0.5)'
             }}
           >
-            Экскурсии<br />
-            <span className="text-airbnb-rausch">мечты</span>
+            Экскурсии <span className="text-airbnb-rausch">мечты</span>
           </motion.h1>
 
           {/* Описание */}
