@@ -160,7 +160,7 @@ export default function HomePage() {
                 }}
               >
                 Экскурсии<br />
-                <span className="bg-gradient-to-r from-airbnb-rausch via-pink-500 to-orange-500 bg-clip-text text-transparent">
+                <span className="text-[rgb(255,56,92)]">
                   мечты
                 </span>
               </motion.h1>
