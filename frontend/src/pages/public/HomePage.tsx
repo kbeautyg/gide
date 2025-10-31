@@ -134,9 +134,9 @@ export default function HomePage() {
             }}
           />
           
-          {/* Градиентные оверлеи для читаемости */}
-          <div className="absolute inset-0 top-0 left-0 right-0 bottom-0 w-full h-full bg-gradient-to-b from-black/70 via-black/40 to-black/80" />
-          <div className="absolute inset-0 top-0 left-0 right-0 bottom-0 w-full h-full bg-gradient-to-r from-black/50 via-transparent to-black/50" />
+          {/* Градиентные оверлеи для читаемости - более прозрачные */}
+          <div className="absolute inset-0 top-0 left-0 right-0 bottom-0 w-full h-full bg-gradient-to-b from-black/40 via-black/20 to-black/50" />
+          <div className="absolute inset-0 top-0 left-0 right-0 bottom-0 w-full h-full bg-gradient-to-r from-black/30 via-transparent to-black/30" />
         </motion.div>
 
         {/* Плавающий контент - раскиданный по всему экрану */}
