@@ -123,7 +123,7 @@ export default function TourDetailPage() {
   const totalPrice = tour.price * bookingData.participants
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
+    <div className="min-h-screen" style={{ backgroundColor: 'rgb(243, 244, 246)' }}>
       <PublicHeader />
 
       {/* Breadcrumbs */}
