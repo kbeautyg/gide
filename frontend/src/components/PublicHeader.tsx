@@ -135,6 +135,9 @@ export function PublicHeader() {
         </div>
       </header>
 
+      {/* Отступ для всех страниц кроме главной */}
+      {location.pathname !== '/' && <div className="h-24" />}
+
       {/* Мобильное меню */}
       <MobileMenu isOpen={mobileMenuOpen} onClose={() => setMobileMenuOpen(false)} />
       
