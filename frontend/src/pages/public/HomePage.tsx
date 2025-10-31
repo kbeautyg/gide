@@ -153,12 +153,12 @@ export default function HomePage() {
             </span>
           </motion.div>
 
-          {/* Главный заголовок - ОГРОМНЫЙ и плавающий */}
+          {/* Главный заголовок - адаптивный */}
           <motion.h1
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.5 }}
-            className="text-[2.5rem] sm:text-5xl md:text-7xl lg:text-8xl xl:text-9xl font-bold text-white mb-3 sm:mb-4 md:mb-6 leading-[1.1] sm:leading-[1] md:leading-[0.9] max-w-5xl"
+            className="text-[2.2rem] sm:text-5xl md:text-7xl lg:text-8xl xl:text-9xl font-bold text-white mb-2 sm:mb-4 md:mb-6 leading-tight sm:leading-[1] md:leading-[0.9] max-w-5xl"
             style={{
               textShadow: '0 4px 30px rgba(0,0,0,0.8), 0 8px 60px rgba(0,0,0,0.5)'
             }}
@@ -172,7 +172,7 @@ export default function HomePage() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.7 }}
-            className="text-sm sm:text-base md:text-xl lg:text-2xl text-white/90 mb-5 sm:mb-8 md:mb-10 max-w-2xl font-light leading-relaxed"
+            className="text-xs sm:text-base md:text-xl lg:text-2xl text-white/90 mb-4 sm:mb-8 md:mb-10 max-w-2xl font-light leading-relaxed"
             style={{
               textShadow: '0 2px 20px rgba(0,0,0,0.8)'
             }}
@@ -185,12 +185,12 @@ export default function HomePage() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.9 }}
-            className="flex flex-wrap gap-3 md:gap-4 mb-6 sm:mb-8 md:mb-12"
+            className="flex flex-wrap gap-3 md:gap-4 mb-4 sm:mb-8 md:mb-12"
           >
             <Link to="/tours">
               <Button 
                 size="lg"
-                className="bg-white text-black hover:bg-white/90 font-semibold text-sm sm:text-base md:text-lg px-6 py-4 sm:px-8 sm:py-5 md:px-10 md:py-7 rounded-full shadow-2xl hover:scale-105 transition-all"
+                className="bg-white text-black hover:bg-white/90 font-semibold text-xs sm:text-base md:text-lg px-5 py-3 sm:px-8 sm:py-5 md:px-10 md:py-7 rounded-full shadow-2xl hover:scale-105 transition-all"
               >
                 Смотреть экскурсии
               </Button>
@@ -202,29 +202,29 @@ export default function HomePage() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 1.1 }}
-            className="flex flex-wrap gap-4 sm:gap-6 md:gap-8 text-white"
+            className="flex flex-wrap gap-3 sm:gap-6 md:gap-8 text-white"
           >
             <div>
-              <div className="text-xl sm:text-2xl md:text-4xl font-bold mb-0.5 sm:mb-1" style={{ textShadow: '0 2px 20px rgba(0,0,0,0.8)' }}>
+              <div className="text-base sm:text-2xl md:text-4xl font-bold mb-0.5 sm:mb-1" style={{ textShadow: '0 2px 20px rgba(0,0,0,0.8)' }}>
                 500+
               </div>
-              <div className="text-white/80 text-[10px] sm:text-xs md:text-sm" style={{ textShadow: '0 2px 20px rgba(0,0,0,0.8)' }}>
+              <div className="text-white/80 text-[9px] sm:text-xs md:text-sm" style={{ textShadow: '0 2px 20px rgba(0,0,0,0.8)' }}>
                 Экскурсий
               </div>
             </div>
             <div>
-              <div className="text-xl sm:text-2xl md:text-4xl font-bold mb-0.5 sm:mb-1" style={{ textShadow: '0 2px 20px rgba(0,0,0,0.8)' }}>
+              <div className="text-base sm:text-2xl md:text-4xl font-bold mb-0.5 sm:mb-1" style={{ textShadow: '0 2px 20px rgba(0,0,0,0.8)' }}>
                 10K+
               </div>
-              <div className="text-white/80 text-[10px] sm:text-xs md:text-sm" style={{ textShadow: '0 2px 20px rgba(0,0,0,0.8)' }}>
+              <div className="text-white/80 text-[9px] sm:text-xs md:text-sm" style={{ textShadow: '0 2px 20px rgba(0,0,0,0.8)' }}>
                 Путешественников
               </div>
             </div>
             <div>
-              <div className="text-xl sm:text-2xl md:text-4xl font-bold mb-0.5 sm:mb-1" style={{ textShadow: '0 2px 20px rgba(0,0,0,0.8)' }}>
+              <div className="text-base sm:text-2xl md:text-4xl font-bold mb-0.5 sm:mb-1" style={{ textShadow: '0 2px 20px rgba(0,0,0,0.8)' }}>
                 4.9 ⭐
               </div>
-              <div className="text-white/80 text-[10px] sm:text-xs md:text-sm" style={{ textShadow: '0 2px 20px rgba(0,0,0,0.8)' }}>
+              <div className="text-white/80 text-[9px] sm:text-xs md:text-sm" style={{ textShadow: '0 2px 20px rgba(0,0,0,0.8)' }}>
                 Средний рейтинг
               </div>
             </div>
