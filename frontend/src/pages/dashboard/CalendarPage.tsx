@@ -327,7 +327,6 @@ export default function CalendarPage() {
                       </div>
                       <Button 
                         variant="outline" 
-                        size="sm"
                         onClick={() => handleReschedule(request)}
                       >
                         Перенести

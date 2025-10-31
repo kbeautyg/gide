@@ -78,21 +78,21 @@ export default function SettingsPage() {
               <div className="font-medium text-sm sm:text-base">Email уведомления</div>
               <div className="text-xs sm:text-sm text-gray-500">Получать уведомления на email</div>
             </div>
-            <Button variant="outline" size="sm" className="w-full sm:w-auto">Включить</Button>
+            <Button variant="outline" className="w-full sm:w-auto">Включить</Button>
           </div>
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-4">
             <div>
               <div className="font-medium text-sm sm:text-base">Telegram уведомления</div>
               <div className="text-xs sm:text-sm text-gray-500">Получать уведомления в Telegram</div>
             </div>
-            <Button variant="outline" size="sm" className="w-full sm:w-auto">Настроить</Button>
+            <Button variant="outline" className="w-full sm:w-auto">Настроить</Button>
           </div>
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-4">
             <div>
               <div className="font-medium text-sm sm:text-base">Push уведомления</div>
               <div className="text-xs sm:text-sm text-gray-500">Уведомления в браузере</div>
             </div>
-            <Button variant="outline" size="sm" className="w-full sm:w-auto">Включить</Button>
+            <Button variant="outline" className="w-full sm:w-auto">Включить</Button>
           </div>
         </CardContent>
       </Card>

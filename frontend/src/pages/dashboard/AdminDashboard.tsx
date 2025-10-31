@@ -220,17 +220,15 @@ export default function AdminDashboard() {
                         <div className="flex gap-1 sm:gap-2 justify-end">
                           <Button 
                             variant="outline" 
-                            size="sm"
                             onClick={() => window.location.href = `/dashboard/tours/edit/${tour.id}`}
-                            className="text-xs whitespace-nowrap"
+                            className="text-sm whitespace-nowrap"
                           >
-                            <Edit size={12} className="sm:w-3.5 sm:h-3.5 sm:mr-1" />
+                            <Edit size={16} className="mr-1" />
                             <span className="hidden sm:inline">Редактировать</span>
                           </Button>
                           <Button 
                             variant="outline" 
-                            size="sm"
-                            className="text-red-600 hover:text-red-700 hover:bg-red-50 p-1.5 sm:p-2"
+                            className="text-red-600 hover:text-red-700 hover:bg-red-50"
                             onClick={() => {
                               if (confirm('Удалить тур?')) {
                                 api.delete(`/admin/tours/${tour.id}`)
@@ -238,7 +236,7 @@ export default function AdminDashboard() {
                               }
                             }}
                           >
-                            <Trash2 size={12} className="sm:w-3.5 sm:h-3.5" />
+                            <Trash2 size={16} />
                           </Button>
                         </div>
                       </td>
@@ -295,20 +293,18 @@ export default function AdminDashboard() {
                         <div className="flex gap-1 sm:gap-2 justify-end flex-wrap">
                           <Button 
                             variant="outline" 
-                            size="sm"
-                            className="text-green-600 hover:text-green-700 hover:bg-green-50 text-xs whitespace-nowrap"
+                            className="text-green-600 hover:text-green-700 hover:bg-green-50 text-sm whitespace-nowrap"
                             onClick={() => {
                               api.put(`/admin/guides/${guide.id}/approve`)
                                 .then(() => alert('Гид одобрен'))
                             }}
                           >
-                            <CheckCircle size={12} className="sm:w-3.5 sm:h-3.5 sm:mr-1" />
+                            <CheckCircle size={16} className="mr-1" />
                             <span className="hidden sm:inline">Одобрить</span>
                           </Button>
                           <Button 
                             variant="outline" 
-                            size="sm"
-                            className="text-red-600 hover:text-red-700 hover:bg-red-50 text-xs whitespace-nowrap"
+                            className="text-red-600 hover:text-red-700 hover:bg-red-50 text-sm whitespace-nowrap"
                             onClick={() => {
                               if (confirm('Заблокировать гида?')) {
                                 api.put(`/admin/guides/${guide.id}/block`)
@@ -316,7 +312,7 @@ export default function AdminDashboard() {
                               }
                             }}
                           >
-                            <XCircle size={12} className="sm:w-3.5 sm:h-3.5 sm:mr-1" />
+                            <XCircle size={16} className="mr-1" />
                             <span className="hidden sm:inline">Заблокировать</span>
                           </Button>
                         </div>

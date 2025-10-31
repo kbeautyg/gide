@@ -76,7 +76,7 @@ export default function RequestsPage() {
         <Button 
           onClick={() => setFilter('all')}
           variant={filter === 'all' ? 'airbnb' : 'outline'}
-          className="gap-2 text-xs sm:text-sm whitespace-nowrap"
+          className="gap-2 text-sm sm:text-base whitespace-nowrap"
         >
           <Filter size={14} className="sm:w-4 sm:h-4" />
           <span>Все</span>
@@ -85,7 +85,7 @@ export default function RequestsPage() {
         <Button 
           onClick={() => setFilter('pending')}
           variant={filter === 'pending' ? 'airbnb' : 'outline'}
-          className="gap-2 text-xs sm:text-sm whitespace-nowrap"
+          className="gap-2 text-sm sm:text-base whitespace-nowrap"
         >
           <Clock size={14} className="sm:w-4 sm:h-4" />
           <span>Новые</span>
@@ -94,7 +94,7 @@ export default function RequestsPage() {
         <Button 
           onClick={() => setFilter('in_progress')}
           variant={filter === 'in_progress' ? 'airbnb' : 'outline'}
-          className="gap-2 text-xs sm:text-sm whitespace-nowrap"
+          className="gap-2 text-sm sm:text-base whitespace-nowrap"
         >
           <Link2 size={14} className="sm:w-4 sm:h-4" />
           <span className="hidden sm:inline">В работе</span>
@@ -104,7 +104,7 @@ export default function RequestsPage() {
         <Button 
           onClick={() => setFilter('completed')}
           variant={filter === 'completed' ? 'airbnb' : 'outline'}
-          className="gap-2 text-xs sm:text-sm whitespace-nowrap"
+          className="gap-2 text-sm sm:text-base whitespace-nowrap"
         >
           <CheckCircle2 size={14} className="sm:w-4 sm:h-4" />
           <span className="hidden sm:inline">Завершены</span>
@@ -114,7 +114,7 @@ export default function RequestsPage() {
         <Button 
           onClick={() => setFilter('short')}
           variant={filter === 'short' ? 'airbnb' : 'outline'}
-          className="text-xs sm:text-sm whitespace-nowrap"
+          className="text-sm sm:text-base whitespace-nowrap"
         >
           ⚡ <span className="hidden sm:inline ml-1">Короткие</span>
           <span className="sm:hidden ml-1">Корот.</span>
@@ -123,7 +123,7 @@ export default function RequestsPage() {
         <Button 
           onClick={() => setFilter('long')}
           variant={filter === 'long' ? 'airbnb' : 'outline'}
-          className="text-xs sm:text-sm whitespace-nowrap"
+          className="text-sm sm:text-base whitespace-nowrap"
         >
           🌟 <span className="hidden sm:inline ml-1">Длинные</span>
           <span className="sm:hidden ml-1">Длин.</span>

@@ -140,7 +140,6 @@ export default function EditTourPage() {
           <div className="flex items-center gap-4">
             <Button
               variant="outline"
-              size="sm"
               onClick={() => navigate('/dashboard/my-tours')}
             >
               <ArrowLeft size={16} className="mr-2" />
@@ -317,7 +316,7 @@ export default function EditTourPage() {
                     placeholder="URL фотографии"
                     onKeyPress={(e) => e.key === 'Enter' && addPhotoUrl()}
                   />
-                  <Button onClick={addPhotoUrl} size="sm">
+                  <Button onClick={addPhotoUrl}>
                     <Plus size={16} className="mr-1" />
                     Добавить
                   </Button>
@@ -387,7 +386,7 @@ export default function EditTourPage() {
                       placeholder="Добавить пункт"
                       onKeyPress={(e) => e.key === 'Enter' && addIncludedItem()}
                     />
-                    <Button onClick={addIncludedItem} size="sm">
+                    <Button onClick={addIncludedItem}>
                       <Plus size={16} className="mr-1" />
                       Добавить
                     </Button>
@@ -420,7 +419,7 @@ export default function EditTourPage() {
                       placeholder="Добавить пункт"
                       onKeyPress={(e) => e.key === 'Enter' && addNotIncludedItem()}
                     />
-                    <Button onClick={addNotIncludedItem} size="sm">
+                    <Button onClick={addNotIncludedItem}>
                       <Plus size={16} className="mr-1" />
                       Добавить
                     </Button>
@@ -523,7 +522,7 @@ export default function EditTourPage() {
                       placeholder="Добавить достопримечательность"
                       onKeyPress={(e) => e.key === 'Enter' && addLandmark()}
                     />
-                    <Button onClick={addLandmark} size="sm">
+                    <Button onClick={addLandmark}>
                       <Plus size={16} className="mr-1" />
                       Добавить
                     </Button>
@@ -553,7 +552,7 @@ export default function EditTourPage() {
                       placeholder="Добавить тег"
                       onKeyPress={(e) => e.key === 'Enter' && addTag()}
                     />
-                    <Button onClick={addTag} size="sm">
+                    <Button onClick={addTag}>
                       <Plus size={16} className="mr-1" />
                       Добавить
                     </Button>

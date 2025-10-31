@@ -124,14 +124,14 @@ export default function BookingsPage() {
             <button
               key={filter.value}
               onClick={() => setFilterStatus(filter.value)}
-              className={`px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg text-xs sm:text-sm font-medium transition-all whitespace-nowrap ${
+              className={`px-4 sm:px-6 py-2.5 sm:py-3 rounded-md text-sm sm:text-base font-medium transition-all whitespace-nowrap ${
                 filterStatus === filter.value
                   ? 'bg-airbnb-rausch text-white shadow-md'
-                  : 'bg-white border border-gray-300 text-gray-700 hover:border-gray-900'
+                  : 'bg-white border border-gray-300 text-gray-700 hover:border-gray-900 hover:bg-gray-50'
               }`}
             >
               {filter.label}
-              <span className="ml-1 sm:ml-2 text-xs opacity-75">
+              <span className="ml-2 text-xs sm:text-sm opacity-75">
                 ({filter.value === 'all' ? bookings.length : bookings.filter((b: any) => b.payment_status === filter.value).length})
               </span>
             </button>
@@ -141,11 +141,11 @@ export default function BookingsPage() {
         {/* Фильтр по турам */}
         {tours.length > 0 && (
           <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-3">
-            <label className="text-xs sm:text-sm font-medium text-gray-700 whitespace-nowrap">Фильтр по туру:</label>
+            <label className="text-sm sm:text-base font-medium text-gray-700 whitespace-nowrap">Фильтр по туру:</label>
             <select
               value={filterTourId}
               onChange={(e) => setFilterTourId(e.target.value)}
-              className="w-full sm:w-auto px-3 py-2 border border-gray-300 rounded-lg text-xs sm:text-sm focus:ring-2 focus:ring-airbnb-rausch focus:border-airbnb-rausch"
+              className="px-4 sm:px-6 py-2.5 sm:py-3 border border-gray-300 rounded-md text-sm sm:text-base focus:ring-2 focus:ring-airbnb-rausch focus:border-airbnb-rausch bg-white"
             >
               <option value="all">Все туры ({bookings.length})</option>
               {tours.map(tour => (
@@ -248,20 +248,18 @@ export default function BookingsPage() {
                         <div className="flex gap-1 sm:gap-2 justify-end">
                           <Button
                             variant="outline"
-                            size="sm"
                             onClick={() => navigate(`/dashboard/calendar`)}
                             title="Посмотреть в календаре"
                             className="p-1.5 sm:p-2"
                           >
-                            <Calendar size={12} className="sm:w-3.5 sm:h-3.5" />
+                            <Calendar size={14} className="sm:w-4 sm:h-4" />
                           </Button>
                           <Button
                             variant="outline"
-                            size="sm"
                             onClick={() => setSelectedBooking(booking)}
-                            className="text-xs"
+                            className="text-xs sm:text-sm"
                           >
-                            <Eye size={12} className="sm:w-3.5 sm:h-3.5 mr-1" />
+                            <Eye size={14} className="sm:w-4 sm:h-4 mr-1" />
                             <span className="hidden sm:inline">Детали</span>
                           </Button>
                         </div>
