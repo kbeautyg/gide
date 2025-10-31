@@ -147,14 +147,14 @@ export default function HomePage() {
               initial={{ opacity: 0, y: 40 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, ease: "easeOut" }}
-              className="max-w-5xl mx-auto"
+              className="max-w-5xl mx-auto pt-8"
             >
               {/* Заголовок */}
               <motion.h1
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.3, duration: 0.8 }}
-                className="text-6xl sm:text-7xl font-bold text-white mb-8 leading-none"
+                className="text-6xl sm:text-7xl font-bold text-white mb-8 leading-none mt-8"
                 style={{
                   textShadow: '0 10px 40px rgba(0,0,0,0.5), 0 2px 8px rgba(0,0,0,0.3)'
                 }}
