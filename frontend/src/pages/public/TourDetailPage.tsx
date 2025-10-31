@@ -6,7 +6,7 @@ import {
   MapPin, Clock, Star, Users, DollarSign,
   Heart, Share2, CheckCircle, XCircle, Image as ImageIcon,
   Shield, Calendar as CalendarIcon, Gift, Sparkles,
-  AlertCircle, Info, Navigation, Globe
+  AlertCircle, Info, Navigation, Globe, ArrowDown
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
@@ -490,6 +490,7 @@ export default function TourDetailPage() {
 
           {/* Sidebar - форма бронирования */}
           <aside
+            id="booking-form"
             className="mt-8 lg:mt-0"
           >
             <div className="lg:sticky lg:top-24 lg:z-40 [transition:none!important]">
@@ -624,6 +625,20 @@ export default function TourDetailPage() {
           </div>
         )}
       </div>
+
+      {/* Кнопка прокрутки к форме бронирования */}
+      <button
+        onClick={() => {
+          const bookingForm = document.getElementById('booking-form')
+          if (bookingForm) {
+            bookingForm.scrollIntoView({ behavior: 'smooth', block: 'start' })
+          }
+        }}
+        className="fixed bottom-6 right-6 z-50 w-12 h-12 bg-airbnb-rausch text-white rounded-full shadow-2xl flex items-center justify-center hover:bg-airbnb-rausch/90 hover:scale-110 transition-all"
+        aria-label="Перейти к форме бронирования"
+      >
+        <ArrowDown size={20} />
+      </button>
 
       <PublicFooter />
     </div>
