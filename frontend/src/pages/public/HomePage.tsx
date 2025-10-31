@@ -141,8 +141,8 @@ export default function HomePage() {
 
         {/* Плавающий контент - адаптивное распределение */}
         <div className="relative h-full container mx-auto px-4 sm:px-6 md:px-8 lg:px-16">
-          <div className="flex flex-col md:flex-row items-start md:items-center justify-between h-full gap-12 py-16 md:py-20">
-            <div className="w-full md:w-3/5 xl:w-1/2 flex flex-col gap-6 text-white">
+          <div className="flex flex-col md:flex-row items-start md:items-center justify-between h-full gap-16 md:gap-12 py-24 md:py-20">
+            <div className="w-full md:w-3/5 xl:w-1/2 flex flex-col gap-8 md:gap-6 text-white">
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -157,7 +157,7 @@ export default function HomePage() {
                   initial={{ opacity: 0, y: 30 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.5 }}
-                  className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-[9rem] font-bold text-white leading-tight"
+                  className="text-[4.5rem] sm:text-6xl md:text-7xl lg:text-8xl xl:text-[9rem] font-bold text-white leading-[0.95]"
                   style={{
                     textShadow: '0 4px 30px rgba(0,0,0,0.8), 0 8px 60px rgba(0,0,0,0.5)'
                   }}
@@ -213,7 +213,7 @@ export default function HomePage() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 1.1 }}
-              className="w-full md:w-2/5 xl:w-1/3 flex flex-col sm:flex-row md:flex-col gap-4 md:gap-6 text-white"
+              className="w-full md:w-2/5 xl:w-1/3 flex flex-col sm:flex-row md:flex-col gap-6 md:gap-6 text-white mt-10 md:mt-0"
             >
               <div className="bg-black/25 backdrop-blur-sm px-5 py-4 rounded-2xl">
                 <div className="text-3xl sm:text-4xl font-bold mb-1" style={{ textShadow: '0 2px 20px rgba(0,0,0,0.8)' }}>
