@@ -114,7 +114,7 @@ export default function HomePage() {
   ]
 
   return (
-    <div className="min-h-screen bg-black">
+    <div className="min-h-screen bg-gray-100">
       <PublicHeader />
 
       {/* HERO SECTION - FLOATING OVERLAY DESIGN */}
@@ -158,7 +158,7 @@ export default function HomePage() {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.5 }}
-            className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl font-bold text-white mb-4 sm:mb-6 md:mb-6 leading-[1.05] sm:leading-[1] md:leading-[0.9] max-w-5xl"
+            className="text-6xl sm:text-7xl md:text-7xl lg:text-8xl xl:text-9xl font-bold text-white mb-6 sm:mb-8 md:mb-6 leading-[1.1] sm:leading-[1.05] md:leading-[0.9] max-w-5xl"
             style={{
               textShadow: '0 4px 30px rgba(0,0,0,0.8), 0 8px 60px rgba(0,0,0,0.5)'
             }}
