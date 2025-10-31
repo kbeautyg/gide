@@ -299,7 +299,7 @@ export default function ToursPage() {
 
 
       {/* Секция категорий */}
-      <div className="bg-white">
+      <div className="bg-gray-100">
         <div className="container mx-auto px-4 py-6 space-y-4">
           {/* Заголовок с кнопкой сброса */}
           {activeFiltersCount > 0 && (
@@ -476,7 +476,7 @@ export default function ToursPage() {
 
       {/* Активные категории - отображение выбранных */}
       {(selectedThemes.length > 0 || selectedCountries.length > 0 || selectedCities.length > 0 || landmarksParam) && (
-        <div className="bg-white">
+        <div className="bg-gray-100">
           <div className="container mx-auto px-4 py-4">
             <div className="flex items-center gap-2 flex-wrap">
               <span className="text-sm font-semibold text-gray-700">Активные категории:</span>
