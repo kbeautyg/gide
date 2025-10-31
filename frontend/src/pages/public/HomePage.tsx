@@ -117,128 +117,48 @@ export default function HomePage() {
     <div className="min-h-screen bg-black">
       <PublicHeader />
 
-      {/* HERO SECTION - MOBILE FIRST DESIGN */}
-      <section className="relative min-h-screen overflow-hidden -mt-16 md:-mt-24">
-        {/* Фоновое изображение */}
+      {/* HERO SECTION - FLOATING OVERLAY DESIGN */}
+      <section className="relative h-screen overflow-hidden -mt-16 md:-mt-24">
+        {/* Фоновое видео/изображение с параллакс эффектом */}
         <motion.div 
           className="absolute inset-0"
           initial={{ scale: 1.1 }}
           animate={{ scale: 1 }}
           transition={{ duration: 1.5, ease: "easeOut" }}
         >
+          {/* Фоновое изображение */}
           <div 
             className="absolute inset-0 bg-cover bg-center"
             style={{
               backgroundImage: `url('https://images.unsplash.com/photo-1528181304800-259b08848526?w=1920&h=1080&fit=crop')`,
             }}
           />
-          <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/50 to-black/90" />
+          
+          {/* Градиентные оверлеи для читаемости */}
+          <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/40 to-black/80" />
+          <div className="absolute inset-0 bg-gradient-to-r from-black/50 via-transparent to-black/50" />
         </motion.div>
 
-        {/* Мобильная версия */}
-        <div className="md:hidden relative h-screen flex flex-col justify-between px-4 py-20">
-          {/* Верхняя часть - заголовок */}
-          <div className="flex-1 flex flex-col justify-center">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.3 }}
-              className="mb-4"
-            >
-              <span className="text-white/80 text-xs font-medium tracking-wider uppercase">
-                Путешествия по Азии
-              </span>
-            </motion.div>
-
-            <motion.h1
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.5 }}
-              className="text-2xl font-bold text-white mb-4 leading-tight"
-              style={{ textShadow: '0 2px 20px rgba(0,0,0,0.8)' }}
-            >
-              Экскурсии<br />
-              <span className="text-airbnb-rausch text-xl">мечты</span>
-            </motion.h1>
-
-            <motion.p
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.7 }}
-              className="text-sm text-white/90 mb-6 font-light leading-relaxed"
-              style={{ textShadow: '0 1px 10px rgba(0,0,0,0.8)' }}
-            >
-              Откройте для себя уникальные места Азии с местными гидами
-            </motion.p>
-
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.9 }}
-              className="mb-8"
-            >
-              <Link to="/tours">
-                <Button 
-                  className="w-full bg-white text-black hover:bg-white/90 font-semibold text-base py-4 rounded-full shadow-xl"
-                >
-                  Смотреть экскурсии
-                </Button>
-              </Link>
-            </motion.div>
-          </div>
-
-          {/* Нижняя часть - статистика */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 1.1 }}
-            className="grid grid-cols-3 gap-4 text-center"
-          >
-            <div>
-              <div className="text-lg font-bold text-white mb-1" style={{ textShadow: '0 1px 10px rgba(0,0,0,0.8)' }}>
-                500+
-              </div>
-              <div className="text-white/70 text-xs">
-                Экскурсий
-              </div>
-            </div>
-            <div>
-              <div className="text-lg font-bold text-white mb-1" style={{ textShadow: '0 1px 10px rgba(0,0,0,0.8)' }}>
-                10K+
-              </div>
-              <div className="text-white/70 text-xs">
-                Путешественников
-              </div>
-            </div>
-            <div>
-              <div className="text-lg font-bold text-white mb-1" style={{ textShadow: '0 1px 10px rgba(0,0,0,0.8)' }}>
-                4.9 ⭐
-              </div>
-              <div className="text-white/70 text-xs">
-                Рейтинг
-              </div>
-            </div>
-          </motion.div>
-        </div>
-
-        {/* Десктопная версия */}
-        <div className="hidden md:block relative h-full flex flex-col items-start justify-center container mx-auto px-8 lg:px-16">
+        {/* Плавающий контент БЕЗ блоков и рамок */}
+        <div className="relative h-full flex flex-col items-start justify-center container mx-auto px-4 sm:px-6 md:px-8 lg:px-16 pt-20 md:pt-0">
+          {/* Маленький бейдж */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.3 }}
-            className="mb-6"
+            className="mb-3 md:mb-6"
           >
-            <span className="text-white/90 text-base font-medium tracking-wider uppercase">
+            <span className="text-white/90 text-[10px] sm:text-xs md:text-base font-medium tracking-wider uppercase">
               Путешествия по Азии
             </span>
           </motion.div>
 
+          {/* Главный заголовок - ОГРОМНЫЙ и плавающий */}
           <motion.h1
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.5 }}
-            className="text-6xl lg:text-7xl xl:text-8xl font-bold text-white mb-6 leading-[0.9] max-w-4xl"
+            className="text-3xl sm:text-4xl md:text-7xl lg:text-8xl xl:text-9xl font-bold text-white mb-3 md:mb-6 leading-tight md:leading-[0.9] max-w-5xl"
             style={{
               textShadow: '0 4px 30px rgba(0,0,0,0.8), 0 8px 60px rgba(0,0,0,0.5)'
             }}
@@ -247,11 +167,12 @@ export default function HomePage() {
             <span className="text-airbnb-rausch">мечты</span>
           </motion.h1>
 
+          {/* Описание */}
           <motion.p
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.7 }}
-            className="text-xl lg:text-2xl text-white/90 mb-10 max-w-2xl font-light"
+            className="text-sm sm:text-base md:text-2xl text-white/90 mb-5 md:mb-10 max-w-2xl font-light leading-relaxed"
             style={{
               textShadow: '0 2px 20px rgba(0,0,0,0.8)'
             }}
@@ -259,56 +180,58 @@ export default function HomePage() {
             Откройте для себя уникальные места Азии с местными гидами
           </motion.p>
 
+          {/* Кнопки действий - плавающие */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.9 }}
-            className="flex gap-4 mb-12"
+            className="flex flex-wrap gap-2 md:gap-4 mb-6 md:mb-12 w-full sm:w-auto"
           >
-            <Link to="/tours">
+            <Link to="/tours" className="w-full sm:w-auto">
               <Button 
                 size="lg"
-                className="bg-white text-black hover:bg-white/90 font-semibold text-lg px-10 py-7 rounded-full shadow-2xl hover:scale-105 transition-all"
+                className="bg-white text-black hover:bg-white/90 font-semibold text-sm sm:text-base md:text-lg px-5 py-4 sm:px-6 sm:py-5 md:px-10 md:py-7 rounded-full shadow-2xl hover:scale-105 transition-all w-full sm:w-auto"
               >
                 Смотреть экскурсии
               </Button>
             </Link>
           </motion.div>
 
+          {/* Живая статистика - плавающая */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 1.1 }}
-            className="flex gap-8 text-white"
+            className="flex flex-wrap gap-3 sm:gap-4 md:gap-8 text-white w-full sm:w-auto"
           >
-            <div>
-              <div className="text-3xl lg:text-4xl font-bold mb-1" style={{ textShadow: '0 2px 20px rgba(0,0,0,0.8)' }}>
+            <div className="flex-1 sm:flex-none min-w-[80px]">
+              <div className="text-xl sm:text-2xl md:text-4xl font-bold mb-0.5 md:mb-1" style={{ textShadow: '0 2px 20px rgba(0,0,0,0.8)' }}>
                 500+
               </div>
-              <div className="text-white/80 text-sm" style={{ textShadow: '0 2px 20px rgba(0,0,0,0.8)' }}>
+              <div className="text-white/80 text-[10px] sm:text-xs md:text-sm" style={{ textShadow: '0 2px 20px rgba(0,0,0,0.8)' }}>
                 Экскурсий
               </div>
             </div>
-            <div>
-              <div className="text-3xl lg:text-4xl font-bold mb-1" style={{ textShadow: '0 2px 20px rgba(0,0,0,0.8)' }}>
+            <div className="flex-1 sm:flex-none min-w-[80px]">
+              <div className="text-xl sm:text-2xl md:text-4xl font-bold mb-0.5 md:mb-1" style={{ textShadow: '0 2px 20px rgba(0,0,0,0.8)' }}>
                 10K+
               </div>
-              <div className="text-white/80 text-sm" style={{ textShadow: '0 2px 20px rgba(0,0,0,0.8)' }}>
+              <div className="text-white/80 text-[10px] sm:text-xs md:text-sm" style={{ textShadow: '0 2px 20px rgba(0,0,0,0.8)' }}>
                 Путешественников
               </div>
             </div>
-            <div>
-              <div className="text-3xl lg:text-4xl font-bold mb-1" style={{ textShadow: '0 2px 20px rgba(0,0,0,0.8)' }}>
+            <div className="flex-1 sm:flex-none min-w-[80px]">
+              <div className="text-xl sm:text-2xl md:text-4xl font-bold mb-0.5 md:mb-1" style={{ textShadow: '0 2px 20px rgba(0,0,0,0.8)' }}>
                 4.9 ⭐
               </div>
-              <div className="text-white/80 text-sm" style={{ textShadow: '0 2px 20px rgba(0,0,0,0.8)' }}>
+              <div className="text-white/80 text-[10px] sm:text-xs md:text-sm" style={{ textShadow: '0 2px 20px rgba(0,0,0,0.8)' }}>
                 Средний рейтинг
               </div>
             </div>
           </motion.div>
         </div>
 
-        {/* Scroll indicator - только для десктопа */}
+        {/* Scroll indicator */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1, y: [0, 10, 0] }}
@@ -316,10 +239,10 @@ export default function HomePage() {
             opacity: { delay: 1.5 },
             y: { duration: 1.5, repeat: Infinity }
           }}
-          className="hidden md:flex absolute bottom-10 left-1/2 -translate-x-1/2 text-white/60 text-sm flex-col items-center gap-2"
+          className="absolute bottom-6 md:bottom-10 left-1/2 -translate-x-1/2 text-white/60 text-xs sm:text-sm flex flex-col items-center gap-2 hidden sm:flex"
         >
           <div style={{ textShadow: '0 2px 10px rgba(0,0,0,0.8)' }}>Прокрутите вниз</div>
-          <div className="w-6 h-10 border-2 border-white/40 rounded-full p-1">
+          <div className="w-5 h-8 md:w-6 md:h-10 border-2 border-white/40 rounded-full p-1">
             <motion.div
               animate={{ y: [0, 10, 0] }}
               transition={{ duration: 1.5, repeat: Infinity }}
@@ -330,29 +253,29 @@ export default function HomePage() {
       </section>
 
       {/* Блок "Планы на сезон" */}
-      <section className="py-20 bg-gray-100">
+      <section className="py-10 sm:py-16 md:py-20 bg-gray-100">
         <div className="container mx-auto px-4">
-          <div className="flex items-center justify-between mb-8">
-            <h2 className="text-3xl font-bold text-gray-900">Популярные направления 🌏</h2>
+          <div className="flex items-center justify-between mb-6 md:mb-8">
+            <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-900">Популярные направления 🌏</h2>
             <div className="flex gap-2">
               <button
                 onClick={() => setSeasonalIndex(Math.max(0, seasonalIndex - 1))}
                 disabled={seasonalIndex === 0}
-                className="p-2 rounded-full border border-gray-300 hover:border-gray-900 disabled:opacity-30 transition-all"
+                className="p-1.5 sm:p-2 rounded-full border border-gray-300 hover:border-gray-900 disabled:opacity-30 transition-all"
               >
-                <ChevronLeft size={20} />
+                <ChevronLeft size={18} className="sm:w-5 sm:h-5" />
               </button>
               <button
                 onClick={() => setSeasonalIndex(Math.min(seasonalIdeas.length - 3, seasonalIndex + 1))}
                 disabled={seasonalIndex >= seasonalIdeas.length - 3}
-                className="p-2 rounded-full border border-gray-300 hover:border-gray-900 disabled:opacity-30 transition-all"
+                className="p-1.5 sm:p-2 rounded-full border border-gray-300 hover:border-gray-900 disabled:opacity-30 transition-all"
               >
-                <ChevronRight size={20} />
+                <ChevronRight size={18} className="sm:w-5 sm:h-5" />
               </button>
             </div>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-6 overflow-hidden">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6 overflow-hidden">
             {seasonalIdeas.slice(seasonalIndex, seasonalIndex + 3).map((idea, i) => (
               <motion.div
                 key={i}
@@ -368,8 +291,8 @@ export default function HomePage() {
                       className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
                     />
                     <div className="absolute inset-0 bg-black/40" />
-                    <div className="absolute bottom-0 left-0 right-0 p-6">
-                      <h3 className="text-xl font-bold text-white">{idea.title}</h3>
+                    <div className="absolute bottom-0 left-0 right-0 p-4 sm:p-6">
+                      <h3 className="text-base sm:text-lg md:text-xl font-bold text-white">{idea.title}</h3>
                     </div>
                   </div>
                 </Link>
@@ -380,12 +303,12 @@ export default function HomePage() {
       </section>
 
       {/* Динамическая навигация по направлениям */}
-      <section className="py-20 bg-gray-50">
+      <section className="py-10 sm:py-16 md:py-20 bg-gray-50">
         <div className="container mx-auto px-4">
-          <div className="flex items-center justify-between mb-8">
-            <h2 className="text-3xl font-bold text-gray-900">Изучайте по категориям</h2>
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6 md:mb-8">
+            <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-900">Изучайте по категориям</h2>
             <Link to="/tours">
-              <Button variant="outline" className="rounded-full">
+              <Button variant="outline" className="rounded-full text-sm sm:text-base">
                 Все экскурсии <ArrowRight className="ml-2" size={16} />
               </Button>
             </Link>
@@ -400,12 +323,12 @@ export default function HomePage() {
       </section>
 
       {/* Популярные направления (города) */}
-      <section className="py-20 bg-gray-100">
+      <section className="py-10 sm:py-16 md:py-20 bg-gray-100">
         <div className="container mx-auto px-4">
-          <h2 className="text-3xl font-bold text-gray-900 mb-8">Популярные направления</h2>
+          <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-900 mb-6 md:mb-8">Популярные направления</h2>
           
           <motion.div
-            className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4"
+            className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-6 gap-3 sm:gap-4"
             variants={containerVariants}
             initial="hidden"
             whileInView="visible"
@@ -421,9 +344,9 @@ export default function HomePage() {
                       className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
                     />
                     <div className="absolute inset-0 bg-black/50 group-hover:bg-black/60 transition-all" />
-                    <div className="absolute bottom-0 left-0 right-0 p-4 text-white">
-                      <div className="font-bold text-lg">{dest.name}</div>
-                      <div className="text-sm text-white/90">{dest.count} экскурсий</div>
+                    <div className="absolute bottom-0 left-0 right-0 p-2 sm:p-3 md:p-4 text-white">
+                      <div className="font-bold text-sm sm:text-base md:text-lg truncate">{dest.name}</div>
+                      <div className="text-xs sm:text-sm text-white/90">{dest.count} экскурсий</div>
                     </div>
                   </div>
                 </Link>
@@ -449,7 +372,7 @@ export default function HomePage() {
       <AnimatedFeatures />
 
       {/* CTA блок: Индивидуальные туры */}
-      <section className="py-20 bg-airbnb-rausch">
+      <section className="py-10 sm:py-16 md:py-20 bg-airbnb-rausch">
         <div className="container mx-auto px-4">
           <motion.div
             className="max-w-4xl mx-auto text-center text-white"
@@ -458,19 +381,19 @@ export default function HomePage() {
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
           >
-            <div className="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-6">
-              <span className="text-4xl">✨</span>
+            <div className="w-12 h-12 sm:w-16 sm:h-16 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-4 sm:mb-6">
+              <span className="text-2xl sm:text-4xl">✨</span>
             </div>
-            <h2 className="text-4xl md:text-5xl font-bold mb-6">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-4 sm:mb-6 px-2">
               Не нашли подходящую экскурсию?
             </h2>
-            <p className="text-xl text-white/90 mb-8 max-w-2xl mx-auto">
+            <p className="text-base sm:text-lg md:text-xl text-white/90 mb-6 sm:mb-8 max-w-2xl mx-auto px-2">
               Опишите что хотите увидеть, и мы создадим индивидуальный тур специально для вас
             </p>
-              <Link to="/request">
+              <Link to="/request" className="block px-2">
                 <Button 
                   size="lg" 
-                className="bg-white text-airbnb-rausch hover:bg-gray-50 font-semibold text-lg px-8 py-6 rounded-full shadow-xl hover:scale-105 transition-transform"
+                className="bg-white text-airbnb-rausch hover:bg-gray-50 font-semibold text-sm sm:text-base md:text-lg px-6 sm:px-8 py-4 sm:py-6 rounded-full shadow-xl hover:scale-105 transition-transform w-full sm:w-auto"
                 >
                 Оставить заявку на индивидуальный тур
                 </Button>
@@ -480,29 +403,29 @@ export default function HomePage() {
       </section>
 
       {/* Как мы делаем экскурсии */}
-      <section className="py-20 bg-gray-50">
+      <section className="py-10 sm:py-16 md:py-20 bg-gray-50">
         <div className="container mx-auto px-4">
-          <div className="max-w-3xl mx-auto text-center mb-12">
-            <h2 className="text-3xl font-bold text-gray-900 mb-4">Как мы делаем экскурсии</h2>
-            <p className="text-lg text-gray-600">
+          <div className="max-w-3xl mx-auto text-center mb-8 sm:mb-12">
+            <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-3 sm:mb-4">Как мы делаем экскурсии</h2>
+            <p className="text-base sm:text-lg text-gray-600 px-2">
               Мы — тысячи увлечённых гидов с необычным опытом и глубокими знаниями. 
               Это журналисты, историки, архитекторы и другие интересные люди, 
               которые умеют увлечь историями о своих городах и странах.
             </p>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 sm:gap-8">
             <motion.div
               className="text-center"
               whileInView={{ opacity: 1, y: 0 }}
               initial={{ opacity: 0, y: 20 }}
               viewport={{ once: true }}
             >
-              <div className="w-20 h-20 bg-airbnb-babu/10 rounded-full flex items-center justify-center mx-auto mb-4">
-                <Users className="text-airbnb-babu" size={36} />
+              <div className="w-16 h-16 sm:w-20 sm:h-20 bg-airbnb-babu/10 rounded-full flex items-center justify-center mx-auto mb-3 sm:mb-4">
+                <Users className="text-airbnb-babu" size={28} />
               </div>
-              <h3 className="text-xl font-semibold mb-2 text-gray-900">Проверенные гиды</h3>
-              <p className="text-gray-600">
+              <h3 className="text-lg sm:text-xl font-semibold mb-2 text-gray-900">Проверенные гиды</h3>
+              <p className="text-sm sm:text-base text-gray-600 px-2">
                 Все гиды прошли тщательный отбор и имеют высокие рейтинги
               </p>
             </motion.div>
@@ -514,11 +437,11 @@ export default function HomePage() {
               viewport={{ once: true }}
               transition={{ delay: 0.1 }}
             >
-              <div className="w-20 h-20 bg-airbnb-rausch/10 rounded-full flex items-center justify-center mx-auto mb-4">
-                <Clock className="text-airbnb-rausch" size={36} />
+              <div className="w-16 h-16 sm:w-20 sm:h-20 bg-airbnb-rausch/10 rounded-full flex items-center justify-center mx-auto mb-3 sm:mb-4">
+                <Clock className="text-airbnb-rausch" size={28} />
               </div>
-              <h3 className="text-xl font-semibold mb-2 text-gray-900">Моментальное бронирование</h3>
-              <p className="text-gray-600">
+              <h3 className="text-lg sm:text-xl font-semibold mb-2 text-gray-900">Моментальное бронирование</h3>
+              <p className="text-sm sm:text-base text-gray-600 px-2">
                 Платите сразу онлайн, без ожидания подтверждения
               </p>
             </motion.div>
@@ -530,11 +453,11 @@ export default function HomePage() {
               viewport={{ once: true }}
               transition={{ delay: 0.2 }}
             >
-              <div className="w-20 h-20 bg-green-500/10 rounded-full flex items-center justify-center mx-auto mb-4">
-                <Shield className="text-green-600" size={36} />
+              <div className="w-16 h-16 sm:w-20 sm:h-20 bg-green-500/10 rounded-full flex items-center justify-center mx-auto mb-3 sm:mb-4">
+                <Shield className="text-green-600" size={28} />
               </div>
-              <h3 className="text-xl font-semibold mb-2 text-gray-900">Гарантия возврата</h3>
-              <p className="text-gray-600">
+              <h3 className="text-lg sm:text-xl font-semibold mb-2 text-gray-900">Гарантия возврата</h3>
+              <p className="text-sm sm:text-base text-gray-600 px-2">
                 Вернём деньги при отмене за 48 часов до начала
               </p>
             </motion.div>
@@ -543,60 +466,60 @@ export default function HomePage() {
       </section>
 
       {/* Свежие отзывы */}
-      <section className="py-20 bg-gray-100">
+      <section className="py-10 sm:py-16 md:py-20 bg-gray-100">
         <div className="container mx-auto px-4">
-          <div className="flex items-center justify-between mb-8">
-            <h2 className="text-3xl font-bold text-gray-900">Свежие отзывы</h2>
+          <div className="flex items-center justify-between mb-6 sm:mb-8">
+            <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-900">Свежие отзывы</h2>
             <div className="flex gap-2">
               <button
                 onClick={() => setReviewIndex(Math.max(0, reviewIndex - 1))}
                 disabled={reviewIndex === 0}
-                className="p-2 rounded-full border border-gray-300 hover:border-gray-900 disabled:opacity-30 transition-all"
+                className="p-1.5 sm:p-2 rounded-full border border-gray-300 hover:border-gray-900 disabled:opacity-30 transition-all"
               >
-                <ChevronLeft size={20} />
+                <ChevronLeft size={18} className="sm:w-5 sm:h-5" />
               </button>
               <button
                 onClick={() => setReviewIndex(Math.min(reviews.length - 1, reviewIndex + 1))}
                 disabled={reviewIndex >= reviews.length - 1}
-                className="p-2 rounded-full border border-gray-300 hover:border-gray-900 disabled:opacity-30 transition-all"
+                className="p-1.5 sm:p-2 rounded-full border border-gray-300 hover:border-gray-900 disabled:opacity-30 transition-all"
               >
-                <ChevronRight size={20} />
+                <ChevronRight size={18} className="sm:w-5 sm:h-5" />
               </button>
             </div>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6">
             {reviews.map((review) => (
               <motion.div
                 key={review.name}
-                className="bg-gray-50 rounded-xl p-6 border border-gray-200"
+                className="bg-gray-50 rounded-xl p-4 sm:p-6 border border-gray-200"
                 initial={{ opacity: 0 }}
                 whileInView={{ opacity: 1 }}
                 viewport={{ once: true }}
               >
-                <div className="flex items-center gap-3 mb-4">
+                <div className="flex items-center gap-3 mb-3 sm:mb-4">
                   <img
                     src={review.photo}
                     alt={review.name}
-                    className="w-12 h-12 rounded-full object-cover"
+                    className="w-10 h-10 sm:w-12 sm:h-12 rounded-full object-cover flex-shrink-0"
                   />
-                  <div>
-                    <div className="font-semibold text-gray-900">{review.name}</div>
+                  <div className="min-w-0 flex-1">
+                    <div className="font-semibold text-gray-900 text-sm sm:text-base truncate">{review.name}</div>
                     <div className="flex items-center gap-1">
                       {Array.from({ length: 5 }).map((_, j) => (
                         <Star
                           key={j}
-                          size={14}
-                          className="fill-yellow-400 text-yellow-400"
+                          size={12}
+                          className="fill-yellow-400 text-yellow-400 sm:w-3.5 sm:h-3.5"
                         />
                       ))}
                     </div>
                       </div>
                         </div>
                 
-                <p className="text-gray-700 mb-3 line-clamp-4">{review.text}</p>
+                <p className="text-sm sm:text-base text-gray-700 mb-3 line-clamp-4">{review.text}</p>
                 
-                <div className="text-sm text-gray-600 mb-1">
+                <div className="text-xs sm:text-sm text-gray-600 mb-1">
                   <span className="font-medium">{review.tour}</span>
                       </div>
                 <div className="text-xs text-gray-500">
@@ -609,27 +532,27 @@ export default function HomePage() {
       </section>
 
       {/* Email подписка */}
-      <section className="py-16 bg-airbnb-rausch text-white">
+      <section className="py-10 sm:py-14 md:py-16 bg-airbnb-rausch text-white">
         <div className="container mx-auto px-4">
           <div className="max-w-2xl mx-auto text-center">
-            <h3 className="text-2xl font-bold mb-3">
+            <h3 className="text-xl sm:text-2xl font-bold mb-2 sm:mb-3">
               Экскурсии и туры от экспертов
             </h3>
-            <p className="mb-6 text-white/90">
+            <p className="mb-4 sm:mb-6 text-white/90 text-sm sm:text-base">
               Классные места, скидки и интересные события у вас в почте · 
               <a href="#" className="underline ml-1">Пример письма</a>
             </p>
-            <div className="flex gap-2 max-w-md mx-auto">
+            <div className="flex flex-col sm:flex-row gap-2 max-w-md mx-auto">
               <input
                 type="email"
                 placeholder="Эл. почта"
-                className="flex-1 px-4 py-3 rounded-lg text-gray-900"
+                className="flex-1 px-4 py-2.5 sm:py-3 rounded-lg text-gray-900 text-sm sm:text-base"
               />
-              <Button className="bg-gray-900 hover:bg-gray-800 text-white px-6">
+              <Button className="bg-gray-900 hover:bg-gray-800 text-white px-6 py-2.5 sm:py-3 text-sm sm:text-base whitespace-nowrap">
                 Подписаться
               </Button>
                 </div>
-            <p className="text-xs text-white/70 mt-3">
+            <p className="text-xs text-white/70 mt-2 sm:mt-3 px-2">
               Нажимая «Подписаться», вы даёте согласие на получение рекламных сообщений
             </p>
           </div>
@@ -637,20 +560,20 @@ export default function HomePage() {
       </section>
 
       {/* Статистика */}
-      <section className="py-16 bg-gray-100 border-t">
+      <section className="py-10 sm:py-14 md:py-16 bg-gray-100 border-t">
         <div className="container mx-auto px-4">
-          <div className="grid md:grid-cols-3 gap-8 text-center">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 sm:gap-8 text-center">
             <div>
-              <div className="text-4xl font-bold text-airbnb-rausch mb-2">500+</div>
-              <div className="text-gray-600">Увлечённых гидов</div>
+              <div className="text-3xl sm:text-4xl font-bold text-airbnb-rausch mb-1 sm:mb-2">500+</div>
+              <div className="text-sm sm:text-base text-gray-600">Увлечённых гидов</div>
             </div>
             <div>
-              <div className="text-4xl font-bold text-airbnb-babu mb-2">10,000+</div>
-              <div className="text-gray-600">Довольных путешественников</div>
+              <div className="text-3xl sm:text-4xl font-bold text-airbnb-babu mb-1 sm:mb-2">10,000+</div>
+              <div className="text-sm sm:text-base text-gray-600">Довольных путешественников</div>
             </div>
             <div>
-              <div className="text-4xl font-bold text-airbnb-arches mb-2">4.9</div>
-              <div className="text-gray-600">Средний рейтинг</div>
+              <div className="text-3xl sm:text-4xl font-bold text-airbnb-arches mb-1 sm:mb-2">4.9</div>
+              <div className="text-sm sm:text-base text-gray-600">Средний рейтинг</div>
             </div>
           </div>
         </div>
