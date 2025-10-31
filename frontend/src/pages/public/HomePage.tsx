@@ -114,29 +114,29 @@ export default function HomePage() {
   ]
 
   return (
-    <div className="min-h-screen bg-gray-100">
+    <div className="min-h-screen bg-black">
       <PublicHeader />
 
       {/* HERO SECTION - FLOATING OVERLAY DESIGN */}
-      <section className="relative min-h-[85vh] md:h-screen overflow-hidden -mt-16 md:-mt-24">
+      <section className="relative min-h-[85vh] md:h-screen overflow-x-hidden overflow-y-visible -mt-16 md:-mt-24 bg-black">
         {/* Фоновое видео/изображение с параллакс эффектом */}
         <motion.div 
-          className="absolute inset-0"
+          className="absolute inset-0 -top-16 md:-top-24 h-[calc(100%+4rem)] md:h-[calc(100%+6rem)]"
           initial={{ scale: 1.1 }}
           animate={{ scale: 1 }}
           transition={{ duration: 1.5, ease: "easeOut" }}
         >
           {/* Фоновое изображение */}
           <div 
-            className="absolute inset-0 bg-cover bg-center"
+            className="absolute inset-0 -top-16 md:-top-24 bg-cover bg-center h-[calc(100%+4rem)] md:h-[calc(100%+6rem)]"
             style={{
-              backgroundImage: `url('https://images.unsplash.com/photo-1528181304800-259b08848526?w=1920&h=1080&fit=crop')`,
+              backgroundImage: `url('https://images.unsplash.com/photo-1528181304800-259b08848526?w=1920&h=1080&fit=crop')`
             }}
           />
           
           {/* Градиентные оверлеи для читаемости */}
-          <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/40 to-black/80" />
-          <div className="absolute inset-0 bg-gradient-to-r from-black/50 via-transparent to-black/50" />
+          <div className="absolute inset-0 -top-16 md:-top-24 bg-gradient-to-b from-black/70 via-black/40 to-black/80 h-[calc(100%+4rem)] md:h-[calc(100%+6rem)]" />
+          <div className="absolute inset-0 -top-16 md:-top-24 bg-gradient-to-r from-black/50 via-transparent to-black/50 h-[calc(100%+4rem)] md:h-[calc(100%+6rem)]" />
         </motion.div>
 
         {/* Плавающий контент БЕЗ блоков и рамок */}
@@ -158,7 +158,7 @@ export default function HomePage() {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.5 }}
-            className="text-6xl sm:text-7xl md:text-7xl lg:text-8xl xl:text-9xl font-bold text-white mb-6 sm:mb-8 md:mb-6 leading-[1.1] sm:leading-[1.05] md:leading-[0.9] max-w-5xl"
+            className="text-6xl sm:text-7xl md:text-8xl lg:text-9xl xl:text-[10rem] font-bold text-white mb-6 sm:mb-8 md:mb-6 leading-[1.1] sm:leading-[1.05] md:leading-[0.95] max-w-5xl"
             style={{
               textShadow: '0 4px 30px rgba(0,0,0,0.8), 0 8px 60px rgba(0,0,0,0.5)'
             }}
