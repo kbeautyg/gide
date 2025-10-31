@@ -626,15 +626,17 @@ export default function TourDetailPage() {
         )}
       </div>
 
-      {/* Кнопка прокрутки к форме бронирования */}
+      {/* Кнопка прокрутки к форме бронирования - только на мобильных */}
       <button
         onClick={() => {
           const bookingForm = document.getElementById('booking-form')
           if (bookingForm) {
-            bookingForm.scrollIntoView({ behavior: 'smooth', block: 'start' })
+            const yOffset = -80 // Отступ сверху для хедера
+            const y = bookingForm.getBoundingClientRect().top + window.pageYOffset + yOffset
+            window.scrollTo({ top: y, behavior: 'smooth' })
           }
         }}
-        className="fixed bottom-6 right-6 z-50 w-12 h-12 bg-airbnb-rausch text-white rounded-full shadow-2xl flex items-center justify-center hover:bg-airbnb-rausch/90 hover:scale-110 transition-all"
+        className="fixed bottom-6 right-6 z-50 w-12 h-12 bg-airbnb-rausch text-white rounded-full shadow-2xl flex items-center justify-center hover:bg-airbnb-rausch/90 hover:scale-110 transition-all md:hidden"
         aria-label="Перейти к форме бронирования"
       >
         <ArrowDown size={20} />
