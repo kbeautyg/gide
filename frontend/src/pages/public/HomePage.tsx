@@ -118,25 +118,25 @@ export default function HomePage() {
       <PublicHeader />
 
       {/* HERO SECTION - FLOATING OVERLAY DESIGN */}
-      <section className="relative min-h-[85vh] md:h-screen overflow-hidden -mt-16 md:-mt-24 bg-black">
+      <section className="relative min-h-[85vh] md:h-screen overflow-hidden pt-16 md:pt-24">
         {/* Фоновое видео/изображение с параллакс эффектом */}
         <motion.div 
-          className="absolute inset-0 -top-16 md:-top-24 h-[calc(100%+4rem)] md:h-[calc(100%+6rem)]"
+          className="absolute inset-0 top-0 left-0 right-0 bottom-0 w-full h-full"
           initial={{ scale: 1.1 }}
           animate={{ scale: 1 }}
           transition={{ duration: 1.5, ease: "easeOut" }}
         >
           {/* Фоновое изображение */}
           <div 
-            className="absolute inset-0 -top-16 md:-top-24 bg-cover bg-center h-[calc(100%+4rem)] md:h-[calc(100%+6rem)]"
+            className="absolute inset-0 top-0 left-0 right-0 bottom-0 w-full h-full bg-cover bg-center"
             style={{
               backgroundImage: `url('https://images.unsplash.com/photo-1528181304800-259b08848526?w=1920&h=1080&fit=crop')`
             }}
           />
           
           {/* Градиентные оверлеи для читаемости */}
-          <div className="absolute inset-0 -top-16 md:-top-24 bg-gradient-to-b from-black/70 via-black/40 to-black/80 h-[calc(100%+4rem)] md:h-[calc(100%+6rem)]" />
-          <div className="absolute inset-0 -top-16 md:-top-24 bg-gradient-to-r from-black/50 via-transparent to-black/50 h-[calc(100%+4rem)] md:h-[calc(100%+6rem)]" />
+          <div className="absolute inset-0 top-0 left-0 right-0 bottom-0 w-full h-full bg-gradient-to-b from-black/70 via-black/40 to-black/80" />
+          <div className="absolute inset-0 top-0 left-0 right-0 bottom-0 w-full h-full bg-gradient-to-r from-black/50 via-transparent to-black/50" />
         </motion.div>
 
         {/* Плавающий контент БЕЗ блоков и рамок */}
