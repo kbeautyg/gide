@@ -139,32 +139,22 @@ export default function HomePage() {
           <div className="absolute inset-0 top-0 left-0 right-0 bottom-0 w-full h-full bg-gradient-to-r from-black/50 via-transparent to-black/50" />
         </motion.div>
 
-        {/* Центрированный контент */}
-        <div className="relative h-full flex items-center justify-center">
-          <div className="container mx-auto px-4 sm:px-6 md:px-8 text-center">
+        {/* Контент - адаптивный дизайн */}
+        <div className="relative h-full container mx-auto px-4 sm:px-6 md:px-8 lg:px-16">
+          {/* Мобильная версия - центрированная */}
+          <div className="md:hidden h-full flex items-center justify-center text-center">
             <motion.div
               initial={{ opacity: 0, y: 40 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, ease: "easeOut" }}
               className="max-w-5xl mx-auto"
             >
-              {/* Бейдж */}
-              <motion.div
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ delay: 0.3, duration: 0.5 }}
-                className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-md border border-white/20 px-6 py-3 rounded-full text-white text-sm sm:text-base font-medium mb-8 shadow-lg"
-              >
-                <span className="w-2 h-2 bg-airbnb-rausch rounded-full animate-pulse" />
-                Путешествия по Азии
-              </motion.div>
-
               {/* Заголовок */}
               <motion.h1
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.5, duration: 0.8 }}
-                className="text-6xl sm:text-7xl md:text-8xl lg:text-9xl font-bold text-white mb-8 leading-none"
+                transition={{ delay: 0.3, duration: 0.8 }}
+                className="text-6xl sm:text-7xl font-bold text-white mb-8 leading-none"
                 style={{
                   textShadow: '0 10px 40px rgba(0,0,0,0.5), 0 2px 8px rgba(0,0,0,0.3)'
                 }}
@@ -179,26 +169,25 @@ export default function HomePage() {
               <motion.p
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.7, duration: 0.6 }}
-                className="text-xl sm:text-2xl md:text-3xl text-white/95 mb-12 font-light max-w-3xl mx-auto leading-relaxed"
+                transition={{ delay: 0.5, duration: 0.6 }}
+                className="text-xl sm:text-2xl text-white/95 mb-12 font-light max-w-3xl mx-auto leading-relaxed"
                 style={{
                   textShadow: '0 4px 12px rgba(0,0,0,0.4)'
                 }}
               >
-                Откройте для себя уникальные места Азии<br className="hidden sm:block" />
-                с местными гидами
+                Откройте для себя уникальные места Азии с местными гидами
               </motion.p>
 
               {/* Кнопка */}
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.9, duration: 0.6 }}
+                transition={{ delay: 0.7, duration: 0.6 }}
               >
                 <Link to="/tours">
                   <Button 
                     size="lg"
-                    className="bg-white text-gray-900 hover:bg-white/90 font-bold text-lg sm:text-xl px-12 py-7 sm:px-16 sm:py-8 rounded-full shadow-2xl hover:shadow-white/20 hover:scale-105 transition-all duration-300"
+                    className="bg-white text-gray-900 hover:bg-white/90 font-bold text-lg px-12 py-7 rounded-full shadow-2xl hover:shadow-white/20 hover:scale-105 transition-all duration-300"
                   >
                     Начать путешествие
                     <ArrowRight className="ml-3 w-6 h-6" />
@@ -210,37 +199,114 @@ export default function HomePage() {
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 1.1, duration: 0.6 }}
-                className="mt-20 flex flex-wrap items-center justify-center gap-8 sm:gap-12 md:gap-16"
+                transition={{ delay: 0.9, duration: 0.6 }}
+                className="mt-20 flex flex-wrap items-center justify-center gap-8"
               >
                 <div className="text-center">
-                  <div className="text-4xl sm:text-5xl md:text-6xl font-bold text-white mb-2" style={{ textShadow: '0 4px 12px rgba(0,0,0,0.4)' }}>
+                  <div className="text-4xl sm:text-5xl font-bold text-white mb-2" style={{ textShadow: '0 4px 12px rgba(0,0,0,0.4)' }}>
                     500+
                   </div>
                   <div className="text-white/80 text-sm sm:text-base font-medium" style={{ textShadow: '0 2px 8px rgba(0,0,0,0.4)' }}>
                     Экскурсий
                   </div>
                 </div>
-                <div className="hidden sm:block w-px h-12 bg-white/30" />
                 <div className="text-center">
-                  <div className="text-4xl sm:text-5xl md:text-6xl font-bold text-white mb-2" style={{ textShadow: '0 4px 12px rgba(0,0,0,0.4)' }}>
+                  <div className="text-4xl sm:text-5xl font-bold text-white mb-2" style={{ textShadow: '0 4px 12px rgba(0,0,0,0.4)' }}>
                     10K+
                   </div>
                   <div className="text-white/80 text-sm sm:text-base font-medium" style={{ textShadow: '0 2px 8px rgba(0,0,0,0.4)' }}>
                     Путешественников
                   </div>
                 </div>
-                <div className="hidden sm:block w-px h-12 bg-white/30" />
                 <div className="text-center">
-                  <div className="text-4xl sm:text-5xl md:text-6xl font-bold text-white mb-2 flex items-center justify-center gap-2" style={{ textShadow: '0 4px 12px rgba(0,0,0,0.4)' }}>
+                  <div className="text-4xl sm:text-5xl font-bold text-white mb-2 flex items-center justify-center gap-2" style={{ textShadow: '0 4px 12px rgba(0,0,0,0.4)' }}>
                     4.9
-                    <Star className="w-8 h-8 sm:w-10 sm:h-10 fill-yellow-400 text-yellow-400" />
+                    <Star className="w-8 h-8 fill-yellow-400 text-yellow-400" />
                   </div>
                   <div className="text-white/80 text-sm sm:text-base font-medium" style={{ textShadow: '0 2px 8px rgba(0,0,0,0.4)' }}>
                     Средний рейтинг
                   </div>
                 </div>
               </motion.div>
+            </motion.div>
+          </div>
+
+          {/* Десктопная версия - боковой layout */}
+          <div className="hidden md:flex flex-row items-center justify-between h-full gap-12 py-20">
+            <div className="w-3/5 xl:w-1/2 flex flex-col gap-6 text-white">
+              <div className="space-y-6">
+                <motion.h1
+                  initial={{ opacity: 0, y: 30 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.3 }}
+                  className="text-7xl lg:text-8xl xl:text-[9rem] font-bold text-white leading-[0.95]"
+                  style={{
+                    textShadow: '0 4px 30px rgba(0,0,0,0.8), 0 8px 60px rgba(0,0,0,0.5)'
+                  }}
+                >
+                  Экскурсии <span className="text-airbnb-rausch">мечты</span>
+                </motion.h1>
+
+                <motion.p
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.5 }}
+                  className="text-xl md:text-2xl text-white/90 max-w-2xl font-light"
+                  style={{
+                    textShadow: '0 2px 20px rgba(0,0,0,0.8)'
+                  }}
+                >
+                  Откройте для себя уникальные места Азии с местными гидами
+                </motion.p>
+              </div>
+
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.7 }}
+                className="flex gap-4"
+              >
+                <Link to="/tours">
+                  <Button 
+                    size="lg"
+                    className="bg-white text-black hover:bg-white/90 font-semibold text-lg px-10 py-7 rounded-full shadow-2xl hover:scale-105 transition-all"
+                  >
+                    Смотреть экскурсии
+                  </Button>
+                </Link>
+              </motion.div>
+            </div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.9 }}
+              className="w-2/5 xl:w-1/3 flex flex-col gap-6 text-white"
+            >
+              <div className="bg-black/25 backdrop-blur-sm px-5 py-4 rounded-2xl">
+                <div className="text-4xl font-bold mb-1" style={{ textShadow: '0 2px 20px rgba(0,0,0,0.8)' }}>
+                  500+
+                </div>
+                <div className="text-white/80 text-sm" style={{ textShadow: '0 2px 20px rgba(0,0,0,0.8)' }}>
+                  Экскурсий
+                </div>
+              </div>
+              <div className="bg-black/25 backdrop-blur-sm px-5 py-4 rounded-2xl">
+                <div className="text-4xl font-bold mb-1" style={{ textShadow: '0 2px 20px rgba(0,0,0,0.8)' }}>
+                  10K+
+                </div>
+                <div className="text-white/80 text-sm" style={{ textShadow: '0 2px 20px rgba(0,0,0,0.8)' }}>
+                  Путешественников
+                </div>
+              </div>
+              <div className="bg-black/25 backdrop-blur-sm px-5 py-4 rounded-2xl">
+                <div className="text-4xl font-bold mb-1" style={{ textShadow: '0 2px 20px rgba(0,0,0,0.8)' }}>
+                  4.9 ⭐
+                </div>
+                <div className="text-white/80 text-sm" style={{ textShadow: '0 2px 20px rgba(0,0,0,0.8)' }}>
+                  Средний рейтинг
+                </div>
+              </div>
             </motion.div>
           </div>
         </div>
