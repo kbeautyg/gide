@@ -142,7 +142,7 @@ export default function TourDetailPage() {
       <div className="container mx-auto px-4 py-8 relative">
         {/* Hero галерея 2×2 */}
         <div className="mb-8">
-          <div className="grid grid-cols-4 gap-[2px] h-[500px] rounded-xl overflow-hidden shadow-xl bg-gray-400/30">
+          <div className="grid grid-cols-4 gap-0 h-[500px] rounded-xl overflow-hidden shadow-xl">
             {/* Большое фото слева */}
             <div className="col-span-2 row-span-2 cursor-pointer relative group">
               <img
