@@ -551,7 +551,7 @@ export default function ToursPage() {
       )}
 
       {/* Основной контент */}
-      <section className="py-8 bg-white">
+      <section className="py-12 bg-gray-100">
         <div className="container mx-auto px-4">
           {/* Заголовок и сортировка */}
           <div className="flex items-center justify-between mb-6">
