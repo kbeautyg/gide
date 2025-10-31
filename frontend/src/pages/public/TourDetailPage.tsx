@@ -127,7 +127,7 @@ export default function TourDetailPage() {
       <PublicHeader />
 
       {/* Breadcrumbs */}
-      <div className="bg-white border-b">
+      <div className="bg-gray-100">
         <div className="container mx-auto px-4 py-3">
           <div className="text-sm text-gray-600">
             <Link to="/" className="hover:underline">Главная</Link>
