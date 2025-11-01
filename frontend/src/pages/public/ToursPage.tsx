@@ -83,11 +83,22 @@ export default function ToursPage() {
       }
 
       // Location из состояния
+      // Приоритет: города > одиночное location > страны
+      // Если выбраны города, используем только города (они более специфичны)
       const locations: string[] = []
-      if (state.location) locations.push(state.location)
-      locations.push(...state.cities)
-      locations.push(...state.countries)
+      if (state.cities.length > 0) {
+        // Если выбраны города, используем только их (город уже включает страну в БД)
+        locations.push(...state.cities)
+      } else if (state.location) {
+        // Если есть одиночное location, используем его
+        locations.push(state.location)
+      } else if (state.countries.length > 0) {
+        // Если выбраны только страны, используем их
+        locations.push(...state.countries)
+      }
+      
       if (locations.length > 0) {
+        // Передаем все локации через запятую для множественного поиска
         params.location = [...new Set(locations)].join(',')
       }
 
