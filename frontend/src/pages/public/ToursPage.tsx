@@ -756,7 +756,10 @@ export default function ToursPage() {
       <FilterPanel
         isOpen={showFilters}
         onClose={() => setShowFilters(false)}
-        onApply={handleFilterApply}
+        onApply={() => {
+          // Фильтры теперь управляются через NavigationContext
+          setShowFilters(false)
+        }}
       />
       
       <PublicFooter />
