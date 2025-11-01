@@ -1,5 +1,6 @@
 import { motion, useScroll, useTransform } from 'framer-motion'
 import { useRef } from 'react'
+import { Link } from 'react-router-dom'
 import { Users, MapPin, Star, Heart, Shield, Rocket, Target, Zap, Globe, TrendingUp, Sparkles, Lock, Clock, BadgeCheck, CreditCard, HeadphonesIcon } from 'lucide-react'
 import { PublicHeader } from '@/components/PublicHeader'
 import { PublicFooter } from '@/components/PublicFooter'
@@ -687,25 +688,27 @@ export default function AboutPage() {
             </p>
             
             <div className="flex gap-4 justify-center flex-wrap">
-              <motion.a
-                href="/tours"
+              <motion.div
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
               >
-                <button className="px-10 py-5 bg-white text-airbnb-rausch rounded-full font-bold text-lg shadow-2xl hover:shadow-3xl transition-all">
-                  🗺️ Найти экскурсию
-                </button>
-              </motion.a>
+                <Link to="/tours">
+                  <button className="px-10 py-5 bg-white text-airbnb-rausch rounded-full font-bold text-lg shadow-2xl hover:shadow-3xl transition-all">
+                    🗺️ Найти экскурсию
+                  </button>
+                </Link>
+              </motion.div>
               
-              <motion.a
-                href="/become-guide"
+              <motion.div
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
               >
-                <button className="px-10 py-5 bg-transparent border-2 border-white text-white rounded-full font-bold text-lg hover:bg-white hover:text-airbnb-rausch transition-all">
-                  ⭐ Стать гидом
-                </button>
-              </motion.a>
+                <Link to="/become-guide">
+                  <button className="px-10 py-5 bg-transparent border-2 border-white text-white rounded-full font-bold text-lg hover:bg-white hover:text-airbnb-rausch transition-all">
+                    ⭐ Стать гидом
+                  </button>
+                </Link>
+              </motion.div>
             </div>
           </motion.div>
         </div>

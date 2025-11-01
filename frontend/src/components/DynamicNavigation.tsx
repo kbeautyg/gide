@@ -82,7 +82,8 @@ export function DynamicNavigation({
         params.append('themes', item.name)
         break
       case 'category':
-        params.append('category', item.name)
+        // Используем themes вместо category для единообразия
+        params.append('themes', item.name)
         break
       case 'location':
         params.append('location', item.name.split(',')[0].trim())

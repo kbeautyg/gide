@@ -11,6 +11,7 @@ import { LiveStats } from '@/components/LiveStats'
 import { AnimatedFeatures } from '@/components/AnimatedFeatures'
 import { DynamicNavigation } from '@/components/DynamicNavigation'
 import { SmartRecommendations } from '@/components/SmartRecommendations'
+import { buildToursLink } from '@/lib/navigationUtils'
 
 // Анимационные варианты
 const containerVariants = {
@@ -37,17 +38,17 @@ export default function HomePage() {
     {
       title: 'Уличная еда Бангкока: 12+ блюд',
       image: 'https://images.unsplash.com/photo-1578474846511-04ba529f0b88?w=600&h=400&fit=crop',
-      link: '/tours?category=Гастрономия&location=Бангкок'
+      link: '/tours?themes=Гастрономия&location=Бангкок'
     },
     {
       title: 'Храмы Киото: золотой павильон',
       image: 'https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?w=600&h=400&fit=crop',
-      link: '/tours?category=Культура&location=Киото'
+      link: '/tours?themes=Культура&location=Киото'
     },
     {
       title: 'Острова Пхи-Пхи на закате',
       image: 'https://images.unsplash.com/photo-1552465011-b4e21bf6e79a?w=600&h=400&fit=crop',
-      link: '/tours?category=Природа&location=Пхукет'
+      link: '/tours?themes=Природа&location=Пхукет'
     },
     {
       title: 'Сафари в пустыне Дубая',
@@ -143,32 +144,32 @@ export default function HomePage() {
         <div className="relative h-full container mx-auto px-4 sm:px-6 md:px-8 lg:px-16">
           {/* Мобильная версия - центрированная */}
           <div className="md:hidden h-full flex items-center justify-center text-center">
-            <motion.div
+          <motion.div
               initial={{ opacity: 0, y: 40 }}
-              animate={{ opacity: 1, y: 0 }}
+            animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, ease: "easeOut" }}
               className="max-w-5xl mx-auto pt-8"
             >
               {/* Заголовок */}
-              <motion.h1
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
+          <motion.h1
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.3, duration: 0.8 }}
                 className="text-6xl sm:text-7xl font-bold text-white mb-8 leading-none mt-8"
-                style={{
+            style={{
                   textShadow: '0 10px 40px rgba(0,0,0,0.5), 0 2px 8px rgba(0,0,0,0.3)'
-                }}
-              >
-                Экскурсии<br />
+            }}
+          >
+            Экскурсии<br />
                 <span className="text-[rgb(255,56,92)]">
                   мечты
                 </span>
-              </motion.h1>
+          </motion.h1>
 
-              {/* Описание */}
-              <motion.p
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
+          {/* Описание */}
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.5, duration: 0.6 }}
                 className="text-xl sm:text-2xl text-white/95 mb-12 font-light max-w-3xl mx-auto leading-relaxed"
                 style={{
@@ -252,62 +253,62 @@ export default function HomePage() {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.5 }}
                   className="text-xl md:text-2xl text-white/90 max-w-2xl font-light"
-                  style={{
-                    textShadow: '0 2px 20px rgba(0,0,0,0.8)'
-                  }}
-                >
-                  Откройте для себя уникальные места Азии с местными гидами
-                </motion.p>
+            style={{
+              textShadow: '0 2px 20px rgba(0,0,0,0.8)'
+            }}
+          >
+            Откройте для себя уникальные места Азии с местными гидами
+          </motion.p>
               </div>
 
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.7 }}
                 className="flex gap-4"
+          >
+            <Link to="/tours">
+              <Button 
+                size="lg"
+                className="bg-white text-black hover:bg-white/90 font-semibold text-lg px-10 py-7 rounded-full shadow-2xl hover:scale-105 transition-all"
               >
-                <Link to="/tours">
-                  <Button 
-                    size="lg"
-                    className="bg-white text-black hover:bg-white/90 font-semibold text-lg px-10 py-7 rounded-full shadow-2xl hover:scale-105 transition-all"
-                  >
-                    Смотреть экскурсии
-                  </Button>
-                </Link>
-              </motion.div>
+                Смотреть экскурсии
+              </Button>
+            </Link>
+          </motion.div>
             </div>
 
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.9 }}
               className="w-2/5 xl:w-1/3 flex flex-col gap-6 text-white"
-            >
+          >
               <div className="bg-black/25 backdrop-blur-sm px-5 py-4 rounded-2xl">
                 <div className="text-4xl font-bold mb-1" style={{ textShadow: '0 2px 20px rgba(0,0,0,0.8)' }}>
-                  500+
-                </div>
-                <div className="text-white/80 text-sm" style={{ textShadow: '0 2px 20px rgba(0,0,0,0.8)' }}>
-                  Экскурсий
-                </div>
+                500+
               </div>
+              <div className="text-white/80 text-sm" style={{ textShadow: '0 2px 20px rgba(0,0,0,0.8)' }}>
+                Экскурсий
+              </div>
+            </div>
               <div className="bg-black/25 backdrop-blur-sm px-5 py-4 rounded-2xl">
                 <div className="text-4xl font-bold mb-1" style={{ textShadow: '0 2px 20px rgba(0,0,0,0.8)' }}>
-                  10K+
-                </div>
-                <div className="text-white/80 text-sm" style={{ textShadow: '0 2px 20px rgba(0,0,0,0.8)' }}>
-                  Путешественников
-                </div>
+                10K+
               </div>
+              <div className="text-white/80 text-sm" style={{ textShadow: '0 2px 20px rgba(0,0,0,0.8)' }}>
+                Путешественников
+              </div>
+            </div>
               <div className="bg-black/25 backdrop-blur-sm px-5 py-4 rounded-2xl">
                 <div className="text-4xl font-bold mb-1" style={{ textShadow: '0 2px 20px rgba(0,0,0,0.8)' }}>
-                  4.9 ⭐
-                </div>
-                <div className="text-white/80 text-sm" style={{ textShadow: '0 2px 20px rgba(0,0,0,0.8)' }}>
-                  Средний рейтинг
-                </div>
+                4.9 ⭐
               </div>
-            </motion.div>
+              <div className="text-white/80 text-sm" style={{ textShadow: '0 2px 20px rgba(0,0,0,0.8)' }}>
+                Средний рейтинг
+              </div>
+            </div>
+          </motion.div>
           </div>
         </div>
 
@@ -416,7 +417,7 @@ export default function HomePage() {
           >
             {destinations.map((dest: any, i: number) => (
               <motion.div key={i} variants={itemVariants}>
-                <Link to={`/tours?location=${encodeURIComponent(dest.name)}`}>
+                <Link to={buildToursLink({ location: dest.name })}>
                   <div className="group relative aspect-square rounded-xl overflow-hidden cursor-pointer">
                     <img
                       src={dest.image}

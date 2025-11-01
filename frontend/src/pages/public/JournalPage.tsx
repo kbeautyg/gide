@@ -146,11 +146,11 @@ export default function JournalPage() {
             </div>
             
             <h1 className="text-5xl md:text-7xl font-bold mb-6 text-white drop-shadow-lg">
-              Журнал путешествий
-            </h1>
+            Журнал путешествий
+          </h1>
             <p className="text-xl md:text-2xl text-white/90 max-w-3xl mx-auto leading-relaxed">
               Открывайте новые горизонты вместе с нами: гайды, советы и истории от местных экспертов по всей Азии
-            </p>
+          </p>
           </motion.div>
         </div>
 
@@ -175,17 +175,17 @@ export default function JournalPage() {
             {countries.map((country) => {
               const count = articles.filter(a => a.countryTag === country).length
               return (
-                <button
-                  key={country}
-                  onClick={() => setSelectedCountry(country)}
+              <button
+                key={country}
+                onClick={() => setSelectedCountry(country)}
                   className={`px-5 py-2.5 rounded-full shrink-0 transition-all font-medium ${
-                    selectedCountry === country
+                  selectedCountry === country
                       ? 'bg-gradient-to-r from-airbnb-rausch to-pink-600 text-white shadow-lg scale-105'
                       : 'bg-white text-gray-700 hover:bg-gray-50 border border-gray-200'
-                  }`}
-                >
+                }`}
+              >
                   {country} ({count})
-                </button>
+              </button>
               )
             })}
           </div>
@@ -195,7 +195,7 @@ export default function JournalPage() {
       {/* Featured статьи - крупные карточки */}
       {featuredArticles.length > 0 && (
         <section className="py-12 bg-gray-100">
-          <div className="container mx-auto px-4">
+        <div className="container mx-auto px-4">
             <div className="flex items-center gap-3 mb-8">
               <TrendingUp className="text-airbnb-rausch" size={28} />
               <h2 className="text-3xl font-bold text-gray-900">Популярные статьи</h2>
@@ -284,19 +284,19 @@ export default function JournalPage() {
 
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
               {regularArticles.map((article, i) => (
-                <motion.div
-                  key={article.id}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: i * 0.05 }}
-                >
-                  <Link to={`/journal/${article.slug}`}>
+              <motion.div
+                key={article.id}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.05 }}
+              >
+                <Link to={`/journal/${article.slug}`}>
                     <article className="group cursor-pointer bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 h-full flex flex-col">
                       <div className="relative aspect-[16/10] overflow-hidden">
-                        <img
-                          src={article.photo}
-                          alt={article.title}
+                      <img
+                        src={article.photo}
+                        alt={article.title}
                           className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                         />
                         <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
@@ -316,16 +316,16 @@ export default function JournalPage() {
                           </div>
                           <span>·</span>
                           <span>{article.publishedAt}</span>
-                        </div>
-                        
+                    </div>
+                    
                         <h3 className="text-lg font-bold text-gray-900 mb-2 group-hover:text-airbnb-rausch transition-colors line-clamp-2">
-                          {article.title}
-                        </h3>
-                        
+                      {article.title}
+                    </h3>
+                    
                         <p className="text-gray-600 text-sm mb-3 line-clamp-2 flex-1">
-                          {article.preview}
-                        </p>
-                        
+                      {article.preview}
+                    </p>
+                    
                         <div className="flex items-center justify-between pt-3 border-t border-gray-100">
                           <span className="text-xs text-blue-700 font-medium">
                             #{article.countryTag}
@@ -333,15 +333,15 @@ export default function JournalPage() {
                           <span className="text-xs text-gray-400">
                             {article.views.toLocaleString()} просмотров
                           </span>
-                        </div>
                       </div>
-                    </article>
-                  </Link>
-                </motion.div>
-              ))}
-            </div>
+                    </div>
+                  </article>
+                </Link>
+              </motion.div>
+            ))}
           </div>
-        </section>
+        </div>
+      </section>
       )}
 
       {/* Пустое состояние */}

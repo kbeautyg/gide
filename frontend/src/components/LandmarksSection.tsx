@@ -3,6 +3,7 @@ import { motion } from 'framer-motion'
 import { Link } from 'react-router-dom'
 import { api } from '@/lib/api'
 import { Landmark } from 'lucide-react'
+import { buildToursLink } from '@/lib/navigationUtils'
 
 interface LandmarksSectionProps {
   location: string
@@ -25,7 +26,7 @@ export function LandmarksSection({ location }: LandmarksSectionProps) {
           <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-6">
             Достопримечательности
           </h2>
-          <div className="flex gap-4 overflow-x-auto scrollbar-hide pb-4">
+          <div className="flex gap-4 overflow-x-auto scrollbar-hide pb-4 scroll-smooth">
             {Array.from({ length: 6 }).map((_, i) => (
               <div key={i} className="shrink-0 w-[200px]">
                 <div className="aspect-[4/3] rounded-xl bg-gray-200 animate-pulse mb-3" />
@@ -72,7 +73,7 @@ export function LandmarksSection({ location }: LandmarksSectionProps) {
         </div>
 
         <div className="relative">
-          <div className="flex gap-4 overflow-x-auto scrollbar-hide pb-4">
+          <div className="flex gap-4 overflow-x-auto scrollbar-hide pb-4 scroll-smooth">
             {landmarks.slice(0, 12).map((landmark: any, i: number) => (
               <motion.div
                 key={landmark.name}
@@ -81,7 +82,7 @@ export function LandmarksSection({ location }: LandmarksSectionProps) {
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: i * 0.05 }}
               >
-                <Link to={`/tours?location=${encodeURIComponent(location)}&landmarks=${encodeURIComponent(landmark.name)}`}>
+                <Link to={buildToursLink({ location, landmarks: landmark.name })}>
                   <div className="group cursor-pointer">
                     <div className="aspect-[4/3] rounded-xl overflow-hidden mb-3 shadow-sm hover:shadow-md transition-shadow bg-gray-100">
                       <img
@@ -102,9 +103,10 @@ export function LandmarksSection({ location }: LandmarksSectionProps) {
               </motion.div>
             ))}
           </div>
+          {/* Градиент справа для индикации прокрутки */}
+          <div className="absolute right-0 top-0 bottom-4 w-20 bg-gradient-to-l from-gray-50 to-transparent pointer-events-none" />
         </div>
       </div>
     </section>
   )
 }
-
