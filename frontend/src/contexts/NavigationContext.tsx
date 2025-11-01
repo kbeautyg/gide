@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useEffect, useState, useCallback, useRef } from 'react'
+import React, { createContext, useEffect, useState, useCallback, useRef } from 'react'
 import { useSearchParams, useNavigate } from 'react-router-dom'
 import { NavigationState, NavigationContextValue, initialNavigationState } from '@/types/navigation'
 import { parseUrlParams, buildUrlParams, FilterParams } from '@/lib/urlParams'
@@ -26,9 +26,8 @@ interface NavigationProviderProps {
 }
 
 export function NavigationProvider({ children }: NavigationProviderProps) {
-  const [searchParams, setSearchParams] = useSearchParams()
+  const [searchParams] = useSearchParams()
   const navigate = useNavigate()
-  const location = useLocation()
   
   // Состояние навигации
   const [state, setState] = useState<NavigationState>(initialNavigationState)

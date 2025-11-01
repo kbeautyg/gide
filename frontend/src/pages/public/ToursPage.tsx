@@ -42,7 +42,7 @@ const CITIES_BY_COUNTRY: Record<string, string[]> = {
   'Китай': ['Пекин', 'Шанхай', 'Сиань', 'Гуанчжоу', 'Ченду', 'Гонконг'],
   'Индия': ['Дели', 'Мумбаи', 'Джайпур', 'Агра', 'Гоа', 'Варанаси', 'Удайпур'],
   'Малайзия': ['Куала-Лумпур', 'Пенанг', 'Лангкави', 'Малакка'],
-]
+};
 
 export default function ToursPage() {
   const navigation = useNavigation()
@@ -58,35 +58,6 @@ export default function ToursPage() {
     queryKey: ['dynamic-navigation'],
     queryFn: () => api.get('/tours/dynamic-navigation').then(res => res.data.data),
   })
-
-  // Получаем активную локацию для отображения CityHero и LandmarksSection
-  const activeLocation = navigation.getActiveLocation()
-
-  // Определяем город и страну из первого тура (если есть активная локация)
-  const getCityInfo = (tours: any[]) => {
-    if (!activeLocation || tours.length === 0) return null
-    
-    const firstTour = tours[0]
-    const parts = firstTour.location?.split(', ')
-    if (parts && parts.length === 2) {
-      return {
-        city: parts[0].trim(),
-        country: parts[1].trim(),
-        toursCount: tours.length
-      }
-    }
-    
-    // Если формат другой, пытаемся найти по активной локации
-    if (firstTour.location?.includes(activeLocation)) {
-      return {
-        city: activeLocation,
-        country: parts?.[1]?.trim() || '',
-        toursCount: tours.length
-      }
-    }
-    
-    return null
-  }
 
   // Загрузка экскурсий с фильтрами из NavigationContext
   const { data: toursData, isLoading } = useQuery({
