@@ -34,7 +34,8 @@ export default function BecomeGuidePage() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
-    console.log('Guide application:', formData)
+    // Убрали console.log для production
+    // Данные формы отправляются через API
     setSubmitted(true)
   }
 

@@ -31,7 +31,7 @@ export function useAutoRefresh({
 
     // Fallback: polling каждые N секунд
     const interval = setInterval(() => {
-      console.log('🔄 Polling refresh (WebSocket disconnected)')
+      // Убрали console.log для production
       queryKeys.forEach((key) => {
         queryClient.invalidateQueries({ queryKey: key })
       })

@@ -136,9 +136,7 @@ export default function CalendarPage() {
   const tours = scheduleData?.tours || []
 
   // Debug: проверяем что пришло
-  console.log('Calendar data:', { schedules: schedules.length, requests: requests.length, tours: tours.length })
-  console.log('Tours:', tours)
-  console.log('Requests:', requests)
+  // Убрали console.log для production - используйте React DevTools для отладки
 
   // Статистика
   const totalBookedHours = schedules.reduce((sum: number, s: any) => sum + s.booked_hours, 0)

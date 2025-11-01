@@ -220,10 +220,6 @@ export default function ToursPage() {
     navigation.toggleCountry(country)
   }
 
-  const handleCitySelect = (city: string) => {
-    navigation.toggleCity(city)
-  }
-
   // Подсчет активных фильтров
   const activeFiltersCount = 
     state.countries.length + 

@@ -34,88 +34,8 @@ export function useWebSocket(options: UseWebSocketOptions = {}) {
     return localStorage.getItem('token')
   }, [])
 
-  const connect = useCallback(() => {
-    if (!enabled) return
-
-    const token = getToken()
-    if (!token) {
-      setConnectionError('No authentication token')
-      return
-    }
-
-    try {
-      // Закрываем предыдущее соединение если есть
-      if (wsRef.current) {
-        wsRef.current.close()
-      }
-
-      const ws = new WebSocket(`${WS_URL}?token=${token}`)
-      wsRef.current = ws
-
-      ws.onopen = () => {
-        console.log('✅ WebSocket connected')
-        setIsConnected(true)
-        setConnectionError(null)
-        onConnect?.()
-
-        // Запускаем ping для поддержания соединения
-        pingIntervalRef.current = setInterval(() => {
-          if (ws.readyState === WebSocket.OPEN) {
-            ws.send('ping')
-          }
-        }, PING_INTERVAL)
-      }
-
-      ws.onmessage = (event) => {
-        try {
-          // Игнорируем pong
-          if (event.data === 'pong' || event.data === 'ping') {
-            return
-          }
-
-          const message: WebSocketMessage = JSON.parse(event.data)
-          
-          // Обрабатываем сообщения
-          handleMessage(message)
-          
-          // Вызываем пользовательский обработчик
-          onMessage?.(message)
-        } catch (error) {
-          console.error('Error parsing WebSocket message:', error)
-        }
-      }
-
-      ws.onerror = (error) => {
-        console.error('❌ WebSocket error:', error)
-        setConnectionError('Connection error')
-      }
-
-      ws.onclose = (event) => {
-        console.log('❌ WebSocket disconnected:', event.code, event.reason)
-        setIsConnected(false)
-        onDisconnect?.()
-
-        // Очищаем ping interval
-        if (pingIntervalRef.current) {
-          clearInterval(pingIntervalRef.current)
-        }
-
-        // Переподключаемся автоматически если не было явного закрытия
-        if (enabled && event.code !== 1000) {
-          reconnectTimeoutRef.current = setTimeout(() => {
-            console.log('🔄 Reconnecting WebSocket...')
-            connect()
-          }, RECONNECT_DELAY)
-        }
-      }
-    } catch (error) {
-      console.error('Error connecting WebSocket:', error)
-      setConnectionError('Failed to connect')
-    }
-  }, [enabled, getToken, onConnect, onDisconnect, onMessage])
-
   const handleMessage = useCallback((message: WebSocketMessage) => {
-    console.log('📨 WebSocket message:', message.type)
+    // Убрали console.log для production
 
     switch (message.type) {
       case 'request_updated':
@@ -144,13 +64,95 @@ export function useWebSocket(options: UseWebSocketOptions = {}) {
         break
 
       case 'connected':
-        console.log('✅ Connected:', message.message)
+        // Успешное подключение обрабатывается в onConnect
         break
 
       default:
-        console.log('Unknown message type:', message.type)
+        // Неизвестный тип сообщения - игнорируем
+        break
     }
   }, [queryClient])
+
+  const connect = useCallback(() => {
+    if (!enabled) return
+
+    const token = getToken()
+    if (!token) {
+      setConnectionError('No authentication token')
+      return
+    }
+
+    try {
+      // Закрываем предыдущее соединение если есть
+      if (wsRef.current) {
+        wsRef.current.close()
+      }
+
+      const ws = new WebSocket(`${WS_URL}?token=${token}`)
+      wsRef.current = ws
+
+      ws.onopen = () => {
+        setIsConnected(true)
+        setConnectionError(null)
+        onConnect?.()
+
+        // Запускаем ping для поддержания соединения
+        pingIntervalRef.current = setInterval(() => {
+          if (ws.readyState === WebSocket.OPEN) {
+            ws.send('ping')
+          }
+        }, PING_INTERVAL)
+      }
+
+      ws.onmessage = (event) => {
+        try {
+          // Игнорируем pong
+          if (event.data === 'pong' || event.data === 'ping') {
+            return
+          }
+
+          const message: WebSocketMessage = JSON.parse(event.data)
+          
+          // Обрабатываем сообщения
+          handleMessage(message)
+          
+          // Вызываем пользовательский обработчик
+          onMessage?.(message)
+        } catch (error) {
+          // Ошибка парсинга сообщения - логируем только в development
+          if (import.meta.env.DEV) {
+            console.error('Error parsing WebSocket message:', error)
+          }
+        }
+      }
+
+      ws.onerror = () => {
+        setConnectionError('Connection error')
+      }
+
+      ws.onclose = (event) => {
+        setIsConnected(false)
+        onDisconnect?.()
+
+        // Очищаем ping interval
+        if (pingIntervalRef.current) {
+          clearInterval(pingIntervalRef.current)
+        }
+
+        // Переподключаемся автоматически если не было явного закрытия
+        if (enabled && event.code !== 1000) {
+          reconnectTimeoutRef.current = setTimeout(() => {
+            connect()
+          }, RECONNECT_DELAY)
+        }
+      }
+    } catch (error) {
+      if (import.meta.env.DEV) {
+        console.error('Error connecting WebSocket:', error)
+      }
+      setConnectionError('Failed to connect')
+    }
+  }, [enabled, getToken, onConnect, onDisconnect, onMessage, handleMessage])
 
   const disconnect = useCallback(() => {
     if (wsRef.current) {

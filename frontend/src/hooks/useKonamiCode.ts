@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useRef } from 'react'
 
 const KONAMI_CODE = [
   'ArrowUp',
@@ -15,6 +15,12 @@ const KONAMI_CODE = [
 
 export const useKonamiCode = (callback: () => void) => {
   const [keys, setKeys] = useState<string[]>([])
+  const callbackRef = useRef(callback)
+
+  // Обновляем ref при изменении callback
+  useEffect(() => {
+    callbackRef.current = callback
+  }, [callback])
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -25,7 +31,7 @@ export const useKonamiCode = (callback: () => void) => {
         const matches = KONAMI_CODE.every((key, index) => key === newKeys[index])
         
         if (matches) {
-          callback()
+          callbackRef.current()
           return [] // Сброс после успеха
         }
         
@@ -35,7 +41,7 @@ export const useKonamiCode = (callback: () => void) => {
 
     window.addEventListener('keydown', handleKeyDown)
     return () => window.removeEventListener('keydown', handleKeyDown)
-  }, [callback])
+  }, []) // Убрали callback из зависимостей
 
   return keys
 }
