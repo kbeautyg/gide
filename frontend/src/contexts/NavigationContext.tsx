@@ -51,7 +51,7 @@ export function NavigationProvider({ children }: NavigationProviderProps) {
       const newState: NavigationState = { ...initialNavigationState }
 
       // Обработка location
-      if (params.location && params.location.length > 0) {
+      if (params.location && Array.isArray(params.location) && params.location.length > 0) {
         const cities: string[] = []
         const countries: string[] = []
         let singleLocation: string | null = null
@@ -195,11 +195,15 @@ export function NavigationProvider({ children }: NavigationProviderProps) {
       
       // Обновляем URL без перезагрузки страницы
       navigate(newUrl, { replace: true })
-    } finally {
-      // Сбрасываем флаг после небольшой задержки
-      setTimeout(() => {
+      
+      // Сбрасываем флаг сразу после navigate
+      // Используем requestAnimationFrame для синхронизации с React
+      requestAnimationFrame(() => {
         isUpdatingToUrl.current = false
-      }, 100)
+      })
+    } catch (error) {
+      // В случае ошибки сбрасываем флаг
+      isUpdatingToUrl.current = false
     }
   }, [navigate])
 
@@ -214,10 +218,14 @@ export function NavigationProvider({ children }: NavigationProviderProps) {
 
   const addCity = useCallback((city: string) => {
     setState(prev => {
+      // Не добавляем город если он уже есть
+      if (prev.cities.includes(city)) return prev
+      
       const newState = {
         ...prev,
-        cities: prev.cities.includes(city) ? prev.cities : [...prev.cities, city],
-        location: prev.location === city ? city : prev.location
+        cities: [...prev.cities, city],
+        // Не обновляем location при добавлении в массив городов
+        // location остается для одиночного выбора
       }
       updateUrl(newState)
       return newState
@@ -238,12 +246,14 @@ export function NavigationProvider({ children }: NavigationProviderProps) {
 
   const toggleCity = useCallback((city: string) => {
     setState(prev => {
+      const isIncluded = prev.cities.includes(city)
       const newState = {
         ...prev,
-        cities: prev.cities.includes(city)
+        cities: isIncluded
           ? prev.cities.filter(c => c !== city)
           : [...prev.cities, city],
-        location: prev.location === city ? null : prev.location
+        // Очищаем location только если оно совпадает с удаляемым городом
+        location: (!isIncluded && prev.location === city) ? null : prev.location
       }
       updateUrl(newState)
       return newState
@@ -274,11 +284,39 @@ export function NavigationProvider({ children }: NavigationProviderProps) {
 
   const toggleCountry = useCallback((country: string) => {
     setState(prev => {
+      const isIncluded = prev.countries.includes(country)
+      const newCountries = isIncluded
+        ? prev.countries.filter(c => c !== country)
+        : [...prev.countries, country]
+      
+      // Определяем валидные города для выбранных стран
+      // Используем статический список известных городов
+      const validCitiesForCountries = newCountries.flatMap(c => {
+        // Маппинг стран на города (можно вынести в константу)
+        const cityMap: Record<string, string[]> = {
+          'Таиланд': ['Бангкок', 'Пхукет', 'Паттайя', 'Краби', 'Чиангмай', 'Ко Тао', 'Ко Самуи', 'Хуа Хин'],
+          'ОАЭ': ['Дубай', 'Абу-Даби', 'Шарджа', 'Аджман'],
+          'Япония': ['Токио', 'Киото', 'Осака', 'Хиросима', 'Нара', 'Фукуока', 'Саппоро'],
+          'Корея': ['Сеул', 'Пусан', 'Чеджу', 'Инчхон'],
+          'Индонезия': ['Убуд', 'Семиньяк', 'Нуса-Дуа', 'Джакарта', 'Джокьякарта', 'Ломбок'],
+          'Вьетнам': ['Ханой', 'Хошимин', 'Халонг', 'Нячанг', 'Далат', 'Хойан', 'Хюэ'],
+          'Сингапур': ['Сингапур'],
+          'Китай': ['Пекин', 'Шанхай', 'Сиань', 'Гуанчжоу', 'Ченду', 'Гонконг'],
+          'Индия': ['Дели', 'Мумбаи', 'Джайпур', 'Агра', 'Гоа', 'Варанаси', 'Удайпур'],
+          'Малайзия': ['Куала-Лумпур', 'Пенанг', 'Лангкави', 'Малакка'],
+        }
+        return cityMap[c] || []
+      })
+      
+      // Убираем города, которые не принадлежат выбранным странам
+      const validCities = prev.cities.filter(city => validCitiesForCountries.includes(city))
+      
       const newState = {
         ...prev,
-        countries: prev.countries.includes(country)
-          ? prev.countries.filter(c => c !== country)
-          : [...prev.countries, country]
+        countries: newCountries,
+        cities: validCities,
+        // Очищаем location если оно было удалено из городов
+        location: validCities.includes(prev.location || '') ? prev.location : null
       }
       updateUrl(newState)
       return newState
@@ -429,6 +467,7 @@ export function NavigationProvider({ children }: NavigationProviderProps) {
   const resetFilters = useCallback(() => {
     const newState = { ...initialNavigationState }
     setState(newState)
+    // Используем replace: true чтобы очистить URL параметры
     navigate('/tours', { replace: true })
   }, [navigate])
 

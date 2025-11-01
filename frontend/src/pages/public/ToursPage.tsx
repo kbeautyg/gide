@@ -215,9 +215,13 @@ export default function ToursPage() {
     navigation.toggleTheme(theme)
   }
 
-  const handleFilterApply = (filters: any) => {
-    console.log('Применить фильтры:', filters)
-    // Здесь будет логика применения фильтров через NavigationContext
+  const handleCountrySelect = (country: string) => {
+    // Логика очистки городов теперь в NavigationContext.toggleCountry
+    navigation.toggleCountry(country)
+  }
+
+  const handleCitySelect = (city: string) => {
+    navigation.toggleCity(city)
   }
 
   // Подсчет активных фильтров
@@ -231,16 +235,6 @@ export default function ToursPage() {
     (state.duration ? 1 : 0) +
     (state.rating ? 1 : 0) +
     (state.guests !== null ? 1 : 0)
-
-  // Автоматически очищаем города при изменении стран
-  const handleCountrySelect = (country: string) => {
-    navigation.toggleCountry(country)
-    
-    // Убираем города, которые не принадлежат выбранным странам
-    const validCities = navigation.state.countries.flatMap(c => CITIES_BY_COUNTRY[c] || [])
-    const citiesToRemove = navigation.state.cities.filter(city => !validCities.includes(city))
-    citiesToRemove.forEach(city => navigation.removeCity(city))
-  }
 
   return (
     <div className="min-h-screen bg-gray-100">
