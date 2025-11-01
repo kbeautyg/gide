@@ -29,7 +29,7 @@ export function CategoryChips({
 
   return (
     <div className="relative">
-      <div className="flex items-center gap-2 overflow-x-auto scrollbar-hide pb-2">
+      <div className="flex items-center gap-2 overflow-x-auto scrollbar-hide pb-2 scroll-smooth">
         {visibleCategories.map((category) => {
           const isSelected = selected.includes(category.name)
           
@@ -65,7 +65,7 @@ export function CategoryChips({
       
       {/* Градиент затухания справа */}
       {!showAll && hasMore && (
-        <div className="absolute right-0 top-0 bottom-0 w-20 bg-gradient-to-l from-gray-100 to-transparent pointer-events-none" />
+        <div className="absolute right-0 top-0 bottom-2 w-20 bg-gradient-to-l from-gray-100 to-transparent pointer-events-none" />
       )}
     </div>
   )

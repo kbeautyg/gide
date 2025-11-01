@@ -325,23 +325,27 @@ export default function ToursPage() {
           {/* Фильтр по странам */}
           <div>
             <h3 className="text-sm font-semibold text-gray-700 mb-2">🌏 Страны</h3>
-            <div className="flex gap-2 overflow-x-auto scrollbar-hide pb-2">
-              {ASIAN_COUNTRIES.map((country, index) => (
-                <motion.button
-                  key={country.name}
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: index * 0.03 }}
-                  onClick={() => handleCountrySelect(country.name)}
-                  className={`px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-all border ${
-                    state.countries.includes(country.name)
-                      ? 'bg-airbnb-rausch text-white border-airbnb-rausch shadow-md scale-105'
-                      : 'bg-[#111827] text-white border-[#111827] hover:bg-white hover:text-[#111827] hover:border-[#111827] hover:scale-105'
-                  }`}
-                >
-                  {country.flag} {country.name}
-                </motion.button>
-              ))}
+            <div className="relative">
+              <div className="flex gap-2 overflow-x-auto scrollbar-hide pb-2 scroll-smooth">
+                {ASIAN_COUNTRIES.map((country, index) => (
+                  <motion.button
+                    key={country.name}
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: index * 0.03 }}
+                    onClick={() => handleCountrySelect(country.name)}
+                    className={`px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-all shrink-0 border ${
+                      state.countries.includes(country.name)
+                        ? 'bg-airbnb-rausch text-white border-airbnb-rausch shadow-md scale-105'
+                        : 'bg-[#111827] text-white border-[#111827] hover:bg-white hover:text-[#111827] hover:border-[#111827] hover:scale-105'
+                    }`}
+                  >
+                    {country.flag} {country.name}
+                  </motion.button>
+                ))}
+              </div>
+              {/* Градиент справа для индикации прокрутки */}
+              <div className="absolute right-0 top-0 bottom-2 w-20 bg-gradient-to-l from-gray-100 to-transparent pointer-events-none" />
             </div>
           </div>
 
@@ -351,28 +355,32 @@ export default function ToursPage() {
               <h3 className="text-sm font-semibold text-gray-700 mb-2">
                 📍 Города {state.countries.length === 1 ? `(${state.countries[0]})` : '(выбранных стран)'}
               </h3>
-              <div className="flex gap-2 overflow-x-auto scrollbar-hide pb-2">
-                {(() => {
-                  // Получаем города только из выбранных стран
-                  const availableCities = state.countries.flatMap(country => CITIES_BY_COUNTRY[country] || [])
-                  
-                  return availableCities.map((city, index) => (
-                    <motion.button
-                      key={city}
-                      initial={{ opacity: 0, y: 10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: index * 0.03 }}
-                      onClick={() => navigation.toggleCity(city)}
-                      className={`px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-all border ${
-                        state.cities.includes(city)
-                          ? 'bg-airbnb-rausch text-white border-airbnb-rausch shadow-md scale-105'
-                          : 'bg-[#111827] text-white border-[#111827] hover:bg-white hover:text-[#111827] hover:border-[#111827] hover:scale-105'
-                      }`}
-                    >
-                      {city}
-                    </motion.button>
-                  ))
-                })()}
+              <div className="relative">
+                <div className="flex gap-2 overflow-x-auto scrollbar-hide pb-2 scroll-smooth">
+                  {(() => {
+                    // Получаем города только из выбранных стран
+                    const availableCities = state.countries.flatMap(country => CITIES_BY_COUNTRY[country] || [])
+                    
+                    return availableCities.map((city, index) => (
+                      <motion.button
+                        key={city}
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: index * 0.03 }}
+                        onClick={() => navigation.toggleCity(city)}
+                        className={`px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-all shrink-0 border ${
+                          state.cities.includes(city)
+                            ? 'bg-airbnb-rausch text-white border-airbnb-rausch shadow-md scale-105'
+                            : 'bg-[#111827] text-white border-[#111827] hover:bg-white hover:text-[#111827] hover:border-[#111827] hover:scale-105'
+                        }`}
+                      >
+                        {city}
+                      </motion.button>
+                    ))
+                  })()}
+                </div>
+                {/* Градиент справа для индикации прокрутки */}
+                <div className="absolute right-0 top-0 bottom-2 w-20 bg-gradient-to-l from-gray-100 to-transparent pointer-events-none" />
               </div>
             </div>
           )}
@@ -391,7 +399,8 @@ export default function ToursPage() {
           {/* Фильтр по цене */}
           <div>
             <h3 className="text-sm font-semibold text-gray-700 mb-2">Цена</h3>
-            <div className="flex gap-2 overflow-x-auto scrollbar-hide">
+            <div className="relative">
+              <div className="flex gap-2 overflow-x-auto scrollbar-hide scroll-smooth">
               {['До 5000₽', '5000-10000₽', '10000+₽'].map((range) => {
                 const priceRange = stringToPriceRange(range)
                 const isSelected = state.price?.min === priceRange.minPrice && state.price?.max === priceRange.maxPrice
@@ -406,7 +415,7 @@ export default function ToursPage() {
                         navigation.setPrice({ min: priceRange.minPrice, max: priceRange.maxPrice })
                       }
                     }}
-                    className={`px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-all border ${
+                    className={`px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-all shrink-0 border ${
                       isSelected
                         ? 'bg-airbnb-rausch text-white border-airbnb-rausch shadow-md'
                         : 'bg-[#111827] text-white border-[#111827] hover:bg-white hover:text-[#111827] hover:border-[#111827]'
@@ -416,13 +425,17 @@ export default function ToursPage() {
                   </button>
                 )
               })}
+              </div>
+              {/* Градиент справа для индикации прокрутки */}
+              <div className="absolute right-0 top-0 bottom-0 w-20 bg-gradient-to-l from-gray-100 to-transparent pointer-events-none" />
             </div>
           </div>
 
           {/* Фильтр по длительности */}
           <div>
             <h3 className="text-sm font-semibold text-gray-700 mb-2">Длительность</h3>
-            <div className="flex gap-2 overflow-x-auto scrollbar-hide">
+            <div className="relative">
+              <div className="flex gap-2 overflow-x-auto scrollbar-hide scroll-smooth">
               {['1-3 часа', '4-6 часов', 'Полный день (7+ч)'].map((duration) => {
                 const durationRange = stringToDurationRange(duration)
                 const isSelected = state.duration?.min === durationRange.durationMin && 
@@ -441,7 +454,7 @@ export default function ToursPage() {
                         })
                       }
                     }}
-                    className={`px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-all border ${
+                    className={`px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-all shrink-0 border ${
                       isSelected
                         ? 'bg-airbnb-rausch text-white border-airbnb-rausch shadow-md'
                         : 'bg-[#111827] text-white border-[#111827] hover:bg-white hover:text-[#111827] hover:border-[#111827]'
@@ -451,13 +464,17 @@ export default function ToursPage() {
                   </button>
                 )
               })}
+              </div>
+              {/* Градиент справа для индикации прокрутки */}
+              <div className="absolute right-0 top-0 bottom-0 w-20 bg-gradient-to-l from-gray-100 to-transparent pointer-events-none" />
             </div>
           </div>
 
           {/* Фильтр по рейтингу */}
           <div>
             <h3 className="text-sm font-semibold text-gray-700 mb-2">Рейтинг</h3>
-            <div className="flex gap-2 overflow-x-auto scrollbar-hide">
+            <div className="relative">
+              <div className="flex gap-2 overflow-x-auto scrollbar-hide scroll-smooth">
               {['4.5+ звёзд', '4.7+', '4.9+ (топ)'].map((rating) => {
                 const ratingRange = stringToRating(rating)
                 const isSelected = state.rating?.min === ratingRange.minRating
@@ -472,7 +489,7 @@ export default function ToursPage() {
                         navigation.setRating({ min: ratingRange.minRating })
                       }
                     }}
-                    className={`px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-all border ${
+                    className={`px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-all shrink-0 border ${
                       isSelected
                         ? 'bg-airbnb-rausch text-white border-airbnb-rausch shadow-md'
                         : 'bg-[#111827] text-white border-[#111827] hover:bg-white hover:text-[#111827] hover:border-[#111827]'
@@ -482,6 +499,9 @@ export default function ToursPage() {
                   </button>
                 )
               })}
+              </div>
+              {/* Градиент справа для индикации прокрутки */}
+              <div className="absolute right-0 top-0 bottom-0 w-20 bg-gradient-to-l from-gray-100 to-transparent pointer-events-none" />
             </div>
           </div>
         </div>
