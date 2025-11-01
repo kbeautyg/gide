@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { useQuery } from '@tanstack/react-query'
-import { useSearchParams, Link } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { X } from 'lucide-react'
 import { toursApi, api } from '@/lib/api'
@@ -13,6 +13,8 @@ import { TourCardSkeleton } from '@/components/TourCardSkeleton'
 import { CityHero } from '@/components/CityHero'
 import { LandmarksSection } from '@/components/LandmarksSection'
 import { Pagination } from '@/components/Pagination'
+import { useNavigation } from '@/hooks/useNavigation'
+import { stringToPriceRange, stringToDurationRange, stringToRating } from '@/lib/urlParams'
 
 // Азиатские страны и города (ТОЛЬКО АЗИЯ!) - Профессиональный маппинг
 const ASIAN_COUNTRIES = [
@@ -40,26 +42,16 @@ const CITIES_BY_COUNTRY: Record<string, string[]> = {
   'Китай': ['Пекин', 'Шанхай', 'Сиань', 'Гуанчжоу', 'Ченду', 'Гонконг'],
   'Индия': ['Дели', 'Мумбаи', 'Джайпур', 'Агра', 'Гоа', 'Варанаси', 'Удайпур'],
   'Малайзия': ['Куала-Лумпур', 'Пенанг', 'Лангкави', 'Малакка'],
-}
+]
 
 export default function ToursPage() {
-  const [searchParams] = useSearchParams()
-  const [selectedThemes, setSelectedThemes] = useState<string[]>([])
-  const [selectedCountries, setSelectedCountries] = useState<string[]>([])
-  const [selectedCities, setSelectedCities] = useState<string[]>([])
-  const [selectedPriceRanges, setSelectedPriceRanges] = useState<string[]>([])
-  const [selectedDurations, setSelectedDurations] = useState<string[]>([])
-  const [selectedRatings, setSelectedRatings] = useState<string[]>([])
+  const navigation = useNavigation()
+  const { state } = navigation
+  
+  // Локальное состояние только для UI (не фильтры)
   const [showFilters, setShowFilters] = useState(false)
   const [sortBy, setSortBy] = useState('popular')
   const [currentPage, setCurrentPage] = useState(1)
-  
-  // Читаем параметры из URL при загрузке
-  const locationParam = searchParams.get('location')
-  const guestsParam = searchParams.get('guests')
-  const landmarksParam = searchParams.get('landmarks')
-  // const dateStartParam = searchParams.get('date_start')  // TODO: использовать для фильтрации по датам
-  // const dateEndParam = searchParams.get('date_end')  // TODO: использовать для фильтрации по датам
 
   // Загрузка динамических категорий из navigation API
   const { data: navigationData } = useQuery({
@@ -67,76 +59,105 @@ export default function ToursPage() {
     queryFn: () => api.get('/tours/dynamic-navigation').then(res => res.data.data),
   })
 
-  // Загрузка экскурсий с фильтрами
+  // Получаем активную локацию для отображения CityHero и LandmarksSection
+  const activeLocation = navigation.getActiveLocation()
+
+  // Определяем город и страну из первого тура (если есть активная локация)
+  const getCityInfo = (tours: any[]) => {
+    if (!activeLocation || tours.length === 0) return null
+    
+    const firstTour = tours[0]
+    const parts = firstTour.location?.split(', ')
+    if (parts && parts.length === 2) {
+      return {
+        city: parts[0].trim(),
+        country: parts[1].trim(),
+        toursCount: tours.length
+      }
+    }
+    
+    // Если формат другой, пытаемся найти по активной локации
+    if (firstTour.location?.includes(activeLocation)) {
+      return {
+        city: activeLocation,
+        country: parts?.[1]?.trim() || '',
+        toursCount: tours.length
+      }
+    }
+    
+    return null
+  }
+
+  // Загрузка экскурсий с фильтрами из NavigationContext
   const { data: toursData, isLoading } = useQuery({
-    queryKey: ['tours', selectedThemes, selectedCountries, selectedCities, selectedPriceRanges, selectedDurations, selectedRatings, currentPage, landmarksParam, locationParam, guestsParam],
+    queryKey: [
+      'tours',
+      state.location,
+      state.cities,
+      state.countries,
+      state.themes,
+      state.landmarks,
+      state.tags,
+      state.price,
+      state.duration,
+      state.rating,
+      state.guests,
+      currentPage
+    ],
     queryFn: async () => {
-      // Преобразуем фильтры в параметры API
+      // Преобразуем состояние из NavigationContext в параметры API
       const params: any = {
         page: currentPage,
-        page_size: 50,  // 50 туров на страницу
+        page_size: 50,
       }
 
-      // Добавляем landmarks параметр если есть
-      if (landmarksParam) {
-        params.landmarks = landmarksParam
+      // Location из состояния
+      const locations: string[] = []
+      if (state.location) locations.push(state.location)
+      locations.push(...state.cities)
+      locations.push(...state.countries)
+      if (locations.length > 0) {
+        params.location = [...new Set(locations)].join(',')
       }
 
-      // Location из URL или выбранные города/страны (УЛУЧШЕННАЯ ИНТЕГРАЦИЯ)
-      if (locationParam) {
-        params.location = locationParam
-      } else if (selectedCities.length > 0) {
-        // Поддержка множественных городов - передаем все выбранные города
-        params.location = selectedCities.join(',')
-      } else if (selectedCountries.length > 0) {
-        // Поддержка множественных стран - передаем все выбранные страны
-        params.location = selectedCountries.join(',')
+      // Themes
+      if (state.themes.length > 0) {
+        params.themes = state.themes.join(',')
       }
 
-      // Guests из URL
-      if (guestsParam) {
-        params.guests = parseInt(guestsParam)
+      // Landmarks
+      if (state.landmarks.length > 0) {
+        params.landmarks = state.landmarks.join(',')
       }
 
-      // Темы/категории
-      if (selectedThemes.length > 0) {
-        params.themes = selectedThemes.join(',')
+      // Tags
+      if (state.tags.length > 0) {
+        params.tags = state.tags.join(',')
       }
 
-      // Цена из чипсов
-      if (selectedPriceRanges.includes('До 5000₽')) params.max_price = 5000
-      if (selectedPriceRanges.includes('5000-10000₽')) {
-        params.min_price = 5000
-        params.max_price = 10000
-      }
-      if (selectedPriceRanges.includes('10000+₽')) params.min_price = 10000
-
-      // Длительность из чипсов (УЛУЧШЕННАЯ ЛОГИКА)
-      if (selectedDurations.includes('1-3 часа')) {
-        params.duration_min = 1
-        params.duration_max = 3
-      }
-      if (selectedDurations.includes('4-6 часов')) {
-        params.duration_min = 4
-        params.duration_max = 6
-      }
-      if (selectedDurations.includes('Полный день (7+ч)')) {
-        params.duration_min = 7
+      // Price
+      if (state.price) {
+        if (state.price.min !== undefined) params.min_price = state.price.min
+        if (state.price.max !== undefined) params.max_price = state.price.max
       }
 
-      // Рейтинг из чипсов (НОВАЯ ФУНКЦИОНАЛЬНОСТЬ)
-      if (selectedRatings.includes('4.5+ звёзд')) {
-        params.min_rating = 4.5
+      // Duration
+      if (state.duration) {
+        if (state.duration.min !== undefined) params.duration_min = state.duration.min
+        if (state.duration.max !== undefined) params.duration_max = state.duration.max
       }
-      if (selectedRatings.includes('4.7+')) {
-        params.min_rating = 4.7
+
+      // Rating
+      if (state.rating && state.rating.min !== undefined) {
+        params.min_rating = state.rating.min
       }
-      if (selectedRatings.includes('4.9+ (топ)')) {
-        params.min_rating = 4.9
+
+      // Guests
+      if (state.guests !== null && state.guests !== undefined) {
+        params.guests = state.guests
       }
 
       const response = await toursApi.getList(params)
-      console.log('Tours API response:', response.data)
       return response.data
     },
   })
@@ -163,90 +184,87 @@ export default function ToursPage() {
     }
   })
 
-  console.log('Sorted tours:', sortedTours.length, 'Sort by:', sortBy)
+  // Получаем активную локацию для отображения CityHero и LandmarksSection
+  const activeLocation = navigation.getActiveLocation()
+
+  // Определяем город и страну из активной локации
+  const getCityInfo = () => {
+    if (!activeLocation) return null
+    
+    // Если есть туры, пытаемся определить страну из первого тура
+    if (sortedTours.length > 0) {
+      const firstTour = sortedTours[0]
+      const parts = firstTour.location?.split(', ')
+      if (parts && parts.length === 2 && parts[0].trim() === activeLocation) {
+        return {
+          city: parts[0].trim(),
+          country: parts[1].trim(),
+          toursCount: toursData?.total || sortedTours.length
+        }
+      }
+    }
+    
+    // Если туров нет или формат другой, используем активную локацию как город
+    // Определяем страну из маппинга
+    let country = ''
+    for (const [countryName, cities] of Object.entries(CITIES_BY_COUNTRY)) {
+      if (cities.includes(activeLocation)) {
+        country = countryName
+        break
+      }
+    }
+    
+    return {
+      city: activeLocation,
+      country: country || '',
+      toursCount: toursData?.total || 0
+    }
+  }
+
+  const cityInfo = getCityInfo()
 
   // Формируем список категорий для чипсов из динамических данных
   const themeCategories = navigationData?.themes 
     ? navigationData.themes.map((item: any) => ({ name: item.name, count: item.count }))
     : []
 
+  // Обработчики фильтров через NavigationContext
   const handleThemeSelect = (theme: string) => {
-    setSelectedThemes(prev =>
-      prev.includes(theme)
-        ? prev.filter(t => t !== theme)
-        : [...prev, theme]
-    )
+    navigation.toggleTheme(theme)
   }
 
   const handleFilterApply = (filters: any) => {
     console.log('Применить фильтры:', filters)
-    // Здесь будет логика применения фильтров
+    // Здесь будет логика применения фильтров через NavigationContext
   }
 
-  // Подсчет активных категорий (только видимые в блоке "Активные категории")
+  // Подсчет активных фильтров
   const activeFiltersCount = 
-    selectedCountries.length + 
-    selectedCities.length + 
-    selectedThemes.length + 
-    (landmarksParam ? 1 : 0)
-
-  // Сброс всех фильтров
-  const handleResetFilters = () => {
-    setSelectedCountries([])
-    setSelectedCities([])
-    setSelectedThemes([])
-    setSelectedPriceRanges([])
-    setSelectedDurations([])
-    setSelectedRatings([])
-  }
+    state.countries.length + 
+    state.cities.length + 
+    state.themes.length + 
+    state.landmarks.length +
+    state.tags.length +
+    (state.price ? 1 : 0) +
+    (state.duration ? 1 : 0) +
+    (state.rating ? 1 : 0) +
+    (state.guests !== null ? 1 : 0)
 
   // Автоматически очищаем города при изменении стран
   const handleCountrySelect = (country: string) => {
-    setSelectedCountries(prev => {
-      const newCountries = prev.includes(country) 
-        ? prev.filter(c => c !== country) 
-        : [...prev, country]
-      
-      // Если убрали все страны, очищаем города
-      if (newCountries.length === 0) {
-        setSelectedCities([])
-      } else {
-        // Убираем города, которые не принадлежат выбранным странам
-        const validCities = newCountries.flatMap(c => CITIES_BY_COUNTRY[c] || [])
-        setSelectedCities(prev => prev.filter(city => validCities.includes(city)))
-      }
-      
-      return newCountries
-    })
-  }
-
-  // Определяем город и страну из первого тура (если есть locationParam)
-  const cityInfo = locationParam && sortedTours.length > 0 ? (() => {
-    const firstTour = sortedTours[0]
-    const parts = firstTour.location?.split(', ')
-    if (parts && parts.length === 2) {
-      return {
-        city: parts[0].trim(),
-        country: parts[1].trim(),
-        toursCount: sortedTours.length
-      }
-    }
-    return null
-  })() : null
-
-  // Функция для удаления landmarks фильтра
-  const removeLandmarksFilter = () => {
-    const newParams = new URLSearchParams(searchParams.toString())
-    newParams.delete('landmarks')
-    window.history.pushState({}, '', `?${newParams.toString()}`)
-    window.location.reload()
+    navigation.toggleCountry(country)
+    
+    // Убираем города, которые не принадлежат выбранным странам
+    const validCities = navigation.state.countries.flatMap(c => CITIES_BY_COUNTRY[c] || [])
+    const citiesToRemove = navigation.state.cities.filter(city => !validCities.includes(city))
+    citiesToRemove.forEach(city => navigation.removeCity(city))
   }
 
   return (
     <div className="min-h-screen bg-gray-100">
       <PublicHeader />
 
-      {/* CityHero - показываем только если есть locationParam */}
+      {/* CityHero - показываем всегда при наличии активной локации */}
       {cityInfo && (
         <CityHero 
           city={cityInfo.city} 
@@ -263,9 +281,17 @@ export default function ToursPage() {
             {cityInfo ? (
               <>
                 {' > '}
-                <span className="text-gray-700">{cityInfo.country}</span>
+                <Link to={`/tours?location=${encodeURIComponent(cityInfo.country)}`} className="hover:underline">
+                  {cityInfo.country}
+                </Link>
                 {' > '}
                 <span className="text-gray-900 font-medium">{cityInfo.city}</span>
+                {state.themes.length > 0 && (
+                  <>
+                    {' > '}
+                    <span className="text-gray-900 font-medium">{state.themes[0]}</span>
+                  </>
+                )}
               </>
             ) : (
               <>
@@ -277,10 +303,9 @@ export default function ToursPage() {
         </div>
       </div>
 
-
-      {/* Landmarks Section - показываем только если есть locationParam и нет активного фильтра по landmarks */}
-      {locationParam && !landmarksParam && (
-        <LandmarksSection location={locationParam} />
+      {/* Landmarks Section - показываем только если есть активная локация и нет фильтра по landmarks */}
+      {activeLocation && state.landmarks.length === 0 && (
+        <LandmarksSection location={activeLocation} />
       )}
 
       {/* Заголовок страницы - показываем только если НЕТ cityInfo */}
@@ -297,7 +322,6 @@ export default function ToursPage() {
         </section>
       )}
 
-
       {/* Секция категорий */}
       <div className="bg-gray-100">
         <div className="container mx-auto px-4 py-6 space-y-4">
@@ -308,12 +332,12 @@ export default function ToursPage() {
                 Активных категорий: <span className="font-bold text-airbnb-rausch">{activeFiltersCount}</span>
               </p>
               <button
-                onClick={handleResetFilters}
+                onClick={navigation.resetFilters}
                 className="text-sm text-airbnb-rausch hover:underline font-medium"
               >
                 Сбросить все категории
               </button>
-                </div>
+            </div>
           )}
 
           {/* Фильтр по странам */}
@@ -328,7 +352,7 @@ export default function ToursPage() {
                   transition={{ delay: index * 0.03 }}
                   onClick={() => handleCountrySelect(country.name)}
                   className={`px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-all border ${
-                    selectedCountries.includes(country.name)
+                    state.countries.includes(country.name)
                       ? 'bg-airbnb-rausch text-white border-airbnb-rausch shadow-md scale-105'
                       : 'bg-[#111827] text-white border-[#111827] hover:bg-white hover:text-[#111827] hover:border-[#111827] hover:scale-105'
                   }`}
@@ -340,15 +364,15 @@ export default function ToursPage() {
           </div>
 
           {/* Фильтр по городам - умная фильтрация */}
-          {selectedCountries.length > 0 && (
+          {state.countries.length > 0 && (
             <div>
               <h3 className="text-sm font-semibold text-gray-700 mb-2">
-                📍 Города {selectedCountries.length === 1 ? `(${selectedCountries[0]})` : '(выбранных стран)'}
+                📍 Города {state.countries.length === 1 ? `(${state.countries[0]})` : '(выбранных стран)'}
               </h3>
               <div className="flex gap-2 overflow-x-auto scrollbar-hide pb-2">
                 {(() => {
                   // Получаем города только из выбранных стран
-                  const availableCities = selectedCountries.flatMap(country => CITIES_BY_COUNTRY[country] || [])
+                  const availableCities = state.countries.flatMap(country => CITIES_BY_COUNTRY[country] || [])
                   
                   return availableCities.map((city, index) => (
                     <motion.button
@@ -356,13 +380,9 @@ export default function ToursPage() {
                       initial={{ opacity: 0, y: 10 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: index * 0.03 }}
-                      onClick={() => {
-                        setSelectedCities(prev =>
-                          prev.includes(city) ? prev.filter(c => c !== city) : [...prev, city]
-                        )
-                      }}
+                      onClick={() => navigation.toggleCity(city)}
                       className={`px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-all border ${
-                        selectedCities.includes(city)
+                        state.cities.includes(city)
                           ? 'bg-airbnb-rausch text-white border-airbnb-rausch shadow-md scale-105'
                           : 'bg-[#111827] text-white border-[#111827] hover:bg-white hover:text-[#111827] hover:border-[#111827] hover:scale-105'
                       }`}
@@ -375,11 +395,12 @@ export default function ToursPage() {
             </div>
           )}
 
+          {/* Категории */}
           <div>
             <h3 className="text-sm font-semibold text-gray-700 mb-2">Категории</h3>
             <CategoryChips
               categories={themeCategories}
-              selected={selectedThemes}
+              selected={state.themes}
               onSelect={handleThemeSelect}
               maxVisible={12}
             />
@@ -389,114 +410,140 @@ export default function ToursPage() {
           <div>
             <h3 className="text-sm font-semibold text-gray-700 mb-2">Цена</h3>
             <div className="flex gap-2 overflow-x-auto scrollbar-hide">
-              {['До 5000₽', '5000-10000₽', '10000+₽'].map((range) => (
-                <button
-                  key={range}
-                  onClick={() => {
-                    setSelectedPriceRanges(prev =>
-                      prev.includes(range) ? prev.filter(r => r !== range) : [...prev, range]
-                    )
-                  }}
-                  className={`px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-all border ${
-                    selectedPriceRanges.includes(range)
-                      ? 'bg-airbnb-rausch text-white border-airbnb-rausch shadow-md'
-                      : 'bg-[#111827] text-white border-[#111827] hover:bg-white hover:text-[#111827] hover:border-[#111827]'
-                  }`}
-                >
-                  {range}
-                </button>
-              ))}
-              </div>
-                </div>
+              {['До 5000₽', '5000-10000₽', '10000+₽'].map((range) => {
+                const priceRange = stringToPriceRange(range)
+                const isSelected = state.price?.min === priceRange.minPrice && state.price?.max === priceRange.maxPrice
+                
+                return (
+                  <button
+                    key={range}
+                    onClick={() => {
+                      if (isSelected) {
+                        navigation.setPrice(null)
+                      } else {
+                        navigation.setPrice({ min: priceRange.minPrice, max: priceRange.maxPrice })
+                      }
+                    }}
+                    className={`px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-all border ${
+                      isSelected
+                        ? 'bg-airbnb-rausch text-white border-airbnb-rausch shadow-md'
+                        : 'bg-[#111827] text-white border-[#111827] hover:bg-white hover:text-[#111827] hover:border-[#111827]'
+                    }`}
+                  >
+                    {range}
+                  </button>
+                )
+              })}
+            </div>
+          </div>
 
           {/* Фильтр по длительности */}
           <div>
             <h3 className="text-sm font-semibold text-gray-700 mb-2">Длительность</h3>
             <div className="flex gap-2 overflow-x-auto scrollbar-hide">
-              {['1-3 часа', '4-6 часов', 'Полный день (7+ч)'].map((duration) => (
-                <button
-                  key={duration}
-                  onClick={() => {
-                    setSelectedDurations(prev =>
-                      prev.includes(duration) ? prev.filter(d => d !== duration) : [...prev, duration]
-                    )
-                  }}
-                  className={`px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-all border ${
-                    selectedDurations.includes(duration)
-                      ? 'bg-airbnb-rausch text-white border-airbnb-rausch shadow-md'
-                      : 'bg-[#111827] text-white border-[#111827] hover:bg-white hover:text-[#111827] hover:border-[#111827]'
-                  }`}
-                >
-                  {duration}
-                </button>
-              ))}
-                          </div>
-                        </div>
+              {['1-3 часа', '4-6 часов', 'Полный день (7+ч)'].map((duration) => {
+                const durationRange = stringToDurationRange(duration)
+                const isSelected = state.duration?.min === durationRange.durationMin && 
+                                  state.duration?.max === durationRange.durationMax
+                
+                return (
+                  <button
+                    key={duration}
+                    onClick={() => {
+                      if (isSelected) {
+                        navigation.setDuration(null)
+                      } else {
+                        navigation.setDuration({ 
+                          min: durationRange.durationMin, 
+                          max: durationRange.durationMax 
+                        })
+                      }
+                    }}
+                    className={`px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-all border ${
+                      isSelected
+                        ? 'bg-airbnb-rausch text-white border-airbnb-rausch shadow-md'
+                        : 'bg-[#111827] text-white border-[#111827] hover:bg-white hover:text-[#111827] hover:border-[#111827]'
+                    }`}
+                  >
+                    {duration}
+                  </button>
+                )
+              })}
+            </div>
+          </div>
 
           {/* Фильтр по рейтингу */}
           <div>
             <h3 className="text-sm font-semibold text-gray-700 mb-2">Рейтинг</h3>
             <div className="flex gap-2 overflow-x-auto scrollbar-hide">
-              {['4.5+ звёзд', '4.7+', '4.9+ (топ)'].map((rating) => (
-                <button
-                  key={rating}
-                  onClick={() => {
-                    setSelectedRatings(prev =>
-                      prev.includes(rating) ? prev.filter(r => r !== rating) : [...prev, rating]
-                    )
-                  }}
-                  className={`px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-all border ${
-                    selectedRatings.includes(rating)
-                      ? 'bg-airbnb-rausch text-white border-airbnb-rausch shadow-md'
-                      : 'bg-[#111827] text-white border-[#111827] hover:bg-white hover:text-[#111827] hover:border-[#111827]'
-                  }`}
-                >
-                  ⭐ {rating}
-                </button>
-                  ))}
-                </div>
+              {['4.5+ звёзд', '4.7+', '4.9+ (топ)'].map((rating) => {
+                const ratingRange = stringToRating(rating)
+                const isSelected = state.rating?.min === ratingRange.minRating
+                
+                return (
+                  <button
+                    key={rating}
+                    onClick={() => {
+                      if (isSelected) {
+                        navigation.setRating(null)
+                      } else {
+                        navigation.setRating({ min: ratingRange.minRating })
+                      }
+                    }}
+                    className={`px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-all border ${
+                      isSelected
+                        ? 'bg-airbnb-rausch text-white border-airbnb-rausch shadow-md'
+                        : 'bg-[#111827] text-white border-[#111827] hover:bg-white hover:text-[#111827] hover:border-[#111827]'
+                    }`}
+                  >
+                    ⭐ {rating}
+                  </button>
+                )
+              })}
+            </div>
           </div>
-
-          {/* Сброс категорий */}
-          {(selectedThemes.length > 0 || selectedPriceRanges.length > 0 || selectedDurations.length > 0 || selectedRatings.length > 0) && (
-            <button
-              onClick={() => {
-                setSelectedThemes([])
-                setSelectedPriceRanges([])
-                setSelectedDurations([])
-                setSelectedRatings([])
-              }}
-              className="text-sm text-airbnb-rausch hover:underline font-medium"
-            >
-              Сбросить все категории
-            </button>
-          )}
         </div>
       </div>
 
       {/* Активные категории - отображение выбранных */}
-      {(selectedThemes.length > 0 || selectedCountries.length > 0 || selectedCities.length > 0 || landmarksParam) && (
+      {activeFiltersCount > 0 && (
         <div className="bg-gray-100">
           <div className="container mx-auto px-4 py-4">
             <div className="flex items-center gap-2 flex-wrap">
               <span className="text-sm font-semibold text-gray-700">Активные категории:</span>
               
-              {/* Landmarks из URL */}
-              {landmarksParam && (
+              {/* Landmarks */}
+              {state.landmarks.map((landmark) => (
                 <motion.div
+                  key={landmark}
                   initial={{ opacity: 0, scale: 0.9 }}
                   animate={{ opacity: 1, scale: 1 }}
                   className="flex items-center gap-2 bg-airbnb-rausch text-white px-3 py-1.5 rounded-full text-sm font-medium"
                 >
-                  {landmarksParam}
-                  <button onClick={removeLandmarksFilter} className="hover:opacity-80">
+                  {landmark}
+                  <button onClick={() => navigation.removeLandmark(landmark)} className="hover:opacity-80">
                     <X size={16} />
                   </button>
                 </motion.div>
-              )}
+              ))}
 
-              {/* Выбранные темы */}
-              {selectedThemes.map((theme) => (
+              {/* Tags */}
+              {state.tags.map((tag) => (
+                <motion.div
+                  key={tag}
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  className="flex items-center gap-2 bg-airbnb-rausch text-white px-3 py-1.5 rounded-full text-sm font-medium"
+                >
+                  {tag}
+                  <button onClick={() => navigation.removeTag(tag)} className="hover:opacity-80">
+                    <X size={16} />
+                  </button>
+                </motion.div>
+              ))}
+
+              {/* Themes */}
+              {state.themes.map((theme) => (
                 <motion.div
                   key={theme}
                   initial={{ opacity: 0, scale: 0.9 }}
@@ -504,14 +551,14 @@ export default function ToursPage() {
                   className="flex items-center gap-2 bg-airbnb-rausch text-white px-3 py-1.5 rounded-full text-sm font-medium"
                 >
                   {theme}
-                  <button onClick={() => handleThemeSelect(theme)} className="hover:opacity-80">
+                  <button onClick={() => navigation.removeTheme(theme)} className="hover:opacity-80">
                     <X size={16} />
                   </button>
                 </motion.div>
               ))}
 
-              {/* Выбранные страны */}
-              {selectedCountries.map((country) => (
+              {/* Countries */}
+              {state.countries.map((country) => (
                 <motion.div
                   key={country}
                   initial={{ opacity: 0, scale: 0.9 }}
@@ -519,17 +566,14 @@ export default function ToursPage() {
                   className="flex items-center gap-2 bg-airbnb-rausch text-white px-3 py-1.5 rounded-full text-sm font-medium"
                 >
                   {country}
-                  <button
-                    onClick={() => setSelectedCountries(prev => prev.filter(c => c !== country))}
-                    className="hover:opacity-80"
-                  >
+                  <button onClick={() => navigation.removeCountry(country)} className="hover:opacity-80">
                     <X size={16} />
                   </button>
                 </motion.div>
               ))}
 
-              {/* Выбранные города */}
-              {selectedCities.map((city) => (
+              {/* Cities */}
+              {state.cities.map((city) => (
                 <motion.div
                   key={city}
                   initial={{ opacity: 0, scale: 0.9 }}
@@ -537,14 +581,75 @@ export default function ToursPage() {
                   className="flex items-center gap-2 bg-airbnb-rausch text-white px-3 py-1.5 rounded-full text-sm font-medium"
                 >
                   {city}
-                  <button
-                    onClick={() => setSelectedCities(prev => prev.filter(c => c !== city))}
-                    className="hover:opacity-80"
-                  >
+                  <button onClick={() => navigation.removeCity(city)} className="hover:opacity-80">
                     <X size={16} />
                   </button>
                 </motion.div>
               ))}
+
+              {/* Price */}
+              {state.price && (
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  className="flex items-center gap-2 bg-airbnb-rausch text-white px-3 py-1.5 rounded-full text-sm font-medium"
+                >
+                  {state.price.min !== undefined && state.price.max !== undefined
+                    ? `${state.price.min}-${state.price.max}₽`
+                    : state.price.min !== undefined
+                    ? `от ${state.price.min}₽`
+                    : `до ${state.price.max}₽`}
+                  <button onClick={() => navigation.setPrice(null)} className="hover:opacity-80">
+                    <X size={16} />
+                  </button>
+                </motion.div>
+              )}
+
+              {/* Duration */}
+              {state.duration && (
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  className="flex items-center gap-2 bg-airbnb-rausch text-white px-3 py-1.5 rounded-full text-sm font-medium"
+                >
+                  {state.duration.min !== undefined && state.duration.max !== undefined
+                    ? `${state.duration.min}-${state.duration.max} ч`
+                    : state.duration.min !== undefined
+                    ? `от ${state.duration.min} ч`
+                    : `до ${state.duration.max} ч`}
+                  <button onClick={() => navigation.setDuration(null)} className="hover:opacity-80">
+                    <X size={16} />
+                  </button>
+                </motion.div>
+              )}
+
+              {/* Rating */}
+              {state.rating && (
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  className="flex items-center gap-2 bg-airbnb-rausch text-white px-3 py-1.5 rounded-full text-sm font-medium"
+                >
+                  ⭐ {state.rating.min}+
+                  <button onClick={() => navigation.setRating(null)} className="hover:opacity-80">
+                    <X size={16} />
+                  </button>
+                </motion.div>
+              )}
+
+              {/* Guests */}
+              {state.guests !== null && (
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  className="flex items-center gap-2 bg-airbnb-rausch text-white px-3 py-1.5 rounded-full text-sm font-medium"
+                >
+                  👥 {state.guests} {state.guests === 1 ? 'гость' : 'гостей'}
+                  <button onClick={() => navigation.setGuests(null)} className="hover:opacity-80">
+                    <X size={16} />
+                  </button>
+                </motion.div>
+              )}
             </div>
           </div>
         </div>

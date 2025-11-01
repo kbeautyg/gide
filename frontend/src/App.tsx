@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { Routes, Route } from 'react-router-dom'
+import { NavigationProvider } from './contexts/NavigationContext'
 import { ProtectedRoute } from './components/ProtectedRoute'
 import { RequestFloatingButton } from './components/RequestFloatingButton'
 import { ScrollToTop } from './components/ScrollToTop'
@@ -58,52 +59,54 @@ function App() {
         isOpen={showSecretDiscount} 
         onClose={() => setShowSecretDiscount(false)} 
       />
-      <Routes>
-      {/* Публичные маршруты */}
-      <Route path="/" element={<HomePage />} />
-      <Route path="/tours" element={<ToursPage />} />
-      <Route path="/tours/:id" element={<TourDetailPage />} />
-      <Route path="/t/:code" element={<TourSharePage />} />
-      {/* DestinationPage отключена - используем /tours с фильтром */}
-      {/* <Route path="/destinations/:city" element={<DestinationPage />} /> */}
-      <Route path="/journal" element={<JournalPage />} />
-      <Route path="/journal/:slug" element={<ArticlePage />} />
-      <Route path="/about" element={<AboutPage />} />
-      <Route path="/contact" element={<ContactPage />} />
-      <Route path="/request" element={<CreateRequestPage />} />
-      <Route path="/faq" element={<FAQPage />} />
-      <Route path="/terms" element={<TermsPage />} />
-      <Route path="/privacy" element={<PrivacyPage />} />
-      <Route path="/become-guide" element={<BecomeGuidePage />} />
-      
-      {/* Аутентификация */}
-      <Route path="/login" element={<LoginPage />} />
-      <Route path="/register" element={<RegisterPage />} />
-      
-      {/* Личные кабинеты (защищенные маршруты) */}
-      <Route
-        path="/dashboard"
-        element={
-          <ProtectedRoute>
-            <DashboardLayout />
-          </ProtectedRoute>
-        }
-      >
-        <Route index element={<ManagerDashboard />} />
-        <Route path="admin" element={<AdminDashboard />} />
-        <Route path="admin/categories" element={<CategoriesManagement />} />
-        <Route path="my-tours" element={<MyToursPage />} />
-        <Route path="tours/edit/:id" element={<EditTourPage />} />
-        <Route path="requests" element={<RequestsPage />} />
-        <Route path="tours/create-from-request/:requestId" element={<CreateTourFromRequest />} />
-        <Route path="calendar" element={<CalendarPage />} />
-        <Route path="bookings" element={<BookingsPage />} />
-        <Route path="settings" element={<SettingsPage />} />
-      </Route>
-      
-      {/* 404 - должен быть последним */}
-      <Route path="*" element={<NotFoundPage />} />
-    </Routes>
+      <NavigationProvider>
+        <Routes>
+        {/* Публичные маршруты */}
+        <Route path="/" element={<HomePage />} />
+        <Route path="/tours" element={<ToursPage />} />
+        <Route path="/tours/:id" element={<TourDetailPage />} />
+        <Route path="/t/:code" element={<TourSharePage />} />
+        {/* DestinationPage отключена - используем /tours с фильтром */}
+        {/* <Route path="/destinations/:city" element={<DestinationPage />} /> */}
+        <Route path="/journal" element={<JournalPage />} />
+        <Route path="/journal/:slug" element={<ArticlePage />} />
+        <Route path="/about" element={<AboutPage />} />
+        <Route path="/contact" element={<ContactPage />} />
+        <Route path="/request" element={<CreateRequestPage />} />
+        <Route path="/faq" element={<FAQPage />} />
+        <Route path="/terms" element={<TermsPage />} />
+        <Route path="/privacy" element={<PrivacyPage />} />
+        <Route path="/become-guide" element={<BecomeGuidePage />} />
+        
+        {/* Аутентификация */}
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/register" element={<RegisterPage />} />
+        
+        {/* Личные кабинеты (защищенные маршруты) */}
+        <Route
+          path="/dashboard"
+          element={
+            <ProtectedRoute>
+              <DashboardLayout />
+            </ProtectedRoute>
+          }
+        >
+          <Route index element={<ManagerDashboard />} />
+          <Route path="admin" element={<AdminDashboard />} />
+          <Route path="admin/categories" element={<CategoriesManagement />} />
+          <Route path="my-tours" element={<MyToursPage />} />
+          <Route path="tours/edit/:id" element={<EditTourPage />} />
+          <Route path="requests" element={<RequestsPage />} />
+          <Route path="tours/create-from-request/:requestId" element={<CreateTourFromRequest />} />
+          <Route path="calendar" element={<CalendarPage />} />
+          <Route path="bookings" element={<BookingsPage />} />
+          <Route path="settings" element={<SettingsPage />} />
+        </Route>
+        
+        {/* 404 - должен быть последним */}
+        <Route path="*" element={<NotFoundPage />} />
+      </Routes>
+      </NavigationProvider>
     </>
   )
 }
