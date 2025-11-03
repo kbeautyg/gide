@@ -2,8 +2,9 @@ import { useQuery } from '@tanstack/react-query'
 import { motion } from 'framer-motion'
 import { Link } from 'react-router-dom'
 import { api } from '@/lib/api'
-import { Landmark } from 'lucide-react'
+import { Landmark, ChevronLeft, ChevronRight } from 'lucide-react'
 import { buildToursLink } from '@/lib/navigationUtils'
+import { useRef, useState, useEffect } from 'react'
 
 interface LandmarksSectionProps {
   location?: string
@@ -23,6 +24,48 @@ export function LandmarksSection({ location }: LandmarksSectionProps) {
   })
 
   const landmarks = landmarksData?.landmarks || []
+  const scrollContainerRef = useRef<HTMLDivElement>(null)
+  const [canScrollLeft, setCanScrollLeft] = useState(false)
+  const [canScrollRight, setCanScrollRight] = useState(true)
+
+  const checkScrollButtons = () => {
+    const container = scrollContainerRef.current
+    if (!container) return
+    
+    setCanScrollLeft(container.scrollLeft > 0)
+    setCanScrollRight(
+      container.scrollLeft < container.scrollWidth - container.clientWidth - 10
+    )
+  }
+
+  useEffect(() => {
+    const container = scrollContainerRef.current
+    if (!container) return
+
+    checkScrollButtons()
+    container.addEventListener('scroll', checkScrollButtons)
+    window.addEventListener('resize', checkScrollButtons)
+
+    return () => {
+      container.removeEventListener('scroll', checkScrollButtons)
+      window.removeEventListener('resize', checkScrollButtons)
+    }
+  }, [landmarks])
+
+  const scroll = (direction: 'left' | 'right') => {
+    const container = scrollContainerRef.current
+    if (!container) return
+
+    const scrollAmount = 400 // Прокрутка на 400px
+    const scrollTo = direction === 'left' 
+      ? container.scrollLeft - scrollAmount
+      : container.scrollLeft + scrollAmount
+
+    container.scrollTo({
+      left: scrollTo,
+      behavior: 'smooth'
+    })
+  }
 
   if (isLoading) {
     return (
@@ -78,7 +121,33 @@ export function LandmarksSection({ location }: LandmarksSectionProps) {
         </div>
 
         <div className="relative">
-          <div className="flex gap-4 overflow-x-auto scrollbar-hide pb-4 scroll-smooth">
+          {/* Кнопка прокрутки влево */}
+          {canScrollLeft && (
+            <button
+              onClick={() => scroll('left')}
+              className="absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-white/90 hover:bg-white rounded-full p-2 shadow-lg transition-all hover:scale-110"
+              aria-label="Прокрутить влево"
+            >
+              <ChevronLeft size={24} className="text-gray-900" />
+            </button>
+          )}
+
+          {/* Кнопка прокрутки вправо */}
+          {canScrollRight && (
+            <button
+              onClick={() => scroll('right')}
+              className="absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-white/90 hover:bg-white rounded-full p-2 shadow-lg transition-all hover:scale-110"
+              aria-label="Прокрутить вправо"
+            >
+              <ChevronRight size={24} className="text-gray-900" />
+            </button>
+          )}
+
+          <div
+            ref={scrollContainerRef}
+            className="flex gap-4 overflow-x-auto scrollbar-hide pb-4 scroll-smooth"
+            style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+          >
             {landmarks.slice(0, 12).map((landmark: any, i: number) => (
               <motion.div
                 key={landmark.name}
