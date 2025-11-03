@@ -26,7 +26,7 @@ export function LandmarksSection({ location }: LandmarksSectionProps) {
 
   if (isLoading) {
     return (
-      <section className="py-12 bg-gray-50">
+      <section className="py-12 bg-gray-100">
         <div className="container mx-auto px-4">
           <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-6">
             Достопримечательности
@@ -68,7 +68,7 @@ export function LandmarksSection({ location }: LandmarksSectionProps) {
   }
 
   return (
-    <section className="py-12 bg-gray-50 border-b">
+    <section className="py-12 bg-gray-100">
       <div className="container mx-auto px-4">
         <div className="flex items-center gap-3 mb-6">
           <Landmark className="text-airbnb-rausch" size={28} />
@@ -109,7 +109,7 @@ export function LandmarksSection({ location }: LandmarksSectionProps) {
             ))}
           </div>
           {/* Градиент справа для индикации прокрутки */}
-          <div className="absolute right-0 top-0 bottom-4 w-20 bg-gradient-to-l from-gray-50 to-transparent pointer-events-none" />
+          <div className="absolute right-0 top-0 bottom-4 w-20 bg-gradient-to-l from-gray-100 to-transparent pointer-events-none" />
         </div>
       </div>
     </section>
