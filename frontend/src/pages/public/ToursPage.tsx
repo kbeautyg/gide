@@ -236,15 +236,6 @@ export default function ToursPage() {
     <div className="min-h-screen bg-gray-100">
       <PublicHeader />
 
-      {/* CityHero - показываем всегда при наличии активной локации */}
-      {cityInfo && (
-        <CityHero 
-          city={cityInfo.city} 
-          country={cityInfo.country} 
-          toursCount={cityInfo.toursCount}
-        />
-      )}
-
       {/* Breadcrumbs */}
       <div className="bg-gray-100">
         <div className="container mx-auto px-4 py-3">
@@ -274,11 +265,6 @@ export default function ToursPage() {
           </div>
         </div>
       </div>
-
-      {/* Landmarks Section - показываем только если есть активная локация и нет фильтра по landmarks */}
-      {activeLocation && state.landmarks.length === 0 && (
-        <LandmarksSection location={activeLocation} />
-      )}
 
       {/* Заголовок страницы - показываем только если НЕТ cityInfo */}
       {!cityInfo && (
@@ -496,6 +482,18 @@ export default function ToursPage() {
           </div>
         </div>
       </div>
+
+      {/* CityHero и LandmarksSection - показываем всегда после фильтров */}
+      <CityHero 
+        city={cityInfo?.city} 
+        country={cityInfo?.country} 
+        toursCount={toursData?.total || 0}
+      />
+      
+      {/* Landmarks Section - показываем всегда, если нет фильтра по landmarks */}
+      {state.landmarks.length === 0 && (
+        <LandmarksSection location={activeLocation || undefined} />
+      )}
 
       {/* Активные категории - отображение выбранных */}
       {activeFiltersCount > 0 && (

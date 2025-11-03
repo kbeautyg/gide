@@ -6,15 +6,20 @@ import { Landmark } from 'lucide-react'
 import { buildToursLink } from '@/lib/navigationUtils'
 
 interface LandmarksSectionProps {
-  location: string
+  location?: string
 }
 
 export function LandmarksSection({ location }: LandmarksSectionProps) {
   // Загружаем достопримечательности с реальным подсчетом из API
+  // Если location не указан, загружаем все достопримечательности (ранжированные)
   const { data: landmarksData, isLoading } = useQuery({
-    queryKey: ['landmarks', location],
-    queryFn: () => api.get(`/destinations/landmarks-with-counts?location=${encodeURIComponent(location)}`).then(res => res.data),
-    enabled: !!location,
+    queryKey: ['landmarks', location || 'all'],
+    queryFn: () => {
+      const url = location 
+        ? `/destinations/landmarks-with-counts?location=${encodeURIComponent(location)}`
+        : '/destinations/landmarks-with-counts'
+      return api.get(url).then(res => res.data)
+    },
   })
 
   const landmarks = landmarksData?.landmarks || []
@@ -68,7 +73,7 @@ export function LandmarksSection({ location }: LandmarksSectionProps) {
         <div className="flex items-center gap-3 mb-6">
           <Landmark className="text-airbnb-rausch" size={28} />
           <h2 className="text-2xl md:text-3xl font-bold text-gray-900">
-            Достопримечательности в {location}
+            Достопримечательности{location ? ` в ${location}` : ''}
           </h2>
         </div>
 
