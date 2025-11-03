@@ -171,6 +171,17 @@ export default function ToursPage() {
 
   // Определяем город и страну из активной локации
   const getCityInfo = () => {
+    // Если выбрана страна (но нет города)
+    if (state.countries.length > 0 && state.cities.length === 0) {
+      const country = state.countries[0]
+      return {
+        city: undefined,
+        country: country,
+        toursCount: toursData?.total || 0
+      }
+    }
+    
+    // Если выбраны города или есть активная локация
     if (!activeLocation) return null
     
     // Если есть туры, пытаемся определить страну из первого тура
