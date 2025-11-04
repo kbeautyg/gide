@@ -6,7 +6,7 @@ from sqlalchemy.orm import selectinload
 from sqlalchemy.ext.asyncio import AsyncSession
 from typing import List, Optional, Tuple
 import uuid
-from datetime import datetime, timedelta
+from datetime import datetime
 
 from app.models.tour import Tour
 from app.models.user import User
@@ -121,24 +121,11 @@ class TourService:
         if tags:
             tags_list = [t.strip() for t in tags.split(',')]
             for tag in tags_list:
-                # Быстрые фильтры через теги
-                if tag == 'Со скидкой':
-                    # Фильтр по турам со скидкой
-                    query = query.where(
-                        Tour.discount_price.isnot(None),
-                        Tour.discount_price < Tour.price
-                    )
-                elif tag == 'Новые':
-                    # Фильтр по турам созданным за последние 30 дней
-                    thirty_days_ago = datetime.utcnow() - timedelta(days=30)
-                    query = query.where(Tour.created_at >= thirty_days_ago)
-                else:
-                    # Обычный тег
-                    from sqlalchemy.dialects.postgresql import JSONB
-                    from sqlalchemy import cast
-                    query = query.where(
-                        cast(Tour.tags, JSONB).contains([tag])
-                    )
+                from sqlalchemy.dialects.postgresql import JSONB
+                from sqlalchemy import cast
+                query = query.where(
+                    cast(Tour.tags, JSONB).contains([tag])
+                )
         
         # Поиск по достопримечательностям
         if landmarks:
