@@ -12,6 +12,7 @@ class CategoryBase(BaseModel):
     slug: str = Field(..., description="Slug для URL")
     description: Optional[str] = None
     type: str = Field(..., description="Тип: landmark, theme, format, collection")
+    parent_id: Optional[int] = Field(None, description="ID родительской категории (для подкатегорий)")
     icon: Optional[str] = None
     image_url: Optional[str] = None
     filters: Dict[str, Any] = Field(default_factory=dict)
@@ -34,6 +35,7 @@ class CategoryUpdate(BaseModel):
     slug: Optional[str] = None
     description: Optional[str] = None
     type: Optional[str] = None
+    parent_id: Optional[int] = None
     icon: Optional[str] = None
     image_url: Optional[str] = None
     filters: Optional[Dict[str, Any]] = None
@@ -51,6 +53,7 @@ class Category(CategoryBase):
     views_count: int = 0
     clicks_count: int = 0
     tours_count: Optional[int] = None  # Добавляется динамически
+    children: Optional[List['Category']] = None  # Подкатегории
     created_at: datetime
     updated_at: datetime
 

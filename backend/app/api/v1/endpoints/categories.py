@@ -27,6 +27,8 @@ async def get_categories(
     type: Optional[str] = Query(None, description="Тип категории: landmark, theme, format, collection"),
     is_featured: Optional[bool] = Query(None, description="Только избранные"),
     with_counts: bool = Query(False, description="Включить подсчет туров"),
+    include_children: bool = Query(False, description="Включить подкатегории"),
+    parent_id: Optional[int] = Query(None, description="ID родительской категории (для получения подкатегорий)"),
     db: AsyncSession = Depends(get_db)
 ):
     """
@@ -37,15 +39,25 @@ async def get_categories(
     - theme: Тематика (культура, природа, гастрономия и тд)
     - format: Формат (индивидуальные, групповые и тд)
     - collection: Коллекции
+    
+    Параметры:
+    - include_children: Если True, возвращает категории с их подкатегориями
+    - parent_id: Если указан, возвращает только подкатегории указанной категории
     """
     if with_counts:
-        categories_data = await CategoryService.get_categories_with_counts(db, category_type=type)
+        categories_data = await CategoryService.get_categories_with_counts(
+            db, 
+            category_type=type,
+            include_children=include_children
+        )
         return categories_data
     else:
         categories = await CategoryService.get_categories(
             db,
             category_type=type,
-            is_featured=is_featured
+            is_featured=is_featured,
+            include_children=include_children,
+            parent_id=parent_id
         )
         return categories
 

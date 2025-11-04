@@ -1,7 +1,8 @@
 """
 Модель категории для управления рубриками и разделами экскурсий
 """
-from sqlalchemy import Column, String, Integer, Boolean, Text, JSON, DateTime, Float
+from sqlalchemy import Column, String, Integer, Boolean, Text, JSON, DateTime, Float, ForeignKey
+from sqlalchemy.orm import relationship
 from datetime import datetime
 from app.db.base import Base
 
@@ -19,6 +20,12 @@ class Category(Base):
     
     # Тип категории
     type = Column(String, nullable=False, index=True)  # "landmark", "theme", "format", "collection"
+    
+    # Иерархия категорий (для подкатегорий)
+    parent_id = Column(Integer, ForeignKey("categories.id"), nullable=True, index=True)  # Родительская категория
+    
+    # Relationship для подкатегорий
+    children = relationship("Category", backref="parent", remote_side=[id], lazy="dynamic")
     
     # Иконка и изображение
     icon = Column(String, nullable=True)  # lucide-icon name или emoji
