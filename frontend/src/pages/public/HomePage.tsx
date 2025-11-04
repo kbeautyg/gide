@@ -11,8 +11,7 @@ import { LiveStats } from '@/components/LiveStats'
 import { AnimatedFeatures } from '@/components/AnimatedFeatures'
 import { DynamicNavigation } from '@/components/DynamicNavigation'
 import { SmartRecommendations } from '@/components/SmartRecommendations'
-import { buildExperienceUrl, buildDestinationUrl, buildCategoryUrl } from '@/lib/routing'
-import { getCitySlug, getCountrySlug, getCategorySlug } from '@/lib/urlSlugs'
+import { buildExperienceUrl, buildCategoryUrl } from '@/lib/routing'
 
 // Анимационные варианты
 const containerVariants = {

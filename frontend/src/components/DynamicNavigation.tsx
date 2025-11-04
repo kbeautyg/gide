@@ -1,5 +1,10 @@
-import { buildExperienceUrl, buildDestinationUrl, buildCategoryUrl } from '@/lib/routing'
-import { getCitySlug, getCountrySlug, getCategorySlug } from '@/lib/urlSlugs'
+import { useQuery } from '@tanstack/react-query'
+import { motion } from 'framer-motion'
+import { Link } from 'react-router-dom'
+import { api } from '@/lib/api'
+import { Loader2, MapPin, Tag, Compass, Grid } from 'lucide-react'
+import { buildExperienceUrl, buildDestinationUrl } from '@/lib/routing'
+import { getCitySlug, getCountrySlug } from '@/lib/urlSlugs'
 
 interface NavigationItem {
   name: string
@@ -20,7 +25,7 @@ export function DynamicNavigation({
 }: DynamicNavigationProps) {
   const { data: navigationData, isLoading } = useQuery({
     queryKey: ['dynamic-navigation'],
-    queryFn: () => api.get('/tours/dynamic-navigation').then(res => res.data.data),
+    queryFn: () => api.get('/tours/dynamic-navigation').then((res: any) => res.data.data),
   })
 
   if (isLoading) {

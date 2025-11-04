@@ -1,4 +1,4 @@
-import { useParams, useSearchParams } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
 import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
@@ -11,11 +11,11 @@ import { TourCardSkeleton } from '@/components/TourCardSkeleton'
 import { Pagination } from '@/components/Pagination'
 import { Breadcrumbs } from '@/components/Breadcrumbs'
 import { useNavigation } from '@/hooks/useNavigation'
-import { getCityName, getCountryName, getCategoryName, getCategorySlug } from '@/lib/urlSlugs'
-import { buildDestinationUrl, buildCategoryUrl } from '@/lib/routing'
+import { getCityName, getCategoryName, getCategorySlug } from '@/lib/urlSlugs'
+import { buildDestinationUrl } from '@/lib/routing'
 import { useNavigate } from 'react-router-dom'
 import { api } from '@/lib/api'
-import { stringToPriceRange, stringToDurationRange, stringToRating } from '@/lib/urlParams'
+import { stringToPriceRange, stringToRating } from '@/lib/urlParams'
 
 /**
  * Страница города (ExperiencePage)
@@ -24,7 +24,6 @@ import { stringToPriceRange, stringToDurationRange, stringToRating } from '@/lib
  */
 export default function ExperiencePage() {
   const { citySlug, categorySlug } = useParams<{ citySlug: string; categorySlug?: string }>()
-  const [searchParams] = useSearchParams()
   const navigate = useNavigate()
   const navigation = useNavigation()
   const { state } = navigation

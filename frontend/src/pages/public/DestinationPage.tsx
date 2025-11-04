@@ -22,7 +22,7 @@ export default function DestinationPage() {
   const countryName = countrySlug ? getCountryName(countrySlug) : null
   
   // Загрузка информации о стране
-  const { data: countryInfo, isLoading } = useQuery({
+  const { data: countryInfo } = useQuery({
     queryKey: ['country-info', countrySlug],
     queryFn: () => {
       if (!countrySlug) return null

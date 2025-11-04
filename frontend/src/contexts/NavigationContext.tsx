@@ -1,7 +1,7 @@
 import React, { createContext, useEffect, useState, useCallback, useRef } from 'react'
 import { useSearchParams, useNavigate, useLocation } from 'react-router-dom'
 import { NavigationState, NavigationContextValue, initialNavigationState } from '@/types/navigation'
-import { parseUrlParams, buildUrlParams, FilterParams } from '@/lib/urlParams'
+import { parseUrlParams, FilterParams } from '@/lib/urlParams'
 import { getCityName, getCountryName, getCategoryName, getCitySlug, getCountrySlug, getCategorySlug } from '@/lib/urlSlugs'
 import { buildExperienceUrl, buildDestinationUrl, buildCategoryUrl, buildFilteredUrl } from '@/lib/routing'
 

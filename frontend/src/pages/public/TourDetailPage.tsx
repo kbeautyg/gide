@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Link, useParams } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 import { useQuery, useMutation } from '@tanstack/react-query'
 import { motion } from 'framer-motion'
 import { 
@@ -15,9 +15,11 @@ import { Label } from '@/components/ui/label'
 import { toursApi, bookingsApi, api } from '@/lib/api'
 import type { Tour } from '@/types/tour'
 import { formatRUB } from '@/lib/utils'
+import { PublicHeader } from '@/components/PublicHeader'
+import { PublicFooter } from '@/components/PublicFooter'
+import { TourCard } from '@/components/TourCard'
 import { Breadcrumbs } from '@/components/Breadcrumbs'
 import { buildExperienceUrl, buildDestinationUrl } from '@/lib/routing'
-import { getCityName, getCountryName } from '@/lib/urlSlugs'
 
 export default function TourDetailPage() {
   const { id } = useParams<{ id: string }>()
