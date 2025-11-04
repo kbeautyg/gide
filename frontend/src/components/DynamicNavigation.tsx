@@ -1,8 +1,5 @@
-import { useQuery } from '@tanstack/react-query'
-import { motion } from 'framer-motion'
-import { Link } from 'react-router-dom'
-import { api } from '@/lib/api'
-import { Loader2, MapPin, Tag, Compass, Grid } from 'lucide-react'
+import { buildExperienceUrl, buildDestinationUrl, buildCategoryUrl } from '@/lib/routing'
+import { getCitySlug, getCountrySlug, getCategorySlug } from '@/lib/urlSlugs'
 
 interface NavigationItem {
   name: string
@@ -74,23 +71,37 @@ export function DynamicNavigation({
     switch (item.type) {
       case 'landmark':
         params.append('landmarks', item.name)
-        break
+        return `/tours?${params.toString()}`
       case 'tag':
         params.append('tags', item.name)
-        break
+        return `/tours?${params.toString()}`
       case 'theme':
         params.append('themes', item.name)
-        break
+        return `/tours?${params.toString()}`
       case 'category':
         // Используем themes вместо category для единообразия
         params.append('themes', item.name)
-        break
+        return `/tours?${params.toString()}`
       case 'location':
-        params.append('location', item.name.split(',')[0].trim())
-        break
+        // Для локаций используем новые URL паттерны
+        const locationParts = item.name.split(',')
+        const cityName = locationParts[0].trim()
+        const citySlug = getCitySlug(cityName)
+        if (citySlug) {
+          return buildExperienceUrl(cityName)
+        }
+        // Если это страна, используем новый формат
+        const countryName = locationParts.length > 1 ? locationParts[1].trim() : cityName
+        const countrySlug = getCountrySlug(countryName)
+        if (countrySlug) {
+          return buildDestinationUrl(countryName)
+        }
+        // Fallback на старый формат
+        params.append('location', cityName)
+        return `/tours?${params.toString()}`
+      default:
+        return `/tours`
     }
-    
-    return `/tours?${params.toString()}`
   }
 
   const renderSection = (sectionName: string, items: NavigationItem[]) => {

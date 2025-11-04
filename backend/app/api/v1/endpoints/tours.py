@@ -382,6 +382,53 @@ async def get_tour_by_code(
 
 # ============= СТАТИЧЕСКИЕ РОУТЫ (ДОЛЖНЫ БЫТЬ ПЕРЕД /{tour_id}!) =============
 
+@router.get("/experience/{city_slug}")
+async def get_city_experience(
+    city_slug: str,
+    db: AsyncSession = Depends(get_db)
+):
+    """
+    Получить информацию о городе по slug (новый формат для Tripster-style URL)
+    Пример: /api/v1/tours/experience/bangkok
+    """
+    from app.utils.slug_mapping import get_city_name_from_slug
+    
+    city_name = get_city_name_from_slug(city_slug)
+    if not city_name:
+        raise HTTPException(status_code=404, detail="Город не найден")
+    
+    # Подсчитываем количество туров для города
+    stmt = select(func.count(Tour.id)).where(
+        Tour.active == True,
+        Tour.is_public == True,
+        Tour.location.ilike(f'{city_name}%')
+    )
+    result = await db.execute(stmt)
+    tours_count = result.scalar() or 0
+    
+    # Определяем страну из location (если есть формат "Город, Страна")
+    stmt_location = select(Tour.location).where(
+        Tour.active == True,
+        Tour.is_public == True,
+        Tour.location.ilike(f'{city_name}%')
+    ).limit(1)
+    
+    location_result = await db.execute(stmt_location)
+    location_row = location_result.scalar_one_or_none()
+    country_name = None
+    if location_row:
+        parts = location_row.split(', ')
+        if len(parts) == 2:
+            country_name = parts[1].strip()
+    
+    return {
+        "city": city_name,
+        "slug": city_slug,
+        "country": country_name,
+        "tours_count": tours_count
+    }
+
+
 @router.get("/rubrics")
 async def get_rubrics(
     location: Optional[str] = Query(None, description="Локация для фильтрации рубрик"),
@@ -389,21 +436,89 @@ async def get_rubrics(
 ):
     """
     Получить рубрики (категории) с подсчетом туров для конкретной локации
-    Как на Tripster - простые рубрики-фильтры
-    
-    Логика:
-    - Если location указан, возвращаем только рубрики с турами для этой локации
-    - Подсчет туров основан на типе категории:
-      * theme: ищем в Tour.themes JSON поле
-      * landmark: ищем в Tour.landmarks JSON поле
-      * format: ищем в Tour.formats JSON поле
+    Как на Tripster - простые рубрики-фильтры с быстрыми фильтрами
     """
     from app.services.category_service import CategoryService
     from app.models.tour import Tour
-    from sqlalchemy import select, func, cast
+    from sqlalchemy import select, func, cast, and_
     from sqlalchemy.dialects.postgresql import JSONB
+    from datetime import datetime, timedelta
     
-    # Получаем все активные категории (themes и landmarks) - только родительские (без подкатегорий)
+    rubrics = []
+    
+    # Базовый запрос для подсчета туров с учетом локации
+    base_query = select(Tour).where(
+        Tour.active == True,
+        Tour.is_public == True
+    )
+    
+    if location:
+        base_query = base_query.where(Tour.location.ilike(f"%{location}%"))
+    
+    # 1. Быстрые фильтры (как на Tripster)
+    # "Со скидкой" - туры с discount_price < price
+    discount_query = select(func.count(Tour.id)).where(
+        Tour.active == True,
+        Tour.is_public == True,
+        Tour.discount_price.isnot(None),
+        Tour.discount_price < Tour.price
+    )
+    if location:
+        discount_query = discount_query.where(Tour.location.ilike(f"%{location}%"))
+    discount_count = (await db.execute(discount_query)).scalar() or 0
+    if discount_count > 0:
+        rubrics.append({
+            "id": "quick_discount",
+            "name": "Со скидкой",
+            "slug": "discount",
+            "type": "quick_filter",
+            "icon": "🔥",
+            "tours_count": discount_count,
+            "display_order": 1
+        })
+    
+    # "Новые" - туры созданные за последние 30 дней
+    thirty_days_ago = datetime.utcnow() - timedelta(days=30)
+    new_query = select(func.count(Tour.id)).where(
+        Tour.active == True,
+        Tour.is_public == True,
+        Tour.created_at >= thirty_days_ago
+    )
+    if location:
+        new_query = new_query.where(Tour.location.ilike(f"%{location}%"))
+    new_count = (await db.execute(new_query)).scalar() or 0
+    if new_count > 0:
+        rubrics.append({
+            "id": "quick_new",
+            "name": "Новые",
+            "slug": "new",
+            "type": "quick_filter",
+            "icon": "✨",
+            "tours_count": new_count,
+            "display_order": 2
+        })
+    
+    # "Лучшие" - туры с рейтингом >= 4.7
+    best_query = select(func.count(Tour.id)).where(
+        Tour.active == True,
+        Tour.is_public == True,
+        Tour.rating >= 4.7
+    )
+    if location:
+        best_query = best_query.where(Tour.location.ilike(f"%{location}%"))
+    best_count = (await db.execute(best_query)).scalar() or 0
+    if best_count > 0:
+        rubrics.append({
+            "id": "quick_best",
+            "name": "Лучшие",
+            "slug": "best",
+            "type": "quick_filter",
+            "icon": "⭐",
+            "tours_count": best_count,
+            "display_order": 3
+        })
+    
+    # 2. Категории (themes и landmarks)
     categories = await CategoryService.get_categories(
         db,
         category_type=None,  # Все типы
@@ -412,45 +527,25 @@ async def get_rubrics(
         parent_id=None  # Только родительские категории
     )
     
-    # Подсчитываем туры для каждой категории с учетом локации
-    rubrics = []
-    
     for category in categories:
-        # Базовый запрос для подсчета туров
+        # Подсчитываем туры для категории с учетом локации
         query = select(func.count(Tour.id)).where(
             Tour.active == True,
             Tour.is_public == True
         )
         
-        # Фильтр по локации если указан
         if location:
             query = query.where(Tour.location.ilike(f"%{location}%"))
         
-        # Фильтр по типу категории - проверяем соответствие в JSON полях
+        # Фильтр по типу категории
         if category.type == 'theme':
-            # Для тем ищем в Tour.themes
-            query = query.where(
-                cast(Tour.themes, JSONB).contains([category.name])
-            )
+            query = query.where(cast(Tour.themes, JSONB).contains([category.name]))
         elif category.type == 'landmark':
-            # Для достопримечательностей ищем в Tour.landmarks
-            query = query.where(
-                cast(Tour.landmarks, JSONB).contains([category.name])
-            )
+            query = query.where(cast(Tour.landmarks, JSONB).contains([category.name]))
         elif category.type == 'format':
-            # Для форматов ищем в Tour.formats
-            query = query.where(
-                cast(Tour.formats, JSONB).contains([category.name])
-            )
-        else:
-            # Для других типов используем фильтры из категории
-            filters = category.filters or {}
-            if 'category' in filters:
-                query = query.where(Tour.category == filters['category'])
+            query = query.where(cast(Tour.formats, JSONB).contains([category.name]))
         
-        # Выполняем подсчет
-        result = await db.execute(query)
-        tours_count = result.scalar() or 0
+        tours_count = (await db.execute(query)).scalar() or 0
         
         # Добавляем только если есть туры
         if tours_count > 0:
@@ -461,11 +556,14 @@ async def get_rubrics(
                 "type": category.type,
                 "icon": category.icon,
                 "tours_count": tours_count,
-                "display_order": category.display_order
+                "display_order": category.display_order or 100
             })
     
-    # Сортируем по порядку отображения и количеству туров (по убыванию)
-    rubrics.sort(key=lambda x: (x["display_order"], -x["tours_count"]))
+    # Сортируем: сначала быстрые фильтры (по display_order), потом категории (по display_order и количеству туров)
+    rubrics.sort(key=lambda x: (
+        x.get("display_order", 100) if x.get("type") == "quick_filter" else 1000 + x.get("display_order", 1000),
+        -x.get("tours_count", 0)
+    ))
     
     return {
         "rubrics": rubrics,

@@ -693,9 +693,9 @@ export default function AboutPage() {
                 whileTap={{ scale: 0.95 }}
               >
                 <Link to="/tours">
-                  <button className="px-10 py-5 bg-white text-airbnb-rausch rounded-full font-bold text-lg shadow-2xl hover:shadow-3xl transition-all">
-                    🗺️ Найти экскурсию
-                  </button>
+                <button className="px-10 py-5 bg-white text-airbnb-rausch rounded-full font-bold text-lg shadow-2xl hover:shadow-3xl transition-all">
+                  🗺️ Найти экскурсию
+                </button>
                 </Link>
               </motion.div>
               
@@ -704,9 +704,9 @@ export default function AboutPage() {
                 whileTap={{ scale: 0.95 }}
               >
                 <Link to="/become-guide">
-                  <button className="px-10 py-5 bg-transparent border-2 border-white text-white rounded-full font-bold text-lg hover:bg-white hover:text-airbnb-rausch transition-all">
-                    ⭐ Стать гидом
-                  </button>
+                <button className="px-10 py-5 bg-transparent border-2 border-white text-white rounded-full font-bold text-lg hover:bg-white hover:text-airbnb-rausch transition-all">
+                  ⭐ Стать гидом
+                </button>
                 </Link>
               </motion.div>
             </div>

@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import { buildToursLink } from '@/lib/navigationUtils'
+import { buildExperienceUrl } from '@/lib/routing'
 
 export function PublicFooter() {
   return (
@@ -12,10 +12,10 @@ export function PublicFooter() {
           <div>
             <h4 className="font-semibold mb-4">Экскурсии</h4>
             <ul className="space-y-2 text-gray-400">
-              <li><Link to={buildToursLink({ location: 'Пхукет' })} className="hover:text-white transition-colors">Пхукет</Link></li>
-              <li><Link to={buildToursLink({ location: 'Паттайя' })} className="hover:text-white transition-colors">Паттайя</Link></li>
-              <li><Link to={buildToursLink({ location: 'Бангкок' })} className="hover:text-white transition-colors">Бангкок</Link></li>
-              <li><Link to={buildToursLink({ location: 'Краби' })} className="hover:text-white transition-colors">Краби</Link></li>
+              <li><Link to={buildExperienceUrl('Пхукет')} className="hover:text-white transition-colors">Пхукет</Link></li>
+              <li><Link to={buildExperienceUrl('Паттайя')} className="hover:text-white transition-colors">Паттайя</Link></li>
+              <li><Link to={buildExperienceUrl('Бангкок')} className="hover:text-white transition-colors">Бангкок</Link></li>
+              <li><Link to={buildExperienceUrl('Краби')} className="hover:text-white transition-colors">Краби</Link></li>
             </ul>
           </div>
           

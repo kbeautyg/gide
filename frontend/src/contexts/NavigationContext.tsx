@@ -1,7 +1,9 @@
 import React, { createContext, useEffect, useState, useCallback, useRef } from 'react'
-import { useSearchParams, useNavigate } from 'react-router-dom'
+import { useSearchParams, useNavigate, useLocation } from 'react-router-dom'
 import { NavigationState, NavigationContextValue, initialNavigationState } from '@/types/navigation'
 import { parseUrlParams, buildUrlParams, FilterParams } from '@/lib/urlParams'
+import { getCityName, getCountryName, getCategoryName, getCitySlug, getCountrySlug, getCategorySlug } from '@/lib/urlSlugs'
+import { buildExperienceUrl, buildDestinationUrl, buildCategoryUrl, buildFilteredUrl } from '@/lib/routing'
 
 const NavigationContext = createContext<NavigationContextValue | undefined>(undefined)
 
@@ -28,6 +30,7 @@ interface NavigationProviderProps {
 export function NavigationProvider({ children }: NavigationProviderProps) {
   const [searchParams] = useSearchParams()
   const navigate = useNavigate()
+  const location = useLocation()
   
   // Состояние навигации
   const [state, setState] = useState<NavigationState>(initialNavigationState)
@@ -35,8 +38,14 @@ export function NavigationProvider({ children }: NavigationProviderProps) {
   // Флаг для предотвращения зацикливания при синхронизации
   const isUpdatingFromUrl = useRef(false)
   const isUpdatingToUrl = useRef(false)
+  
+  // Определяем текущую страницу из pathname
+  const pathMatch = location.pathname.match(/^\/(experience|destinations)\/([^\/]+)(?:\/([^\/]+))?/)
+  const pageType = pathMatch?.[1] // 'experience' или 'destinations'
+  const firstSlug = pathMatch?.[2] // slug города или страны
+  const secondSlug = pathMatch?.[3] // slug категории (если есть)
 
-  // Чтение параметров из URL и применение к состоянию
+  // Чтение параметров из URL и pathname, применение к состоянию
   useEffect(() => {
     // Пропускаем если мы сами обновляем URL
     if (isUpdatingToUrl.current) {
@@ -50,7 +59,32 @@ export function NavigationProvider({ children }: NavigationProviderProps) {
       const params = parseUrlParams(searchParams)
       const newState: NavigationState = { ...initialNavigationState }
 
-      // Обработка location
+      // Обработка локации из pathname (новый формат)
+      if (pageType === 'destinations' && firstSlug) {
+        // Страница страны: /destinations/{country-slug}
+        const countryName = getCountryName(firstSlug)
+        if (countryName) {
+          newState.countries = [countryName]
+          newState.location = countryName
+        }
+      } else if (pageType === 'experience' && firstSlug) {
+        // Страница города: /experience/{city-slug} или /experience/{city-slug}/{category-slug}
+        const cityName = getCityName(firstSlug)
+        if (cityName) {
+          newState.cities = [cityName]
+          newState.location = cityName
+          
+          // Обработка категории из pathname
+          if (secondSlug) {
+            const categoryName = getCategoryName(secondSlug)
+            if (categoryName) {
+              newState.themes = [categoryName]
+            }
+          }
+        }
+      }
+
+      // Обработка location из query параметров (старый формат для обратной совместимости)
       if (params.location && Array.isArray(params.location) && params.location.length > 0) {
         const cities: string[] = []
         const countries: string[] = []
@@ -69,14 +103,22 @@ export function NavigationProvider({ children }: NavigationProviderProps) {
           singleLocation = params.location[0]
         }
 
-        newState.location = singleLocation
-        newState.cities = cities
-        newState.countries = countries
+        // Объединяем с данными из pathname (если нет конфликта)
+        if (!newState.location) {
+          newState.location = singleLocation
+          newState.cities = cities
+          newState.countries = countries
+        }
       }
 
-      // Обработка themes (включая category для обратной совместимости)
+      // Обработка themes из query параметров (объединяем с themes из pathname)
       if (params.themes && params.themes.length > 0) {
-        newState.themes = params.themes
+        if (newState.themes.length > 0) {
+          // Если уже есть themes из pathname, объединяем
+          newState.themes = [...new Set([...newState.themes, ...params.themes])]
+        } else {
+          newState.themes = params.themes
+        }
       }
 
       // Обработка landmarks
@@ -121,7 +163,7 @@ export function NavigationProvider({ children }: NavigationProviderProps) {
     } finally {
       isUpdatingFromUrl.current = false
     }
-  }, [searchParams])
+  }, [searchParams, location.pathname, pageType, firstSlug, secondSlug])
 
   // Обновление URL при изменении состояния
   const updateUrl = useCallback((newState: NavigationState) => {
@@ -131,23 +173,43 @@ export function NavigationProvider({ children }: NavigationProviderProps) {
     isUpdatingToUrl.current = true
 
     try {
+      // Определяем базовый URL из локации (новый формат)
+      let baseUrl = '/tours' // По умолчанию старая страница
+      
+      // Приоритет: город > страна
+      if (newState.cities.length > 0) {
+        // Если есть город, используем новый формат: /experience/{city-slug}
+        const citySlug = getCitySlug(newState.cities[0])
+        if (newState.themes.length > 0) {
+          // Если есть категория, добавляем её: /experience/{city-slug}/{category-slug}
+          const categorySlug = getCategorySlug(newState.themes[0])
+          baseUrl = `/experience/${citySlug}/${categorySlug}`
+        } else {
+          baseUrl = `/experience/${citySlug}`
+        }
+      } else if (newState.countries.length > 0) {
+        // Если есть страна, используем новый формат: /destinations/{country-slug}
+        const countrySlug = getCountrySlug(newState.countries[0])
+        baseUrl = `/destinations/${countrySlug}`
+      } else if (newState.location && KNOWN_CITIES.includes(newState.location)) {
+        // Если location - это город
+        const citySlug = getCitySlug(newState.location)
+        baseUrl = `/experience/${citySlug}`
+      } else if (newState.location) {
+        // Если location - это страна
+        const countrySlug = getCountrySlug(newState.location)
+        baseUrl = `/destinations/${countrySlug}`
+      }
+
+      // Фильтры (цена, длительность, рейтинг, гости) остаются в query параметрах
       const filters: FilterParams = {}
 
-      // Location из одиночного значения или массивов
-      const locations: string[] = []
-      if (newState.location) {
-        locations.push(newState.location)
-      }
-      locations.push(...newState.cities)
-      locations.push(...newState.countries)
-      
-      if (locations.length > 0) {
-        filters.location = [...new Set(locations)] // Убираем дубликаты
-      }
-
-      // Themes
-      if (newState.themes.length > 0) {
-        filters.themes = newState.themes
+      // Themes (только если их больше 1 или они не в pathname)
+      // Если тема уже в pathname, не добавляем её в query
+      const themesInPath = newState.themes.length > 0 && newState.cities.length > 0 ? [newState.themes[0]] : []
+      const themesInQuery = newState.themes.filter(t => !themesInPath.includes(t))
+      if (themesInQuery.length > 0) {
+        filters.themes = themesInQuery
       }
 
       // Landmarks
@@ -190,11 +252,11 @@ export function NavigationProvider({ children }: NavigationProviderProps) {
         filters.guests = newState.guests
       }
 
-      const urlParams = buildUrlParams(filters)
-      const newUrl = `/tours?${urlParams.toString()}`
+      // Строим финальный URL с query параметрами
+      const finalUrl = buildFilteredUrl(baseUrl, filters)
       
       // Обновляем URL без перезагрузки страницы
-      navigate(newUrl, { replace: true })
+      navigate(finalUrl, { replace: true })
       
       // Сбрасываем флаг сразу после navigate
       // Используем requestAnimationFrame для синхронизации с React
@@ -211,10 +273,23 @@ export function NavigationProvider({ children }: NavigationProviderProps) {
   const setLocation = useCallback((location: string | null) => {
     setState(prev => {
       const newState = { ...prev, location, cities: [], countries: [] }
-      updateUrl(newState)
+      // Если location - это город или страна, переходим на новый URL
+      if (location) {
+        if (KNOWN_CITIES.includes(location)) {
+          // Это город
+          const citySlug = getCitySlug(location)
+          navigate(`/experience/${citySlug}`, { replace: true })
+        } else {
+          // Это страна
+          const countrySlug = getCountrySlug(location)
+          navigate(`/destinations/${countrySlug}`, { replace: true })
+        }
+      } else {
+        updateUrl(newState)
+      }
       return newState
     })
-  }, [updateUrl])
+  }, [updateUrl, navigate])
 
   const addCity = useCallback((city: string) => {
     setState(prev => {
@@ -247,18 +322,29 @@ export function NavigationProvider({ children }: NavigationProviderProps) {
   const toggleCity = useCallback((city: string) => {
     setState(prev => {
       const isIncluded = prev.cities.includes(city)
-      const newState = {
-        ...prev,
-        cities: isIncluded
-          ? prev.cities.filter(c => c !== city)
-          : [...prev.cities, city],
-        // Очищаем location только если оно совпадает с удаляемым городом
-        location: (!isIncluded && prev.location === city) ? null : prev.location
+      
+      if (isIncluded) {
+        // Удаляем город
+        const newState = {
+          ...prev,
+          cities: prev.cities.filter(c => c !== city),
+          location: prev.location === city ? null : prev.location
+        }
+        updateUrl(newState)
+        return newState
+      } else {
+        // Добавляем город - переходим на страницу города
+        const citySlug = getCitySlug(city)
+        const newState = {
+          ...prev,
+          cities: [city], // При выборе города оставляем только его
+          location: city
+        }
+        navigate(`/experience/${citySlug}`, { replace: true })
+        return newState
       }
-      updateUrl(newState)
-      return newState
     })
-  }, [updateUrl])
+  }, [updateUrl, navigate])
 
   const addCountry = useCallback((country: string) => {
     setState(prev => {
@@ -285,43 +371,30 @@ export function NavigationProvider({ children }: NavigationProviderProps) {
   const toggleCountry = useCallback((country: string) => {
     setState(prev => {
       const isIncluded = prev.countries.includes(country)
-      const newCountries = isIncluded
-        ? prev.countries.filter(c => c !== country)
-        : [...prev.countries, country]
       
-      // Определяем валидные города для выбранных стран
-      // Используем статический список известных городов
-      const validCitiesForCountries = newCountries.flatMap(c => {
-        // Маппинг стран на города (можно вынести в константу)
-        const cityMap: Record<string, string[]> = {
-          'Таиланд': ['Бангкок', 'Пхукет', 'Паттайя', 'Краби', 'Чиангмай', 'Ко Тао', 'Ко Самуи', 'Хуа Хин'],
-          'ОАЭ': ['Дубай', 'Абу-Даби', 'Шарджа', 'Аджман'],
-          'Япония': ['Токио', 'Киото', 'Осака', 'Хиросима', 'Нара', 'Фукуока', 'Саппоро'],
-          'Корея': ['Сеул', 'Пусан', 'Чеджу', 'Инчхон'],
-          'Индонезия': ['Убуд', 'Семиньяк', 'Нуса-Дуа', 'Джакарта', 'Джокьякарта', 'Ломбок'],
-          'Вьетнам': ['Ханой', 'Хошимин', 'Халонг', 'Нячанг', 'Далат', 'Хойан', 'Хюэ'],
-          'Сингапур': ['Сингапур'],
-          'Китай': ['Пекин', 'Шанхай', 'Сиань', 'Гуанчжоу', 'Ченду', 'Гонконг'],
-          'Индия': ['Дели', 'Мумбаи', 'Джайпур', 'Агра', 'Гоа', 'Варанаси', 'Удайпур'],
-          'Малайзия': ['Куала-Лумпур', 'Пенанг', 'Лангкави', 'Малакка'],
+      if (isIncluded) {
+        // Удаляем страну
+        const newState = {
+          ...prev,
+          countries: prev.countries.filter(c => c !== country),
+          location: prev.location === country ? null : prev.location
         }
-        return cityMap[c] || []
-      })
-      
-      // Убираем города, которые не принадлежат выбранным странам
-      const validCities = prev.cities.filter(city => validCitiesForCountries.includes(city))
-      
-      const newState = {
-        ...prev,
-        countries: newCountries,
-        cities: validCities,
-        // Очищаем location если оно было удалено из городов
-        location: validCities.includes(prev.location || '') ? prev.location : null
+        updateUrl(newState)
+        return newState
+      } else {
+        // Добавляем страну - переходим на страницу страны
+        const countrySlug = getCountrySlug(country)
+        const newState = {
+          ...prev,
+          countries: [country], // При выборе страны оставляем только её
+          location: country,
+          cities: [] // Очищаем города при выборе страны
+        }
+        navigate(`/destinations/${countrySlug}`, { replace: true })
+        return newState
       }
-      updateUrl(newState)
-      return newState
     })
-  }, [updateUrl])
+  }, [updateUrl, navigate])
 
   // Методы для работы с темами
   const addTheme = useCallback((theme: string) => {
@@ -348,16 +421,42 @@ export function NavigationProvider({ children }: NavigationProviderProps) {
 
   const toggleTheme = useCallback((theme: string) => {
     setState(prev => {
-      const newState = {
-        ...prev,
-        themes: prev.themes.includes(theme)
-          ? prev.themes.filter(t => t !== theme)
-          : [...prev.themes, theme]
+      const isIncluded = prev.themes.includes(theme)
+      
+      if (isIncluded) {
+        // Удаляем категорию
+        const newState = {
+          ...prev,
+          themes: prev.themes.filter(t => t !== theme)
+        }
+        updateUrl(newState)
+        return newState
+      } else {
+        // Добавляем категорию - если есть город, переходим на страницу категории
+        if (prev.cities.length > 0 || prev.location) {
+          const city = prev.cities[0] || prev.location
+          if (city && KNOWN_CITIES.includes(city)) {
+            const citySlug = getCitySlug(city)
+            const categorySlug = getCategorySlug(theme)
+            const newState = {
+              ...prev,
+              themes: [theme] // При выборе категории оставляем только её
+            }
+            navigate(`/experience/${citySlug}/${categorySlug}`, { replace: true })
+            return newState
+          }
+        }
+        
+        // Если нет города, просто обновляем состояние
+        const newState = {
+          ...prev,
+          themes: [...prev.themes, theme]
+        }
+        updateUrl(newState)
+        return newState
       }
-      updateUrl(newState)
-      return newState
     })
-  }, [updateUrl])
+  }, [updateUrl, navigate])
 
   // Методы для работы с достопримечательностями и тегами
   const addLandmark = useCallback((landmark: string) => {
@@ -468,42 +567,47 @@ export function NavigationProvider({ children }: NavigationProviderProps) {
     const newState = { ...initialNavigationState }
     setState(newState)
     // Используем replace: true чтобы очистить URL параметры
-    navigate('/tours', { replace: true })
-  }, [navigate])
+    // Если мы на странице города или страны, возвращаемся на главную
+    if (pageType === 'experience' || pageType === 'destinations') {
+      navigate('/', { replace: true })
+    } else {
+      navigate('/tours', { replace: true })
+    }
+  }, [navigate, pageType])
 
   const buildUrl = useCallback(() => {
-    const filters: FilterParams = {}
-
-    const locations: string[] = []
-    if (state.location) locations.push(state.location)
-    locations.push(...state.cities)
-    locations.push(...state.countries)
-    if (locations.length > 0) filters.location = [...new Set(locations)]
-
-    if (state.themes.length > 0) filters.themes = state.themes
-    if (state.landmarks.length > 0) filters.landmarks = state.landmarks
-    if (state.tags.length > 0) filters.tags = state.tags
-
-    if (state.price) {
-      if (state.price.min !== undefined) filters.minPrice = state.price.min
-      if (state.price.max !== undefined) filters.maxPrice = state.price.max
+    // Определяем базовый URL из локации (новый формат)
+    let baseUrl = '/tours' // По умолчанию старая страница
+    
+    // Приоритет: город > страна
+    if (state.cities.length > 0) {
+      const citySlug = getCitySlug(state.cities[0])
+      if (state.themes.length > 0) {
+        const categorySlug = getCategorySlug(state.themes[0])
+        baseUrl = `/experience/${citySlug}/${categorySlug}`
+      } else {
+        baseUrl = `/experience/${citySlug}`
+      }
+    } else if (state.countries.length > 0) {
+      const countrySlug = getCountrySlug(state.countries[0])
+      baseUrl = `/destinations/${countrySlug}`
+    } else if (state.location && KNOWN_CITIES.includes(state.location)) {
+      const citySlug = getCitySlug(state.location)
+      baseUrl = `/experience/${citySlug}`
+    } else if (state.location) {
+      const countrySlug = getCountrySlug(state.location)
+      baseUrl = `/destinations/${countrySlug}`
     }
 
-    if (state.duration) {
-      if (state.duration.min !== undefined) filters.durationMin = state.duration.min
-      if (state.duration.max !== undefined) filters.durationMax = state.duration.max
-    }
-
-    if (state.rating && state.rating.min !== undefined) {
-      filters.minRating = state.rating.min
-    }
-
-    if (state.guests !== null && state.guests !== undefined) {
-      filters.guests = state.guests
-    }
-
-    const urlParams = buildUrlParams(filters)
-    return `/tours?${urlParams.toString()}`
+    // Фильтры (цена, длительность, рейтинг, гости) остаются в query параметрах
+    return buildFilteredUrl(baseUrl, {
+      minPrice: state.price?.min,
+      maxPrice: state.price?.max,
+      durationMin: state.duration?.min,
+      durationMax: state.duration?.max,
+      minRating: state.rating?.min,
+      guests: state.guests ?? undefined
+    })
   }, [state])
 
   const getActiveLocation = useCallback(() => {
@@ -518,6 +622,37 @@ export function NavigationProvider({ children }: NavigationProviderProps) {
     
     return null
   }, [state])
+  
+  // Методы для работы с новыми URL паттернами (slug-based)
+  const getCitySlugMethod = useCallback(() => {
+    const city = getActiveLocation()
+    if (city && KNOWN_CITIES.includes(city)) {
+      return getCitySlug(city)
+    }
+    return null
+  }, [getActiveLocation])
+  
+  const getCountrySlugMethod = useCallback(() => {
+    if (state.countries.length > 0) {
+      return getCountrySlug(state.countries[0])
+    }
+    if (state.location && !KNOWN_CITIES.includes(state.location)) {
+      return getCountrySlug(state.location)
+    }
+    return null
+  }, [state])
+  
+  const buildExperienceUrlMethod = useCallback((cityName: string) => {
+    return buildExperienceUrl(cityName)
+  }, [])
+  
+  const buildDestinationUrlMethod = useCallback((countryName: string) => {
+    return buildDestinationUrl(countryName)
+  }, [])
+  
+  const buildCategoryUrlMethod = useCallback((cityName: string, categoryName: string) => {
+    return buildCategoryUrl(cityName, categoryName)
+  }, [])
 
   const value: NavigationContextValue = {
     state,
@@ -544,6 +679,11 @@ export function NavigationProvider({ children }: NavigationProviderProps) {
     resetFilters,
     buildUrl,
     getActiveLocation,
+    getCitySlug: getCitySlugMethod,
+    getCountrySlug: getCountrySlugMethod,
+    buildExperienceUrl: buildExperienceUrlMethod,
+    buildDestinationUrl: buildDestinationUrlMethod,
+    buildCategoryUrl: buildCategoryUrlMethod,
   }
 
   return (

@@ -150,9 +150,120 @@ async def get_destinations(
     return destinations
 
 
+# Новые маршруты для Tripster-style URL (должны быть ПЕРЕД /{slug})
+@router.get("/{country_slug}/info")
+async def get_country_info(
+    country_slug: str,
+    db: AsyncSession = Depends(get_db)
+):
+    """
+    Получить информацию о стране по slug (новый формат для Tripster-style URL)
+    Пример: /api/v1/destinations/thailand/info
+    """
+    from app.utils.slug_mapping import get_country_name_from_slug
+    
+    country_name = get_country_name_from_slug(country_slug)
+    if not country_name:
+        raise HTTPException(status_code=404, detail="Страна не найдена")
+    
+    # Подсчитываем количество туров для страны
+    stmt = select(func.count(Tour.id)).where(
+        Tour.active == True,
+        Tour.is_public == True,
+        Tour.location.ilike(f'%, {country_name}')
+    )
+    result = await db.execute(stmt)
+    tours_count = result.scalar() or 0
+    
+    # Получаем города страны с количеством туров
+    cities_stmt = select(
+        Tour.location,
+        func.count(Tour.id).label('tours_count')
+    ).where(
+        Tour.active == True,
+        Tour.is_public == True,
+        Tour.location.ilike(f'%, {country_name}')
+    ).group_by(Tour.location)
+    
+    cities_result = await db.execute(cities_stmt)
+    cities_data = []
+    for location, count in cities_result.all():
+        parts = location.split(', ')
+        if len(parts) == 2 and parts[1].strip() == country_name:
+            city_name = parts[0].strip()
+            from app.utils.slug_mapping import get_city_slug_from_name
+            city_slug = get_city_slug_from_name(city_name)
+            cities_data.append({
+                "name": city_name,
+                "slug": city_slug,
+                "tours_count": count
+            })
+    
+    # Сортируем города по количеству туров
+    cities_data.sort(key=lambda x: x['tours_count'], reverse=True)
+    
+    return {
+        "country": country_name,
+        "slug": country_slug,
+        "tours_count": tours_count,
+        "cities": cities_data,
+        "total_cities": len(cities_data)
+    }
+
+
+@router.get("/{country_slug}/cities")
+async def get_country_cities(
+    country_slug: str,
+    db: AsyncSession = Depends(get_db)
+):
+    """
+    Получить города страны с количеством туров (новый формат для Tripster-style URL)
+    Пример: /api/v1/destinations/thailand/cities
+    """
+    from app.utils.slug_mapping import get_country_name_from_slug
+    
+    country_name = get_country_name_from_slug(country_slug)
+    if not country_name:
+        raise HTTPException(status_code=404, detail="Страна не найдена")
+    
+    # Получаем города страны с количеством туров
+    stmt = select(
+        Tour.location,
+        func.count(Tour.id).label('tours_count')
+    ).where(
+        Tour.active == True,
+        Tour.is_public == True,
+        Tour.location.ilike(f'%, {country_name}')
+    ).group_by(Tour.location)
+    
+    result = await db.execute(stmt)
+    cities_data = []
+    for location, count in result.all():
+        parts = location.split(', ')
+        if len(parts) == 2 and parts[1].strip() == country_name:
+            city_name = parts[0].strip()
+            from app.utils.slug_mapping import get_city_slug_from_name
+            city_slug = get_city_slug_from_name(city_name)
+            cities_data.append({
+                "name": city_name,
+                "slug": city_slug,
+                "tours_count": count
+            })
+    
+    # Сортируем города по количеству туров
+    cities_data.sort(key=lambda x: x['tours_count'], reverse=True)
+    
+    return {
+        "country": country_name,
+        "slug": country_slug,
+        "cities": cities_data,
+        "total": len(cities_data)
+    }
+
+
 @router.get("/{slug}", response_model=DestinationSchema)
 async def get_destination(slug: str, db: AsyncSession = Depends(get_db)):
-    """Получить направление по slug"""
+    """Получить направление по slug (старый формат)"""
     stmt = select(Destination).where(Destination.slug == slug)
     result = await db.execute(stmt)
     destination = result.scalar_one_or_none()
