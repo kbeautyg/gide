@@ -4,7 +4,6 @@ import { PublicHeader } from '@/components/PublicHeader'
 import { PublicFooter } from '@/components/PublicFooter'
 import { Button } from '@/components/ui/button'
 import { motion } from 'framer-motion'
-import { buildDestinationUrl, buildExperienceUrl } from '@/lib/routing'
 
 export default function ArticlePage() {
   const { slug } = useParams<{ slug: string }>()
@@ -417,27 +416,7 @@ JR Pass — безлимитный проездной на поезда. Пок�
             <p className="text-xl text-white/90 mb-8 max-w-2xl mx-auto">
               Найдите идеальную экскурсию в {article.countryTag} с местными гидами
             </p>
-            <Link to={(() => {
-              // Определяем, город это или страна
-              const KNOWN_CITIES = [
-                'Бангкок', 'Пхукет', 'Паттайя', 'Краби', 'Чиангмай', 'Ко Тао', 'Ко Самуи', 'Хуа Хин',
-                'Дубай', 'Абу-Даби', 'Шарджа', 'Аджман',
-                'Токио', 'Киото', 'Осака', 'Хиросима', 'Нара', 'Фукуока', 'Саппоро',
-                'Сеул', 'Пусан', 'Чеджу', 'Инчхон',
-                'Убуд', 'Семиньяк', 'Нуса-Дуа', 'Джакарта', 'Джокьякарта', 'Ломбок',
-                'Ханой', 'Хошимин', 'Халонг', 'Нячанг', 'Далат', 'Хойан', 'Хюэ',
-                'Сингапур',
-                'Пекин', 'Шанхай', 'Сиань', 'Гуанчжоу', 'Ченду', 'Гонконг',
-                'Дели', 'Мумбаи', 'Джайпур', 'Агра', 'Гоа', 'Варанаси', 'Удайпур',
-                'Куала-Лумпур', 'Пенанг', 'Лангкави', 'Малакка'
-              ]
-              
-              if (KNOWN_CITIES.includes(article.countryTag)) {
-                return buildExperienceUrl(article.countryTag)
-              } else {
-                return buildDestinationUrl(article.countryTag)
-              }
-            })()}>
+            <Link to={`/tours?location=${article.countryTag}`}>
               <Button size="lg" variant="secondary" className="bg-white text-airbnb-rausch hover:bg-gray-50 font-semibold text-lg px-8 py-6">
                 Смотреть экскурсии в {article.countryTag}
               </Button>

@@ -3,8 +3,6 @@ import { motion } from 'framer-motion'
 import { Link } from 'react-router-dom'
 import { api } from '@/lib/api'
 import { Loader2, MapPin, Tag, Compass, Grid } from 'lucide-react'
-import { buildExperienceUrl, buildDestinationUrl } from '@/lib/routing'
-import { getCitySlug, getCountrySlug } from '@/lib/urlSlugs'
 
 interface NavigationItem {
   name: string
@@ -25,7 +23,7 @@ export function DynamicNavigation({
 }: DynamicNavigationProps) {
   const { data: navigationData, isLoading } = useQuery({
     queryKey: ['dynamic-navigation'],
-    queryFn: () => api.get('/tours/dynamic-navigation').then((res: any) => res.data.data),
+    queryFn: () => api.get('/tours/dynamic-navigation').then(res => res.data.data),
   })
 
   if (isLoading) {
@@ -76,37 +74,23 @@ export function DynamicNavigation({
     switch (item.type) {
       case 'landmark':
         params.append('landmarks', item.name)
-        return `/tours?${params.toString()}`
+        break
       case 'tag':
         params.append('tags', item.name)
-        return `/tours?${params.toString()}`
+        break
       case 'theme':
         params.append('themes', item.name)
-        return `/tours?${params.toString()}`
+        break
       case 'category':
         // Используем themes вместо category для единообразия
         params.append('themes', item.name)
-        return `/tours?${params.toString()}`
+        break
       case 'location':
-        // Для локаций используем новые URL паттерны
-        const locationParts = item.name.split(',')
-        const cityName = locationParts[0].trim()
-        const citySlug = getCitySlug(cityName)
-        if (citySlug) {
-          return buildExperienceUrl(cityName)
-        }
-        // Если это страна, используем новый формат
-        const countryName = locationParts.length > 1 ? locationParts[1].trim() : cityName
-        const countrySlug = getCountrySlug(countryName)
-        if (countrySlug) {
-          return buildDestinationUrl(countryName)
-        }
-        // Fallback на старый формат
-        params.append('location', cityName)
-        return `/tours?${params.toString()}`
-      default:
-        return `/tours`
+        params.append('location', item.name.split(',')[0].trim())
+        break
     }
+    
+    return `/tours?${params.toString()}`
   }
 
   const renderSection = (sectionName: string, items: NavigationItem[]) => {

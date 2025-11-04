@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { useParams } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
 import { useQuery, useMutation } from '@tanstack/react-query'
 import { motion } from 'framer-motion'
 import { 
@@ -18,8 +18,6 @@ import { formatRUB } from '@/lib/utils'
 import { PublicHeader } from '@/components/PublicHeader'
 import { PublicFooter } from '@/components/PublicFooter'
 import { TourCard } from '@/components/TourCard'
-import { Breadcrumbs } from '@/components/Breadcrumbs'
-import { buildExperienceUrl, buildDestinationUrl } from '@/lib/routing'
 
 export default function TourDetailPage() {
   const { id } = useParams<{ id: string }>()
@@ -123,41 +121,23 @@ export default function TourDetailPage() {
     : ['https://images.unsplash.com/photo-1589394815804-964ed0be2eb5?w=1200&h=800&fit=crop']
 
   const totalPrice = tour.price * bookingData.participants
-  
-  // Формируем breadcrumbs
-  const breadcrumbs = []
-  if (tour.location) {
-    // Парсим локацию: "Город, Страна"
-    const locationParts = tour.location.split(', ')
-    if (locationParts.length === 2) {
-      const cityName = locationParts[0].trim()
-      const countryName = locationParts[1].trim()
-      breadcrumbs.push({
-        label: countryName,
-        href: buildDestinationUrl(countryName),
-      })
-      breadcrumbs.push({
-        label: cityName,
-        href: buildExperienceUrl(cityName),
-      })
-    } else {
-      // Если формат не "Город, Страна", просто добавляем локацию
-      breadcrumbs.push({
-        label: tour.location,
-        href: `/tours?location=${encodeURIComponent(tour.location)}`,
-      })
-    }
-  }
-  breadcrumbs.push({
-    label: tour.title,
-  })
 
   return (
     <div className="min-h-screen" style={{ backgroundColor: 'rgb(243, 244, 246)' }}>
       <PublicHeader />
-      
+
       {/* Breadcrumbs */}
-      <Breadcrumbs items={breadcrumbs} />
+      <div className="bg-gray-100">
+        <div className="container mx-auto px-4 py-3">
+          <div className="text-sm text-gray-600">
+            <Link to="/" className="hover:underline">Главная</Link>
+            {' > '}
+            <Link to="/tours" className="hover:underline">Все туры</Link>
+            {' > '}
+            <span className="text-gray-900 font-medium line-clamp-1">{tour.title}</span>
+          </div>
+        </div>
+      </div>
 
       <div className="container mx-auto px-4 py-8 relative">
         {/* Hero галерея 2×2 */}

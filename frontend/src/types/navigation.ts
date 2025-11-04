@@ -64,13 +64,6 @@ export interface NavigationContextValue {
   resetFilters: () => void
   buildUrl: () => string  // Генерация URL из состояния
   getActiveLocation: () => string | null  // Получить активную локацию для отображения
-  
-  // Методы для работы с новыми URL паттернами (slug-based)
-  getCitySlug: () => string | null  // Получить slug текущего города
-  getCountrySlug: () => string | null  // Получить slug текущей страны
-  buildExperienceUrl: (cityName: string) => string  // Построить URL страницы города
-  buildDestinationUrl: (countryName: string) => string  // Построить URL страницы страны
-  buildCategoryUrl: (cityName: string, categoryName: string) => string  // Построить URL страницы категории
 }
 
 /**

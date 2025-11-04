@@ -3,7 +3,7 @@ import { motion } from 'framer-motion'
 import { Link } from 'react-router-dom'
 import { api } from '@/lib/api'
 import { Landmark, ChevronLeft, ChevronRight } from 'lucide-react'
-import { buildExperienceUrl, buildFilteredUrl } from '@/lib/routing'
+import { buildToursLink } from '@/lib/navigationUtils'
 import { useRef, useState, useEffect } from 'react'
 
 interface LandmarksSectionProps {
@@ -156,10 +156,7 @@ export function LandmarksSection({ location }: LandmarksSectionProps) {
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: i * 0.05 }}
               >
-                <Link to={location 
-                  ? buildFilteredUrl(buildExperienceUrl(location), { landmarks: landmark.name })
-                  : `/tours?landmarks=${encodeURIComponent(landmark.name)}`
-                }>
+                <Link to={buildToursLink({ location, landmarks: landmark.name })}>
                   <div className="group cursor-pointer">
                     <div className="aspect-[4/3] rounded-xl overflow-hidden mb-3 shadow-sm hover:shadow-md transition-shadow bg-gray-100">
                       <img

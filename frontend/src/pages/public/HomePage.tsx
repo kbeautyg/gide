@@ -11,7 +11,7 @@ import { LiveStats } from '@/components/LiveStats'
 import { AnimatedFeatures } from '@/components/AnimatedFeatures'
 import { DynamicNavigation } from '@/components/DynamicNavigation'
 import { SmartRecommendations } from '@/components/SmartRecommendations'
-import { buildExperienceUrl, buildCategoryUrl } from '@/lib/routing'
+import { buildToursLink } from '@/lib/navigationUtils'
 
 // Анимационные варианты
 const containerVariants = {
@@ -33,27 +33,27 @@ export default function HomePage() {
   const [seasonalIndex, setSeasonalIndex] = useState(0)
   const [reviewIndex, setReviewIndex] = useState(0)
 
-  // Сезонные идеи для осени (ТОЛЬКО АЗИЯ!) - обновлены на новые URL
+  // Сезонные идеи для осени (ТОЛЬКО АЗИЯ!)
   const seasonalIdeas = [
     {
       title: 'Уличная еда Бангкока: 12+ блюд',
       image: 'https://images.unsplash.com/photo-1578474846511-04ba529f0b88?w=600&h=400&fit=crop',
-      link: buildCategoryUrl('Бангкок', 'Гастрономия')
+      link: '/tours?themes=Гастрономия&location=Бангкок'
     },
     {
       title: 'Храмы Киото: золотой павильон',
       image: 'https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?w=600&h=400&fit=crop',
-      link: buildCategoryUrl('Киото', 'Культура')
+      link: '/tours?themes=Культура&location=Киото'
     },
     {
       title: 'Острова Пхи-Пхи на закате',
       image: 'https://images.unsplash.com/photo-1552465011-b4e21bf6e79a?w=600&h=400&fit=crop',
-      link: buildCategoryUrl('Пхукет', 'Природа')
+      link: '/tours?themes=Природа&location=Пхукет'
     },
     {
       title: 'Сафари в пустыне Дубая',
       image: 'https://images.unsplash.com/photo-1451337516015-6b6e9a44a8a3?w=600&h=400&fit=crop',
-      link: buildExperienceUrl('Дубай')
+      link: '/tours?location=Дубай'
     },
   ]
 
@@ -417,7 +417,7 @@ export default function HomePage() {
           >
             {destinations.map((dest: any, i: number) => (
               <motion.div key={i} variants={itemVariants}>
-                <Link to={buildExperienceUrl(dest.name)}>
+                <Link to={buildToursLink({ location: dest.name })}>
                   <div className="group relative aspect-square rounded-xl overflow-hidden cursor-pointer">
                     <img
                       src={dest.image}

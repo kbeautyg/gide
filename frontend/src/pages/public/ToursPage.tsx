@@ -4,9 +4,9 @@ import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { X } from 'lucide-react'
 import { toursApi, api } from '@/lib/api'
-import { LegacyRedirects } from '@/components/LegacyRedirects'
 import { PublicHeader } from '@/components/PublicHeader'
 import { PublicFooter } from '@/components/PublicFooter'
+import { CategoryChips } from '@/components/CategoryChips'
 import { FilterPanel } from '@/components/FilterPanel'
 import { TourCard } from '@/components/TourCard'
 import { TourCardSkeleton } from '@/components/TourCardSkeleton'
@@ -53,20 +53,11 @@ export default function ToursPage() {
   const [sortBy, setSortBy] = useState('popular')
   const [currentPage, setCurrentPage] = useState(1)
 
-  // Загрузка рубрик для текущей локации (как на Tripster)
-  const activeLocation = navigation.getActiveLocation()
-  const { data: rubricsData } = useQuery({
-    queryKey: ['rubrics', activeLocation],
-    queryFn: () => {
-      const url = activeLocation 
-        ? `/tours/rubrics?location=${encodeURIComponent(activeLocation)}`
-        : '/tours/rubrics'
-      return api.get(url).then(res => res.data.rubrics || [])
-    },
-    enabled: !!activeLocation, // Загружаем только если есть активная локация
+  // Загрузка динамических категорий из navigation API
+  const { data: navigationData } = useQuery({
+    queryKey: ['dynamic-navigation'],
+    queryFn: () => api.get('/tours/dynamic-navigation').then(res => res.data.data),
   })
-  
-  const rubrics = rubricsData || []
 
   // Загрузка экскурсий с фильтрами из NavigationContext
   const { data: toursData, isLoading } = useQuery({
@@ -176,6 +167,8 @@ export default function ToursPage() {
   })
 
   // Получаем активную локацию для отображения CityHero и LandmarksSection
+  const activeLocation = navigation.getActiveLocation()
+
   // Определяем город и страну из активной локации
   const getCityInfo = () => {
     // Если выбрана страна (но нет города)
@@ -223,35 +216,14 @@ export default function ToursPage() {
 
   const cityInfo = getCityInfo()
 
-  // Обработчик выбора рубрики
-  const handleRubricSelect = (rubric: { name: string; type: string; slug?: string }) => {
-    // Быстрые фильтры
-    if (rubric.type === 'quick_filter') {
-      if (rubric.slug === 'discount') {
-        // Со скидкой - добавляем специальный тег
-        navigation.toggleTag('Со скидкой')
-      } else if (rubric.slug === 'new') {
-        // Новые - добавляем специальный тег
-        navigation.toggleTag('Новые')
-      } else if (rubric.slug === 'best') {
-        // Лучшие - устанавливаем рейтинг >= 4.7
-        if (state.rating?.min === 4.7) {
-          navigation.setRating(null)
-        } else {
-          navigation.setRating({ min: 4.7 })
-        }
-      }
-      return
-    }
-    
-    // Обычные категории
-    if (rubric.type === 'theme') {
-      navigation.toggleTheme(rubric.name)
-    } else if (rubric.type === 'landmark') {
-      navigation.toggleLandmark(rubric.name)
-    } else if (rubric.type === 'format') {
-      navigation.toggleTag(rubric.name)
-    }
+  // Формируем список категорий для чипсов из динамических данных
+  const themeCategories = navigationData?.themes 
+    ? navigationData.themes.map((item: any) => ({ name: item.name, count: item.count }))
+    : []
+
+  // Обработчики фильтров через NavigationContext
+  const handleThemeSelect = (theme: string) => {
+    navigation.toggleTheme(theme)
   }
 
   const handleCountrySelect = (country: string) => {
@@ -274,14 +246,13 @@ export default function ToursPage() {
   return (
     <div className="min-h-screen bg-gray-100">
       <PublicHeader />
-      <LegacyRedirects />
 
       {/* CityHero - показываем всегда */}
-      <CityHero 
+        <CityHero 
         city={cityInfo?.city} 
         country={cityInfo?.country} 
         toursCount={toursData?.total || 0}
-      />
+        />
 
       {/* Breadcrumbs */}
       <div className="bg-gray-100">
@@ -296,8 +267,8 @@ export default function ToursPage() {
                 </Link>
                 {cityInfo.city && (
                   <>
-                    {' > '}
-                    <span className="text-gray-900 font-medium">{cityInfo.city}</span>
+                {' > '}
+                <span className="text-gray-900 font-medium">{cityInfo.city}</span>
                   </>
                 )}
                 {state.themes.length > 0 && (
@@ -351,143 +322,82 @@ export default function ToursPage() {
               >
                 Сбросить все категории
               </button>
-            </div>
+                </div>
           )}
 
-          {/* Фильтры по странам и городам - показываем только если НЕТ активной локации (главная страница) */}
-          {!activeLocation && (
-            <>
-              {/* Фильтр по странам */}
-              <div>
-                <h3 className="text-sm font-semibold text-gray-700 mb-2">🌏 Страны</h3>
-                <div className="relative">
-                  <div className="flex gap-2 overflow-x-auto scrollbar-hide pb-2 scroll-smooth">
-                    {ASIAN_COUNTRIES.map((country, index) => (
-                      <motion.button
-                        key={country.name}
-                        initial={{ opacity: 0, y: 10 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: index * 0.03 }}
-                        onClick={() => handleCountrySelect(country.name)}
-                        className={`px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-all shrink-0 border ${
-                          state.countries.includes(country.name)
-                            ? 'bg-airbnb-rausch text-white border-airbnb-rausch shadow-md scale-105'
-                            : 'bg-[#111827] text-white border-[#111827] hover:bg-white hover:text-[#111827] hover:border-[#111827] hover:scale-105'
-                        }`}
-                      >
-                        {country.flag} {country.name}
-                      </motion.button>
-                    ))}
-                  </div>
-                  {/* Градиент справа для индикации прокрутки */}
-                  <div className="absolute right-0 top-0 bottom-2 w-20 bg-gradient-to-l from-gray-100 to-transparent pointer-events-none" />
-                </div>
-              </div>
-
-              {/* Фильтр по городам - умная фильтрация */}
-              {state.countries.length > 0 && (
+          {/* Фильтр по странам */}
                 <div>
-                  <h3 className="text-sm font-semibold text-gray-700 mb-2">
-                    📍 Города {state.countries.length === 1 ? `(${state.countries[0]})` : '(выбранных стран)'}
-                  </h3>
-                  <div className="relative">
-                    <div className="flex gap-2 overflow-x-auto scrollbar-hide pb-2 scroll-smooth">
-                      {(() => {
-                        // Получаем города только из выбранных стран
-                        const availableCities = state.countries.flatMap(country => CITIES_BY_COUNTRY[country] || [])
-                        
-                        return availableCities.map((city, index) => (
-                          <motion.button
-                            key={city}
-                            initial={{ opacity: 0, y: 10 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ delay: index * 0.03 }}
-                            onClick={() => navigation.toggleCity(city)}
-                            className={`px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-all shrink-0 border ${
-                              state.cities.includes(city)
-                                ? 'bg-airbnb-rausch text-white border-airbnb-rausch shadow-md scale-105'
-                                : 'bg-[#111827] text-white border-[#111827] hover:bg-white hover:text-[#111827] hover:border-[#111827] hover:scale-105'
-                            }`}
-                          >
-                            {city}
-                          </motion.button>
-                        ))
-                      })()}
-                    </div>
-                    {/* Градиент справа для индикации прокрутки */}
-                    <div className="absolute right-0 top-0 bottom-2 w-20 bg-gradient-to-l from-gray-100 to-transparent pointer-events-none" />
-                  </div>
+            <h3 className="text-sm font-semibold text-gray-700 mb-2">🌏 Страны</h3>
+            <div className="relative">
+              <div className="flex gap-2 overflow-x-auto scrollbar-hide pb-2 scroll-smooth">
+              {ASIAN_COUNTRIES.map((country, index) => (
+                <motion.button
+                  key={country.name}
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: index * 0.03 }}
+                  onClick={() => handleCountrySelect(country.name)}
+                    className={`px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-all shrink-0 border ${
+                      state.countries.includes(country.name)
+                      ? 'bg-airbnb-rausch text-white border-airbnb-rausch shadow-md scale-105'
+                      : 'bg-[#111827] text-white border-[#111827] hover:bg-white hover:text-[#111827] hover:border-[#111827] hover:scale-105'
+                  }`}
+                >
+                  {country.flag} {country.name}
+                </motion.button>
+              ))}
+              </div>
+              {/* Градиент справа для индикации прокрутки */}
+              <div className="absolute right-0 top-0 bottom-2 w-20 bg-gradient-to-l from-gray-100 to-transparent pointer-events-none" />
+            </div>
                 </div>
-              )}
-            </>
-          )}
 
-          {/* Рубрики - показываем только если выбран город (как на Tripster) */}
-          {activeLocation && rubrics.length > 0 && (
-            <div>
-              <h3 className="text-sm font-semibold text-gray-700 mb-3">Рубрики</h3>
+          {/* Фильтр по городам - умная фильтрация */}
+          {state.countries.length > 0 && (
+                <div>
+              <h3 className="text-sm font-semibold text-gray-700 mb-2">
+                📍 Города {state.countries.length === 1 ? `(${state.countries[0]})` : '(выбранных стран)'}
+              </h3>
               <div className="relative">
                 <div className="flex gap-2 overflow-x-auto scrollbar-hide pb-2 scroll-smooth">
-                  {/* Чип "Все" - всегда первый */}
-                  <motion.button
-                    onClick={() => navigation.resetFilters()}
-                    className={`px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-all shrink-0 border ${
-                      activeFiltersCount === 0
-                        ? 'bg-airbnb-rausch text-white border-airbnb-rausch shadow-md scale-105'
-                        : 'bg-white text-gray-900 border-gray-300 hover:bg-gray-50 hover:border-gray-400'
-                    }`}
-                  >
-                    Все {toursData?.total || 0}
-                  </motion.button>
-                  
-                  {/* Рубрики */}
-                  {rubrics.map((rubric: any, index: number) => {
-                    let isSelected = false
-                    
-                    // Определяем выбранность в зависимости от типа
-                    if (rubric.type === 'quick_filter') {
-                      if (rubric.slug === 'discount') {
-                        isSelected = state.tags.includes('Со скидкой')
-                      } else if (rubric.slug === 'new') {
-                        isSelected = state.tags.includes('Новые')
-                      } else if (rubric.slug === 'best') {
-                        isSelected = state.rating?.min === 4.7
-                      }
-                    } else if (rubric.type === 'theme') {
-                      isSelected = state.themes.includes(rubric.name)
-                    } else if (rubric.type === 'landmark') {
-                      isSelected = state.landmarks.includes(rubric.name)
-                    } else if (rubric.type === 'format') {
-                      isSelected = state.tags.includes(rubric.name)
-                    }
-                    
-                    return (
-                      <motion.button
-                        key={rubric.id}
-                        initial={{ opacity: 0, y: 10 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: index * 0.02 }}
-                        onClick={() => handleRubricSelect(rubric)}
+              {(() => {
+                  // Получаем города только из выбранных стран
+                    const availableCities = state.countries.flatMap(country => CITIES_BY_COUNTRY[country] || [])
+                
+                  return availableCities.map((city, index) => (
+                <motion.button
+                  key={city}
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: index * 0.03 }}
+                        onClick={() => navigation.toggleCity(city)}
                         className={`px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-all shrink-0 border ${
-                          isSelected
-                            ? 'bg-airbnb-rausch text-white border-airbnb-rausch shadow-md scale-105'
-                            : 'bg-white text-gray-900 border-gray-300 hover:bg-gray-50 hover:border-gray-400'
-                        }`}
-                      >
-                        {rubric.icon && <span className="mr-1.5">{rubric.icon}</span>}
-                        <span>{rubric.name}</span>
-                        <span className="ml-1.5 text-xs opacity-70">({rubric.tours_count})</span>
-                      </motion.button>
-                    )
-                  })}
+                          state.cities.includes(city)
+                          ? 'bg-airbnb-rausch text-white border-airbnb-rausch shadow-md scale-105'
+                          : 'bg-[#111827] text-white border-[#111827] hover:bg-white hover:text-[#111827] hover:border-[#111827] hover:scale-105'
+                  }`}
+                >
+                  {city}
+                </motion.button>
+                ))
+              })()}
                 </div>
                 {/* Градиент справа для индикации прокрутки */}
-                {rubrics.length > 5 && (
-                  <div className="absolute right-0 top-0 bottom-2 w-20 bg-gradient-to-l from-gray-100 to-transparent pointer-events-none" />
-                )}
-              </div>
-            </div>
+                <div className="absolute right-0 top-0 bottom-2 w-20 bg-gradient-to-l from-gray-100 to-transparent pointer-events-none" />
+                  </div>
+                </div>
           )}
+
+          {/* Категории */}
+          <div>
+            <h3 className="text-sm font-semibold text-gray-700 mb-2">Категории</h3>
+            <CategoryChips
+              categories={themeCategories}
+              selected={state.themes}
+              onSelect={handleThemeSelect}
+              maxVisible={12}
+            />
+          </div>
 
           {/* Фильтр по цене */}
           <div>
@@ -499,30 +409,30 @@ export default function ToursPage() {
                 const isSelected = state.price?.min === priceRange.minPrice && state.price?.max === priceRange.maxPrice
                 
                 return (
-                  <button
-                    key={range}
-                    onClick={() => {
+                <button
+                  key={range}
+                  onClick={() => {
                       if (isSelected) {
                         navigation.setPrice(null)
                       } else {
                         navigation.setPrice({ min: priceRange.minPrice, max: priceRange.maxPrice })
                       }
-                    }}
+                  }}
                     className={`px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-all shrink-0 border ${
                       isSelected
-                        ? 'bg-airbnb-rausch text-white border-airbnb-rausch shadow-md'
-                        : 'bg-[#111827] text-white border-[#111827] hover:bg-white hover:text-[#111827] hover:border-[#111827]'
-                    }`}
-                  >
-                    {range}
-                  </button>
+                      ? 'bg-airbnb-rausch text-white border-airbnb-rausch shadow-md'
+                      : 'bg-[#111827] text-white border-[#111827] hover:bg-white hover:text-[#111827] hover:border-[#111827]'
+                  }`}
+                >
+                  {range}
+                </button>
                 )
               })}
               </div>
               {/* Градиент справа для индикации прокрутки */}
               <div className="absolute right-0 top-0 bottom-0 w-20 bg-gradient-to-l from-gray-100 to-transparent pointer-events-none" />
-            </div>
-          </div>
+              </div>
+                </div>
 
           {/* Фильтр по длительности */}
           <div>
@@ -535,9 +445,9 @@ export default function ToursPage() {
                                   state.duration?.max === durationRange.durationMax
                 
                 return (
-                  <button
-                    key={duration}
-                    onClick={() => {
+                <button
+                  key={duration}
+                  onClick={() => {
                       if (isSelected) {
                         navigation.setDuration(null)
                       } else {
@@ -546,22 +456,22 @@ export default function ToursPage() {
                           max: durationRange.durationMax 
                         })
                       }
-                    }}
+                  }}
                     className={`px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-all shrink-0 border ${
                       isSelected
-                        ? 'bg-airbnb-rausch text-white border-airbnb-rausch shadow-md'
-                        : 'bg-[#111827] text-white border-[#111827] hover:bg-white hover:text-[#111827] hover:border-[#111827]'
-                    }`}
-                  >
-                    {duration}
-                  </button>
+                      ? 'bg-airbnb-rausch text-white border-airbnb-rausch shadow-md'
+                      : 'bg-[#111827] text-white border-[#111827] hover:bg-white hover:text-[#111827] hover:border-[#111827]'
+                  }`}
+                >
+                  {duration}
+                </button>
                 )
               })}
               </div>
               {/* Градиент справа для индикации прокрутки */}
               <div className="absolute right-0 top-0 bottom-0 w-20 bg-gradient-to-l from-gray-100 to-transparent pointer-events-none" />
-            </div>
-          </div>
+                          </div>
+                        </div>
 
           {/* Фильтр по рейтингу */}
           <div>
@@ -573,29 +483,29 @@ export default function ToursPage() {
                 const isSelected = state.rating?.min === ratingRange.minRating
                 
                 return (
-                  <button
-                    key={rating}
-                    onClick={() => {
+                <button
+                  key={rating}
+                  onClick={() => {
                       if (isSelected) {
                         navigation.setRating(null)
                       } else {
                         navigation.setRating({ min: ratingRange.minRating })
                       }
-                    }}
+                  }}
                     className={`px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-all shrink-0 border ${
                       isSelected
-                        ? 'bg-airbnb-rausch text-white border-airbnb-rausch shadow-md'
-                        : 'bg-[#111827] text-white border-[#111827] hover:bg-white hover:text-[#111827] hover:border-[#111827]'
-                    }`}
-                  >
-                    ⭐ {rating}
-                  </button>
+                      ? 'bg-airbnb-rausch text-white border-airbnb-rausch shadow-md'
+                      : 'bg-[#111827] text-white border-[#111827] hover:bg-white hover:text-[#111827] hover:border-[#111827]'
+                  }`}
+                >
+                  ⭐ {rating}
+                </button>
                 )
               })}
               </div>
               {/* Градиент справа для индикации прокрутки */}
               <div className="absolute right-0 top-0 bottom-0 w-20 bg-gradient-to-l from-gray-100 to-transparent pointer-events-none" />
-            </div>
+                </div>
           </div>
         </div>
       </div>
