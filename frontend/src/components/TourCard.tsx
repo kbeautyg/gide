@@ -216,54 +216,54 @@ export function TourCard({ tour, className }: TourCardProps) {
           {/* Контент карточки */}
           <div className="p-4 flex flex-col flex-1">
             {/* Название */}
-            <h3 className="font-semibold text-gray-900 line-clamp-2 text-[15px] md:text-base leading-snug mb-2 group-hover:text-blue-600 transition-colors">
+            <h3 className="font-semibold text-gray-900 line-clamp-2 text-base md:text-lg leading-snug mb-2 group-hover:text-blue-600 transition-colors">
               {tour.title}
             </h3>
 
             {/* Информация */}
-            <div className="space-y-1.5 mb-2">
-              <div className="flex items-center gap-1.5 text-sm text-gray-500">
-                <MapPin className="w-3.5 h-3.5 flex-shrink-0" />
+            <div className="space-y-1.5 mb-3">
+              <div className="flex items-center gap-1.5 text-base text-gray-500">
+                <MapPin className="w-4 h-4 flex-shrink-0" />
                 <span className="truncate">{formatLocation(tour.location)}</span>
               </div>
 
-              <div className="flex items-center justify-between text-sm text-gray-500">
+              <div className="flex items-center justify-between text-base text-gray-500">
                 <div className="flex items-center gap-1.5">
-                  <Clock className="w-3.5 h-3.5 flex-shrink-0" />
+                  <Clock className="w-4 h-4 flex-shrink-0" />
                   <span>{formatDuration(tour.duration)}</span>
                 </div>
-                <div className="flex items-center gap-1 text-gray-900 font-medium bg-yellow-50 px-2 py-0.5 rounded">
-                  <Star className="w-3.5 h-3.5 text-yellow-500 fill-yellow-500" />
+                <div className="flex items-center gap-1.5 text-gray-900 font-medium bg-yellow-50 px-2 py-0.5 rounded">
+                  <Star className="w-4 h-4 text-yellow-500 fill-yellow-500" />
                   <span>{tour.rating.toFixed(1)}</span>
-                  <span className="text-gray-400 font-normal text-xs">({tour.reviews_count})</span>
+                  <span className="text-gray-400 font-normal text-sm">({tour.reviews_count})</span>
                 </div>
               </div>
             </div>
 
             {/* Цена и кнопка — прижаты к низу */}
-            <div className="mt-auto pt-2 border-t border-gray-100">
+            <div className="mt-auto pt-3 border-t border-gray-100">
               <div className="flex items-center justify-between">
                 <div>
                   <div className="flex items-baseline gap-1.5">
                     {tour.has_discount && tour.original_price ? (
                       <>
-                        <span className="text-base md:text-lg font-bold text-gray-900">{formatRUB(tour.price)}</span>
-                        <span className="text-xs text-gray-400 line-through">{formatRUB(tour.original_price)}</span>
+                        <span className="text-lg md:text-xl font-bold text-gray-900">{formatRUB(tour.price)}</span>
+                        <span className="text-sm text-gray-400 line-through">{formatRUB(tour.original_price)}</span>
                       </>
                     ) : (
-                      <span className="text-base md:text-lg font-bold text-gray-900">{formatRUB(tour.price)}</span>
+                      <span className="text-lg md:text-xl font-bold text-gray-900">{formatRUB(tour.price)}</span>
                     )}
                   </div>
-                  <p className="text-xs text-gray-400">за человека</p>
+                  <p className="text-sm text-gray-400">за человека</p>
                 </div>
 
                 <Button
                   size="sm"
                   variant="ghost"
-                  className="h-8 px-3 text-xs font-medium text-blue-600 hover:text-blue-700 hover:bg-blue-50 -mr-1"
+                  className="h-9 px-3 text-sm font-medium text-blue-600 hover:text-blue-700 hover:bg-blue-50 -mr-1"
                   onClick={handleMessageClick}
                 >
-                  <MessageCircle size={14} className="mr-1" />
+                  <MessageCircle size={16} className="mr-1" />
                   Написать
                 </Button>
               </div>
