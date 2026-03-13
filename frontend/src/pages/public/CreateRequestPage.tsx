@@ -133,7 +133,7 @@ export default function CreateRequestPage() {
 
                   <div className="grid grid-cols-2 gap-4">
                     <div>
-                      <Label htmlFor="preferred_date">Предпочтительная дата</Label>
+                      <Label htmlFor="preferred_date">Дата</Label>
                       <Input
                         id="preferred_date"
                         type="date"
@@ -142,9 +142,9 @@ export default function CreateRequestPage() {
                         className="rounded-lg"
                       />
                     </div>
-                    
+
                     <div>
-                      <Label htmlFor="participants_count">Количество участников *</Label>
+                      <Label htmlFor="participants_count">Участники *</Label>
                       <Input
                         id="participants_count"
                         type="number"
@@ -170,9 +170,9 @@ export default function CreateRequestPage() {
                         placeholder="15000"
                       />
                     </div>
-                    
+
                     <div>
-                      <Label htmlFor="location">Предпочтительная локация</Label>
+                      <Label htmlFor="location">Локация</Label>
                       <select
                         id="location"
                         className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm"

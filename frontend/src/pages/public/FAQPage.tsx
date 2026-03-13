@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { Helmet } from 'react-helmet-async'
-import { ChevronDown, ChevronUp, MessageCircle, Phone, Mail, MapPin } from 'lucide-react'
+import { ChevronDown, ChevronUp, MessageCircle, Mail, MapPin, Clock } from 'lucide-react'
 import { PublicHeader } from '@/components/PublicHeader'
 import { PublicFooter } from '@/components/PublicFooter'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
@@ -95,12 +95,12 @@ const faqData: FAQItem[] = [
   {
     category: 'Контакты',
     question: 'Как с вами связаться?',
-    answer: 'Вы можете связаться с нами по телефону +7 (917) 744-51-82, email: info@thaiguide.com, или через форму обратной связи на сайте. Мы работаем ежедневно с 9:00 до 21:00 (время Таиланда, GMT+7).',
+    answer: 'Свяжитесь с нами по email help@inturex.pro. Время работы: 🇹🇭 Пхукет 10-19, 🇰🇬 Бишкек 9-19, 🇷🇺 Москва 9-19. Поддержка доступна 24/7.',
   },
   {
     category: 'Контакты',
     question: 'Где вы находитесь?',
-    answer: 'Наш офис находится в Пхукете, Таиланд. Мы проводим экскурсии по всей Юго-Восточной Азии: Таиланд, Вьетнам, Камбоджа, Лаос, Мьянма. Точный адрес офиса: 123 Patong Beach Road, Phuket 83150, Thailand.',
+    answer: 'У нас есть офисы в трёх странах: 🇹🇭 Пхукет, Таиланд; 🇰🇬 Бишкек, Кыргызстан; 🇷🇺 Москва, Россия.',
   },
 ]
 
@@ -227,27 +227,25 @@ export default function FAQPage() {
           <CardContent>
             <div className="grid md:grid-cols-3 gap-6">
               <div className="flex items-start gap-3">
-                <Phone className="text-white mt-1" size={20} />
-                <div>
-                  <p className="font-semibold mb-1">Телефон</p>
-                  <p className="text-white/90">+7 (917) 744-51-82</p>
-                  <p className="text-sm text-white/75">Ежедневно 9:00-21:00</p>
-                </div>
-              </div>
-              <div className="flex items-start gap-3">
-                <Mail className="text-white mt-1" size={20} />
+                <Mail className="text-white mt-1 flex-shrink-0" size={20} />
                 <div>
                   <p className="font-semibold mb-1">Email</p>
-                  <p className="text-white/90">info@thaiguide.com</p>
-                  <p className="text-sm text-white/75">Ответ в течение 24 часов</p>
+                  <p className="text-white/90 text-sm">help@inturex.pro</p>
                 </div>
               </div>
               <div className="flex items-start gap-3">
-                <MapPin className="text-white mt-1" size={20} />
+                <MapPin className="text-white mt-1 flex-shrink-0" size={20} />
                 <div>
-                  <p className="font-semibold mb-1">Офис в Пхукете</p>
-                  <p className="text-white/90">Patong Beach Road</p>
-                  <p className="text-sm text-white/75">Пн-Вс 10:00-19:00</p>
+                  <p className="font-semibold mb-1">Офисы</p>
+                  <p className="text-white/90 text-sm">🇹🇭 Пхукет · 🇰🇬 Бишкек · 🇷🇺 Москва</p>
+                </div>
+              </div>
+              <div className="flex items-start gap-3">
+                <Clock className="text-white mt-1 flex-shrink-0" size={20} />
+                <div>
+                  <p className="font-semibold mb-1">Время работы</p>
+                  <p className="text-white/90 text-sm">🇹🇭 10–19 · 🇰🇬 9–19 · 🇷🇺 9–19</p>
+                  <p className="text-white/90 text-sm mt-1">📧 24/7</p>
                 </div>
               </div>
             </div>
