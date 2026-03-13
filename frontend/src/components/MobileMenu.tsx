@@ -46,8 +46,8 @@ export function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
           >
             {/* Header */}
             <div className="flex items-center justify-between p-6 border-b">
-              <Link to="/" onClick={onClose} className="text-2xl font-bold text-gradient">
-                ThaiGuide Pro
+              <Link to="/" onClick={onClose} className="text-2xl font-bold">
+                <span className="text-[#FF385C]">In</span><span className="text-[#FF385C]">Turex</span><span className="ml-1 text-[#FF385C]/70 font-light">Pro</span>
               </Link>
               <button
                 onClick={onClose}

@@ -13,25 +13,9 @@ import { AnimatedFeatures } from '@/components/AnimatedFeatures'
 import { DynamicNavigation } from '@/components/DynamicNavigation'
 import { SmartRecommendations } from '@/components/SmartRecommendations'
 import { buildToursLink } from '@/lib/navigationUtils'
-import { CITY_IMAGES, COUNTRY_SLUG_MAP, getCountryImage } from '@/constants/countryData'
+import { COUNTRY_SLUG_MAP, getCountryImage } from '@/constants/countryData'
 
 import { ImageWithFallback } from '@/components/ImageWithFallback'
-
-// Анимационные варианты
-const containerVariants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.1
-    }
-  }
-}
-
-const itemVariants = {
-  hidden: { opacity: 0, y: 20 },
-  visible: { opacity: 1, y: 0 }
-}
 
 // Статические данные для стран (описания и картинки с бэкенда)
 const COUNTRY_STATIC_DATA: Record<string, { description: string; image: string; highlights?: string[] }> = {
@@ -146,28 +130,6 @@ export default function HomePage() {
   // Остальные страны
   const moreCountries = allCountriesFromApi.slice(3)
 
-  // Загружаем популярные города с реальным подсчетом туров из API
-  const { data: citiesData } = useQuery({
-    queryKey: ['destinations-with-counts'],
-    queryFn: () => api.get('/destinations/with-counts').then(res => res.data),
-    staleTime: 1000 * 60 * 10, // 10 минут
-  })
-
-  // Формируем массив популярных городов из API (только с турами)
-  const popularCities = (citiesData?.destinations || [])
-    .filter((dest: any) => dest.tours_count > 0) // Только города с турами
-    .slice(0, 12)  // Берём топ-12 по количеству туров
-    .map((dest: any) => {
-      const cityName = dest.city as keyof typeof CITY_IMAGES
-      return {
-        name: dest.city,
-        country: dest.country,
-        count: dest.tours_count,
-        image: CITY_IMAGES[cityName] || getCountryImage(dest.country),
-        link: buildToursLink({ location: dest.city })
-      }
-    })
-
   // Загружаем реальные отзывы из API
   const { data: reviewsApiData } = useQuery({
     queryKey: ['homepage-reviews'],
@@ -227,8 +189,7 @@ export default function HomePage() {
             "url": "https://inturex.pro/",
             "logo": "https://inturex.pro/logo.png",
             "image": "https://inturex.pro/og-image.jpg",
-            "telephone": "+7-917-744-51-82",
-            "email": "info@turex.com",
+            "email": "help@inturex.pro",
             "address": {
               "@type": "PostalAddress",
               "addressCountry": "TH",
@@ -251,8 +212,8 @@ export default function HomePage() {
             "openingHoursSpecification": {
               "@type": "OpeningHoursSpecification",
               "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
-              "opens": "00:00",
-              "closes": "23:59"
+              "opens": "09:00",
+              "closes": "19:00"
             },
             "sameAs": []
           })}
@@ -723,95 +684,6 @@ export default function HomePage() {
           </motion.div>
         </div>
       </section>
-
-       {/* Популярные города */}
-      {popularCities.length > 0 && (
-      <section className="py-16 md:py-24 bg-gradient-to-b from-gray-50 to-white">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-12">
-            <motion.h2 
-              className="text-3xl md:text-4xl font-bold text-gray-900 mb-4"
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-            >
-              Популярные города
-            </motion.h2>
-            <motion.p 
-              className="text-lg text-gray-600 max-w-2xl mx-auto"
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.1 }}
-            >
-              Найдите экскурсии в любимых городах мира
-            </motion.p>
-          </div>
-          
-          <motion.div
-            className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4 md:gap-5"
-            variants={containerVariants}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-          >
-            {popularCities.map((city: any, i: number) => (
-              <motion.div key={i} variants={itemVariants} whileHover={{ y: -6 }}>
-                <Link to={city.link}>
-                  <div className="group relative aspect-[3/4] rounded-2xl overflow-hidden cursor-pointer shadow-lg hover:shadow-2xl transition-all duration-300">
-                    <ImageWithFallback
-                      src={city.image}
-                      alt={city.name}
-                      className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent group-hover:from-black/90 transition-all" />
-                    
-                    <div className="absolute bottom-0 left-0 right-0 p-4 text-white">
-                      <div className="text-sm text-white/70 mb-1 font-medium">{city.country}</div>
-                      <div className="font-bold text-base md:text-lg mb-1 group-hover:text-airbnb-rausch transition-colors">
-                        {city.name}
-                      </div>
-                      <div className="text-sm text-white/90">
-                        {city.count} {city.count === 1 ? 'экскурсия' : city.count < 5 ? 'экскурсии' : 'экскурсий'}
-                      </div>
-                    </div>
-
-                    <div className="absolute top-3 right-3 w-8 h-8 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-                      <ArrowRight className="w-4 h-4 text-white" />
-                    </div>
-
-                    {i < 3 && (
-                      <div className="absolute top-3 left-3 bg-airbnb-rausch text-white text-xs font-bold px-2 py-1 rounded-full">
-                        ТОП
-                      </div>
-                    )}
-                  </div>
-                </Link>
-              </motion.div>
-            ))}
-          </motion.div>
-
-          <motion.div 
-            className="text-center mt-12"
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.3 }}
-          >
-            <Link to="/tours">
-              <Button 
-                size="lg" 
-                variant="outline"
-                className="rounded-full px-8 py-6 text-base font-semibold border-2 hover:border-airbnb-rausch hover:text-airbnb-rausch transition-all"
-              >
-                Все города
-                <ArrowRight className="ml-2" size={20} />
-              </Button>
-            </Link>
-          </motion.div>
-        </div>
-      </section>
-      )}
 
       {/* Умные рекомендации */}
       <div className="bg-gray-100">
