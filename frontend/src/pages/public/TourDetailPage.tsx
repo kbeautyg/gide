@@ -592,7 +592,7 @@ export default function TourDetailPage() {
                   .split(/\n\s*\n/)
                   .filter(p => p.trim())
                   .map((paragraph, i) => (
-                    <p key={i} className="text-[17px] text-gray-700 leading-[1.75] mb-4 last:mb-0">
+                    <p key={i} className="text-base text-gray-700 leading-[1.75] mb-4 last:mb-0">
                       {paragraph.replace(/\n/g, ' ').trim()}
                     </p>
                   ))
@@ -602,13 +602,13 @@ export default function TourDetailPage() {
             <div className="grid md:grid-cols-2 gap-6">
               {tour.included?.length > 0 && (
                 <div>
-                  <h3 className="font-semibold text-gray-900 mb-3 flex items-center gap-2">
+                  <h3 className="text-lg font-semibold text-gray-900 mb-3 flex items-center gap-2">
                     <CheckCircle className="w-5 h-5 text-green-600" />
                     Включено
                   </h3>
                   <ul className="space-y-2.5">
                     {tour.included.map((item, i) => (
-                      <li key={i} className="text-[15px] text-gray-600 flex items-start gap-2 leading-relaxed">
+                      <li key={i} className="text-base text-gray-600 flex items-start gap-2 leading-relaxed">
                         <span className="block w-1.5 h-1.5 bg-green-400 rounded-full mt-2.5 flex-shrink-0" />
                         {item}
                       </li>
@@ -618,13 +618,13 @@ export default function TourDetailPage() {
               )}
               {tour.not_included?.length > 0 && (
                 <div>
-                  <h3 className="font-semibold text-gray-900 mb-3 flex items-center gap-2">
+                  <h3 className="text-lg font-semibold text-gray-900 mb-3 flex items-center gap-2">
                     <XCircle className="w-5 h-5 text-red-500" />
                     Не включено
                   </h3>
                   <ul className="space-y-2.5">
                     {tour.not_included.map((item, i) => (
-                      <li key={i} className="text-[15px] text-gray-600 flex items-start gap-2 leading-relaxed">
+                      <li key={i} className="text-base text-gray-600 flex items-start gap-2 leading-relaxed">
                         <span className="block w-1.5 h-1.5 bg-red-300 rounded-full mt-2.5 flex-shrink-0" />
                         {item}
                       </li>
@@ -635,11 +635,11 @@ export default function TourDetailPage() {
             </div>
 
             <div className="bg-blue-50/50 rounded-xl p-5 border border-blue-100">
-              <h3 className="font-semibold text-gray-900 mb-4 flex items-center gap-2">
+              <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
                 <Info className="w-5 h-5 text-blue-600" />
                 Важная информация
               </h3>
-              <div className="grid sm:grid-cols-2 gap-4 text-[15px]">
+              <div className="grid sm:grid-cols-2 gap-4 text-base">
                 {tour.meeting_point && (
                   <div>
                     <span className="block text-gray-500 text-sm mb-1">Место встречи</span>
