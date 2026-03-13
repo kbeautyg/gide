@@ -21,7 +21,7 @@ pydantic[email]==2.5.3
 pydantic-settings==2.1.0
 
 # HTTP клиенты
-httpx>=0.25.2,<0.28
+httpx>=0.26,<0.29
 aiohttp==3.9.1
 
 # Celery и очереди
@@ -38,7 +38,7 @@ qrcode[pil]==7.4.2
 pillow==10.2.0
 
 # Telegram бот
-python-telegram-bot==20.7
+python-telegram-bot>=21.0
 
 # Тестирование
 pytest==7.4.4
