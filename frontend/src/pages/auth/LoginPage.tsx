@@ -173,7 +173,7 @@ export default function LoginPage() {
                 <Input
                   id="phone"
                   type="tel"
-                  placeholder="79177445182"
+                  placeholder="79991234567"
                   className="mt-1"
                   value={phone}
                   onChange={(e) => setPhone(e.target.value)}

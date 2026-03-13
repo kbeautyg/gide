@@ -37,7 +37,7 @@ export default function TermsPage() {
             <CardContent className="space-y-4 text-gray-700">
               <p>
                 Настоящие Условия использования (далее — «Условия») регулируют отношения между 
-                ООО «ТайГид» (далее — «Компания», «мы») и пользователями веб-сайта thaiguide.com 
+                ОсОО «Интурекс» (далее — «Компания», «мы») и пользователями веб-сайта inturex.pro
                 (далее — «Сайт», «Пользователи», «вы»).
               </p>
               <p>
@@ -282,22 +282,28 @@ export default function TermsPage() {
             </CardHeader>
             <CardContent className="space-y-4 text-gray-700">
               <p>
-                <strong>ООО «ТайГид»</strong><br />
-                ИНН: 1234567890<br />
-                ОГРН: 1234567890123<br />
-                Юридический адрес: 123456, г. Москва, ул. Примерная, д. 1<br />
-                Фактический адрес: Phuket, Thailand, Patong Beach Road, 123
+                <strong>ОсОО «Интурекс»</strong><br />
+                ИНН: 00403202610317<br />
+                Рег. №: 326304-3301-ООО<br />
+                Кыргызская Республика
+              </p>
+              <p>
+                <strong>Офисы:</strong><br />
+                🇹🇭 Пхукет, Таиланд<br />
+                🇰🇬 Бишкек, Кыргызстан<br />
+                🇷🇺 Москва, Россия
               </p>
               <p>
                 <strong>Контакты:</strong><br />
-                Телефон: +7 (917) 744-51-82<br />
-                Email: info@thaiguide.com<br />
-                Сайт: thaiguide.com
+                Email: help@inturex.pro<br />
+                Сайт: inturex.pro
               </p>
               <p>
                 <strong>Часы работы:</strong><br />
-                Ежедневно с 9:00 до 21:00 (GMT+7, время Таиланда)<br />
-                Офис в Пхукете: Пн-Вс 10:00-19:00
+                🇹🇭 Пхукет: 10:00—19:00 (GMT+7)<br />
+                🇰🇬 Бишкек: 9:00—19:00 (GMT+6)<br />
+                🇷🇺 Москва: 9:00—19:00 (МСК)<br />
+                📧 Поддержка 24/7: help@inturex.pro
               </p>
             </CardContent>
           </Card>
