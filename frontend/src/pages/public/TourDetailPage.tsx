@@ -61,6 +61,7 @@ export default function TourDetailPage() {
   const cleanText = (text: string | undefined): string => {
     if (!text) return ''
     return text
+      .replace(/^#{1,6}\s+/gm, '')        // убираем markdown-заголовки ## / ### / ####
       .replace(/\*\*(.*?)\*\*/g, '$1')
       .replace(/__(.*?)__/g, '$1')
       .replace(/<strong>(.*?)<\/strong>/gi, '$1')
@@ -700,10 +701,10 @@ export default function TourDetailPage() {
                   <div className="space-y-4">
                     <div className="grid grid-cols-2 gap-3">
                       <div className="space-y-1.5">
-                        <Label className="text-sm font-medium text-gray-700">Примерная дата</Label>
+                        <Label className="text-base font-medium text-gray-700">Примерная дата</Label>
                         <Input
                           type="date"
-                          className="h-10 text-sm"
+                          className="h-11 text-base"
                           value={bookingData.date}
                           onChange={(e) => setBookingData({ ...bookingData, date: e.target.value })}
                         />
@@ -712,11 +713,11 @@ export default function TourDetailPage() {
                         </span>
                       </div>
                       <div className="space-y-1.5">
-                        <Label className="text-sm font-medium text-gray-700">Участники</Label>
+                        <Label className="text-base font-medium text-gray-700">Участники</Label>
                         <Input
                           type="number"
                           min="1"
-                          className="h-10 text-sm"
+                          className="h-11 text-base"
                           value={bookingData.participants}
                           onChange={(e) => setBookingData({ ...bookingData, participants: parseInt(e.target.value) })}
                         />
@@ -738,14 +739,14 @@ export default function TourDetailPage() {
                         <div className="space-y-3 pt-2">
                           <Input
                             placeholder="Ваше имя"
-                            className="h-10 text-sm"
+                            className="h-11 text-base"
                             autoComplete="name"
                             value={bookingData.clientName}
                             onChange={(e) => setBookingData({ ...bookingData, clientName: e.target.value })}
                           />
                           <Input
                             placeholder="Телефон"
-                            className="h-10 text-sm"
+                            className="h-11 text-base"
                             autoComplete="tel"
                             value={bookingData.clientPhone}
                             onChange={(e) => setBookingData({ ...bookingData, clientPhone: e.target.value })}
