@@ -44,7 +44,7 @@ export function RequestFloatingButton() {
           animate={{ x: 0, opacity: 1 }}
           exit={{ x: -100, opacity: 0 }}
           transition={{ type: 'spring', stiffness: 100, damping: 15 }}
-          className="fixed bottom-6 left-6 z-50"
+          className="fixed bottom-6 left-6 z-50 hidden md:block"
         >
           <div className="relative">
             {/* Кнопка закрытия */}
