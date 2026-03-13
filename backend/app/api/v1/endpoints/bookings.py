@@ -413,22 +413,23 @@ async def create_booking(
             type="info",
             link="/dashboard/bookings",
         )
-    # Уведомление всем админам
+    # Уведомление всем админам (в savepoint, чтобы ошибка не ломала основную транзакцию)
     try:
-        admins_result = await db.execute(
-            select(User).where(User.role.in_(['admin', 'super_admin']))
-        )
-        admins = admins_result.scalars().all()
-        for admin in admins:
-            if admin.id != tour.guide_id:
-                await create_notification(
-                    db=db,
-                    user_id=admin.id,
-                    title="Новое бронирование",
-                    message=f'Клиент {booking_data.client_name} забронировал «{tour.title}» на {booking_data.date.strftime("%d.%m.%Y")}',
-                    type="info",
-                    link="/dashboard/bookings",
-                )
+        async with db.begin_nested():
+            admins_result = await db.execute(
+                select(User).where(User.role == 'admin')
+            )
+            admins = admins_result.scalars().all()
+            for admin in admins:
+                if admin.id != tour.guide_id:
+                    await create_notification(
+                        db=db,
+                        user_id=admin.id,
+                        title="Новое бронирование",
+                        message=f'Клиент {booking_data.client_name} забронировал «{tour.title}» на {booking_data.date.strftime("%d.%m.%Y")}',
+                        type="info",
+                        link="/dashboard/bookings",
+                    )
     except Exception as e:
         print(f"⚠️ Не удалось отправить уведомления админам: {e}")
     
