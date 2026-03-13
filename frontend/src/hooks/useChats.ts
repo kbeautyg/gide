@@ -21,6 +21,7 @@ export interface ChatSummary {
 export interface TourFolder {
   tour_id: number
   tour_title: string
+  tour_photo?: string
   chats: ChatSummary[]
 }
 

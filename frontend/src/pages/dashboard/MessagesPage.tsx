@@ -8,6 +8,7 @@ import { Folder, Search, User, Calendar, MapPin, DollarSign, Users } from 'lucid
 import { format } from 'date-fns'
 import { ru } from 'date-fns/locale'
 import { Input } from '@/components/ui/input'
+import { getImageUrl } from '@/lib/utils'
 
 interface TourFolderWithPhoto {
   tour_id: number
@@ -141,7 +142,7 @@ export default function MessagesPage() {
               >
                 <div className="w-10 h-10 rounded-lg bg-gray-200 flex items-center justify-center flex-shrink-0 overflow-hidden">
                   {folder.tour_photo ? (
-                    <img src={folder.tour_photo} alt={folder.tour_title} className="w-full h-full object-cover" />
+                    <img src={getImageUrl(folder.tour_photo)} alt={folder.tour_title} className="w-full h-full object-cover" />
                   ) : (
                     <MapPin size={20} className="text-gray-500" />
                   )}
@@ -206,7 +207,7 @@ export default function MessagesPage() {
                   <div className="relative">
                     <div className="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center overflow-hidden">
                       {chat.participant.avatar ? (
-                        <img src={chat.participant.avatar} className="w-full h-full object-cover" />
+                        <img src={getImageUrl(chat.participant.avatar)} className="w-full h-full object-cover" />
                       ) : (
                         <User size={18} className="text-gray-500" />
                       )}
