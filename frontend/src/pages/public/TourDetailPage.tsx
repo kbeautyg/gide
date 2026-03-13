@@ -53,7 +53,7 @@ export default function TourDetailPage() {
     }
   }, [user])
 
-  const [galleryOpen, setGalleryOpen] = useState(false)
+  const [galleryOpen, setGalleryOpen] = useState<boolean>(false)
   const [currentPhotoIndex, setCurrentPhotoIndex] = useState(0)
   const galleryRef = useRef<HTMLDivElement>(null)
   const hasAutoScrolledRef = useRef(false)
@@ -127,7 +127,7 @@ export default function TourDetailPage() {
 
       const randomInRange = (min: number, max: number) => Math.random() * (max - min) + min
 
-      const interval: any = setInterval(function() {
+      const interval: ReturnType<typeof setInterval> = setInterval(function() {
         const timeLeft = animationEnd - Date.now()
         if (timeLeft <= 0) {
           return clearInterval(interval)
@@ -178,8 +178,23 @@ export default function TourDetailPage() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="skeleton w-32 h-32 rounded-full" />
+      <div className="min-h-screen bg-gray-50">
+        <PublicHeader />
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+          <div className="h-[400px] bg-gray-200 rounded-xl animate-pulse mb-8" />
+          <div className="lg:grid lg:grid-cols-[1fr_380px] lg:gap-8">
+            <div className="space-y-4">
+              <div className="h-8 bg-gray-200 rounded-lg animate-pulse w-3/4" />
+              <div className="h-5 bg-gray-200 rounded animate-pulse w-1/2" />
+              <div className="space-y-3 mt-6">
+                <div className="h-4 bg-gray-200 rounded animate-pulse" />
+                <div className="h-4 bg-gray-200 rounded animate-pulse w-5/6" />
+                <div className="h-4 bg-gray-200 rounded animate-pulse w-4/6" />
+              </div>
+            </div>
+            <div className="h-[400px] bg-gray-200 rounded-xl animate-pulse mt-8 lg:mt-0" />
+          </div>
+        </div>
       </div>
     )
   }
@@ -361,11 +376,11 @@ export default function TourDetailPage() {
 
       <div className="bg-white border-b">
         <div className="container mx-auto px-4 py-2">
-          <div className="text-xs text-gray-500 flex items-center gap-1">
+          <div className="text-sm text-gray-500 flex items-center gap-1.5">
             <Link to="/" className="hover:text-gray-900 transition-colors">Главная</Link>
-            <ChevronRight size={12} />
+            <ChevronRight size={14} />
             <Link to="/tours" className="hover:text-gray-900 transition-colors">Все туры</Link>
-            <ChevronRight size={12} />
+            <ChevronRight size={14} />
             <span className="text-gray-900 font-medium truncate">{tour.title}</span>
           </div>
         </div>
@@ -498,34 +513,34 @@ export default function TourDetailPage() {
             )}
           </div>
 
-           <div className="hidden lg:grid grid-cols-4 grid-rows-2 gap-2 h-[400px] rounded-xl overflow-hidden shadow-sm">
-            <div 
-                className="col-span-2 row-span-2 cursor-pointer relative group overflow-hidden"
-                onClick={() => openGallery(0)}
+          <div className="hidden lg:grid grid-cols-4 grid-rows-2 gap-2 h-[400px] rounded-xl overflow-hidden shadow-sm">
+            <div
+              className="col-span-2 row-span-2 cursor-pointer relative group overflow-hidden"
+              onClick={() => openGallery(0)}
             >
-                <ImageWithFallback 
+              <ImageWithFallback
                 src={photos[0]}
                 alt={tour.title}
-                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" 
+                className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
               />
-                <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors" />
-                </div>
-              <div className="cursor-pointer relative group overflow-hidden" onClick={() => openGallery(1)}>
-                 <ImageWithFallback src={photos[1]} className="w-full h-full object-cover" alt={`${tour.title} — фото 2`} />
-              </div>
-              <div className="cursor-pointer relative group overflow-hidden" onClick={() => openGallery(2)}>
-                 <ImageWithFallback src={photos[2]} className="w-full h-full object-cover" alt={`${tour.title} — фото 3`} />
+              <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors" />
             </div>
-              <div className="cursor-pointer relative group overflow-hidden" onClick={() => openGallery(3)}>
-                 <ImageWithFallback src={photos[3]} className="w-full h-full object-cover" alt={`${tour.title} — фото 4`} />
-                    </div>
-              <div className="cursor-pointer relative group overflow-hidden" onClick={() => openGallery(4)}>
-                 <ImageWithFallback src={photos[4]} className="w-full h-full object-cover" alt={`${tour.title} — фото 5`} />
-                 {photos.length > 5 && (
-                    <div className="absolute inset-0 bg-black/50 flex items-center justify-center text-white font-medium text-sm">
-                        +{photos.length - 5} фото
-                    </div>
-                  )}
+            <div className="cursor-pointer relative group overflow-hidden" onClick={() => openGallery(1)}>
+              <ImageWithFallback src={photos[1]} className="w-full h-full object-cover" alt={`${tour.title} — фото 2`} />
+            </div>
+            <div className="cursor-pointer relative group overflow-hidden" onClick={() => openGallery(2)}>
+              <ImageWithFallback src={photos[2]} className="w-full h-full object-cover" alt={`${tour.title} — фото 3`} />
+            </div>
+            <div className="cursor-pointer relative group overflow-hidden" onClick={() => openGallery(3)}>
+              <ImageWithFallback src={photos[3]} className="w-full h-full object-cover" alt={`${tour.title} — фото 4`} />
+            </div>
+            <div className="cursor-pointer relative group overflow-hidden" onClick={() => openGallery(4)}>
+              <ImageWithFallback src={photos[4]} className="w-full h-full object-cover" alt={`${tour.title} — фото 5`} />
+              {photos.length > 5 && (
+                <div className="absolute inset-0 bg-black/50 flex items-center justify-center text-white font-medium text-sm">
+                  +{photos.length - 5} фото
+                </div>
+              )}
             </div>
           </div>
         </div>
@@ -551,17 +566,21 @@ export default function TourDetailPage() {
                   
                   {/* Share & Favorite Buttons */}
                   <div className="flex items-center gap-2 ml-auto">
-                    <button 
-                        onClick={() => toggleFavorite(Number(id))}
-                        className="p-2 rounded-full hover:bg-gray-100 transition-colors"
-                        title={isFavorite(Number(id)) ? "Убрать из избранного" : "Добавить в избранное"}
+                    <button
+                      onClick={() => toggleFavorite(Number(id))}
+                      className="p-2 rounded-full hover:bg-gray-100 transition-colors"
+                      aria-label={isFavorite(Number(id)) ? "Убрать из избранного" : "Добавить в избранное"}
+                      title={isFavorite(Number(id)) ? "Убрать из избранного" : "Добавить в избранное"}
                     >
-                        <Heart 
-                            className={`w-5 h-5 ${isFavorite(Number(id)) ? 'fill-airbnb-rausch text-airbnb-rausch' : 'text-gray-600'}`} 
-                        />
+                      <Heart
+                        className={`w-5 h-5 ${isFavorite(Number(id)) ? 'fill-airbnb-rausch text-airbnb-rausch' : 'text-gray-600'}`}
+                      />
                     </button>
-                    <button className="p-2 rounded-full hover:bg-gray-100 transition-colors text-gray-600">
-                        <Share2 className="w-5 h-5" />
+                    <button
+                      className="p-2 rounded-full hover:bg-gray-100 transition-colors text-gray-600"
+                      aria-label="Поделиться"
+                    >
+                      <Share2 className="w-5 h-5" />
                     </button>
                   </div>
               </div>
@@ -580,67 +599,67 @@ export default function TourDetailPage() {
             </div>
 
             <div className="grid md:grid-cols-2 gap-6">
-                {tour.included?.length > 0 && (
-                    <div>
-                        <h3 className="font-semibold text-gray-900 mb-3 flex items-center gap-2">
-                            <CheckCircle className="w-5 h-5 text-green-600" />
-                            Включено
-                        </h3>
-                        <ul className="space-y-2.5">
-                            {tour.included.map((item, i) => (
-                                <li key={i} className="text-[15px] text-gray-600 flex items-start gap-2 leading-relaxed">
-                                    <span className="block w-1.5 h-1.5 bg-green-400 rounded-full mt-2.5 flex-shrink-0" />
-                                    {item}
-                                </li>
-                            ))}
-                        </ul>
-                    </div>
-                  )}
-                {tour.not_included?.length > 0 && (
-                      <div>
-                        <h3 className="font-semibold text-gray-900 mb-3 flex items-center gap-2">
-                            <XCircle className="w-5 h-5 text-red-500" />
-                            Не включено
-                        </h3>
-                        <ul className="space-y-2.5">
-                          {tour.not_included.map((item, i) => (
-                                <li key={i} className="text-[15px] text-gray-600 flex items-start gap-2 leading-relaxed">
-                                    <span className="block w-1.5 h-1.5 bg-red-300 rounded-full mt-2.5 flex-shrink-0" />
-                                    {item}
-                                </li>
-                          ))}
-                        </ul>
-                      </div>
-                    )}
-                  </div>
+              {tour.included?.length > 0 && (
+                <div>
+                  <h3 className="font-semibold text-gray-900 mb-3 flex items-center gap-2">
+                    <CheckCircle className="w-5 h-5 text-green-600" />
+                    Включено
+                  </h3>
+                  <ul className="space-y-2.5">
+                    {tour.included.map((item, i) => (
+                      <li key={i} className="text-[15px] text-gray-600 flex items-start gap-2 leading-relaxed">
+                        <span className="block w-1.5 h-1.5 bg-green-400 rounded-full mt-2.5 flex-shrink-0" />
+                        {item}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+              {tour.not_included?.length > 0 && (
+                <div>
+                  <h3 className="font-semibold text-gray-900 mb-3 flex items-center gap-2">
+                    <XCircle className="w-5 h-5 text-red-500" />
+                    Не включено
+                  </h3>
+                  <ul className="space-y-2.5">
+                    {tour.not_included.map((item, i) => (
+                      <li key={i} className="text-[15px] text-gray-600 flex items-start gap-2 leading-relaxed">
+                        <span className="block w-1.5 h-1.5 bg-red-300 rounded-full mt-2.5 flex-shrink-0" />
+                        {item}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+            </div>
 
             <div className="bg-blue-50/50 rounded-xl p-5 border border-blue-100">
-                <h3 className="font-semibold text-gray-900 mb-4 flex items-center gap-2">
-                    <Info className="w-5 h-5 text-blue-600" />
-                    Важная информация
-                </h3>
-                <div className="grid sm:grid-cols-2 gap-4 text-[15px]">
-                    {tour.meeting_point && (
-                        <div>
-                            <span className="block text-gray-500 text-sm mb-1">Место встречи</span>
-                            <span className="text-gray-900 leading-relaxed">{tour.meeting_point}</span>
-                      </div>
-                    )}
-                    {tour.max_group_size && (
-                        <div>
-                            <span className="block text-gray-500 text-sm mb-1">Размер группы</span>
-                            <span className="text-gray-900 leading-relaxed">до {tour.max_group_size} человек</span>
-                      </div>
-                    )}
-                    {tour.languages && tour.languages.length > 0 && (
-                        <div>
-                            <span className="block text-gray-500 text-sm mb-1">Языки</span>
-                            <span className="text-gray-900 leading-relaxed">{tour.languages.join(', ')}</span>
-                      </div>
-                    )}
-                        </div>
-                      </div>
+              <h3 className="font-semibold text-gray-900 mb-4 flex items-center gap-2">
+                <Info className="w-5 h-5 text-blue-600" />
+                Важная информация
+              </h3>
+              <div className="grid sm:grid-cols-2 gap-4 text-[15px]">
+                {tour.meeting_point && (
+                  <div>
+                    <span className="block text-gray-500 text-sm mb-1">Место встречи</span>
+                    <span className="text-gray-900 leading-relaxed">{tour.meeting_point}</span>
                   </div>
+                )}
+                {tour.max_group_size && (
+                  <div>
+                    <span className="block text-gray-500 text-sm mb-1">Размер группы</span>
+                    <span className="text-gray-900 leading-relaxed">до {tour.max_group_size} человек</span>
+                  </div>
+                )}
+                {tour.languages && tour.languages.length > 0 && (
+                  <div>
+                    <span className="block text-gray-500 text-sm mb-1">Языки</span>
+                    <span className="text-gray-900 leading-relaxed">{tour.languages.join(', ')}</span>
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
 
           <div className="lg:sticky lg:top-24 mt-8 lg:mt-0">
              <Card className="shadow-lg border-0 overflow-hidden relative">
@@ -668,69 +687,90 @@ export default function TourDetailPage() {
                 </AnimatePresence>
 
                 <div className="p-5 bg-white">
-                    <div className="flex items-baseline justify-between mb-6">
-                          <div>
-                            <span className="text-base text-gray-500 block mb-1">Стоимость тура</span>
-                            <div className="flex items-baseline gap-2">
-                                <span className="text-3xl font-bold text-gray-900">{formatRUB(tour.price)}</span>
-                                <span className="text-base text-gray-500">/ чел.</span>
-                          </div>
-                        </div>
+                  <div className="flex items-baseline justify-between mb-6">
+                    <div>
+                      <span className="text-base text-gray-500 block mb-1">Стоимость тура</span>
+                      <div className="flex items-baseline gap-2">
+                        <span className="text-3xl font-bold text-gray-900">{formatRUB(tour.price)}</span>
+                        <span className="text-base text-gray-500">/ чел.</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="space-y-4">
+                    <div className="grid grid-cols-2 gap-3">
+                      <div className="space-y-1.5">
+                        <Label className="text-sm font-medium text-gray-700">Примерная дата</Label>
+                        <Input
+                          type="date"
+                          className="h-10 text-sm"
+                          value={bookingData.date}
+                          onChange={(e) => setBookingData({ ...bookingData, date: e.target.value })}
+                        />
+                        <span className="text-xs text-gray-400 leading-tight block">
+                          Точную дату согласует гид
+                        </span>
+                      </div>
+                      <div className="space-y-1.5">
+                        <Label className="text-sm font-medium text-gray-700">Участники</Label>
+                        <Input
+                          type="number"
+                          min="1"
+                          className="h-10 text-sm"
+                          value={bookingData.participants}
+                          onChange={(e) => setBookingData({ ...bookingData, participants: parseInt(e.target.value) })}
+                        />
+                      </div>
                     </div>
 
-                    <div className="space-y-4">
-                        <div className="grid grid-cols-2 gap-3">
-                            <div className="space-y-1">
-                                <label className="text-sm font-medium text-gray-700">Примерная дата</label>
-                                <Input 
-                                  type="date" 
-                                  className="h-10 text-sm" 
-                                  value={bookingData.date} 
-                                  onChange={(e) => setBookingData({ ...bookingData, date: e.target.value })} 
-                                />
-                                <span className="text-[10px] text-gray-400 leading-tight block">
-                                  Точную дату согласует гид
-                                </span>
-                    </div>
-                            <div className="space-y-1">
-                                <label className="text-sm font-medium text-gray-700">Участники</label>
-                                <Input type="number" min="1" className="h-10 text-sm" value={bookingData.participants} onChange={(e) => setBookingData({ ...bookingData, participants: parseInt(e.target.value) })} />
-                  </div>
-                        </div>
-                        
-                        {!isAuthenticated ? (
-                          <div className="pt-4 text-center">
-                            <p className="text-base text-gray-600 mb-3">Войдите, чтобы отправить запрос</p>
-                            <Button onClick={() => navigate('/login', { state: { from: `/tours/${id}` } })} className="w-full bg-airbnb-rausch hover:bg-airbnb-rausch/90 text-white">
-                              Войти
-                            </Button>
-                          </div>
-                        ) : (
-                          <>
+                    {!isAuthenticated ? (
+                      <div className="pt-4 text-center">
+                        <p className="text-base text-gray-600 mb-3">Войдите, чтобы отправить запрос</p>
+                        <Button
+                          onClick={() => navigate('/login', { state: { from: `/tours/${id}` } })}
+                          className="w-full bg-airbnb-rausch hover:bg-airbnb-rausch/90 text-white"
+                        >
+                          Войти
+                        </Button>
+                      </div>
+                    ) : (
+                      <>
                         <div className="space-y-3 pt-2">
-                            <Input placeholder="Ваше имя" className="h-10 text-sm" value={bookingData.clientName} onChange={(e) => setBookingData({ ...bookingData, clientName: e.target.value })} />
-                            <Input placeholder="Телефон" className="h-10 text-sm" value={bookingData.clientPhone} onChange={(e) => setBookingData({ ...bookingData, clientPhone: e.target.value })} />
-                  </div>
-                  
-                        <div className="pt-2">
-                            <div className="flex justify-between items-center mb-4 text-base">
-                                <span className="text-gray-600">Итого к оплате:</span>
-                                <span className="font-bold text-lg text-gray-900">{formatRUB(totalPrice)}</span>
-                            </div>
-                  <Button
-                    onClick={handleBooking}
-                                  disabled={!bookingData.date || !bookingData.clientPhone || bookingMutation.isPending || isSubmitted}
-                                  className="w-full h-12 bg-airbnb-rausch hover:bg-airbnb-rausch/90 text-white font-semibold text-base shadow-md transition-transform active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed"
-                  >
-                                  {bookingMutation.isPending ? 'Отправка...' : isSubmitted ? 'Запрос отправлен' : 'Отправить запрос'}
-                  </Button>
-                            <p className="text-center text-sm text-gray-400 mt-3">
-                                Бесплатная отмена за 48 часов
-                      </p>
+                          <Input
+                            placeholder="Ваше имя"
+                            className="h-10 text-sm"
+                            autoComplete="name"
+                            value={bookingData.clientName}
+                            onChange={(e) => setBookingData({ ...bookingData, clientName: e.target.value })}
+                          />
+                          <Input
+                            placeholder="Телефон"
+                            className="h-10 text-sm"
+                            autoComplete="tel"
+                            value={bookingData.clientPhone}
+                            onChange={(e) => setBookingData({ ...bookingData, clientPhone: e.target.value })}
+                          />
                         </div>
-                          </>
-                        )}
-                    </div>
+
+                        <div className="pt-2">
+                          <div className="flex justify-between items-center mb-4 text-base">
+                            <span className="text-gray-600">Итого к оплате:</span>
+                            <span className="font-bold text-lg text-gray-900">{formatRUB(totalPrice)}</span>
+                          </div>
+                          <Button
+                            onClick={handleBooking}
+                            disabled={!bookingData.date || !bookingData.clientPhone || bookingMutation.isPending || isSubmitted}
+                            className="w-full h-12 bg-airbnb-rausch hover:bg-airbnb-rausch/90 text-white font-semibold text-base shadow-md transition-transform active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed"
+                          >
+                            {bookingMutation.isPending ? 'Отправка...' : isSubmitted ? 'Запрос отправлен' : 'Отправить запрос'}
+                          </Button>
+                          <p className="text-center text-sm text-gray-400 mt-3">
+                            Бесплатная отмена за 48 часов
+                          </p>
+                        </div>
+                      </>
+                    )}
+                  </div>
                 </div>
               </Card>
             </div>
