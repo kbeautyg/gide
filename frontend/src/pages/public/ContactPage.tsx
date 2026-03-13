@@ -75,7 +75,7 @@ export default function ContactPage() {
                 </div>
                 <div>
                   <h3 className="font-semibold text-gray-900 mb-1">Email</h3>
-                  <a href="mailto:hello@inturex.pro" className="block text-gray-600 hover:text-airbnb-rausch transition-colors text-sm">hello@inturex.pro</a>
+                  <a href="mailto:hello@inturex.pro" className="block text-gray-600 hover:text-airbnb-rausch transition-colors text-sm">hello@inturex.pro <span className="text-gray-400">— общие запросы</span></a>
                   <a href="mailto:help@inturex.pro" className="block text-gray-600 hover:text-airbnb-rausch transition-colors text-sm">help@inturex.pro <span className="text-gray-400">— поддержка</span></a>
                   <a href="mailto:partners@inturex.pro" className="block text-gray-600 hover:text-airbnb-rausch transition-colors text-sm">partners@inturex.pro <span className="text-gray-400">— партнёрам</span></a>
                   <a href="mailto:orders@inturex.pro" className="block text-gray-600 hover:text-airbnb-rausch transition-colors text-sm">orders@inturex.pro <span className="text-gray-400">— заказы</span></a>
