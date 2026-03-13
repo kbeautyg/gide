@@ -1,0 +1,114 @@
+{
+  "status": "uploaded",
+  "original": {
+    "tripster_id": 56811,
+    "title": "Путешествие в Каппадокию с выездом из Антальи",
+    "tagline": "Побывать в живописных долинах, спуститься в подземный город и увидеть древний караван-сарай",
+    "annotation": "В этой поездке вы увидите знаменитые локации — долины Монахов, Любви, Трубных фей и Воображения, прогуляетесь среди причудливых скал, посетите город-крепость Учхисар и караван-сарай в Аксарае. При желании, подниметесь в небо и рассмотрите этот фантастический ландшафт с высоты птичьего полёта. Необыкновенная Каппадокия откроется вам с разных сторон, а гид-историк расскажет, почему национальный парк Гёреме — больше, чем открыточный вид на воздушные шары.",
+    "additional_info": "<p>После внесения предоплаты на сайте других предоплат не требуется. Остальную сумму нужно будет оплатить организатору на месте, в день начала тура (наличными в долларах, евро или лирах, либо переводом в рублях по курсу Турции на день оплаты). <br>\nДополнительная предоплата не является обязательной, но приветствуется как гарантия брони: её можно внести переводом или передать сотруднику лично в отеле. Остаток суммы можно внести на месте, в день тура. Об условиях возврата уточняйте у организатора.</p>",
+    "comfort_level_info": "<div><p><strong>Питание.</strong> Включены завтраки и 1 ужин, остальное — за доплату.</p>\n\n\t<p><strong>Дети</strong>. Возможно участие с детьми от 1 года.</p></div>",
+    "price_included": "<ul>\n\t\t<li>Проживание</li>\n\t\t<li>Завтрак и ужин</li>\n\t\t<li>Трансфер по маршруту от вашего отеля и обратно</li>\n\t\t<li>Страховка</li>\n\t\t<li>Услуги русскоговорящего гида-историка</li>\n\t\t<li>Входные билеты на достопримечательности (кроме внутренней части Гёреме)</li>\n\t</ul>",
+    "price_not_included": "<ul>\n\t\t<li>Остальное питание — около $15 с чел.</li>\n\t\t<li>Полёт на шаре — от $162 до $325 с чел</li>\n\t\t<li>Внутренняя часть Гёреме — $35 с чел</li>\n\t\t<li>Проход на панорамную площадку с видом на воздушные шары — $30 с чел</li>\n\t\t<li>Доплата за 1-местное размещение — $25 с чел</li>\n\t\t<li>Подъём на джипах к панорамной площадке — $50 с чел (по желанию)</li>\n\t\t<li>Шоу «Турецкая ночь в Каппадокии» — $40 с чел (по желанию)</li>\n\t\t<li>Конная прогулка по Долинам — $40 с чел (по желанию)</li>\n\t\t<li>Закат в Красной Долине — $15 с чел (по желанию)</li>\n\t\t<li>Квадро-сафари — $40 с чел (по желанию)</li>\n\t</ul>",
+    "original_price": "50 USD",
+    "location": "Турция, Кемер",
+    "country": "Турция",
+    "country_code": "turkey",
+    "city": "Кемер",
+    "duration_hours": 24,
+    "max_persons": 45,
+    "rating": 4.5,
+    "photo_urls": [
+      "https://resize.tripster.ru/mKfftuEhoXaZWi8_AOgZ-51yS5I=/fit-in/1000x1350/filters:no_upscale()/https://cdn.tripster.ru/photos/6d9e050a-2c75-4692-971a-beb311cc39cb.jpg",
+      "https://resize.tripster.ru/7HP1CuPcDV2vn_NY9N7wfnwJFVs=/fit-in/1200x1000/filters:no_upscale()/https://cdn.tripster.ru/photos/b7c7fdbf-da3c-4367-9fb0-a4a6984503c4.jpg",
+      "https://resize.tripster.ru/shma3XNUWkiWI3rwuc_G4KfPjIk=/fit-in/1000x1350/filters:no_upscale()/https://cdn.tripster.ru/photos/07ff7a36-09f8-496e-879b-90b31d9af1da.jpg",
+      "https://resize.tripster.ru/-TxBjrtev3G4zSZAaLwLlGVduLw=/fit-in/1000x1350/filters:no_upscale()/https://cdn.tripster.ru/photos/fb687c36-97ca-4d51-8571-2c30308ed272.jpg",
+      "https://resize.tripster.ru/7O72OaV42wBPVJN6fCLeJS9hMN4=/fit-in/1000x1350/filters:no_upscale()/https://cdn.tripster.ru/photos/b910b2a3-e77c-4385-a4a5-0a56344ca6af.jpg",
+      "https://resize.tripster.ru/EZa8AKTZM98Tu__ZDsFv2G8nC4s=/fit-in/1000x1350/filters:no_upscale()/https://cdn.tripster.ru/photos/aba03183-aa2a-4be3-9dec-9104da437f40.jpg",
+      "https://resize.tripster.ru/RAo9C-R140BdBcPGfILnEAk8j9Y=/fit-in/1000x1350/filters:no_upscale()/https://cdn.tripster.ru/photos/45b0dccc-6edb-4e0d-a149-b1a1ea658d20.jpg",
+      "https://resize.tripster.ru/wS_s8eWdYEOa3qfjlZHYffcEgu0=/fit-in/1200x1000/filters:no_upscale()/https://cdn.tripster.ru/photos/9a11ddfd-3eb6-49e1-872f-14c5de87aa01.jpg",
+      "https://resize.tripster.ru/Zeor9aqdU_oEK2tQTB7CeotQScY=/fit-in/1000x1350/filters:no_upscale()/https://cdn.tripster.ru/photos/bcabb3f9-a804-4351-88e3-6a2e81e379c5.jpg"
+    ]
+  },
+  "rewritten": {
+    "title": "Экскурсия в Каппадокию из Кемера",
+    "location": "Кемер, Турция",
+    "description": "Погрузитесь в волшебный мир Каппадокии, где природа и история переплетаются в уникальных ландшафтах. Эта экскурсия предлагает вам не только увидеть знаменитые долины, но и узнать о загадках подземных городов и древних караван-сараев. Уникальные скальные образования и исторические памятники сделают вашу поездку незабываемой.",
+    "what_to_expect": "Вы увидите знаменитые Долины Монахов и Любви, а также прогуляетесь по город-крепость Учхисар. Вас ждёт возможность подняться на воздушном шаре и насладиться захватывающими видами.",
+    "organizational_details": "Тур включает удобный трансфер от вашего отеля в Кемере. Необходима средняя физическая подготовка для прогулок по долинам. Рекомендуется взять удобную обувь и воду. Экскурсия подходит для всех возрастов, включая детей от 1 года.",
+    "price": 12500,
+    "price_note": "Цена за группу / за человека",
+    "included": [
+      "Трансфер от отеля и обратно",
+      "Услуги русскоговорящего гида-историка",
+      "Входные билеты на достопримечательности",
+      "Завтраки и ужин"
+    ],
+    "not_included": [
+      "Дополнительное питание",
+      "Полёт на воздушном шаре",
+      "Вход в внутреннюю часть Гёреме",
+      "Личные расходы"
+    ],
+    "meeting_point": null,
+    "tags": [
+      "Горы",
+      "История",
+      "Культура"
+    ],
+    "themes": [
+      "Приключения",
+      "История и Культура"
+    ],
+    "landmarks": [
+      "Долина Монахов",
+      "Город-крепость Учхисар",
+      "Караван-сарай в Аксарае"
+    ],
+    "reviews": [
+      {
+        "name": "Оля",
+        "rating": 5,
+        "text": "Супер экскурсия! Гид рассказал много интересного про Каппадокию"
+      },
+      {
+        "name": "Дмитрий",
+        "rating": 5,
+        "text": "Восторг! Особенно понравилась Долина Любви, виды потрясающие!"
+      },
+      {
+        "name": "Настя",
+        "rating": 4,
+        "text": "Норм экскурсия, хорошо провели время, но жарко было"
+      },
+      {
+        "name": "Максим",
+        "rating": 4,
+        "text": "Гид молодец, все показал, но времени не хватило на все достопримечательности"
+      },
+      {
+        "name": "Катя",
+        "rating": 5,
+        "text": "Вау, это было нечто! Подъем на шаре — обязательный!"
+      },
+      {
+        "name": "Игорь",
+        "rating": 5,
+        "text": "Экскурсия на 24 часа, успели всё посмотреть и даже покушать в местном ресторане"
+      }
+    ]
+  },
+  "images": [
+    "C:\\Users\\Sharp\\Desktop\\gide\\tour_rewriter\\tours\\Турция\\Кемер\\56811\\images\\photo_1.jpg",
+    "C:\\Users\\Sharp\\Desktop\\gide\\tour_rewriter\\tours\\Турция\\Кемер\\56811\\images\\photo_2.jpg",
+    "C:\\Users\\Sharp\\Desktop\\gide\\tour_rewriter\\tours\\Турция\\Кемер\\56811\\images\\photo_3.jpg",
+    "C:\\Users\\Sharp\\Desktop\\gide\\tour_rewriter\\tours\\Турция\\Кемер\\56811\\images\\photo_4.jpg",
+    "C:\\Users\\Sharp\\Desktop\\gide\\tour_rewriter\\tours\\Турция\\Кемер\\56811\\images\\photo_5.jpg",
+    "C:\\Users\\Sharp\\Desktop\\gide\\tour_rewriter\\tours\\Турция\\Кемер\\56811\\images\\photo_6.jpg",
+    "C:\\Users\\Sharp\\Desktop\\gide\\tour_rewriter\\tours\\Турция\\Кемер\\56811\\images\\photo_7.jpg",
+    "C:\\Users\\Sharp\\Desktop\\gide\\tour_rewriter\\tours\\Турция\\Кемер\\56811\\images\\photo_8.jpg",
+    "C:\\Users\\Sharp\\Desktop\\gide\\tour_rewriter\\tours\\Турция\\Кемер\\56811\\images\\photo_9.jpg"
+  ],
+  "turex_id": 626,
+  "created_at": "2025-11-29T21:44:20.852478",
+  "updated_at": "2025-11-29T21:44:20.852478"
+}

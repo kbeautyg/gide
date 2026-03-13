@@ -1,0 +1,29 @@
+services:
+  backend:
+    container_name: gide_backend_dev
+    command: bash -c "alembic upgrade head && uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload"
+    restart: always
+
+  frontend:
+    container_name: gide_frontend_dev
+    build:
+      context: ./frontend
+      args:
+        VITE_API_URL: ${VITE_API_URL}
+    restart: always
+
+  nginx:
+    container_name: gide_nginx_dev
+    ports:
+      - "8081:80"
+    restart: always
+
+  webhook:
+    container_name: gide_webhook_dev
+    ports:
+      - "9001:9000"
+    restart: always
+
+networks:
+  gide_network:
+    driver: bridge

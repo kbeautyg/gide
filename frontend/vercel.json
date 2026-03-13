@@ -1,0 +1,19 @@
+Custom Start Command
+Command that will be run to start new deployments. Docs↗
+The value is set in
+railway.toml
+Open file↗
+Start command
+{
+  "buildCommand": "npm run build",
+  "outputDirectory": "dist",
+  "devCommand": "npm run dev",
+  "installCommand": "npm install",
+  "framework": "vite",
+  "rewrites": [
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
+    }
+  ]
+}

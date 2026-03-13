@@ -1,0 +1,72 @@
+services:
+  # Backend API
+  backend:
+    build: 
+      context: ./backend
+    container_name: gide_backend
+    # Убрали сброс базы и создание туров из команды запуска для безопасности
+    # Если нужно инициализировать базу, запустите скрипты вручную один раз
+    # command: bash -c "alembic upgrade head && uvicorn app.main:app --host 0.0.0.0 --port 8000"
+    command: bash -c "uvicorn app.main:app --host 0.0.0.0 --port 8000"
+    volumes:
+      - ./backend:/app
+    environment:
+      - DATABASE_URL=${DATABASE_URL}
+      - SECRET_KEY=${SECRET_KEY_BASE}
+      - BACKEND_CORS_ORIGINS=${BACKEND_CORS_ORIGINS}
+      - GUIDE_PHONE=${GUIDE_PHONE}
+      - SUPER_ADMIN_PHONE=${SUPER_ADMIN_PHONE}
+      - TELEGRAM_BOT_TOKEN=${TELEGRAM_BOT_TOKEN}
+      # Другие переменные
+      - APP_BACKEND_URL=${APP_BACKEND_URL}
+      - SUPABASE_KEY=${SUPABASE_KEY}
+    networks:
+      - gide_network
+    restart: always
+
+  # Frontend
+  frontend:
+    build: 
+      context: ./frontend
+      args:
+        VITE_API_URL: ${VITE_API_URL}
+    container_name: gide_frontend
+    networks:
+      - gide_network
+    restart: always
+
+  # Nginx Reverse Proxy
+  nginx:
+    image: nginx:alpine
+    container_name: gide_nginx
+    ports:
+      - "8080:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - backend
+      - frontend
+    networks:
+      - gide_network
+    restart: always
+
+  # Webhook Server
+  webhook:
+    build: 
+      context: .
+      dockerfile: Dockerfile.webhook
+    container_name: gide_webhook
+    ports:
+      - "9000:9000"
+    volumes:
+      - ./webhook_server.py:/app/webhook_server.py
+      - ./deploy.sh:/var/www/gide/deploy.sh
+      - /var/run/docker.sock:/var/run/docker.sock
+    command: python webhook_server.py
+    networks:
+      - gide_network
+    restart: always
+
+networks:
+  gide_network:
+    driver: bridge

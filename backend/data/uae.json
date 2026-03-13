@@ -1,0 +1,1244 @@
+{
+  "count": 6,
+  "next": null,
+  "previous": null,
+  "results": [
+    {
+      "status": "active",
+      "id": 97922,
+      "title": "Колорит 3 эмиратов: индивидуальный мини-тур по Дубаю, Абу-Даби и Шарджа",
+      "tagline": "Заехать на остров Пальма-Джумейра, увидеть мечеть шейха Зайда и прогуляться по площади Корана",
+      "annotation": "За 3 насыщенных дня вы исследуете ключевые эмираты — Дубай, Абу-Даби и Шарджа, открывая для себя как знаменитые достопримечательности, так и менее популярные уголки. Прогуляетесь по футуристичным кварталам Дубая, сделаете фото у «паруса» Burj Al Arab и на фоне небоскрёбов Дубай Марины, полюбуетесь фонтанами у подножия Бурдж-Халифа. В Абу-Даби увидите архитектурные шедевры — от мечети шейха Зайда до белоснежного дворца Qasr Al Watan, а также заглянете в Лувр на острове Саадият. В Шардже познакомитесь с арабской природой в зоопарке и саду бабочек, прогуляетесь по рынку и осмотрите аквариум.",
+      "url": "https://experience.tripster.ru/experience/97922/",
+      "type": "tour",
+      "format": "activity",
+      "grade": null,
+      "movement_type": "car",
+      "schedule_type": "fixed_slots",
+      "exp_status": 3,
+      "is_instant_booking": true,
+      "is_new": false,
+      "max_persons": 6,
+      "duration": 48,
+      "price": {
+        "value": 630,
+        "currency": "USD",
+        "currency_rate": 85,
+        "price_from": false,
+        "unit_string": "",
+        "value_string": "$630 ",
+        "discount": {
+          "value": 0.1,
+          "expiration_date": "2025-12-31",
+          "expiration_text": "",
+          "original_price": 700
+        }
+      },
+      "rating": 0,
+      "visitors_count": 0,
+      "review_count": 0,
+      "pause_finish_date": null,
+      "pause_reason": null,
+      "cancel_finish_date": null,
+      "cancel_reason": null,
+      "additional_info": "<p>Для бронирования тура вы вносите только предоплату на сайте. Остальная часть — напрямую организатору в день встречи.</p>",
+      "comfort_level_info": "<div><p><strong>Питание.</strong> Не включено. По желанию можно организовать обед (оплачивается отдельно) или воспользоваться свободным временем для посещения кафе и ресторанов. Входит в стоимость бутилированная вода.</p>\n\n\t<p><strong>Транспорт.</strong> Передвижение осуществляется на комфортабельных автомобилях с кондиционером: Nissan Altima, Chevrolet Malibu, Toyota Land Cruiser, Mustang Cabriolet, Kia Telluride. Тип машины зависит от размера группы и пожеланий участников.</p>\n\n\t<p><strong>Возраст участников.</strong> Без ограничений. Дети до 3 лет участвуют бесплатно. </p>\n\n\t<p><strong>Виза.</strong> Не требуется для граждан РФ.</p>\n\n\t<p><strong>Уровень сложности.</strong> Тур не требует физической подготовки. </p>\n\n\t<p><strong>Тур проводится только для вашей компании в любые удобные даты.</strong></p></div>",
+      "price_included_description": "<ul>\n\t\t<li>Трансфер по маршруту</li>\n\t\t<li>Услуги гида</li>\n\t\t<li>Экскурсии</li>\n\t\t<li>Фотоостановки по маршруту</li>\n\t\t<li>Бутилированная вода</li>\n\t</ul>",
+      "price_not_included_description": "<ul>\n\t\t<li>Перелёт до Дубая и обратно</li>\n\t\t<li>Проживание</li>\n\t\t<li>Питание</li>\n\t\t<li>Входной билет в Ferrari World / Warner Bros / SeaWorld — от $90</li>\n\t\t<li>Вход в музей Лувр Абу-Даби — $20  (дети до 17 лет — бесплатно)</li>\n\t\t<li>Билет в дворец Qasr Al Watan — $20 взрослый, $15  детский</li>\n\t\t<li>Посещение TeamLab Phenomena — по желанию, билет оплачивается отдельно</li>\n\t</ul>",
+      "geo_access_level": "all",
+      "geo": {
+        "city": [
+          {
+            "id": 92,
+            "slug": "Dubai",
+            "name": "Дубай",
+            "name_prepositional": "Дубае",
+            "in_obj_phrase": "в Дубае",
+            "from_obj_phrase": "из Дубая",
+            "across_obj_phrase": "по Дубаю",
+            "is_main_city": true
+          },
+          {
+            "id": 470,
+            "slug": "Abu_Dhabi",
+            "name": "Абу-Даби",
+            "name_prepositional": "Абу-Даби",
+            "in_obj_phrase": "в Абу-Даби",
+            "from_obj_phrase": "из Абу-Даби",
+            "across_obj_phrase": "по Абу-Даби",
+            "is_main_city": false
+          },
+          {
+            "id": 472,
+            "slug": "Sharjah",
+            "name": "Шарджа",
+            "name_prepositional": "Шардже",
+            "in_obj_phrase": "в Шардже",
+            "from_obj_phrase": "из Шарджи",
+            "across_obj_phrase": "по Шардже",
+            "is_main_city": false
+          }
+        ],
+        "country": [
+          {
+            "id": 290,
+            "slug": "united-arab-emirates",
+            "name": "Объединённые Арабские Эмираты",
+            "name_prepositional": "Объединённых Арабских Эмиратах",
+            "in_obj_phrase": "в Объединённых Арабских Эмиратах",
+            "from_obj_phrase": "из Объединённых Арабских Эмиратов",
+            "across_obj_phrase": "по Объединённым Арабским Эмиратам",
+            "is_main_city": false
+          }
+        ]
+      },
+      "guide": {
+        "id": 2407270,
+        "first_name": "Аиша",
+        "url": "https://experience.tripster.ru/guide/2407270/",
+        "avatar": {
+          "medium": "https://resize.tripster.ru/pyWIUSwLAOWz6-inqeCL0huZ3a8=/150x150/filters:no_upscale()/https://cdn.tripster.ru/avatars/dad041d7-e5a2-4c99-8905-6d2314a17381.jpg",
+          "small": "https://resize.tripster.ru/pyWIUSwLAOWz6-inqeCL0huZ3a8=/150x150/filters:no_upscale()/https://cdn.tripster.ru/avatars/dad041d7-e5a2-4c99-8905-6d2314a17381.jpg"
+        },
+        "rating": 5,
+        "rate_count": 8,
+        "review_count": 8,
+        "avg_reaction_delay": 3,
+        "avg_reaction_delay_display": {
+          "nominative": "5 минут",
+          "accusative": "5 минут",
+          "genitive": "5 минут"
+        },
+        "type": "agency",
+        "date_start_work": "2025-08-07T14:24:09.922569Z",
+        "date_joined": "2025-06-22T10:58:51.681107Z",
+        "is_licensed": false,
+        "orders_count": 19,
+        "visitors_count": 26,
+        "description": "Я администратор нашей команды гидов и турагентства. Мы работаем в сфере туризма в ОАЭ с 2010 года, проводим авторские экскурсии по всем семи эмиратам. В нашей команде — лицензированные гиды и опытные водители, которые с душой и знанием показывают настоящие Эмираты. С радостью организуем для вас незабываемые путешествия!",
+        "exp_count_published": 9,
+        "number_of_persons_paid": 26
+      },
+      "guide_can_resume": false,
+      "has_non_refundable_part": false,
+      "photos": [
+        {
+          "type": "experience",
+          "thumbnail": "https://resize.tripster.ru/FoJpd14UiKpQ0gKZcNuFoKAwzCU=/fit-in/800x600/filters:no_upscale()/https://cdn.tripster.ru/photos/e78e2525-3f80-459b-aaf9-101bf61ace6c.jpg",
+          "medium": "https://resize.tripster.ru/DX-EKHBdebfkkZVzdBZ_SFcJooc=/fit-in/1200x1000/filters:no_upscale()/https://cdn.tripster.ru/photos/e78e2525-3f80-459b-aaf9-101bf61ace6c.jpg",
+          "thumbnail_portrait": "https://resize.tripster.ru/xiD1-qAfP7FK1taTHiXYs-ggGMg=/287x392/filters:no_upscale()/https://cdn.tripster.ru/photos/e78e2525-3f80-459b-aaf9-101bf61ace6c.jpg"
+        },
+        {
+          "type": "experience",
+          "thumbnail": "https://resize.tripster.ru/1y_ZpeP2Wl92iPzQb_VMM0Wiu9g=/fit-in/800x600/filters:no_upscale()/https://cdn.tripster.ru/photos/9414ce22-abc3-41f7-a927-9032dca9f4f2.jpg",
+          "medium": "https://resize.tripster.ru/0Usg7aPX8RhAE5voRMo_RpCZFFc=/fit-in/1200x1000/filters:no_upscale()/https://cdn.tripster.ru/photos/9414ce22-abc3-41f7-a927-9032dca9f4f2.jpg",
+          "thumbnail_portrait": "https://resize.tripster.ru/FBlggUcUpMM_zQ8LiPoFbnrXods=/287x392/filters:no_upscale()/https://cdn.tripster.ru/photos/9414ce22-abc3-41f7-a927-9032dca9f4f2.jpg"
+        },
+        {
+          "type": "experience",
+          "thumbnail": "https://resize.tripster.ru/hZsAf3cu3umcq9GZNBUDl1WHzIU=/fit-in/800x600/filters:no_upscale()/https://cdn.tripster.ru/photos/f533ca52-1dc9-4d24-80a2-94c40b8c56e7.jpg",
+          "medium": "https://resize.tripster.ru/11FU-Vu5eVoqkjSCgpHiUEnDr5E=/fit-in/1200x1000/filters:no_upscale()/https://cdn.tripster.ru/photos/f533ca52-1dc9-4d24-80a2-94c40b8c56e7.jpg",
+          "thumbnail_portrait": "https://resize.tripster.ru/zHg7Y-b2KyTM_AE9E360qxrPt0g=/287x392/filters:no_upscale()/https://cdn.tripster.ru/photos/f533ca52-1dc9-4d24-80a2-94c40b8c56e7.jpg"
+        },
+        {
+          "type": "experience",
+          "thumbnail": "https://resize.tripster.ru/KDSDFiqtjJH9YzOO1lMBF2V8zMU=/fit-in/800x600/filters:no_upscale()/https://cdn.tripster.ru/photos/639c31e5-921d-4d96-9662-130cf94be422.jpg",
+          "medium": "https://resize.tripster.ru/57bQyaGQBdaFotXzCZFvYJKyWw4=/fit-in/1200x1000/filters:no_upscale()/https://cdn.tripster.ru/photos/639c31e5-921d-4d96-9662-130cf94be422.jpg",
+          "thumbnail_portrait": "https://resize.tripster.ru/hdYZW8VU0KuWHqIWtBjoUoJem08=/287x392/filters:no_upscale()/https://cdn.tripster.ru/photos/639c31e5-921d-4d96-9662-130cf94be422.jpg"
+        },
+        {
+          "type": "experience",
+          "thumbnail": "https://resize.tripster.ru/_Qfp0PPJLEke6ZtZB0xp5f8dYcA=/fit-in/800x600/filters:no_upscale()/https://cdn.tripster.ru/photos/521f355c-4de6-47f1-a702-32b3adeba94c.jpg",
+          "medium": "https://resize.tripster.ru/NtTWmCtDmSC7xCULCtimcX-TLMM=/fit-in/1200x1000/filters:no_upscale()/https://cdn.tripster.ru/photos/521f355c-4de6-47f1-a702-32b3adeba94c.jpg",
+          "thumbnail_portrait": "https://resize.tripster.ru/vU-Ghm18uD6PHXhu639o-085S34=/287x392/filters:no_upscale()/https://cdn.tripster.ru/photos/521f355c-4de6-47f1-a702-32b3adeba94c.jpg"
+        },
+        {
+          "type": "experience",
+          "thumbnail": "https://resize.tripster.ru/-8QCix8tmfb4qNxBTTeAY1NLeDQ=/fit-in/800x600/filters:no_upscale()/https://cdn.tripster.ru/photos/1d064b30-4a74-43c5-9669-886da0f9d2d4.jpg",
+          "medium": "https://resize.tripster.ru/t2LHDfMUp2KT9RkE5JHh1ffBvlU=/fit-in/1200x1000/filters:no_upscale()/https://cdn.tripster.ru/photos/1d064b30-4a74-43c5-9669-886da0f9d2d4.jpg",
+          "thumbnail_portrait": "https://resize.tripster.ru/_4YTuVw0dNK7tHB8TOKjEEAMPpk=/287x392/filters:no_upscale()/https://cdn.tripster.ru/photos/1d064b30-4a74-43c5-9669-886da0f9d2d4.jpg"
+        },
+        {
+          "type": "experience",
+          "thumbnail": "https://resize.tripster.ru/cYChjykxlpOAZkWyB8hxBCnOt20=/fit-in/800x600/filters:no_upscale()/https://cdn.tripster.ru/photos/a906a76d-3664-43bb-8aeb-399215a85e84.jpg",
+          "medium": "https://resize.tripster.ru/yhlLYw_Ocork8mDg7X43pN5GBes=/fit-in/1200x1000/filters:no_upscale()/https://cdn.tripster.ru/photos/a906a76d-3664-43bb-8aeb-399215a85e84.jpg",
+          "thumbnail_portrait": "https://resize.tripster.ru/2eC01vVmTAx7ksH5RWMBq7GxSL4=/287x392/filters:no_upscale()/https://cdn.tripster.ru/photos/a906a76d-3664-43bb-8aeb-399215a85e84.jpg"
+        }
+      ],
+      "schedule": {
+        "upcoming_events": [
+          "2025-11-22T08:00:00",
+          "2025-11-23T08:00:00",
+          "2025-11-24T08:00:00",
+          "2025-11-25T08:00:00",
+          "2025-11-26T08:00:00",
+          "2025-11-27T08:00:00",
+          "2025-11-28T08:00:00",
+          "2025-11-29T08:00:00",
+          "2025-11-30T08:00:00",
+          "2025-12-01T08:00:00"
+        ]
+      },
+      "is_paid": false
+    },
+    {
+      "status": "active",
+      "id": 89178,
+      "title": "VIP-отдых в Дубае с резортом на Palm Jumeirah, вечеринками и фотопрогулками",
+      "tagline": "Снять много контента и повеселиться, поужинать устрицами и лобстерами, провести вечер на яхте",
+      "annotation": "Дубай — это синоним роскоши, созданный для лакшери-отпуска. Возьмите максимум шикарных нарядов — контента будет много! Вы окунётесь в красивую жизнь сразу, ведь мы забронировали для вас номер в эксклюзивном резорте с собственным бассейном и пляжем на острове Пальма Джумейра. Будет достаточно времени на релакс, чтобы кожа покрылась золотистым загаром, и вдоволь веселья: вечеринки с закусками и алкоголем, танцы босиком на песке под диджей-сеты и жгучую латину, родео на быке и караоке — это будут жаркие ночи! Днём впечатлений ещё больше: зайдем в знаменитый отель-парус Burj Al Arab, где подают кофе с золотом, отведаем устриц, лобстеров, авторских сыров с дизайнерской сервировкой в Atlantis The Royal, насладимся гриль-ужином во время вечернего круиза. А сохранить этот вайб помогут фото и видео: вы будете блистать в кадре на фоне самых стильных и визуально эффектных локаций и получите ролики от профессионального reels-мейкера.",
+      "url": "https://experience.tripster.ru/experience/89178/",
+      "type": "tour",
+      "format": "activity",
+      "grade": null,
+      "movement_type": "car",
+      "schedule_type": "fixed_slots",
+      "exp_status": 3,
+      "is_instant_booking": false,
+      "is_new": false,
+      "max_persons": 12,
+      "duration": 120,
+      "price": {
+        "value": 2600,
+        "currency": "USD",
+        "currency_rate": 85,
+        "price_from": false,
+        "unit_string": "за одного",
+        "value_string": "$2600 за одного"
+      },
+      "rating": 0,
+      "visitors_count": 0,
+      "review_count": 0,
+      "pause_finish_date": null,
+      "pause_reason": null,
+      "cancel_finish_date": null,
+      "cancel_reason": null,
+      "additional_info": "",
+      "comfort_level_info": "<div><p><strong>Питание.</strong> Включены:<br>\n— завтраки и ужины ежедневно;<br>\n— 2 обеда (во 2-й и 4-й дни);<br>\n— безлимитные закуски и напитки (алкогольные и безалкогольные) в течение 3 часов на вечеринке в 1-й день;<br>\n— безлимитные напитки (алкогольные и безалкогольные) в течение 2-х часов + скидка на блюда на вечеринке во 2-й день;<br>\n— безлимитные закуски и напитки (алкогольные и безалкогольные) в пляжном клубе в 3-й день.</p>\n\n\t<p>Остальное питание и алкоголь оплачивается отдельно.</p>\n\n\t<p><strong>Транспорт.</strong> Минивэн Toyota Hiace с кондиционером, салфетками и бутилированной водой.</p>\n\n\t<p><strong>Дети.</strong> Только 18+.</p>\n\n\t<p><strong>Виза.</strong> Гражданам России не требуется.</p></div>",
+      "price_included_description": "<ul>\n\t\t<li>Проживание</li>\n\t\t<li>Питание, алкоголь по программе</li>\n\t\t<li>Трансферы от/до аэропорта</li>\n\t\t<li>Все трансферы по маршруту</li>\n\t\t<li>Сопровождение гидом</li>\n\t\t<li>Reels-мейкер на некоторых экскурсиях</li>\n\t\t<li>Все входные билеты, экскурсии, активности по программе</li>\n\t</ul>",
+      "price_not_included_description": "<div><ul>\n\t\t<li>Билеты в Дубай и обратно в ваш город</li>\n\t\t<li>Питание, алкоголь вне программы</li>\n\t\t<li>Доплата за 1-местное размещение — по запросу</li>\n\t</ul>\n\n\t<p><strong>По желанию:</strong>\n\t</p><ul>\n\t\t<li>караоке — минимальная сумма заказа $80</li>\n\t\t<li>Afternoon Tea</li>\n\t</ul>\n\n\t<p><strong>Обратите внимание: стоимость тура в октябре и декабре составляет $2990 при 2-местном размещении.</strong></p>\n\n\t<p><strong>Минимальное количество участников — 4 человека.</strong></p></div>",
+      "geo_access_level": "all",
+      "geo": {
+        "city": [
+          {
+            "id": 92,
+            "slug": "Dubai",
+            "name": "Дубай",
+            "name_prepositional": "Дубае",
+            "in_obj_phrase": "в Дубае",
+            "from_obj_phrase": "из Дубая",
+            "across_obj_phrase": "по Дубаю",
+            "is_main_city": true
+          }
+        ],
+        "country": [
+          {
+            "id": 290,
+            "slug": "united-arab-emirates",
+            "name": "Объединённые Арабские Эмираты",
+            "name_prepositional": "Объединённых Арабских Эмиратах",
+            "in_obj_phrase": "в Объединённых Арабских Эмиратах",
+            "from_obj_phrase": "из Объединённых Арабских Эмиратов",
+            "across_obj_phrase": "по Объединённым Арабским Эмиратам",
+            "is_main_city": false
+          }
+        ]
+      },
+      "guide": {
+        "id": 2072368,
+        "first_name": "Дарья",
+        "url": "https://experience.tripster.ru/guide/2072368/",
+        "avatar": {
+          "medium": "https://resize.tripster.ru/-QTtFAE-WMfQYbGsAo1R4ZFVsFY=/150x150/filters:no_upscale()/https://cdn.tripster.ru/avatars/7471e280-ca81-41cb-a4a3-850cbc2a89fb.jpg",
+          "small": "https://resize.tripster.ru/-QTtFAE-WMfQYbGsAo1R4ZFVsFY=/150x150/filters:no_upscale()/https://cdn.tripster.ru/avatars/7471e280-ca81-41cb-a4a3-850cbc2a89fb.jpg"
+        },
+        "rating": 0,
+        "rate_count": 0,
+        "review_count": 0,
+        "avg_reaction_delay": 270,
+        "avg_reaction_delay_display": {
+          "nominative": "5 часов",
+          "accusative": "5 часов",
+          "genitive": "5 часов"
+        },
+        "type": "agency",
+        "date_start_work": "2025-04-29T09:12:31.311616Z",
+        "date_joined": "2024-12-15T11:34:39.864354Z",
+        "is_licensed": false,
+        "orders_count": 1,
+        "visitors_count": 0,
+        "description": "Я живу в Дубае уже больше 10 лет и с удовольствием помогаю людям увидеть Эмираты такими, какими их видят не гости, а те, кто действительно здесь живёт. Я не гид в классическом понимании, а организатор туров и создатель маршрутов — авторских, стильных, насыщенных. Таких, которые сложно повторить самостоятельно. Мой подход — это комфорт, внимание к деталям, высокий уровень сервиса и тёплая, дружеская атмосфера. Я работаю только с небольшими группами, потому что искренне верю: именно в камерности рождаются настоящие эмоции. Каждый мой маршрут — это тщательно собранная мозаика из красивых мест, локальных фишек, продуманных остановок, хорошей еды и «вау»-моментов. Я сама обожаю путешествовать и прекрасно понимаю, что хочется получить от поездки. Именно поэтому стараюсь сделать всё, чтобы вы увезли не только фото, но и то самое ощущение: «Вот это было незабываемо!».",
+        "exp_count_published": 1,
+        "number_of_persons_paid": 0
+      },
+      "guide_can_resume": false,
+      "has_non_refundable_part": false,
+      "photos": [
+        {
+          "type": "experience",
+          "thumbnail": "https://resize.tripster.ru/LhNcEZvS82Go3xFcFdam6IdXQYE=/fit-in/800x600/filters:no_upscale()/https://cdn.tripster.ru/photos/2136fe45-5e48-45c6-ae91-688c76893c60.jpg",
+          "medium": "https://resize.tripster.ru/tflR-dkiHAX6_T8Wc3KwhabCQ-0=/fit-in/1200x1000/filters:no_upscale()/https://cdn.tripster.ru/photos/2136fe45-5e48-45c6-ae91-688c76893c60.jpg",
+          "thumbnail_portrait": "https://resize.tripster.ru/FVE__na5X0417FtSDqxqOYi3wPs=/287x392/filters:no_upscale()/https://cdn.tripster.ru/photos/2136fe45-5e48-45c6-ae91-688c76893c60.jpg"
+        },
+        {
+          "type": "experience",
+          "thumbnail": "https://resize.tripster.ru/dtyAiUb8cftxtWWYCx6j_s6f80M=/fit-in/800x600/filters:no_upscale()/https://cdn.tripster.ru/photos/28c4384c-5a13-4079-ad11-abc2ef5f953a.jpg",
+          "medium": "https://resize.tripster.ru/P43Cpx9UBg8Pu4pkjETA1bflgWo=/fit-in/1200x1000/filters:no_upscale()/https://cdn.tripster.ru/photos/28c4384c-5a13-4079-ad11-abc2ef5f953a.jpg",
+          "thumbnail_portrait": "https://resize.tripster.ru/TgCphrcdBDZb3TPnZ6AsXbth9O4=/287x392/filters:no_upscale()/https://cdn.tripster.ru/photos/28c4384c-5a13-4079-ad11-abc2ef5f953a.jpg"
+        },
+        {
+          "type": "experience",
+          "thumbnail": "https://resize.tripster.ru/oSOLvmpDAbe2egAaul5hmYGxVbc=/fit-in/600x800/filters:no_upscale()/https://cdn.tripster.ru/photos/ab4f9fea-8957-4501-9e31-06b904e76e7b.jpg",
+          "medium": "https://resize.tripster.ru/lDTYaYu66kxQApyf0ppA8PaAxkM=/fit-in/1000x1350/filters:no_upscale()/https://cdn.tripster.ru/photos/ab4f9fea-8957-4501-9e31-06b904e76e7b.jpg",
+          "thumbnail_portrait": "https://resize.tripster.ru/cC-Ywsm5Kar8QxjQfeeMLhVzDqs=/287x392/filters:no_upscale()/https://cdn.tripster.ru/photos/ab4f9fea-8957-4501-9e31-06b904e76e7b.jpg"
+        },
+        {
+          "type": "experience",
+          "thumbnail": "https://resize.tripster.ru/-BzG5eXmqUq771YyoOdtdeUmnAM=/fit-in/800x600/filters:no_upscale()/https://cdn.tripster.ru/photos/a8297ae5-8c09-43fa-bf61-305fc4b56a41.jpg",
+          "medium": "https://resize.tripster.ru/3qMbPBAxro4eLW2GZrIWK70hY40=/fit-in/1200x1000/filters:no_upscale()/https://cdn.tripster.ru/photos/a8297ae5-8c09-43fa-bf61-305fc4b56a41.jpg",
+          "thumbnail_portrait": "https://resize.tripster.ru/3nabnaXFuCTKTEJ-oAQbqnPfBZo=/287x392/filters:no_upscale()/https://cdn.tripster.ru/photos/a8297ae5-8c09-43fa-bf61-305fc4b56a41.jpg"
+        },
+        {
+          "type": "experience",
+          "thumbnail": "https://resize.tripster.ru/kt7eP9EH2AMkHb5tkuQ8_v6VbpA=/fit-in/800x600/filters:no_upscale()/https://cdn.tripster.ru/photos/7a7e2961-6e1c-48ca-a86a-8760f2286bc6.jpg",
+          "medium": "https://resize.tripster.ru/Q6trJVhLgfom6Ff4kkjqmKuurlA=/fit-in/1200x1000/filters:no_upscale()/https://cdn.tripster.ru/photos/7a7e2961-6e1c-48ca-a86a-8760f2286bc6.jpg",
+          "thumbnail_portrait": "https://resize.tripster.ru/jMoBa2t5VzW7d8qzrlRYqTiasYU=/287x392/filters:no_upscale()/https://cdn.tripster.ru/photos/7a7e2961-6e1c-48ca-a86a-8760f2286bc6.jpg"
+        },
+        {
+          "type": "experience",
+          "thumbnail": "https://resize.tripster.ru/1NYJIZmSQJsQIPCBIVzzSEm7wms=/fit-in/600x800/filters:no_upscale()/https://cdn.tripster.ru/photos/01d8e744-33b9-4ec5-b936-d837d12f413f.jpg",
+          "medium": "https://resize.tripster.ru/UxPp8lwtJFpNNz6Y0zHcBlYx28s=/fit-in/1000x1350/filters:no_upscale()/https://cdn.tripster.ru/photos/01d8e744-33b9-4ec5-b936-d837d12f413f.jpg",
+          "thumbnail_portrait": "https://resize.tripster.ru/kEtDucH_Fd3GhtyRJ0yys-sW9_E=/287x392/filters:no_upscale()/https://cdn.tripster.ru/photos/01d8e744-33b9-4ec5-b936-d837d12f413f.jpg"
+        },
+        {
+          "type": "experience",
+          "thumbnail": "https://resize.tripster.ru/h5I7RWQci_hjk0uHI26ivirleFk=/fit-in/600x800/filters:no_upscale()/https://cdn.tripster.ru/photos/08b135cf-ab2e-49d5-9596-604be4da3bde.jpg",
+          "medium": "https://resize.tripster.ru/20bJtledhKtIvK7KYYiJzlLT24M=/fit-in/1000x1350/filters:no_upscale()/https://cdn.tripster.ru/photos/08b135cf-ab2e-49d5-9596-604be4da3bde.jpg",
+          "thumbnail_portrait": "https://resize.tripster.ru/uXZ_iYO-1kcFJcKxN4vrJ5uN3VE=/287x392/filters:no_upscale()/https://cdn.tripster.ru/photos/08b135cf-ab2e-49d5-9596-604be4da3bde.jpg"
+        }
+      ],
+      "schedule": {
+        "upcoming_events": [
+          "2025-12-16T10:00:00"
+        ]
+      },
+      "is_paid": false
+    },
+    {
+      "status": "active",
+      "id": 72133,
+      "title": "Эмираты во всех красках: грандиозный Дубай, роскошный Абу-Даби и релакс у Индийского океана",
+      "tagline": "Отправиться в вечерний круиз по заливу и джип-сафари по пустыне и поужинать в бедуинской деревне",
+      "annotation": "Отправляемся в мир роскоши, восточных традиций и ультрасовременных небоскрёбов — Объединённые Арабские Эмираты. Вы осмотрите все главные локации Дубая, от знаменитого искусственного острова в форме пальмы до местной Венеции, и полюбуетесь вечерним мегаполисом с воды во время круиза на лодке доу. Посетите сердце страны — Абу-Даби — и его поражающие богатым убранством достопримечательности: Лувр, президентский дворец, мечеть шейха Заида. Возьмёте небольшую паузу, чтобы после насыщенных впечатлениями дней расслабиться на побережье Индийского океана. А также исколесите пустыню на внедорожнике и завершите отдых атмосферным ужином в затерянной в песках бедуинской деревне.",
+      "url": "https://experience.tripster.ru/experience/72133/",
+      "type": "tour",
+      "format": "activity",
+      "grade": null,
+      "movement_type": "car",
+      "schedule_type": "fixed_slots",
+      "exp_status": 3,
+      "is_instant_booking": false,
+      "is_new": false,
+      "max_persons": 10,
+      "duration": 120,
+      "price": {
+        "value": 1590,
+        "currency": "USD",
+        "currency_rate": 85,
+        "price_from": false,
+        "unit_string": "за одного",
+        "value_string": "$1590 за одного"
+      },
+      "rating": 0,
+      "visitors_count": 0,
+      "review_count": 0,
+      "pause_finish_date": null,
+      "pause_reason": null,
+      "cancel_finish_date": null,
+      "cancel_reason": null,
+      "additional_info": "<p>После оплаты 15% на сайте необходимо внести предоплату $400-500 до поездки, остальное на месте в долларах или рублях по курсу покупки доллара в Сбере по счёту.<br>\nУсловия возврата вы можете уточнить у организатора.</p>",
+      "comfort_level_info": "<div><p><strong>Питание.</strong> Включены завтраки в отеле (во 2-5 дни), 1 обед по системе «шведский стол» (без напитков) на берегу Индийского океана (в 4-й день), 2 ужина во время круиза (без напитков) и в бедуинской деревне (в 1-й и 5-й дни). Остальное питание — за доплату.</p>\n\n\t<p><strong>Транспорт.</strong>  В стоимость входят все трансферы по маршруту на микроавтобусе, такси, метро.</p>\n\n\t<p><strong>Дети.</strong> Возможно участие с детьми старше 12 лет.</p>\n\n\t<p><strong>Виза.</strong> Гражданам России и Беларуси предоставляется бесплатно по прилёте на срок до 90 дней.</p></div>",
+      "price_included_description": "<ul>\n\t\t<li>Проживание</li>\n\t\t<li>4 завтрака, 1 обед, 2 ужина</li>\n\t\t<li>Трансферы от/до аэропорта</li>\n\t\t<li>Трансферы по маршруту</li>\n\t\t<li>Сопровождение русскоязычным гидом</li>\n\t\t<li>Все входные билеты, активности и экскурсии по программе</li>\n\t\t<li>Страховка</li>\n\t</ul>",
+      "price_not_included_description": "<ul>\n\t\t<li>Перелёты в Дубай и обратно в ваш город</li>\n\t\t<li>Питание вне программы</li>\n\t\t<li>Напитки во время круиза и отдыха у Индийского океана</li>\n\t</ul>",
+      "geo_access_level": "all",
+      "geo": {
+        "city": [
+          {
+            "id": 92,
+            "slug": "Dubai",
+            "name": "Дубай",
+            "name_prepositional": "Дубае",
+            "in_obj_phrase": "в Дубае",
+            "from_obj_phrase": "из Дубая",
+            "across_obj_phrase": "по Дубаю",
+            "is_main_city": true
+          },
+          {
+            "id": 953,
+            "slug": "Fujairah",
+            "name": "Фуджейра",
+            "name_prepositional": "Фуджейре",
+            "in_obj_phrase": "в Фуджейре",
+            "from_obj_phrase": "из Фуджейры",
+            "across_obj_phrase": "по Фуджейре",
+            "is_main_city": false
+          },
+          {
+            "id": 470,
+            "slug": "Abu_Dhabi",
+            "name": "Абу-Даби",
+            "name_prepositional": "Абу-Даби",
+            "in_obj_phrase": "в Абу-Даби",
+            "from_obj_phrase": "из Абу-Даби",
+            "across_obj_phrase": "по Абу-Даби",
+            "is_main_city": false
+          }
+        ],
+        "country": [
+          {
+            "id": 290,
+            "slug": "united-arab-emirates",
+            "name": "Объединённые Арабские Эмираты",
+            "name_prepositional": "Объединённых Арабских Эмиратах",
+            "in_obj_phrase": "в Объединённых Арабских Эмиратах",
+            "from_obj_phrase": "из Объединённых Арабских Эмиратов",
+            "across_obj_phrase": "по Объединённым Арабским Эмиратам",
+            "is_main_city": false
+          }
+        ]
+      },
+      "guide": {
+        "id": 94323,
+        "first_name": "Светлана",
+        "url": "https://experience.tripster.ru/guide/94323/",
+        "avatar": {
+          "medium": "https://resize.tripster.ru/XugosaAD1DEgrF_nUQ3IzqpeYK4=/150x150/filters:no_upscale()/https://cdn.tripster.ru/avatars/b05c7e11-1e3d-474b-96c9-25808f779339.jpg",
+          "small": "https://resize.tripster.ru/XugosaAD1DEgrF_nUQ3IzqpeYK4=/150x150/filters:no_upscale()/https://cdn.tripster.ru/avatars/b05c7e11-1e3d-474b-96c9-25808f779339.jpg"
+        },
+        "rating": 4.98,
+        "rate_count": 61,
+        "review_count": 48,
+        "avg_reaction_delay": 89,
+        "avg_reaction_delay_display": {
+          "nominative": "2 часа",
+          "accusative": "2 часа",
+          "genitive": "2 часов"
+        },
+        "type": "guide",
+        "date_start_work": "2022-07-23T20:41:54.285016Z",
+        "date_joined": "2017-09-28T08:54:55.000000Z",
+        "is_licensed": false,
+        "orders_count": 413,
+        "visitors_count": 449,
+        "description": "Здравствуйте!\r\n\r\nЖиву в Воронеже всю жизнь, закончила два ВУЗа, но любовь к путешествиям взяла верх.\r\n\r\nЖду Вас на экскурсии по Воронежу, где покажу и расскажу все самое-самое.\r\n\r\nА также с 2018 года организую авторские поездки, где каждый день новое и интересное. Обычно в турагентствах продают туры, куда входит перелет и проживание, а программу приходится выдумывать самому. У нас другой подход: включены все экскурсии, а вот перелет Вы выбираете сами, чтобы было удобно для Вас лично. В аэропорту всех встречают и можно расслабиться, программы все отработаны и проезжены. Поэтому, если давно мечтали о каком-то путешествии, но всё не складывалось, присоединяйтесь к нам!\r\nДо встречи!",
+        "exp_count_published": 9,
+        "number_of_persons_paid": 449
+      },
+      "guide_can_resume": false,
+      "has_non_refundable_part": false,
+      "photos": [
+        {
+          "type": "experience",
+          "thumbnail": "https://resize.tripster.ru/DBVF85Ig50f2IXg6HjzTEbUCrw8=/fit-in/800x600/filters:no_upscale()/https://cdn.tripster.ru/photos/cec0ba33-0493-405b-9795-c9deee719e89.jpg",
+          "medium": "https://resize.tripster.ru/B842d0ImLO4HsWDEQLP04p00elc=/fit-in/1200x1000/filters:no_upscale()/https://cdn.tripster.ru/photos/cec0ba33-0493-405b-9795-c9deee719e89.jpg",
+          "thumbnail_portrait": "https://resize.tripster.ru/XKU8ZSZtgY-tj0yzh-D5UBwaI84=/287x392/filters:no_upscale()/https://cdn.tripster.ru/photos/cec0ba33-0493-405b-9795-c9deee719e89.jpg"
+        },
+        {
+          "type": "experience",
+          "thumbnail": "https://resize.tripster.ru/8d-50zQI_AWCJhWpJhA0tIRagXk=/fit-in/800x600/filters:no_upscale()/https://cdn.tripster.ru/photos/7ba118a2-afda-4839-b643-7aebe3fa9a72.jpg",
+          "medium": "https://resize.tripster.ru/r5ZIgmFLDyggkvQ4h3bogph5bKA=/fit-in/1200x1000/filters:no_upscale()/https://cdn.tripster.ru/photos/7ba118a2-afda-4839-b643-7aebe3fa9a72.jpg",
+          "thumbnail_portrait": "https://resize.tripster.ru/R48DS1z1c0B0Wi44Uon0chxjDDs=/287x392/filters:no_upscale()/https://cdn.tripster.ru/photos/7ba118a2-afda-4839-b643-7aebe3fa9a72.jpg"
+        },
+        {
+          "type": "experience",
+          "thumbnail": "https://resize.tripster.ru/74l2rEbNLn7OFRYBrWVIz53AvOo=/fit-in/600x800/filters:no_upscale()/https://cdn.tripster.ru/photos/464ad1a2-b33d-40dc-bc84-e1ecc4d7bd1e.jpg",
+          "medium": "https://resize.tripster.ru/BCsn3FCeJKkLffNyYEMod_sCyxc=/fit-in/1000x1350/filters:no_upscale()/https://cdn.tripster.ru/photos/464ad1a2-b33d-40dc-bc84-e1ecc4d7bd1e.jpg",
+          "thumbnail_portrait": "https://resize.tripster.ru/48PaQyEsjiymjAfZ0CGSk9KBMxo=/287x392/filters:no_upscale()/https://cdn.tripster.ru/photos/464ad1a2-b33d-40dc-bc84-e1ecc4d7bd1e.jpg"
+        },
+        {
+          "type": "experience",
+          "thumbnail": "https://resize.tripster.ru/YnLgrMhCZouERm8Xa6aUQlhuAJk=/fit-in/600x800/filters:no_upscale()/https://cdn.tripster.ru/photos/3e123d00-9500-4085-8a04-735d81f715d2.jpg",
+          "medium": "https://resize.tripster.ru/wi_3J1wcd-C3iCbNwtYshjiS42Q=/fit-in/1000x1350/filters:no_upscale()/https://cdn.tripster.ru/photos/3e123d00-9500-4085-8a04-735d81f715d2.jpg",
+          "thumbnail_portrait": "https://resize.tripster.ru/pHLw7plvCOgOtBfSmKiv5kaXRkk=/287x392/filters:no_upscale()/https://cdn.tripster.ru/photos/3e123d00-9500-4085-8a04-735d81f715d2.jpg"
+        },
+        {
+          "type": "experience",
+          "thumbnail": "https://resize.tripster.ru/5auJIKMS-okw0Wotd5K6E6tRO3Q=/fit-in/800x600/filters:no_upscale()/https://cdn.tripster.ru/photos/8eefb013-10fe-45b4-aad0-d5a974942028.jpg",
+          "medium": "https://resize.tripster.ru/1Q2KO1-cRd-jXrJ_VUVQbTe9W1w=/fit-in/1200x1000/filters:no_upscale()/https://cdn.tripster.ru/photos/8eefb013-10fe-45b4-aad0-d5a974942028.jpg",
+          "thumbnail_portrait": "https://resize.tripster.ru/NekQELvDF90cOOM-3FnVrswQ7-g=/287x392/filters:no_upscale()/https://cdn.tripster.ru/photos/8eefb013-10fe-45b4-aad0-d5a974942028.jpg"
+        },
+        {
+          "type": "experience",
+          "thumbnail": "https://resize.tripster.ru/ACQYYr5payoa3Zm0cTKmNjYd02M=/fit-in/800x600/filters:no_upscale()/https://cdn.tripster.ru/photos/9cf1492f-5c0a-4fca-818e-b35a2b856cd8.jpg",
+          "medium": "https://resize.tripster.ru/JTVL2SjCoNo99X7oiroxA4JrlJM=/fit-in/1200x1000/filters:no_upscale()/https://cdn.tripster.ru/photos/9cf1492f-5c0a-4fca-818e-b35a2b856cd8.jpg",
+          "thumbnail_portrait": "https://resize.tripster.ru/wWzmaUzZp4b_V-Wl-PeHWiruRmI=/287x392/filters:no_upscale()/https://cdn.tripster.ru/photos/9cf1492f-5c0a-4fca-818e-b35a2b856cd8.jpg"
+        },
+        {
+          "type": "experience",
+          "thumbnail": "https://resize.tripster.ru/R0axZoPplo-Wt9eLYFKIiNEVT2c=/fit-in/600x800/filters:no_upscale()/https://cdn.tripster.ru/photos/d45ef64a-3537-4a12-a87e-1083155fe1a5.jpg",
+          "medium": "https://resize.tripster.ru/SYlnbpdnFHznYU2O9eIxr4nsk8I=/fit-in/1000x1350/filters:no_upscale()/https://cdn.tripster.ru/photos/d45ef64a-3537-4a12-a87e-1083155fe1a5.jpg",
+          "thumbnail_portrait": "https://resize.tripster.ru/MZc0CzMIOixBslB36oAr_5n8sYY=/287x392/filters:no_upscale()/https://cdn.tripster.ru/photos/d45ef64a-3537-4a12-a87e-1083155fe1a5.jpg"
+        }
+      ],
+      "schedule": {
+        "upcoming_events": [
+          "2025-12-15T08:00:00"
+        ]
+      },
+      "is_paid": false
+    },
+    {
+      "status": "active",
+      "id": 69318,
+      "title": "Большое путешествие по ОАЭ с выбором экскурсий и отдыхом на море (перелёты включены)",
+      "tagline": "Побывать в 3 эмиратах, рассмотреть современные и традиционные здания и посетить мечеть шейха Зайда",
+      "annotation": "Насыщенный тур по ОАЭ с включённым перелётом из Москвы и обратно. Вы посетите туристический Дубай и увидите знаменитые небоскрёбы, здания необычной формы и сохранившееся традиционное в городе. Зайдёте в роскошную мечеть шейха Зайда в Абу-Даби — шестую по величине мечеть в мире — и погрузитесь в культуру в Шардже. Сможете дополнить путешествие поездкой на восточное побережье ОАЭ, джипингом в пустыне, отдыхом в горячих источниках, посещением парков развлечений и Лувра.",
+      "url": "https://experience.tripster.ru/experience/69318/",
+      "type": "tour",
+      "format": "activity",
+      "grade": null,
+      "movement_type": "bus",
+      "schedule_type": "fixed_slots",
+      "exp_status": 3,
+      "is_instant_booking": false,
+      "is_new": false,
+      "max_persons": 45,
+      "duration": 240,
+      "price": {
+        "value": 1308,
+        "currency": "EUR",
+        "currency_rate": 98.47,
+        "price_from": false,
+        "unit_string": "за одного",
+        "value_string": "€1308 за одного"
+      },
+      "rating": 4.5,
+      "visitors_count": 6,
+      "review_count": 2,
+      "pause_finish_date": null,
+      "pause_reason": null,
+      "cancel_finish_date": null,
+      "cancel_reason": null,
+      "additional_info": "<div><p><strong>Помимо внесённой предоплаты на сайте (15%), необходимо перевести напрямую организатору ещё 50-60% от стоимости тура на покупку авиабилетов.</strong> Остальная часть — за 3 недели до начала тура.</p>\n\n\t<p>Оплата экскурсионного пакета производится наличными. Все дополнительные экскурсии бронируются заранее и оплачиваются тоже наличными.</p></div>",
+      "comfort_level_info": "",
+      "price_included_description": "<ul>\n\t\t<li>Проживание</li>\n\t\t<li>Завтраки</li>\n\t\t<li>Международный перелёт Москва-Дубай-Санкт-Москва (Fly Dubai, ручная кладь до 7 кг. багаж до 20 кг)</li>\n\t\t<li>Трансферы по программе</li>\n\t\t<li>Пассажирские налоги</li>\n\t\t<li>Экскурсионная программа в сопровождении русскоязычного гида — входит в стоимость, но оплачивается наличными (€349): экскурсии по Абу-Даби, на остров Саадаят, по Аль-Айну, Шардже и 2 экскурсии в Дубае. При подтверждении заказа она будет вычтена из стоимости (предоплата на неё не распространяется).</li>\n\t</ul>",
+      "price_not_included_description": "<div><ul>\n\t\t<li>1-местное размещение — доплата €300</li>\n\t\t<li>Обеды и ужины</li>\n\t\t<li>Дорожно-транспортный сбор — €5 за весь тур</li>\n\t\t<li>Туристический налог — 100 дирхам (отсутствует для детей до 12 лет, проживающих в одном номере с родителями)</li>\n\t\t<li>Входные билеты на посещаемые объекты</li>\n\t</ul>\n\n\t<p>По желанию:\n\t</p><ul>\n\t\t<li>Входной билет в Лувр — €15 (60 дирхам)</li>\n\t\t<li>Поездка в Оман — €98 (с обедом и рыбалкой на корабле)</li>\n\t\t<li>Поездка в Фуджейру — €59 + вход на пляж и обед (с посещением коврового и фруктового рынков, обедом и отдыхом на пляже)</li>\n\t\t<li>Поездка в Global Village и парк цветов Miracle Garden — €30 + входные билеты</li>\n\t\t<li>Поездка на острова Яс — €20 + входные билеты в Ferrari-парк / аквапарк / Warner Bros.World</li>\n\t\t<li>Охота на крабов — €79 (с дегустацией)</li>\n\t\t<li>Посещение минеральных источников в Аль-Айне — около €6</li>\n\t\t<li>Джипинг в пустыне — €50 (с ужином, катанием на верблюдах и шоу в бедуинской деревне)</li>\n\t</ul>\n\n\t<p><strong>Обратите внимание</strong>, цена тура зависит от дат — от €1308 до €1548. Это связано с разной стоимостью авиабилетов. Просьба перед внесением предоплаты уточнять стоимость на конкретные даты.</p></div>",
+      "geo_access_level": "all",
+      "geo": {
+        "city": [
+          {
+            "id": 92,
+            "slug": "Dubai",
+            "name": "Дубай",
+            "name_prepositional": "Дубае",
+            "in_obj_phrase": "в Дубае",
+            "from_obj_phrase": "из Дубая",
+            "across_obj_phrase": "по Дубаю",
+            "is_main_city": true
+          },
+          {
+            "id": 953,
+            "slug": "Fujairah",
+            "name": "Фуджейра",
+            "name_prepositional": "Фуджейре",
+            "in_obj_phrase": "в Фуджейре",
+            "from_obj_phrase": "из Фуджейры",
+            "across_obj_phrase": "по Фуджейре",
+            "is_main_city": false
+          },
+          {
+            "id": 470,
+            "slug": "Abu_Dhabi",
+            "name": "Абу-Даби",
+            "name_prepositional": "Абу-Даби",
+            "in_obj_phrase": "в Абу-Даби",
+            "from_obj_phrase": "из Абу-Даби",
+            "across_obj_phrase": "по Абу-Даби",
+            "is_main_city": false
+          },
+          {
+            "id": 472,
+            "slug": "Sharjah",
+            "name": "Шарджа",
+            "name_prepositional": "Шардже",
+            "in_obj_phrase": "в Шардже",
+            "from_obj_phrase": "из Шарджи",
+            "across_obj_phrase": "по Шардже",
+            "is_main_city": false
+          }
+        ],
+        "country": [
+          {
+            "id": 290,
+            "slug": "united-arab-emirates",
+            "name": "Объединённые Арабские Эмираты",
+            "name_prepositional": "Объединённых Арабских Эмиратах",
+            "in_obj_phrase": "в Объединённых Арабских Эмиратах",
+            "from_obj_phrase": "из Объединённых Арабских Эмиратов",
+            "across_obj_phrase": "по Объединённым Арабским Эмиратам",
+            "is_main_city": false
+          }
+        ]
+      },
+      "guide": {
+        "id": 450217,
+        "first_name": "Евгения",
+        "url": "https://experience.tripster.ru/guide/450217/",
+        "avatar": {
+          "medium": "https://resize.tripster.ru/tbvvrmxn95FjP5t3-bDhOXeWhgI=/150x150/filters:no_upscale()/https://cdn.tripster.ru/avatars/e1b1d647-3d2a-40fd-9b04-af7743f93bd0.jpg",
+          "small": "https://resize.tripster.ru/tbvvrmxn95FjP5t3-bDhOXeWhgI=/150x150/filters:no_upscale()/https://cdn.tripster.ru/avatars/e1b1d647-3d2a-40fd-9b04-af7743f93bd0.jpg"
+        },
+        "rating": 4.46,
+        "rate_count": 33,
+        "review_count": 24,
+        "avg_reaction_delay": 238,
+        "avg_reaction_delay_display": {
+          "nominative": "4 часа",
+          "accusative": "4 часа",
+          "genitive": "4 часов"
+        },
+        "type": "agency",
+        "date_start_work": "2020-11-09T12:40:23.000000Z",
+        "date_joined": "2020-11-02T13:15:19.000000Z",
+        "is_licensed": true,
+        "orders_count": 760,
+        "visitors_count": 323,
+        "description": "Мы туристический оператор, существующий с 2014 года. Наша компания включена в реестр Ростуризма, что говорит о высокой степени ответственности и качества с нашей стороны и многолетнем доверии со стороны туристов.\r\nЦель нашей компании — создание недорогих туров высокого качества по доступным ценам и индивидуальный подход к каждому клиенту. За долгие годы нашей работы мы заключили эксклюзивные договоры с отелями, транспортными, паромными и авиакомпаниями, что дает нам возможность создавать туры по России и другим странам высокого качества по низким ценам.\r\nБудем и дальше поддерживать качество наших услуг, совершенствоваться и радовать вас!",
+        "exp_count_published": 15,
+        "number_of_persons_paid": 323
+      },
+      "guide_can_resume": false,
+      "has_non_refundable_part": false,
+      "photos": [
+        {
+          "type": "experience",
+          "thumbnail": "https://resize.tripster.ru/CDNlFSLljRlPv1PipJnpcPdJIVE=/fit-in/800x600/filters:no_upscale()/https://cdn.tripster.ru/photos/1eff0592-521d-410f-a94d-7d27d73dbe9f.jpg",
+          "medium": "https://resize.tripster.ru/lnJB51MDYJGUeUlI9O0JbidD1Bs=/fit-in/1200x1000/filters:no_upscale()/https://cdn.tripster.ru/photos/1eff0592-521d-410f-a94d-7d27d73dbe9f.jpg",
+          "thumbnail_portrait": "https://resize.tripster.ru/8ygX3c8o_PXYGGLLj3CPpRPiWcU=/287x392/filters:no_upscale()/https://cdn.tripster.ru/photos/1eff0592-521d-410f-a94d-7d27d73dbe9f.jpg"
+        },
+        {
+          "type": "experience",
+          "thumbnail": "https://resize.tripster.ru/eAyHx04CtrpjsU9XwtOkrgnOfYo=/fit-in/800x600/filters:no_upscale()/https://cdn.tripster.ru/photos/e2f8d665-953f-43a1-9950-71bb5189ff17.jpg",
+          "medium": "https://resize.tripster.ru/GOpYXo4pSm-0Mj38TBBSLBwx5js=/fit-in/1200x1000/filters:no_upscale()/https://cdn.tripster.ru/photos/e2f8d665-953f-43a1-9950-71bb5189ff17.jpg",
+          "thumbnail_portrait": "https://resize.tripster.ru/qgeJ6ikGTKuNquQ2J37npSglo9Y=/287x392/filters:no_upscale()/https://cdn.tripster.ru/photos/e2f8d665-953f-43a1-9950-71bb5189ff17.jpg"
+        },
+        {
+          "type": "experience",
+          "thumbnail": "https://resize.tripster.ru/zr6E9c3gj6XAy8WwfABBvmz3NqE=/fit-in/800x600/filters:no_upscale()/https://cdn.tripster.ru/photos/d77ae73a-8aaa-4487-a372-9c7986232a55.jpg",
+          "medium": "https://resize.tripster.ru/3-BamKuUcJgiDMDGYSBCVsi5ysI=/fit-in/1200x1000/filters:no_upscale()/https://cdn.tripster.ru/photos/d77ae73a-8aaa-4487-a372-9c7986232a55.jpg",
+          "thumbnail_portrait": "https://resize.tripster.ru/amKBzAYi8KHdhR-JvCBDHb6tDzc=/287x392/filters:no_upscale()/https://cdn.tripster.ru/photos/d77ae73a-8aaa-4487-a372-9c7986232a55.jpg"
+        },
+        {
+          "type": "experience",
+          "thumbnail": "https://resize.tripster.ru/kwGCb34W_O256kYRfyAlW0RYlSU=/fit-in/800x600/filters:no_upscale()/https://cdn.tripster.ru/photos/cfacd31e-d1b7-4390-a069-7e3eb8b4cc6c.jpg",
+          "medium": "https://resize.tripster.ru/s6cqxvYSNfNejP6rO-MEO8MJvao=/fit-in/1200x1000/filters:no_upscale()/https://cdn.tripster.ru/photos/cfacd31e-d1b7-4390-a069-7e3eb8b4cc6c.jpg",
+          "thumbnail_portrait": "https://resize.tripster.ru/xR632IMiCyQSr-VvNqdPWMMGAgg=/287x392/filters:no_upscale()/https://cdn.tripster.ru/photos/cfacd31e-d1b7-4390-a069-7e3eb8b4cc6c.jpg"
+        },
+        {
+          "type": "experience",
+          "thumbnail": "https://resize.tripster.ru/mwInWiMHUIgBvYGO-ZX5gyDUCNk=/fit-in/800x600/filters:no_upscale()/https://cdn.tripster.ru/photos/30670ce5-1d3b-4a8a-8b0f-ef2fcd8ac74c.jpg",
+          "medium": "https://resize.tripster.ru/f1CyZzJYBnOt76Lb1kOPbMIk_l0=/fit-in/1200x1000/filters:no_upscale()/https://cdn.tripster.ru/photos/30670ce5-1d3b-4a8a-8b0f-ef2fcd8ac74c.jpg",
+          "thumbnail_portrait": "https://resize.tripster.ru/MT3_pGXxg1huaRfKduK7QraJSM8=/287x392/filters:no_upscale()/https://cdn.tripster.ru/photos/30670ce5-1d3b-4a8a-8b0f-ef2fcd8ac74c.jpg"
+        },
+        {
+          "type": "experience",
+          "thumbnail": "https://resize.tripster.ru/G1v6No_VdVwcJEJWl4qlfn38-2g=/fit-in/600x800/filters:no_upscale()/https://cdn.tripster.ru/photos/77b84e02-3643-4f76-876a-94473d0d48d7.jpg",
+          "medium": "https://resize.tripster.ru/Zz98e4uvE1wFopQVE_DUfE2utnI=/fit-in/1000x1350/filters:no_upscale()/https://cdn.tripster.ru/photos/77b84e02-3643-4f76-876a-94473d0d48d7.jpg",
+          "thumbnail_portrait": "https://resize.tripster.ru/BWk6RPVy94dbvJmZCtjqH75Ws1c=/287x392/filters:no_upscale()/https://cdn.tripster.ru/photos/77b84e02-3643-4f76-876a-94473d0d48d7.jpg"
+        },
+        {
+          "type": "experience",
+          "thumbnail": "https://resize.tripster.ru/LmawgZIoYjGQK9v9zYO3-0-knEs=/fit-in/800x600/filters:no_upscale()/https://cdn.tripster.ru/photos/63b8065c-51a2-462e-8921-af3b64ced851.jpg",
+          "medium": "https://resize.tripster.ru/u9fOlUi1Ycz_8MTW8a1ecuCoOfM=/fit-in/1200x1000/filters:no_upscale()/https://cdn.tripster.ru/photos/63b8065c-51a2-462e-8921-af3b64ced851.jpg",
+          "thumbnail_portrait": "https://resize.tripster.ru/AIzHEQSw8mjkKsDqB0GTWKqAMIU=/287x392/filters:no_upscale()/https://cdn.tripster.ru/photos/63b8065c-51a2-462e-8921-af3b64ced851.jpg"
+        }
+      ],
+      "schedule": {
+        "upcoming_events": [
+          "2026-01-20T08:00:00",
+          "2026-02-03T08:00:00",
+          "2026-02-17T08:00:00",
+          "2026-03-10T08:00:00",
+          "2026-04-10T08:00:00"
+        ]
+      },
+      "is_paid": false
+    },
+    {
+      "status": "active",
+      "id": 103903,
+      "title": "8 Марта в ОАЭ: фототур для женщин в мини-группе с джип-сафари",
+      "tagline": "Сделать кадры на фоне Бурдж-Халифы, побывать в Абу-Даби и поужинать под звёздами в пустыне",
+      "annotation": "4 дня вдохновения и ярких впечатлений в самом современном городе мира. Вы отправитесь в Дубай — место, где небоскрёбы отражаются в бирюзовой воде залива, а вечера наполнены светом и звуками мегаполиса. Прогуляетесь по набережной Dubai Marina, увидите культовые достопримечательности — Бурдж-Халифу, Бурдж-аль-Араб и остров Пальма-Джумейра. Посетите мечеть шейха Зайда и дворец Qasr Al Watan в Абу-Даби, почувствуете величие Востока. Вас ждут сафари по пустыне, ужин под звёздами и закат над барханами. Нас будет сопровождать профессиональный фотограф, поэтому каждый день станет новым кадром вашего путешествия — от моря и колеса Ain Dubai до роскошных дворцов и песков.",
+      "url": "https://experience.tripster.ru/experience/103903/",
+      "type": "tour",
+      "format": "activity",
+      "grade": null,
+      "movement_type": "car",
+      "schedule_type": "fixed_slots",
+      "exp_status": 3,
+      "is_instant_booking": false,
+      "is_new": true,
+      "max_persons": 6,
+      "duration": 96,
+      "price": {
+        "value": 1100,
+        "currency": "USD",
+        "currency_rate": 85,
+        "price_from": false,
+        "unit_string": "за одного",
+        "value_string": "$1100 за одного"
+      },
+      "rating": 0,
+      "visitors_count": 0,
+      "review_count": 0,
+      "pause_finish_date": null,
+      "pause_reason": null,
+      "cancel_finish_date": null,
+      "cancel_reason": null,
+      "additional_info": "<p>Для бронирования тура вы вносите предоплату 15% на сайте. Остальную часть — наличными в долларах организатору в день встречи.</p>",
+      "comfort_level_info": "",
+      "price_included_description": "<ul>\n\t\t<li>Проживание</li>\n\t\t<li>Завтраки, ужин в пустыне</li>\n\t\t<li>Трансфер по маршруту</li>\n\t\t<li>Услуги гида</li>\n\t\t<li>Обзорная экскурсия по Дубаю</li>\n\t\t<li>Сафари по пустыне с ужином под звёздами</li>\n\t\t<li>Экскурсия в Абу-Даби с входными билетами в мечеть и дворец Qasr Al Watan</li>\n\t\t<li>3 профессиональные фотосессии с фотографом Екатериной Фокиной</li>\n\t</ul>",
+      "price_not_included_description": "<ul>\n\t\t<li>Перелёт до Дубая и обратно</li>\n\t\t<li>Остальное питание</li>\n\t\t<li>Трансфер из/до аэропорта — $50</li>\n\t\t<li>Билеты на колесо Ain Dubai</li>\n\t</ul>",
+      "geo_access_level": "all",
+      "geo": {
+        "city": [
+          {
+            "id": 92,
+            "slug": "Dubai",
+            "name": "Дубай",
+            "name_prepositional": "Дубае",
+            "in_obj_phrase": "в Дубае",
+            "from_obj_phrase": "из Дубая",
+            "across_obj_phrase": "по Дубаю",
+            "is_main_city": true
+          },
+          {
+            "id": 470,
+            "slug": "Abu_Dhabi",
+            "name": "Абу-Даби",
+            "name_prepositional": "Абу-Даби",
+            "in_obj_phrase": "в Абу-Даби",
+            "from_obj_phrase": "из Абу-Даби",
+            "across_obj_phrase": "по Абу-Даби",
+            "is_main_city": false
+          }
+        ],
+        "country": [
+          {
+            "id": 290,
+            "slug": "united-arab-emirates",
+            "name": "Объединённые Арабские Эмираты",
+            "name_prepositional": "Объединённых Арабских Эмиратах",
+            "in_obj_phrase": "в Объединённых Арабских Эмиратах",
+            "from_obj_phrase": "из Объединённых Арабских Эмиратов",
+            "across_obj_phrase": "по Объединённым Арабским Эмиратам",
+            "is_main_city": false
+          }
+        ]
+      },
+      "guide": {
+        "id": 673911,
+        "first_name": "Лена",
+        "url": "https://experience.tripster.ru/guide/673911/",
+        "avatar": {
+          "medium": "https://resize.tripster.ru/0aDq3cxZXa0NoPYutSZI88TYp_Y=/150x150/filters:no_upscale()/https://cdn.tripster.ru/avatars/3dae774e-faa6-4dce-ae76-a5e556d43f1a.jpg",
+          "small": "https://resize.tripster.ru/0aDq3cxZXa0NoPYutSZI88TYp_Y=/150x150/filters:no_upscale()/https://cdn.tripster.ru/avatars/3dae774e-faa6-4dce-ae76-a5e556d43f1a.jpg"
+        },
+        "rating": 5,
+        "rate_count": 3,
+        "review_count": 2,
+        "avg_reaction_delay": 2,
+        "avg_reaction_delay_display": {
+          "nominative": "5 минут",
+          "accusative": "5 минут",
+          "genitive": "5 минут"
+        },
+        "type": "guide",
+        "date_start_work": "2023-02-15T12:12:50.908600Z",
+        "date_joined": "2021-11-20T20:20:00.000000Z",
+        "is_licensed": false,
+        "orders_count": 80,
+        "visitors_count": 16,
+        "description": "Больше 5 лет показываю путешественникам красоты Северного Кавказа и Стамбула. Влюблю вас в горы или покажу Стамбул таким многогранным, каким вижу его я! Присоединяйтесь!\r\nТакже буду рада организовать индивидуальный формат тура от трех человек (любые даты).",
+        "exp_count_published": 2,
+        "number_of_persons_paid": 16
+      },
+      "guide_can_resume": false,
+      "has_non_refundable_part": false,
+      "photos": [
+        {
+          "type": "experience",
+          "thumbnail": "https://resize.tripster.ru/bWCPiEltZsWG15JXZT00c28-6fs=/fit-in/800x600/filters:no_upscale()/https://cdn.tripster.ru/photos/8551a1d5-ab31-452c-a346-ba5648769b7c.jpg",
+          "medium": "https://resize.tripster.ru/ryKysyJXNyczRt1MABf27itxblo=/fit-in/1200x1000/filters:no_upscale()/https://cdn.tripster.ru/photos/8551a1d5-ab31-452c-a346-ba5648769b7c.jpg",
+          "thumbnail_portrait": "https://resize.tripster.ru/o86HzUWv7NyiTyu2wEYEuLVoddg=/287x392/filters:no_upscale()/https://cdn.tripster.ru/photos/8551a1d5-ab31-452c-a346-ba5648769b7c.jpg"
+        },
+        {
+          "type": "experience",
+          "thumbnail": "https://resize.tripster.ru/vmCvfOGWzbu6T84Z-x6DmLMJofU=/fit-in/800x600/filters:no_upscale()/https://cdn.tripster.ru/photos/d4e355ea-aa40-4e91-bd91-54dcaf34bcfa.jpg",
+          "medium": "https://resize.tripster.ru/ihjRnCHoA8f4k-p3sFRI8WdUXBs=/fit-in/1200x1000/filters:no_upscale()/https://cdn.tripster.ru/photos/d4e355ea-aa40-4e91-bd91-54dcaf34bcfa.jpg",
+          "thumbnail_portrait": "https://resize.tripster.ru/REYXzRfr_Qi3G5Vy9j3PR1P7Rbo=/287x392/filters:no_upscale()/https://cdn.tripster.ru/photos/d4e355ea-aa40-4e91-bd91-54dcaf34bcfa.jpg"
+        },
+        {
+          "type": "experience",
+          "thumbnail": "https://resize.tripster.ru/GrsrcpfhxkypgOVylXy1rA0xtbQ=/fit-in/600x800/filters:no_upscale()/https://cdn.tripster.ru/photos/f311c3e3-2d20-46a2-ac66-04e08b2cd334.jpg",
+          "medium": "https://resize.tripster.ru/2JmvJS3ZISUvWw07LaHfIeaArmU=/fit-in/1000x1350/filters:no_upscale()/https://cdn.tripster.ru/photos/f311c3e3-2d20-46a2-ac66-04e08b2cd334.jpg",
+          "thumbnail_portrait": "https://resize.tripster.ru/IiYRRuIuTInKxF5AAJDWpxEsULQ=/287x392/filters:no_upscale()/https://cdn.tripster.ru/photos/f311c3e3-2d20-46a2-ac66-04e08b2cd334.jpg"
+        },
+        {
+          "type": "experience",
+          "thumbnail": "https://resize.tripster.ru/W9dp6Rx7qbRAnCTZMWbEpCDdIDE=/fit-in/600x800/filters:no_upscale()/https://cdn.tripster.ru/photos/1708cab0-120d-4f06-a2ea-8906ea408f1e.png",
+          "medium": "https://resize.tripster.ru/uX5HD4gJuGQaetAQQ0OrJzoqTQQ=/fit-in/1000x1350/filters:no_upscale()/https://cdn.tripster.ru/photos/1708cab0-120d-4f06-a2ea-8906ea408f1e.png",
+          "thumbnail_portrait": "https://resize.tripster.ru/fhQQltrihMoiqXuZ0tHQVm59e7A=/287x392/filters:no_upscale()/https://cdn.tripster.ru/photos/1708cab0-120d-4f06-a2ea-8906ea408f1e.png"
+        },
+        {
+          "type": "experience",
+          "thumbnail": "https://resize.tripster.ru/FNvYpOqkpT4jn_JGxqinlVhBLvs=/fit-in/800x600/filters:no_upscale()/https://cdn.tripster.ru/photos/a00f3a46-90c4-4044-a51d-e5957c0742be.png",
+          "medium": "https://resize.tripster.ru/otJHi2rqYnyubKJSQhj0cF-yT3M=/fit-in/1200x1000/filters:no_upscale()/https://cdn.tripster.ru/photos/a00f3a46-90c4-4044-a51d-e5957c0742be.png",
+          "thumbnail_portrait": "https://resize.tripster.ru/7KPwk2IbYj7phfwxA6V5uE97XY4=/287x392/filters:no_upscale()/https://cdn.tripster.ru/photos/a00f3a46-90c4-4044-a51d-e5957c0742be.png"
+        },
+        {
+          "type": "experience",
+          "thumbnail": "https://resize.tripster.ru/Vhze-FAED82JXVPMEYeWRqsuqRY=/fit-in/600x800/filters:no_upscale()/https://cdn.tripster.ru/photos/34136bc9-1d72-44c8-bc38-94c0678c02eb.jpg",
+          "medium": "https://resize.tripster.ru/Z_CIZFXvkt7wHLiRv11A2C0sKmA=/fit-in/1000x1350/filters:no_upscale()/https://cdn.tripster.ru/photos/34136bc9-1d72-44c8-bc38-94c0678c02eb.jpg",
+          "thumbnail_portrait": "https://resize.tripster.ru/xOpiyZIQ09FnIc6EZsAsAPRPK4M=/287x392/filters:no_upscale()/https://cdn.tripster.ru/photos/34136bc9-1d72-44c8-bc38-94c0678c02eb.jpg"
+        },
+        {
+          "type": "experience",
+          "thumbnail": "https://resize.tripster.ru/MOYMaRuH4ZlHIgT56qOMyO0Z1Xo=/fit-in/600x800/filters:no_upscale()/https://cdn.tripster.ru/photos/35d54bd4-163a-4ac0-a973-4a2a37fd2fca.jpg",
+          "medium": "https://resize.tripster.ru/LLd-p6VG4R7Dx5ZPsdoR0z90lzY=/fit-in/1000x1350/filters:no_upscale()/https://cdn.tripster.ru/photos/35d54bd4-163a-4ac0-a973-4a2a37fd2fca.jpg",
+          "thumbnail_portrait": "https://resize.tripster.ru/LlkJQa5uHP0waMFh-yl9NznTqHo=/287x392/filters:no_upscale()/https://cdn.tripster.ru/photos/35d54bd4-163a-4ac0-a973-4a2a37fd2fca.jpg"
+        }
+      ],
+      "schedule": {
+        "upcoming_events": [
+          "2026-03-07T12:00:00"
+        ]
+      },
+      "is_paid": false
+    },
+    {
+      "status": "active",
+      "id": 102368,
+      "title": "Индивидуальный тур в ОАЭ: Шарджа, древние крепости, горы и золотые пески на берегу Оманского залива",
+      "tagline": "Осмотреть крепость Фуджейры и мечеть Аль-Бидию, сделать эффектные снимки на пляже и в парке «Мамзар»",
+      "annotation": "Приглашаем вас в короткое, но насыщенное путешествие по ОАЭ: всего за 2 дня мы насладимся бирюзовыми лагунами и послушаем гул водопадов, познакомимся с историей государства и осмотрим древние стены архитектурных памятников, пройдёмся по колоритному рыбному рынку и сделаем фото на фоне Оманского залива. Заедем и в Хаджарские горы, чтобы восхититься просторами и панорамами вершин, отдохнём на пляжах, освежимся в природных бассейнах с прозрачной водой и не спеша прогуляемся по зелёному парку «Мамзар».",
+      "url": "https://experience.tripster.ru/experience/102368/",
+      "type": "tour",
+      "format": "activity",
+      "grade": null,
+      "movement_type": "car",
+      "schedule_type": "fixed_slots",
+      "exp_status": 3,
+      "is_instant_booking": false,
+      "is_new": false,
+      "max_persons": 4,
+      "duration": 24,
+      "price": {
+        "value": 450,
+        "currency": "USD",
+        "currency_rate": 85,
+        "price_from": false,
+        "unit_string": "",
+        "value_string": "$450 "
+      },
+      "rating": 0,
+      "visitors_count": 0,
+      "review_count": 0,
+      "pause_finish_date": null,
+      "pause_reason": null,
+      "cancel_finish_date": null,
+      "cancel_reason": null,
+      "additional_info": "<p>После внесения предоплаты на сайте необходимо внести 30% от стоимости напрямую гиду. Оставшуюся часть вы сможете оплатить в день старта наличными или картой.</p>",
+      "comfort_level_info": "",
+      "price_included_description": "<ul>\n\t\t<li>Проживание</li>\n\t\t<li>Трансферы по маршруту</li>\n\t\t<li>Услуги русскоязычного гида</li>\n\t\t<li>Экскурсии по программе</li>\n\t\t<li>Фото- и видеосъёмка на ваш телефон</li>\n\t\t<li>Бутилированная вода в пути</li>\n\t</ul>",
+      "price_not_included_description": "<ul>\n\t\t<li>Билеты до Шарджа и обратно</li>\n\t\t<li>Питание</li>\n\t\t<li>Входные билеты</li>\n\t</ul>",
+      "geo_access_level": "all",
+      "geo": {
+        "city": [
+          {
+            "id": 472,
+            "slug": "Sharjah",
+            "name": "Шарджа",
+            "name_prepositional": "Шардже",
+            "in_obj_phrase": "в Шардже",
+            "from_obj_phrase": "из Шарджи",
+            "across_obj_phrase": "по Шардже",
+            "is_main_city": true
+          }
+        ],
+        "country": [
+          {
+            "id": 290,
+            "slug": "united-arab-emirates",
+            "name": "Объединённые Арабские Эмираты",
+            "name_prepositional": "Объединённых Арабских Эмиратах",
+            "in_obj_phrase": "в Объединённых Арабских Эмиратах",
+            "from_obj_phrase": "из Объединённых Арабских Эмиратов",
+            "across_obj_phrase": "по Объединённым Арабским Эмиратам",
+            "is_main_city": false
+          }
+        ]
+      },
+      "guide": {
+        "id": 2282230,
+        "first_name": "Рустам",
+        "url": "https://experience.tripster.ru/guide/2282230/",
+        "avatar": {
+          "medium": "https://resize.tripster.ru/AwEgfT4uMVuON59J8BTHX8ZytfQ=/150x150/filters:no_upscale()/https://cdn.tripster.ru/avatars/ab96a5db-2d10-425b-bda7-613dd137ed58.jpg",
+          "small": "https://resize.tripster.ru/AwEgfT4uMVuON59J8BTHX8ZytfQ=/150x150/filters:no_upscale()/https://cdn.tripster.ru/avatars/ab96a5db-2d10-425b-bda7-613dd137ed58.jpg"
+        },
+        "rating": 0,
+        "rate_count": 0,
+        "review_count": 0,
+        "avg_reaction_delay": null,
+        "avg_reaction_delay_display": {
+          "nominative": "24 часа",
+          "accusative": "24 часа",
+          "genitive": "24 часов"
+        },
+        "type": "team",
+        "date_start_work": "2025-10-17T07:57:31.421022Z",
+        "date_joined": "2025-04-20T04:45:25.800793Z",
+        "is_licensed": false,
+        "orders_count": 0,
+        "visitors_count": 0,
+        "description": "Привет! Меня зовут Рустам, я живу в Объединённых Арабских Эмиратах уже больше 8 лет. За это время я успел не только хорошо узнать страну, но и полюбить её культуру, стиль жизни и уникальное сочетание традиций и современности.\r\nЯ отлично ориентируюсь в городах Эмиратов, особенно в Дубае и Абу-Даби. Знаю, где скрываются настоящие жемчужины — будь то атмосферные места с локальным колоритом, лучшие виды на город или заведения, где подают действительно вкусную арабскую кухню.\r\n\r\nИнтересуюсь историей региона, культурой, архитектурой, современной жизнью эмиратов и люблю делиться этим с путешественниками. Для меня важно, чтобы каждый гость не просто посмотрел на небоскрёбы и торговые центры, а по-настоящему почувствовал дух этой страны.\r\n\r\nЯ стал встречаться с путешественниками, потому что мне нравится делиться знаниями и помогать людям увидеть Эмираты с другой стороны — глубже, интереснее и душевнее. Если вы хотите узнать страну глазами человека, который здесь живёт  добро пожаловать",
+        "exp_count_published": 1,
+        "number_of_persons_paid": 0
+      },
+      "guide_can_resume": false,
+      "has_non_refundable_part": false,
+      "photos": [
+        {
+          "type": "experience",
+          "thumbnail": "https://resize.tripster.ru/Q2kvBfxY8TdX_4DRc55P-UNUrjg=/fit-in/800x600/filters:no_upscale()/https://cdn.tripster.ru/photos/9238c7f9-09b5-4b54-998b-6738c9506c38.jpg",
+          "medium": "https://resize.tripster.ru/MKbQ9EssGuP28fn-v1u_igOICPA=/fit-in/1200x1000/filters:no_upscale()/https://cdn.tripster.ru/photos/9238c7f9-09b5-4b54-998b-6738c9506c38.jpg",
+          "thumbnail_portrait": "https://resize.tripster.ru/Ws2LPMVtv3GvxxE80YVAcUCpMew=/287x392/filters:no_upscale()/https://cdn.tripster.ru/photos/9238c7f9-09b5-4b54-998b-6738c9506c38.jpg"
+        },
+        {
+          "type": "experience",
+          "thumbnail": "https://resize.tripster.ru/tGYqKAAWttwdegk9QDEfWYRZ-DA=/fit-in/600x800/filters:no_upscale()/https://cdn.tripster.ru/photos/58c89603-7d39-4d83-9ea5-c45a670acc03.jpg",
+          "medium": "https://resize.tripster.ru/uqQ07p37TC6HPZlkuBRZr5iTGs4=/fit-in/1000x1350/filters:no_upscale()/https://cdn.tripster.ru/photos/58c89603-7d39-4d83-9ea5-c45a670acc03.jpg",
+          "thumbnail_portrait": "https://resize.tripster.ru/-Vfdh1gCIewkC2nO6MuYcb3LAmY=/287x392/filters:no_upscale()/https://cdn.tripster.ru/photos/58c89603-7d39-4d83-9ea5-c45a670acc03.jpg"
+        },
+        {
+          "type": "experience",
+          "thumbnail": "https://resize.tripster.ru/QVbUVhz37h7irxsaHYrq75YxHzA=/fit-in/800x600/filters:no_upscale()/https://cdn.tripster.ru/photos/3286ee09-30a3-4fc1-afd5-c27c402fbd71.jpg",
+          "medium": "https://resize.tripster.ru/Z2SvZ0IrZfqN-m6rRrBmLHIDUos=/fit-in/1200x1000/filters:no_upscale()/https://cdn.tripster.ru/photos/3286ee09-30a3-4fc1-afd5-c27c402fbd71.jpg",
+          "thumbnail_portrait": "https://resize.tripster.ru/22el0c8jfY21jl4-Q4FabjXY17M=/287x392/filters:no_upscale()/https://cdn.tripster.ru/photos/3286ee09-30a3-4fc1-afd5-c27c402fbd71.jpg"
+        },
+        {
+          "type": "experience",
+          "thumbnail": "https://resize.tripster.ru/jCqdDn4i7TCgPFqz8q8PmWxypCo=/fit-in/600x800/filters:no_upscale()/https://cdn.tripster.ru/photos/fad2bb71-51bc-4ee3-b4a5-8efebb079109.jpg",
+          "medium": "https://resize.tripster.ru/iM9pT7gczu5LP_EXboCPcAgtAGw=/fit-in/1000x1350/filters:no_upscale()/https://cdn.tripster.ru/photos/fad2bb71-51bc-4ee3-b4a5-8efebb079109.jpg",
+          "thumbnail_portrait": "https://resize.tripster.ru/CfdhuRjt4Kdip4iBcwDXM_EN7IA=/287x392/filters:no_upscale()/https://cdn.tripster.ru/photos/fad2bb71-51bc-4ee3-b4a5-8efebb079109.jpg"
+        },
+        {
+          "type": "experience",
+          "thumbnail": "https://resize.tripster.ru/qQOdYLEvtjEmakcS-jFo5EpVkFQ=/fit-in/600x800/filters:no_upscale()/https://cdn.tripster.ru/photos/bc77609b-dd62-4944-8fc5-eea8f012d835.jpg",
+          "medium": "https://resize.tripster.ru/NnKpAANpV57JzJ1i-y1tMiuQKac=/fit-in/1000x1350/filters:no_upscale()/https://cdn.tripster.ru/photos/bc77609b-dd62-4944-8fc5-eea8f012d835.jpg",
+          "thumbnail_portrait": "https://resize.tripster.ru/S-jC7OJ4UQJNUuiyyehg4BEuKyg=/287x392/filters:no_upscale()/https://cdn.tripster.ru/photos/bc77609b-dd62-4944-8fc5-eea8f012d835.jpg"
+        },
+        {
+          "type": "experience",
+          "thumbnail": "https://resize.tripster.ru/fjIsFP2owCHBn4aLbaP-P4BiiQE=/fit-in/800x600/filters:no_upscale()/https://cdn.tripster.ru/photos/793ab18a-b794-4fca-9659-70b502cd3e2d.jpg",
+          "medium": "https://resize.tripster.ru/aERmgnY2BqdVLbh8ibrAk65ShLo=/fit-in/1200x1000/filters:no_upscale()/https://cdn.tripster.ru/photos/793ab18a-b794-4fca-9659-70b502cd3e2d.jpg",
+          "thumbnail_portrait": "https://resize.tripster.ru/WCHJ3_i6NzjmPyFoEVTC3Dy1j1E=/287x392/filters:no_upscale()/https://cdn.tripster.ru/photos/793ab18a-b794-4fca-9659-70b502cd3e2d.jpg"
+        },
+        {
+          "type": "experience",
+          "thumbnail": "https://resize.tripster.ru/Gve2_afa6JVybl9MF0igzA4xGOU=/fit-in/600x800/filters:no_upscale()/https://cdn.tripster.ru/photos/8dc58046-8722-413c-9ae4-5c86bc664920.jpg",
+          "medium": "https://resize.tripster.ru/P54LK3t371X7CfW8Ql-e_PIc3p4=/fit-in/1000x1350/filters:no_upscale()/https://cdn.tripster.ru/photos/8dc58046-8722-413c-9ae4-5c86bc664920.jpg",
+          "thumbnail_portrait": "https://resize.tripster.ru/Xu2RM14y54CiWA9vZQxthGkeJMI=/287x392/filters:no_upscale()/https://cdn.tripster.ru/photos/8dc58046-8722-413c-9ae4-5c86bc664920.jpg"
+        }
+      ],
+      "schedule": {
+        "upcoming_events": [
+          "2025-11-26T09:00:00",
+          "2025-11-29T09:00:00",
+          "2025-12-03T09:00:00",
+          "2025-12-06T09:00:00",
+          "2025-12-10T09:00:00",
+          "2025-12-13T09:00:00",
+          "2025-12-17T09:00:00",
+          "2025-12-20T09:00:00",
+          "2025-12-24T09:00:00"
+        ]
+      },
+      "is_paid": false
+    }
+  ]
+}
+
+Code:
+```javascript
+await page.evaluate(async () => {
+  const response = await fetch('https://experience.tripster.ru/api/web/v2/experiences/?country__slug=united-arab-emirates&type=tour&limit=100&extended_movement_types=true');
+  const data = await response.json();
+  return data;
+});
+```
+
+
+### Page state
+- Page URL: https://experience.tripster.ru/tours/united-arab-emirates/
+- Page Title: Авторские туры по Объединённым Арабским Эмиратам в 2025 году: цены в ноябре–декабре, отзывы – Tripster.ru
+- Page Snapshot:
+```yaml
+- generic [ref=e4]:
+  - generic [ref=e6] [cursor=pointer]:
+    - button [ref=e7]:
+      - img [ref=e9]
+    - img "Tripster" [ref=e12]
+    - generic [ref=e14]: Экскурсии, отзывы и чаты с гидами — в приложении Трипстера
+    - button "Скачать" [ref=e15]:
+      - generic [ref=e17]: Скачать
+  - generic [ref=e18]:
+    - generic [ref=e23]:
+      - link "Перейти на главную страницу" [ref=e25] [cursor=pointer]:
+        - /url: /
+        - img [ref=e26]
+      - generic [ref=e39]:
+        - generic [ref=e42]:
+          - textbox "Куда вы собираетесь?" [ref=e43]
+          - img [ref=e46] [cursor=pointer]
+        - navigation [ref=e50]:
+          - generic [ref=e53] [cursor=pointer]: Помощь
+          - generic "Избранное" [ref=e54]:
+            - link [ref=e55] [cursor=pointer]:
+              - /url: /favorites/
+              - img [ref=e56]
+          - button "Войти" [ref=e60] [cursor=pointer]:
+            - generic [ref=e61]: Войти
+    - generic [ref=e81]:
+      - generic [ref=e82]:
+        - generic [ref=e87]:
+          - heading [level=1] [ref=e88]
+          - heading [level=2] [ref=e91]
+        - generic [ref=e154]:
+          - heading "Все туры" [level=2] [ref=e155]
+          - generic [ref=e161] [cursor=pointer]:
+            - img [ref=e162]
+            - generic [ref=e164]: По популярности
+      - generic [ref=e811]:
+        - generic [ref=e812]:
+          - heading "Поможем найти подходящий тур" [level=3] [ref=e813]
+          - generic [ref=e814]:
+            - link "Напишите на WhatsApp" [ref=e815] [cursor=pointer]:
+              - /url: https://api.whatsapp.com/send/?phone=79210023029&text=%D0%97%D0%B4%D1%80%D0%B0%D0%B2%D1%81%D1%82%D0%B2%D1%83%D0%B9%D1%82%D0%B5.%20%D0%9F%D0%BE%D0%BC%D0%BE%D0%B3%D0%B8%D1%82%D0%B5%20%D0%BF%D0%BE%D0%B4%D0%BE%D0%B1%D1%80%D0%B0%D1%82%D1%8C%20%D1%82%D1%83%D1%80&type=phone_number&app_absent=0
+              - text: Напишите на WhatsApp
+              - img [ref=e816]
+            - text: или оставьте номер телефона, и мы подберём идеальное путешествие
+        - generic [ref=e818]:
+          - generic [ref=e819]:
+            - textbox "Номер телефона" [ref=e823]
+            - button "Отправить заявку" [ref=e825] [cursor=pointer]:
+              - generic [ref=e826]: Отправить заявку
+          - generic [ref=e827]:
+            - text: Отправляя заявку, вы принимаете
+            - link "пользовательское соглашение" [ref=e828] [cursor=pointer]:
+              - /url: /about/terms/
+            - text: и даете
+            - link "согласие" [ref=e829] [cursor=pointer]:
+              - /url: /about/soglasie-na-obrabotku-personalnyh-dannyh/
+            - text: на обработку персональных данных в соответствии
+            - link "c политикой конфиденциальности" [ref=e830] [cursor=pointer]:
+              - /url: /about/privacy_policy/
+      - heading "Организаторы туров по Объединённым Арабским Эмиратам" [level=2] [ref=e833]
+      - heading [level=2] [ref=e907]
+      - generic [ref=e1032]:
+        - link "Полезные статьи" [ref=e1033] [cursor=pointer]:
+          - /url: /country/united-arab-emirates/articles/
+          - text: Полезные статьи
+          - img [ref=e1034]
+        - generic [ref=e1036]:
+          - generic [ref=e1037]:
+            - link "Лучшие пляжи Дубая Побережья-оазисы, развлекательные комплексы и пляжные клубы с самым высоким рейтингом" [ref=e1038] [cursor=pointer]:
+              - /url: /articles/luchshie-plyazhi-dubaya/
+              - generic [ref=e1039]: Лучшие пляжи Дубая
+              - generic [ref=e1040]: Побережья-оазисы, развлекательные комплексы и пляжные клубы с самым высоким рейтингом
+            - link "Лучшие пляжи Дубая" [ref=e1041] [cursor=pointer]:
+              - /url: /articles/luchshie-plyazhi-dubaya/
+              - img "Лучшие пляжи Дубая" [ref=e1043]
+          - generic [ref=e1044]:
+            - link "Что привезти из Дубая" [ref=e1045] [cursor=pointer]:
+              - /url: /articles/chto-privezti-iz-dubaya/
+              - generic [ref=e1046]: Что привезти из Дубая
+            - link "Что привезти из&nbsp;Дубая" [ref=e1047] [cursor=pointer]:
+              - /url: /articles/chto-privezti-iz-dubaya/
+              - img "Что привезти из&nbsp;Дубая" [ref=e1048]
+          - generic [ref=e1049]:
+            - link "Достопримечательности Абу‑Даби" [ref=e1050] [cursor=pointer]:
+              - /url: /articles/dostoprimechatelnosti-abu-dabi/
+              - generic [ref=e1051]: Достопримечательности Абу‑Даби
+            - link "Достопримечательности Абу‑Даби" [ref=e1052] [cursor=pointer]:
+              - /url: /articles/dostoprimechatelnosti-abu-dabi/
+              - img "Достопримечательности Абу‑Даби" [ref=e1053]
+          - generic [ref=e1054]:
+            - 'link "Лето зимой: куда поехать греться с наступлением холодов" [ref=e1055] [cursor=pointer]':
+              - /url: /articles/leto-zimoj-kuda-poehat-gretsya-s-nastupleniem-holodov/
+              - generic [ref=e1056]: "Лето зимой: куда поехать греться с наступлением холодов"
+            - 'link "Лето зимой: куда поехать греться с&nbsp;наступлением холодов" [ref=e1057] [cursor=pointer]':
+              - /url: /articles/leto-zimoj-kuda-poehat-gretsya-s-nastupleniem-holodov/
+              - 'img "Лето зимой: куда поехать греться с&nbsp;наступлением холодов" [ref=e1058]'
+      - generic [ref=e1059]:
+        - generic [ref=e1060]:
+          - generic [ref=e1061]:
+            - heading "Экскурсии и туры от экспертов Трипстера" [level=3] [ref=e1062]
+            - generic [ref=e1063]:
+              - text: Классные места, скидки и интересные события у вас в почте ·
+              - link "Пример письма" [ref=e1064] [cursor=pointer]:
+                - /url: https://experience-ireland.s3.amazonaws.com/email_examples/subscriptionEmailExample.html
+          - generic:
+            - img "subscribe_footer"
+        - generic [ref=e1065]:
+          - generic [ref=e1066]:
+            - heading "Планируйте путешествие на ходу" [level=3] [ref=e1067]
+            - generic [ref=e1068]:
+              - text: Лучшие гиды по всему миру —
+              - text: в приложении Трипстера
+            - generic [ref=e1069]:
+              - link "Доступно в Google Play" [ref=e1070] [cursor=pointer]:
+                - /url: https://tripster.onelink.me/N4gN/4rswcj3g
+                - img [ref=e1071]
+                - generic [ref=e1073]:
+                  - text: Доступно
+                  - text: в Google Play
+              - link "Загрузить в App Store" [ref=e1074] [cursor=pointer]:
+                - /url: https://tripster.onelink.me/N4gN/4rswcj3g
+                - img [ref=e1075]
+                - generic [ref=e1078]:
+                  - text: Загрузить
+                  - text: в App Store
+          - generic:
+            - img "Снимок города в телефоне"
+  - generic [ref=e1082]:
+    - generic [ref=e1083]:
+      - navigation [ref=e1084]:
+        - link [ref=e1085] [cursor=pointer]:
+          - /url: https://t.me/tripsterofficial
+          - img [ref=e1086]
+        - link [ref=e1089] [cursor=pointer]:
+          - /url: https://vk.com/tripster_ru
+          - img [ref=e1090]
+        - link [ref=e1093] [cursor=pointer]:
+          - /url: https://dzen.ru/id/5dd518a76b888b11ecbd4f51
+          - img [ref=e1094]
+        - link [ref=e1097] [cursor=pointer]:
+          - /url: https://ok.ru/group/70000001233998
+          - img [ref=e1098]
+      - generic [ref=e1101]:
+        - text: Обзоры необычных мест по всему миру,
+        - text: новинки и скидки в наших соцсетях
+      - generic [ref=e1102]:
+        - link "Доступно в Google Play" [ref=e1103] [cursor=pointer]:
+          - /url: https://play.google.com/store/apps/details?id=ru.tripster.tripster
+          - generic [ref=e1104]:
+            - text: Доступно
+            - text: в Google Play
+          - img [ref=e1105]
+        - link "Загрузите в App Store" [ref=e1108] [cursor=pointer]:
+          - /url: https://apps.apple.com/app/tripster/id1499356873
+          - generic [ref=e1109]:
+            - text: Загрузите
+            - text: в App Store
+          - img [ref=e1110]
+        - button [ref=e1115]:
+          - img [ref=e1116]
+      - generic [ref=e1119]:
+        - link "Экскурсии" [ref=e1120] [cursor=pointer]:
+          - /url: /
+        - link "Туры" [ref=e1121] [cursor=pointer]:
+          - /url: /tours/
+        - link "Журнал Трипстера" [ref=e1122] [cursor=pointer]:
+          - /url: /journal/
+        - link "Вакансии" [ref=e1123] [cursor=pointer]:
+          - /url: https://tripster.huntflow.io/
+        - link "О проекте" [ref=e1124] [cursor=pointer]:
+          - /url: /about/
+        - link "Юридические документы" [ref=e1125] [cursor=pointer]:
+          - /url: /about/terms
+      - generic [ref=e1126]: © 2013—2025, Flight Marketplace Admin, Aviasales OTA Limited
+      - generic [ref=e1127]:
+        - img [ref=e1129]
+        - img [ref=e1133]
+        - img [ref=e1139]
+        - img [ref=e1147]
+        - img [ref=e1153]
+        - img [ref=e1161]
+        - img [ref=e1169]
+    - complementary [ref=e1177]:
+      - generic [ref=e1178]:
+        - generic [ref=e1179]: Путешественникам
+        - list [ref=e1180]:
+          - link "Частые вопросы" [ref=e1181] [cursor=pointer]:
+            - /url: /help_center/travelers/
+          - link "Безопасность платежей" [ref=e1182] [cursor=pointer]:
+            - /url: /about/secure_payments/
+          - link "Политика возврата" [ref=e1183] [cursor=pointer]:
+            - /url: /about/cancellation_policy/
+      - generic [ref=e1184]:
+        - generic [ref=e1185]: Гидам
+        - list [ref=e1186]:
+          - link "Стать гидом" [ref=e1187] [cursor=pointer]:
+            - /url: /locals/
+          - link "Помощь" [ref=e1188] [cursor=pointer]:
+            - /url: /help_center/guides/
+      - generic [ref=e1189]:
+        - generic [ref=e1190]: Партнерам
+        - list [ref=e1191]:
+          - link "Стать партнёром" [ref=e1192] [cursor=pointer]:
+            - /url: /partners/
+          - link "Кабинет партнёра" [ref=e1193] [cursor=pointer]:
+            - /url: /partner-account/
+          - link "Документация" [ref=e1194] [cursor=pointer]:
+            - /url: https://tripster.atlassian.net/wiki/spaces/affiliates/overview
+    - generic [ref=e1195]:
+      - generic [ref=e1196]: Поддержка 9–21 МСК
+      - list [ref=e1197]:
+        - listitem [ref=e1198]:
+          - link "Написать ВКонтакте" [ref=e1199] [cursor=pointer]:
+            - /url: https://vk.com/im?sel=-51519887
+            - img [ref=e1200]
+            - generic [ref=e1202]: Написать ВКонтакте
+        - listitem [ref=e1203]:
+          - generic [ref=e1204] [cursor=pointer]:
+            - img [ref=e1205]
+            - generic [ref=e1207]: Написать нам в чат
+        - listitem [ref=e1208]:
+          - link "+7 495 146-39-66" [ref=e1209] [cursor=pointer]:
+            - /url: tel:+74951463966
+            - img [ref=e1210]
+            - generic [ref=e1216]: +7 495 146-39-66
+        - listitem [ref=e1217]:
+          - link "+420 228 889 544" [ref=e1218] [cursor=pointer]:
+            - /url: tel:+420228889544
+            - img [ref=e1219]
+            - generic [ref=e1222]: +420 228 889 544
+        - listitem [ref=e1223]:
+          - link "support@tripster.ru" [ref=e1224] [cursor=pointer]:
+            - /url: mailto:support@tripster.ru
+            - img [ref=e1225]
+            - generic [ref=e1227]: support@tripster.ru
+      - button "Написать отзыв о сайте" [ref=e1228]:
+        - text: Написать
+        - text: отзыв о сайте
+        - img [ref=e1229]
+  - generic [ref=e63]:
+    - generic [ref=e64]:
+      - generic [ref=e65]: Cookies for your comfort
+      - text: We use mandatory cookies to load the site correctly and optional cookies to improve Tripster and marketing. By authorising their use, you agree to our
+      - link "cookie policy" [ref=e66] [cursor=pointer]:
+        - /url: /about/cookie
+    - generic [ref=e67]:
+      - button "Accept all" [ref=e68] [cursor=pointer]:
+        - generic [ref=e70]: Accept all
+      - button "Open settings" [ref=e71] [cursor=pointer]:
+        - generic [ref=e73]: Open settings
+      - generic [ref=e75]:
+        - radio "Ру Ру" [ref=e76]
+        - generic [ref=e77]: Ру
+        - radio "En En" [checked] [ref=e78]
+        - generic [ref=e79]: En
+```

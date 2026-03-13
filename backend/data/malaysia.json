@@ -1,0 +1,512 @@
+{
+  "count": 10,
+  "next": null,
+  "previous": null,
+  "results": [
+    {
+      "status": "active",
+      "id": 48311,
+      "title": "Большое путешествие по 5 странам Юго-Восточной Азии: Таиланд, Камбоджа, Вьетнам, Сингапур, Малайзия",
+      "tagline": "Увидеть Ангкор-Ват, отдохнуть на Сентозе и посмотреть на Куала-Лумпур с высоты птичьего полёта",
+      "annotation": "Всё, везде и сразу! Этот тур поможет вам не только насладиться пляжным отдыхом, но и погрузиться в атмосферу стран Юго-Восточной Азии. Две недели посвятим знакомству с центрами азиатской культуры: проведём три дня в Таиланде, чтобы вкусить все прелести релакса в жаркой Паттайе и на острове Ко Чанг; увидим, как живут кхмеры в современной Камбодже, побываем в месте съёмок фильма «Лара Крофт: расхитительница гробниц» и попробуем традиционные деликатесы во Вьетнаме. Вас также ждёт множество развлечений на острове Сентоза в Сингапуре, романтика окрестностей Куала-Лумпура и «Золотой треугольник» столицы Малайзии.",
+      "url": "https://experience.tripster.ru/experience/48311/",
+      "type": "tour",
+      "format": "activity",
+      "grade": null,
+      "movement_type": "other",
+      "schedule_type": "fixed_slots",
+      "exp_status": 3,
+      "is_instant_booking": false,
+      "is_new": false,
+      "max_persons": 12,
+      "duration": 312,
+      "price": {
+        "value": 222200,
+        "currency": "RUB",
+        "currency_rate": 1,
+        "price_from": false,
+        "unit_string": "за одного",
+        "value_string": "222200 ₽ за одного"
+      },
+      "rating": 4.93,
+      "visitors_count": 66,
+      "review_count": 15,
+      "pause_finish_date": null,
+      "pause_reason": null,
+      "cancel_finish_date": null,
+      "cancel_reason": null,
+      "additional_info": "<div><p>После внесения предоплаты на сайте необходимо оплатить оставшуюся сумму непосредственно организатору одним из способов:\n\t</p><ul>\n\t\t<li>переводом по реквизитам в рублях не позднее чем за 2 недели до старта</li>\n\t\t<li>наличными долларами по актуальному курсу ЦБ в день встречи</li>\n\t</ul></div>",
+      "comfort_level_info": "<div><p><strong>Питание.</strong> В стоимость включены только завтраки в некоторых отелях. Будем питаться преимущественно в кафе или ресторанах (около $15 в день).</p>\n\n\t<p><strong>Уровень сложности.</strong> Программа предусматривает пешие прогулки на расстояние 5-10 км. Между точками маршрута будем передвигаться на микроавтобусах, такси, лодках, катерах, паромах, самолётах, тук-туках или моторикшах.</p>\n\n\t<p><strong>Дети.</strong> Возможно участие с детьми от 8 лет.</p>\n\n\t<p><strong>Связь и Интернет.</strong> Wi-Fi в местах проживания.</p>\n\n\t<p><strong>Виза.</strong> Для граждан РФ не требуется.</p></div>",
+      "price_included_description": "<ul>\n\t\t<li>Проживание</li>\n\t\t<li>Трансферы по маршруту, включая перелёты</li>\n\t\t<li>Услуги инструктора-переводчика</li>\n\t</ul>",
+      "price_not_included_description": "<ul>\n\t\t<li>Авиабилеты до Бангкока и обратно</li>\n\t\t<li>Питание (кроме завтраков в некоторых отелях) — около $15 в день</li>\n\t\t<li>Входные билеты в музеи / посещение достопримечательностей</li>\n\t\t<li>Страховка</li>\n\t</ul>",
+      "geo_access_level": "all",
+      "geo": {
+        "city": [
+          {
+            "id": 99,
+            "slug": "Bangkok",
+            "name": "Бангкок",
+            "name_prepositional": "Бангкоке",
+            "in_obj_phrase": "в Бангкоке",
+            "from_obj_phrase": "из Бангкока",
+            "across_obj_phrase": "по Бангкоку",
+            "is_main_city": true
+          },
+          {
+            "id": 250,
+            "slug": "Singapore",
+            "name": "Сингапур",
+            "name_prepositional": "Сингапуре",
+            "in_obj_phrase": "в Сингапуре",
+            "from_obj_phrase": "из Сингапура",
+            "across_obj_phrase": "по Сингапуру",
+            "is_main_city": false
+          },
+          {
+            "id": 261,
+            "slug": "Kuala_Lumpur",
+            "name": "Куала-Лумпур",
+            "name_prepositional": "Куала-Лумпуре",
+            "in_obj_phrase": "в Куала-Лумпуре",
+            "from_obj_phrase": "из Куала-Лумпура",
+            "across_obj_phrase": "по Куала-Лумпуру",
+            "is_main_city": false
+          },
+          {
+            "id": 43,
+            "slug": "Ho_Chi_Minh",
+            "name": "Хошимин",
+            "name_prepositional": "Хошимине",
+            "in_obj_phrase": "в Хошимине",
+            "from_obj_phrase": "из Хошимина",
+            "across_obj_phrase": "по Хошимину",
+            "is_main_city": false
+          },
+          {
+            "id": 258,
+            "slug": "Siemreap",
+            "name": "Сиемреап",
+            "name_prepositional": "Сиемреапе",
+            "in_obj_phrase": "в Сиемреапе",
+            "from_obj_phrase": "из Сиемреапа",
+            "across_obj_phrase": "по Сиемреапу",
+            "is_main_city": false
+          },
+          {
+            "id": 314,
+            "slug": "Ko_Chang",
+            "name": "Ко Чанг",
+            "name_prepositional": "Ко Чанге",
+            "in_obj_phrase": "на Ко Чанге",
+            "from_obj_phrase": "из Ко Чанга",
+            "across_obj_phrase": "по Ко Чангу",
+            "is_main_city": false
+          },
+          {
+            "id": 68,
+            "slug": "Pattaya",
+            "name": "Паттайя",
+            "name_prepositional": "Паттайе",
+            "in_obj_phrase": "в Паттайе",
+            "from_obj_phrase": "из Паттайи",
+            "across_obj_phrase": "по Паттайе",
+            "is_main_city": false
+          }
+        ],
+        "country": [
+          {
+            "id": 277,
+            "slug": "thailand",
+            "name": "Таиланд",
+            "name_prepositional": "Таиланде",
+            "in_obj_phrase": "в Таиланде",
+            "from_obj_phrase": "из Таиланда",
+            "across_obj_phrase": "по Таиланду",
+            "is_main_city": false
+          },
+          {
+            "id": 299,
+            "slug": "vietnam",
+            "name": "Вьетнам",
+            "name_prepositional": "Вьетнаме",
+            "in_obj_phrase": "во Вьетнаме",
+            "from_obj_phrase": "из Вьетнама",
+            "across_obj_phrase": "по Вьетнаму",
+            "is_main_city": false
+          },
+          {
+            "id": 188,
+            "slug": "malaysia",
+            "name": "Малайзия",
+            "name_prepositional": "Малайзии",
+            "in_obj_phrase": "в Малайзии",
+            "from_obj_phrase": "из Малайзии",
+            "across_obj_phrase": "по Малайзии",
+            "is_main_city": false
+          },
+          {
+            "id": 93,
+            "slug": "cambodia",
+            "name": "Камбоджа",
+            "name_prepositional": "Камбодже",
+            "in_obj_phrase": "в Камбодже",
+            "from_obj_phrase": "из Камбоджи",
+            "across_obj_phrase": "по Камбодже",
+            "is_main_city": false
+          }
+        ]
+      },
+      "guide": {
+        "id": 1244542,
+        "first_name": "Артур",
+        "url": "https://experience.tripster.ru/guide/1244542/",
+        "avatar": {
+          "medium": "https://resize.tripster.ru/QjMpPisiSsVio_ysicUcDZtc-5Y=/150x150/filters:no_upscale()/https://cdn.tripster.ru/avatars/619b5094-6d15-42cc-9d2e-e310a6d253a0.jpg",
+          "small": "https://resize.tripster.ru/QjMpPisiSsVio_ysicUcDZtc-5Y=/150x150/filters:no_upscale()/https://cdn.tripster.ru/avatars/619b5094-6d15-42cc-9d2e-e310a6d253a0.jpg"
+        },
+        "rating": 4.77,
+        "rate_count": 37,
+        "review_count": 31,
+        "avg_reaction_delay": 46,
+        "avg_reaction_delay_display": {
+          "nominative": "1 час",
+          "accusative": "1 час",
+          "genitive": "1 часа"
+        },
+        "type": "team",
+        "date_start_work": "2023-07-24T08:15:28.470409Z",
+        "date_joined": "2023-07-01T12:03:12.000000Z",
+        "is_licensed": false,
+        "orders_count": 619,
+        "visitors_count": 142,
+        "description": "В нашей команде работают опытные инструкторы, желающие поделиться \r\nсвоими знаниями и помогать всем участникам. Более 116 авторских путешествий.\r\nМы сами разрабатываем и организовываем маршруты путешествий, исходя из своего опыта и разведочных поездок по всему миру.",
+        "exp_count_published": 13,
+        "number_of_persons_paid": 142
+      },
+      "guide_can_resume": false,
+      "has_non_refundable_part": false,
+      "photos": [
+        {
+          "type": "experience",
+          "thumbnail": "https://resize.tripster.ru/hgvtCCdmqjaPXdtMoy4Nys8yUv0=/fit-in/800x600/filters:no_upscale()/https://cdn.tripster.ru/photos/63614ce4-35fd-4f69-8afd-5387f121853c.png",
+          "medium": "https://resize.tripster.ru/lQbMnIkJ7Ua5ZfSBw4xzbZlcmcY=/fit-in/1200x1000/filters:no_upscale()/https://cdn.tripster.ru/photos/63614ce4-35fd-4f69-8afd-5387f121853c.png",
+          "thumbnail_portrait": "https://resize.tripster.ru/F_rjs76ifpBgZkzErRqlUYtIkE4=/287x392/filters:no_upscale()/https://cdn.tripster.ru/photos/63614ce4-35fd-4f69-8afd-5387f121853c.png"
+        },
+        {
+          "type": "experience",
+          "thumbnail": "https://resize.tripster.ru/5QL11D29mudXVQS1D3YbkD1RI-0=/fit-in/800x600/filters:no_upscale()/https://cdn.tripster.ru/photos/7f8da36e-bafc-483b-807c-f06c0b8f64ba.png",
+          "medium": "https://resize.tripster.ru/b8KjBqqXE0xdK-VwpKUF_uk_Ahk=/fit-in/1200x1000/filters:no_upscale()/https://cdn.tripster.ru/photos/7f8da36e-bafc-483b-807c-f06c0b8f64ba.png",
+          "thumbnail_portrait": "https://resize.tripster.ru/z1lU5n8-nX6ccr0tWd6wFObwYuQ=/287x392/filters:no_upscale()/https://cdn.tripster.ru/photos/7f8da36e-bafc-483b-807c-f06c0b8f64ba.png"
+        },
+        {
+          "type": "experience",
+          "thumbnail": "https://resize.tripster.ru/PxMsof9fU1xLsDxEso1zqfyOhY8=/fit-in/600x800/filters:no_upscale()/https://cdn.tripster.ru/photos/e1078ae3-db89-4b2e-934e-7c19404c4631.jpg",
+          "medium": "https://resize.tripster.ru/wSyow1pxQ-1acGmFt3WXMmvoZuk=/fit-in/1000x1350/filters:no_upscale()/https://cdn.tripster.ru/photos/e1078ae3-db89-4b2e-934e-7c19404c4631.jpg",
+          "thumbnail_portrait": "https://resize.tripster.ru/i8TbEO6GXXWc3bdPvBsprxTb3hA=/287x392/filters:no_upscale()/https://cdn.tripster.ru/photos/e1078ae3-db89-4b2e-934e-7c19404c4631.jpg"
+        },
+        {
+          "type": "experience",
+          "thumbnail": "https://resize.tripster.ru/eZFaGuXRt2Er7Spz2bVxkhEAWNE=/fit-in/600x800/filters:no_upscale()/https://cdn.tripster.ru/photos/abe5c76f-8ee8-42ae-b03b-059950ea03bb.jpg",
+          "medium": "https://resize.tripster.ru/kn-88BNjmoCCC9t0zDsHQ4i1coU=/fit-in/1000x1350/filters:no_upscale()/https://cdn.tripster.ru/photos/abe5c76f-8ee8-42ae-b03b-059950ea03bb.jpg",
+          "thumbnail_portrait": "https://resize.tripster.ru/WpuTTsOPJb2b5rZAAVVlK7WD7Lo=/287x392/filters:no_upscale()/https://cdn.tripster.ru/photos/abe5c76f-8ee8-42ae-b03b-059950ea03bb.jpg"
+        },
+        {
+          "type": "experience",
+          "thumbnail": "https://resize.tripster.ru/HaXJq2-_Vb-mh6eUYouhSK7QdEY=/fit-in/800x600/filters:no_upscale()/https://cdn.tripster.ru/photos/b695330b-2691-44d1-a0dd-983585efd347.jpg",
+          "medium": "https://resize.tripster.ru/Zl7s57T688dE-luth8_opNjVHAQ=/fit-in/1200x1000/filters:no_upscale()/https://cdn.tripster.ru/photos/b695330b-2691-44d1-a0dd-983585efd347.jpg",
+          "thumbnail_portrait": "https://resize.tripster.ru/Y59Y0mm5z8mMntJEZAA7zjKdoz4=/287x392/filters:no_upscale()/https://cdn.tripster.ru/photos/b695330b-2691-44d1-a0dd-983585efd347.jpg"
+        },
+        {
+          "type": "experience",
+          "thumbnail": "https://resize.tripster.ru/CGA-xwRMx9gBMlSpDoB_6kXlRWs=/fit-in/600x800/filters:no_upscale()/https://cdn.tripster.ru/photos/2a92dcbe-1482-4665-9daa-80612252b25f.jpg",
+          "medium": "https://resize.tripster.ru/nrMB_mctofLac2fhc2Eo8NNAoeY=/fit-in/1000x1350/filters:no_upscale()/https://cdn.tripster.ru/photos/2a92dcbe-1482-4665-9daa-80612252b25f.jpg",
+          "thumbnail_portrait": "https://resize.tripster.ru/YfkjXu36_YYaE7LhV17Gjjyn06o=/287x392/filters:no_upscale()/https://cdn.tripster.ru/photos/2a92dcbe-1482-4665-9daa-80612252b25f.jpg"
+        },
+        {
+          "type": "experience",
+          "thumbnail": "https://resize.tripster.ru/SA3krXsiFD1iwakAPOZbH9QWODg=/fit-in/600x800/filters:no_upscale()/https://cdn.tripster.ru/photos/8ec72909-e2f8-4321-a30b-9a9d44276b22.jpg",
+          "medium": "https://resize.tripster.ru/SIctwYQy5uBnzjSB_ZI7huC_WWw=/fit-in/1000x1350/filters:no_upscale()/https://cdn.tripster.ru/photos/8ec72909-e2f8-4321-a30b-9a9d44276b22.jpg",
+          "thumbnail_portrait": "https://resize.tripster.ru/XWuShyT1Dx4SXdTrSIF22YcNlCY=/287x392/filters:no_upscale()/https://cdn.tripster.ru/photos/8ec72909-e2f8-4321-a30b-9a9d44276b22.jpg"
+        },
+        {
+          "type": "experience",
+          "thumbnail": "https://resize.tripster.ru/a6-CKrKcLRYaJClyHsgvj8nIL94=/fit-in/800x600/filters:no_upscale()/https://cdn.tripster.ru/photos/6cbc95e4-404e-441d-9e87-4fd921b73ac2.jpg",
+          "medium": "https://resize.tripster.ru/6zhSdBdqQWRDww4uwVRI-gm7g6E=/fit-in/1200x1000/filters:no_upscale()/https://cdn.tripster.ru/photos/6cbc95e4-404e-441d-9e87-4fd921b73ac2.jpg",
+          "thumbnail_portrait": "https://resize.tripster.ru/VrP9DhFmL132dvEmqDU16m4Mv-0=/287x392/filters:no_upscale()/https://cdn.tripster.ru/photos/6cbc95e4-404e-441d-9e87-4fd921b73ac2.jpg"
+        },
+        {
+          "type": "experience",
+          "thumbnail": "https://resize.tripster.ru/r56yFqngaOxy4bWqnFwCtnf6qqY=/fit-in/600x800/filters:no_upscale()/https://cdn.tripster.ru/photos/6886edd3-8823-463f-8660-c12d4b074053.jpg",
+          "medium": "https://resize.tripster.ru/YP83lBHF0xDAjRxMBuQMf66g7tM=/fit-in/1000x1350/filters:no_upscale()/https://cdn.tripster.ru/photos/6886edd3-8823-463f-8660-c12d4b074053.jpg",
+          "thumbnail_portrait": "https://resize.tripster.ru/yZ-MfV6XMUH2qVNDNW0_pg0NOZU=/287x392/filters:no_upscale()/https://cdn.tripster.ru/photos/6886edd3-8823-463f-8660-c12d4b074053.jpg"
+        },
+        {
+          "type": "experience",
+          "thumbnail": "https://resize.tripster.ru/zteGkj2mpbgk_AVnEAV8fjYGU9E=/fit-in/600x800/filters:no_upscale()/https://cdn.tripster.ru/photos/1bc49f46-0a54-4661-902d-eb63780a38c9.jpg",
+          "medium": "https://resize.tripster.ru/JVDmAG8V3x6NVgIQkBXOvwfg3EI=/fit-in/1000x1350/filters:no_upscale()/https://cdn.tripster.ru/photos/1bc49f46-0a54-4661-902d-eb63780a38c9.jpg",
+          "thumbnail_portrait": "https://resize.tripster.ru/IT0UXY6TWZcSclzjUuADiUyF2bY=/287x392/filters:no_upscale()/https://cdn.tripster.ru/photos/1bc49f46-0a54-4661-902d-eb63780a38c9.jpg"
+        },
+        {
+          "type": "experience",
+          "thumbnail": "https://resize.tripster.ru/zcm4lrN5LYE5rclwSpDl6ho6lz0=/fit-in/600x800/filters:no_upscale()/https://cdn.tripster.ru/photos/78fd6c64-989b-4141-8c9d-4e7fe1fc7405.jpg",
+          "medium": "https://resize.tripster.ru/v3ExLlWm4IY6a8WgB7JtXmgcu0Q=/fit-in/1000x1350/filters:no_upscale()/https://cdn.tripster.ru/photos/78fd6c64-989b-4141-8c9d-4e7fe1fc7405.jpg",
+          "thumbnail_portrait": "https://resize.tripster.ru/6-gOKjQmfgCAK0HC9j3714xoQZI=/287x392/filters:no_upscale()/https://cdn.tripster.ru/photos/78fd6c64-989b-4141-8c9d-4e7fe1fc7405.jpg"
+        },
+        {
+          "type": "experience",
+          "thumbnail": "https://resize.tripster.ru/WEem-wsawjgew1gYCnRbQjlTBL4=/fit-in/600x800/filters:no_upscale()/https://cdn.tripster.ru/photos/dec6a419-db33-4554-8aa3-659ab1ff4099.jpg",
+          "medium": "https://resize.tripster.ru/Id-oHpVubfUM6nJy7tgGidVWQU4=/fit-in/1000x1350/filters:no_upscale()/https://cdn.tripster.ru/photos/dec6a419-db33-4554-8aa3-659ab1ff4099.jpg",
+          "thumbnail_portrait": "https://resize.tripster.ru/qJ04bHuwFnoBBVUqDdb9zESR4Jw=/287x392/filters:no_upscale()/https://cdn.tripster.ru/photos/dec6a419-db33-4554-8aa3-659ab1ff4099.jpg"
+        },
+        {
+          "type": "experience",
+          "thumbnail": "https://resize.tripster.ru/2usihySxNyumKTPzL07mFn076LE=/fit-in/600x800/filters:no_upscale()/https://cdn.tripster.ru/photos/28d77b7a-49e1-491e-a6bd-3e0ace927ef4.jpg",
+          "medium": "https://resize.tripster.ru/6EsusUC9Rm6JbuyTGYhCnINfyRI=/fit-in/1000x1350/filters:no_upscale()/https://cdn.tripster.ru/photos/28d77b7a-49e1-491e-a6bd-3e0ace927ef4.jpg",
+          "thumbnail_portrait": "https://resize.tripster.ru/-k2zI11hCQvhwg_wgDrRcEVTNc8=/287x392/filters:no_upscale()/https://cdn.tripster.ru/photos/28d77b7a-49e1-491e-a6bd-3e0ace927ef4.jpg"
+        }
+      ],
+      "schedule": {
+        "upcoming_events": [
+          "2025-12-02T12:00:00",
+          "2025-12-16T08:00:00",
+          "2025-12-16T12:00:00",
+          "2026-01-02T12:00:00",
+          "2026-01-02T12:00:00",
+          "2026-01-19T08:00:00",
+          "2026-02-02T08:00:00",
+          "2026-02-16T08:00:00",
+          "2026-03-02T08:00:00",
+          "2026-03-16T08:00:00"
+        ]
+      },
+      "is_paid": false
+    },
+    {
+      "status": "active",
+      "id": 82468,
+      "title": "Паназиатский микс: насыщенный отпуск в Малайзии, Индонезии и Сингапуре",
+      "tagline": "Узнать о культуре перанаканов, увидеть древние храмы Явы и исследовать мангровый лес на лодке",
+      "annotation": "Мегаполисы будущего, скрытые в джунглях и пещерах древние храмы, тропические острова с белоснежными пляжами у бирюзового моря, коктейль из экзотических культур — всё это будет в нашем туре. В Малайзии вы не только погуляете по впечатляющему Куала-Лумпуру, но и изучите глубинку: посетите семейный дом-музей перанаканов в Малакке, полюбуетесь Розовой мечетью в Путраджае, познакомитесь со свадебными обычаями народов и дикой природой на Лангкави, узнаете о мафии на Пенанге. В Сингапуре погрузитесь в калейдоскоп современности и истории, а на индонезийской Яве рассмотрите барельефы Боробудура и Прамбанана. На всём маршруте забронированы отели с бассейном, чтобы вы смогли как следует отдохнуть после насыщенных впечатлениями и локациями экскурсий.",
+      "url": "https://experience.tripster.ru/experience/82468/",
+      "type": "tour",
+      "format": "activity",
+      "grade": null,
+      "movement_type": "other",
+      "schedule_type": "fixed_slots",
+      "exp_status": 3,
+      "is_instant_booking": false,
+      "is_new": false,
+      "max_persons": 10,
+      "duration": 288,
+      "price": {
+        "value": 3250,
+        "currency": "USD",
+        "currency_rate": 82.98,
+        "price_from": false,
+        "unit_string": "за одного",
+        "value_string": "$3250 за одного"
+      },
+      "rating": 0,
+      "visitors_count": 0,
+      "review_count": 0,
+      "pause_finish_date": null,
+      "pause_reason": null,
+      "cancel_finish_date": null,
+      "cancel_reason": null,
+      "additional_info": "<p><strong>После внесения предоплаты на сайте необходимо перевести напрямую организатору 30% от стоимости тура</strong> (наличными, картой, QR-кодом). Остальное — за 21 день до старта (возможна оплата части тура на месте в день приезда в страну в долларах/евро, в зависимости от тура).</p>",
+      "comfort_level_info": "<div><p><strong>Питание.</strong> Включены завтраки в отелях, остальное питание оплачивается отдельно.</p>\n\n\t<p><strong>Транспорт.</strong> Седан, минивэн или микроавтобус, в зависимости от количества участников. Также входят перелёты Куала-Лумпур — Джокьякарта — Сингапур — Лангкави — Пенанг.</p>\n\n\t<p><strong>Дети.</strong> Возможно участие с детьми старше 5 лет.</p>\n\n\t<p><strong>Уровень сложности.</strong> Лёгкий. Вас ждут несложные пешие прогулки, физподготовка не понадобится. </p>\n\n\t<p><strong>Визы.</strong> В Малайзию и Сингапур гражданам России не требуются. Виза в Индонезию оформляется в аэропорту по прилёте, оплачивается отдельно.</p></div>",
+      "price_included_description": "<ul>\n\t\t<li>Проживание</li>\n\t\t<li>Завтраки</li>\n\t\t<li>Трансферы от/до аэропортов</li>\n\t\t<li>Все трансферы по маршруту, включая авиаперелёты по программе</li>\n\t\t<li>Все входные билеты и экскурсии по программе</li>\n\t\t<li>Информационное сопровождение (рекомендации по кафе и ресторанам, валюте, визе)</li>\n\t</ul>",
+      "price_not_included_description": "<ul>\n\t\t<li>Билеты в Куала-Лумпур и обратно в ваш город с острова Пенанг</li>\n\t\t<li>Обеды и ужины</li>\n\t\t<li>Индонезийская виза</li>\n\t\t<li>Медицинская страховка</li>\n\t\t<li>Доплата за трансфер от аэропорта Куала-Лумпура в ночное время (22:00-8:00) — $30</li>\n\t</ul>",
+      "geo_access_level": "all",
+      "geo": {
+        "city": [
+          {
+            "id": 261,
+            "slug": "Kuala_Lumpur",
+            "name": "Куала-Лумпур",
+            "name_prepositional": "Куала-Лумпуре",
+            "in_obj_phrase": "в Куала-Лумпуре",
+            "from_obj_phrase": "из Куала-Лумпура",
+            "across_obj_phrase": "по Куала-Лумпуру",
+            "is_main_city": true
+          },
+          {
+            "id": 1072,
+            "slug": "Yogyakarta",
+            "name": "Джокьякарта",
+            "name_prepositional": "Джокьякарте",
+            "in_obj_phrase": "в Джокьякарте",
+            "from_obj_phrase": "из Джокьякарты",
+            "across_obj_phrase": "по Джокьякарте",
+            "is_main_city": false
+          },
+          {
+            "id": 250,
+            "slug": "Singapore",
+            "name": "Сингапур",
+            "name_prepositional": "Сингапуре",
+            "in_obj_phrase": "в Сингапуре",
+            "from_obj_phrase": "из Сингапура",
+            "across_obj_phrase": "по Сингапуру",
+            "is_main_city": false
+          },
+          {
+            "id": 908,
+            "slug": "Langkawi",
+            "name": "Лангкави",
+            "name_prepositional": "Лангкави",
+            "in_obj_phrase": "в Лангкави",
+            "from_obj_phrase": "из Лангкави",
+            "across_obj_phrase": "по Лангкави",
+            "is_main_city": false
+          },
+          {
+            "id": 585,
+            "slug": "Jawa",
+            "name": "Ява",
+            "name_prepositional": "Яве",
+            "in_obj_phrase": "на Яве",
+            "from_obj_phrase": "из Явы",
+            "across_obj_phrase": "по Яве",
+            "is_main_city": false
+          }
+        ],
+        "country": [
+          {
+            "id": 188,
+            "slug": "malaysia",
+            "name": "Малайзия",
+            "name_prepositional": "Малайзии",
+            "in_obj_phrase": "в Малайзии",
+            "from_obj_phrase": "из Малайзии",
+            "across_obj_phrase": "по Малайзии",
+            "is_main_city": false
+          },
+          {
+            "id": 157,
+            "slug": "indonesia",
+            "name": "Индонезия",
+            "name_prepositional": "Индонезии",
+            "in_obj_phrase": "в Индонезии",
+            "from_obj_phrase": "из Индонезии",
+            "across_obj_phrase": "по Индонезии",
+            "is_main_city": false
+          },
+          {
+            "id": 255,
+            "slug": "singapore",
+            "name": "Сингапур",
+            "name_prepositional": "Сингапуре",
+            "in_obj_phrase": "в Сингапуре",
+            "from_obj_phrase": "из Сингапура",
+            "across_obj_phrase": "по Сингапуру",
+            "is_main_city": false
+          }
+        ]
+      },
+      "guide": {
+        "id": 1876882,
+        "first_name": "Elena",
+        "url": "https://experience.tripster.ru/guide/1876882/",
+        "avatar": {
+          "medium": "https://resize.tripster.ru/NRflg7cyvWPQHPLTqIDY3aznu5Y=/150x150/filters:no_upscale()/https://cdn.tripster.ru/avatars/648dbc22-ecda-47af-adc1-1d7a1e803c8b.jpg",
+          "small": "https://resize.tripster.ru/NRflg7cyvWPQHPLTqIDY3aznu5Y=/150x150/filters:no_upscale()/https://cdn.tripster.ru/avatars/648dbc22-ecda-47af-adc1-1d7a1e803c8b.jpg"
+        },
+        "rating": 5,
+        "rate_count": 5,
+        "review_count": 4,
+        "avg_reaction_delay": 207,
+        "avg_reaction_delay_display": {
+          "nominative": "4 часа",
+          "accusative": "4 часа",
+          "genitive": "4 часов"
+        },
+        "type": "agency",
+        "date_start_work": "2024-12-02T06:08:28.146779Z",
+        "date_joined": "2024-08-12T08:38:38.925871Z",
+        "is_licensed": false,
+        "orders_count": 61,
+        "visitors_count": 18,
+        "description": "Наша компания работает с 1996 года и является специалистом в сфере индивидуальных и групповых путешествий в более чем 70 странах мира. Каждый наш тур — это тщательно спланированная поездка, в ходе которой вам лишь останется наслаждаться красотами выбранной страны, ведь все организаторские моменты мы берём на себя. А наш многолетний опыт позволит сделать Ваше приключение незабываемым!",
+        "exp_count_published": 6,
+        "number_of_persons_paid": 18
+      },
+      "guide_can_resume": false,
+      "has_non_refundable_part": false,
+      "photos": [
+        {
+          "type": "experience",
+          "thumbnail": "https://resize.tripster.ru/ujdsVpjIjttvgtmIa8F2ozXlsrI=/fit-in/800x600/filters:no_upscale()/https://cdn.tripster.ru/photos/ab559625-224a-417d-a069-85de981e8c79.jpg",
+          "medium": "https://resize.tripster.ru/oiFo9oXkLz_XbKIBRMxt6lmi6p0=/fit-in/1200x1000/filters:no_upscale()/https://cdn.tripster.ru/photos/ab559625-224a-417d-a069-85de981e8c79.jpg",
+          "thumbnail_portrait": "https://resize.tripster.ru/YaHMDF1NzxLVIHL_RobA9R2ZKzw=/287x392/filters:no_upscale()/https://cdn.tripster.ru/photos/ab559625-224a-417d-a069-85de981e8c79.jpg"
+        },
+        {
+          "type": "experience",
+          "thumbnail": "https://resize.tripster.ru/AB4_SWungd8733BEYX79dvm6s5U=/fit-in/800x600/filters:no_upscale()/https://cdn.tripster.ru/photos/b77e75f6-0eda-4812-b62b-50c3d3834cc7.jpg",
+          "medium": "https://resize.tripster.ru/Qc5jlTBICMLZoh52wLj5oywE458=/fit-in/1200x1000/filters:no_upscale()/https://cdn.tripster.ru/photos/b77e75f6-0eda-4812-b62b-50c3d3834cc7.jpg",
+          "thumbnail_portrait": "https://resize.tripster.ru/30bDPnxrA9qceOFrc2R2W6ng8R4=/287x392/filters:no_upscale()/https://cdn.tripster.ru/photos/b77e75f6-0eda-4812-b62b-50c3d3834cc7.jpg"
+        },
+        {
+          "type": "experience",
+          "thumbnail": "https://resize.tripster.ru/md7q44N4bogNufLkYN_BbMT9-fs=/fit-in/800x600/filters:no_upscale()/https://cdn.tripster.ru/photos/e1afb901-0aef-4230-a8b2-82bdacbfdb83.jpg",
+          "medium": "https://resize.tripster.ru/JXmUdXz3oFcHgoGFJ0q1lL8-2Ao=/fit-in/1200x1000/filters:no_upscale()/https://cdn.tripster.ru/photos/e1afb901-0aef-4230-a8b2-82bdacbfdb83.jpg",
+          "thumbnail_portrait": "https://resize.tripster.ru/eFIKCFvYmtVT2KtwrKavZjhcszk=/287x392/filters:no_upscale()/https://cdn.tripster.ru/photos/e1afb901-0aef-4230-a8b2-82bdacbfdb83.jpg"
+        },
+        {
+          "type": "experience",
+          "thumbnail": "https://resize.tripster.ru/ZRwtztjp9nl8MoL8tePTsAu0deg=/fit-in/800x600/filters:no_upscale()/https://cdn.tripster.ru/photos/52658fde-cdf7-4eff-88b2-acec6a6f38d0.jpg",
+          "medium": "https://resize.tripster.ru/naW-DrWOQCk2eK4cky-zJgmipR8=/fit-in/1200x1000/filters:no_upscale()/https://cdn.tripster.ru/photos/52658fde-cdf7-4eff-88b2-acec6a6f38d0.jpg",
+          "thumbnail_portrait": "https://resize.tripster.ru/8p0n_KBFPexTWBzS05cHlafmef4=/287x392/filters:no_upscale()/https://cdn.tripster.ru/photos/52658fde-cdf7-4eff-88b2-acec6a6f38d0.jpg"
+        },
+        {
+          "type": "experience",
+          "thumbnail": "https://resize.tripster.ru/fj265aBeCW7hLk-JmGaKZzkReiw=/fit-in/800x600/filters:no_upscale()/https://cdn.tripster.ru/photos/a975b2f1-28f1-41db-b105-c0c3a0e596cf.jpg",
+          "medium": "https://resize.tripster.ru/VodBbWMVclWVue8prtPDmGYNHek=/fit-in/1200x1000/filters:no_upscale()/https://cdn.tripster.ru/photos/a975b2f1-28f1-41db-b105-c0c3a0e596cf.jpg",
+          "thumbnail_portrait": "https://resize.tripster.ru/7sIZ5OWBeIN2C-DIAdFBmtP4dZ8=/287x392/filters:no_upscale()/https://cdn.tripster.ru/photos/a975b2f1-28f1-41db-b105-c0c3a0e596cf.jpg"
+        },
+        {
+          "type": "experience",
+          "thumbnail": "https://resize.tripster.ru/BdPU2ui9KQAGrgge8r3LVzQrYDo=/fit-in/800x600/filters:no_upscale()/https://cdn.tripster.ru/photos/c791d4c5-e92a-45a6-adfe-34402ef18506.jpg",
+          "medium": "https://resize.tripster.ru/j2saE711_qY8TxM6OUh0SI5DHhY=/fit-in/1200x1000/filters:no_upscale()/https://cdn.tripster.ru/photos/c791d4c5-e92a-45a6-adfe-34402ef18506.jpg",
+          "thumbnail_portrait": "https://resize.tripster.ru/OJVrMSNx--3flmYbpyjmWhXDoLg=/287x392/filters:no_upscale()/https://cdn.tripster.ru/photos/c791d4c5-e92a-45a6-adfe-34402ef18506.jpg"
+        },
+        {
+          "type": "experience",
+          "thumbnail": "https://resize.tripster.ru/fPMfnRWC8a3v505bQQOS3PoSLZA=/fit-in/800x600/filters:no_upscale()/https://cdn.tripster.ru/photos/0004a307-a18e-4dd4-9230-a79b81491507.jpg",
+          "medium": "https://resize.tripster.ru/aDM0gRMDWoQM2A4XPpvD2vAVWBQ=/fit-in/1200x1000/filters:no_upscale()/https://cdn.tripster.ru/photos/0004a307-a18e-4dd4-9230-a79b81491507.jpg",
+          "thumbnail_portrait": "https://resize.tripster.ru/GGXG8vQTHZBL_7De-3w7oA7EDf0=/287x392/filters:no_upscale()/https://cdn.tripster.ru/photos/0004a307-a18e-4dd4-9230-a79b81491507.jpg"
+        },
+        {
+          "type": "experience",
+          "thumbnail": "https://resize.tripster.ru/7mWypLT2RxmWnStQBLMLRCuAM3s=/fit-in/800x600/filters:no_upscale()/https://cdn.tripster.ru/photos/5f366090-4b54-4de1-ac2e-b4774dcdf013.jpg",
+          "medium": "https://resize.tripster.ru/Jmhm0Mes1D9gcdAWQdL1n_CJaDY=/fit-in/1200x1000/filters:no_upscale()/https://cdn.tripster.ru/photos/5f366090-4b54-4de1-ac2e-b4774dcdf013.jpg",
+          "thumbnail_portrait": "https://resize.tripster.ru/M6RZnRwh42Z6rRuN9wmEYskHKn0=/287x392/filters:no_upscale()/https://cdn.tripster.ru/photos/5f366090-4b54-4de1-ac2e-b4774dcdf013.jpg"
+        },
+        {
+          "type": "experience",
+          "thumbnail": "https://resize.tripster.ru/yIHMYoXQxGu8xDull81mF2v5M3E=/fit-in/800x600/filters:no_upscale()/https://cdn.tripster.ru/photos/a9c58c4d-7627-41e9-8d07-e1c9397973ef.jpg",
+          "medium": "https://resize.tripster.ru/VofXiTfiIkAWtya7bXOS6Nl9gkk=/fit-in/1200x1000/filters:no_upscale()/https://cdn.tripster.ru/photos/a9c58c4d-7627-41e9-8d07-e1c9397973ef.jpg",
+          "thumbnail_portrait": "https://resize.tripster.ru/uokwvVuksa4PyIGrwAqtW1qy_OM=/287x392/filters:no_upscale()/https://cdn.tripster.ru/photos/a9c58c4d-7627-41e9-8d07-e1c9397973ef.jpg"
+        },
+        {
+          "type": "experience",
+          "thumbnail": "https://resize.tripster.ru/5g1C9oHhEQrXz13xHjCLFTMdjV8=/fit-in/800x600/filters:no_upscale()/https://cdn.tripster.ru/photos/4fc9c231-5871-4609-9947-19850e69721e.jpg",
+          "medium": "https://resize.tripster.ru/R5w-kn9A0py6ZVaR0vFGl9Bt5EY=/fit-in/1200x1000/filters:no_upscale()/https://cdn.tripster.ru/photos/4fc9c231-5871-4609-9947-19850e69721e.jpg",
+          "thumbnail_portrait": "https://resize.tripster.ru/_H8FTzxNdtQLvKru3dtnlkUYEOQ=/287x392/filters:no_upscale()/https://cdn.tripster.ru/photos/4fc9c231-5871-4609-9947-19850e69721e.jpg"
+        }
+      ],
+      "schedule": {
+        "upcoming_events": [
+          "2026-01-10T10:00:00",
+          "2026-02-09T10:00:00"
+        ]
+      },
+      "is_paid": false
+    }
+  ]
+}
+
+
+
+
+

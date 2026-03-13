@@ -1,0 +1,1999 @@
+{
+  "count": 12,
+  "next": null,
+  "previous": null,
+  "results": [
+    {
+      "status": "active",
+      "id": 49006,
+      "title": "Индивидуальный тур по Южной Корее: Кёнджу и Пусан",
+      "tagline": "Побывать в храме Пульгукса, погулять по пляжам и увидеть самый большой деревянный мост Южной Кореи",
+      "annotation": "Приглашаем отправиться в тур, который поможет погрузиться в атмосферу южной части Корейского полуострова. Всего за три дня мы посетим два удивительных городка Южной Кореи и побываем в их самых интересных локациях. Вас ждут парк гробниц Доривон, пруд Вольчи и традиционная деревня Кёчхон в Кёнджу, а также храм Хэдон Ёнгунса и остров Тонбэксом. Будем неспешно исследовать намеченные места, пробовать блюда корейской кухни и наслаждаться особой атмосферой этих городов.",
+      "url": "https://experience.tripster.ru/experience/49006/",
+      "type": "tour",
+      "format": "activity",
+      "grade": null,
+      "movement_type": "car",
+      "schedule_type": "fixed_slots",
+      "exp_status": 3,
+      "is_instant_booking": false,
+      "is_new": false,
+      "max_persons": 3,
+      "duration": 48,
+      "price": {
+        "value": 1883,
+        "currency": "USD",
+        "currency_rate": 85,
+        "price_from": false,
+        "unit_string": "",
+        "value_string": "$1883 "
+      },
+      "rating": 5,
+      "visitors_count": 12,
+      "review_count": 5,
+      "pause_finish_date": null,
+      "pause_reason": null,
+      "cancel_finish_date": null,
+      "cancel_reason": null,
+      "additional_info": "<p>После внесения предоплаты на сайте оставшуюся часть стоимости тура вы оплачиваете оставшуюся сумму организатору напрямую в день старта наличными долларами (нового образца), евро или корейской воной по актуальному курсу.</p>",
+      "comfort_level_info": "<div><p><strong>Питание.</strong> Не входит в стоимость.</p>\n\n\t<p><strong>Транспорт.</strong> До отдалённых точек маршрута будем добираться на комфортном автомобиле Kia Niro.</p>\n\n\t<p><strong>Дети.</strong> Возможно участие с детьми от 2 лет.</p>\n\n\t<p><strong>Виза.</strong> Гражданам России не требуется, но необходимо оформить электронное разрешение на въезд (только для людей от 18 до 64 лет). Не менее чем за 72 часа до вылета нужно заполнить форму на английском языке на сайте www.k-eta.go.kr. Сбор можно оплатить только картой иностранного банка.</p>\n\n\t<p><strong>Уровень сложности.</strong> Минимальный. Без физической нагрузки. Короткие прогулки (около 2 часов), передвижение на транспорте.</p>\n\n\t<p><strong>Вы можете подобрать подходящие Вам даты индивидуально вместе с гидом.</strong></p></div>",
+      "price_included_description": "<ul>\n\t\t<li>Трансфер по маршруту</li>\n\t\t<li>Транспортные расходы</li>\n\t\t<li>Услуги гида</li>\n\t</ul>",
+      "price_not_included_description": "<div><ul>\n\t\t<li>Билеты в Сеул и обратно в ваш город</li>\n\t\t<li>Проживание</li>\n\t\t<li>Питание</li>\n\t\t<li>Входные билеты (вход в королевскую гробницу и к пруду Вольчи по 3$, канатная дорога — 17$)</li>\n\t\t<li>Сбор за разрешение на въезд</li>\n\t\t<li>Посещение дополнительных локаций</li>\n\t</ul>\n\n\t<p><strong>Стоимость тура указана для группы до 3-х человек. В случае если участников тура более 3 человек, то возможна замена автомобиля на автобус с доплатой.</strong></p></div>",
+      "geo_access_level": "all",
+      "geo": {
+        "city": [
+          {
+            "id": 403,
+            "slug": "Seoul",
+            "name": "Сеул",
+            "name_prepositional": "Сеуле",
+            "in_obj_phrase": "в Сеуле",
+            "from_obj_phrase": "из Сеула",
+            "across_obj_phrase": "по Сеулу",
+            "is_main_city": true
+          }
+        ],
+        "country": [
+          {
+            "id": 263,
+            "slug": "south-korea",
+            "name": "Южная Корея",
+            "name_prepositional": "Южной Корее",
+            "in_obj_phrase": "в Южной Корее",
+            "from_obj_phrase": "из Южной Кореи",
+            "across_obj_phrase": "по Южной Корее",
+            "is_main_city": false
+          }
+        ]
+      },
+      "guide": {
+        "id": 1208902,
+        "first_name": "Ольга",
+        "url": "https://experience.tripster.ru/guide/1208902/",
+        "avatar": {
+          "medium": "https://resize.tripster.ru/KZFdTCepC7Xl87EMASS8vBw7wi4=/150x150/filters:no_upscale()/https://cdn.tripster.ru/avatars/f5af20c7-b5ad-4d9c-9a5a-10340334e3ce.jpg",
+          "small": "https://resize.tripster.ru/KZFdTCepC7Xl87EMASS8vBw7wi4=/150x150/filters:no_upscale()/https://cdn.tripster.ru/avatars/f5af20c7-b5ad-4d9c-9a5a-10340334e3ce.jpg"
+        },
+        "rating": 5,
+        "rate_count": 70,
+        "review_count": 59,
+        "avg_reaction_delay": 12,
+        "avg_reaction_delay_display": {
+          "nominative": "15 минут",
+          "accusative": "15 минут",
+          "genitive": "15 минут"
+        },
+        "type": "team",
+        "date_start_work": "2023-07-05T18:05:45.818885Z",
+        "date_joined": "2023-06-07T11:57:39.000000Z",
+        "is_licensed": false,
+        "orders_count": 407,
+        "visitors_count": 369,
+        "description": "Наши гиды — это не только профессионалы с многолетним опытом работы, но и увлечённые люди, погружённые в культуру и историю Кореи. Мы покажем вам знаменитые и не очень популярные места, которые помогут вам узнать Южную Корею со всех сторон. Каждое путешествие мы делаем комфортным и интересным. Наша любовь к Корее передается каждому нашему гостю, и мы гордимся тем, что можем делиться знаниями и впечатлениями о стране утренней свежести. Я сама проживаю в Южной Корее с 2015 года — объехала эту страну на своём авто в поисках интересных и аутентичных локаций. Вы откроете места, которые не описаны в туристических брошюрах, попробуете настоящую корейскую кухню и погрузитесь в уникальную атмосферу этой страны.",
+        "exp_count_published": 9,
+        "number_of_persons_paid": 369
+      },
+      "guide_can_resume": false,
+      "has_non_refundable_part": false,
+      "photos": [
+        {
+          "type": "experience",
+          "thumbnail": "https://resize.tripster.ru/tHm1b2nmfLata8QcJowGhwiH6bM=/fit-in/800x600/filters:no_upscale()/https://cdn.tripster.ru/photos/9ebe6c52-0a64-415a-bc2f-9bb6f8f64db3.jpg",
+          "medium": "https://resize.tripster.ru/Qftbjbeeryz53Z8PPanN3e8Umm4=/fit-in/1200x1000/filters:no_upscale()/https://cdn.tripster.ru/photos/9ebe6c52-0a64-415a-bc2f-9bb6f8f64db3.jpg",
+          "thumbnail_portrait": "https://resize.tripster.ru/bAoKwnRuuOpMY4WOS0OfxSDYLu4=/287x392/filters:no_upscale()/https://cdn.tripster.ru/photos/9ebe6c52-0a64-415a-bc2f-9bb6f8f64db3.jpg"
+        },
+        {
+          "type": "experience",
+          "thumbnail": "https://resize.tripster.ru/y1hjgoKwE9pFgYqjofRBRNL2R9E=/fit-in/800x600/filters:no_upscale()/https://cdn.tripster.ru/photos/67f32f47-4629-4f9d-82f9-8b4c27514028.jpg",
+          "medium": "https://resize.tripster.ru/p81n6lotBHOTya-B77Rq9yF37bM=/fit-in/1200x1000/filters:no_upscale()/https://cdn.tripster.ru/photos/67f32f47-4629-4f9d-82f9-8b4c27514028.jpg",
+          "thumbnail_portrait": "https://resize.tripster.ru/mDgm2AQOWVVJzPinKDiYu3ROs60=/287x392/filters:no_upscale()/https://cdn.tripster.ru/photos/67f32f47-4629-4f9d-82f9-8b4c27514028.jpg"
+        },
+        {
+          "type": "experience",
+          "thumbnail": "https://resize.tripster.ru/J56ihEkM4OXgv75vbp22MB1U3MQ=/fit-in/800x600/filters:no_upscale()/https://cdn.tripster.ru/photos/2fafefb4-8a06-4bbc-b4ce-02f8f1e35b6f.jpg",
+          "medium": "https://resize.tripster.ru/-eCE1tbWpJSVw7nyiCjt2e3hJJg=/fit-in/1200x1000/filters:no_upscale()/https://cdn.tripster.ru/photos/2fafefb4-8a06-4bbc-b4ce-02f8f1e35b6f.jpg",
+          "thumbnail_portrait": "https://resize.tripster.ru/urPHiErGKn-kVQVD5Ei_TeR0ywM=/287x392/filters:no_upscale()/https://cdn.tripster.ru/photos/2fafefb4-8a06-4bbc-b4ce-02f8f1e35b6f.jpg"
+        },
+        {
+          "type": "experience",
+          "thumbnail": "https://resize.tripster.ru/GTnDrzndScUicvUFH8QfuS73gyg=/fit-in/800x600/filters:no_upscale()/https://cdn.tripster.ru/photos/d3e426f9-acbf-4abc-9d66-26187629f83b.jpg",
+          "medium": "https://resize.tripster.ru/sYBDD1Ta0DReeDu4tPF-p71XXfE=/fit-in/1200x1000/filters:no_upscale()/https://cdn.tripster.ru/photos/d3e426f9-acbf-4abc-9d66-26187629f83b.jpg",
+          "thumbnail_portrait": "https://resize.tripster.ru/cdLNdmuSsMPtOAtkj2Ah7-pZ6rg=/287x392/filters:no_upscale()/https://cdn.tripster.ru/photos/d3e426f9-acbf-4abc-9d66-26187629f83b.jpg"
+        },
+        {
+          "type": "experience",
+          "thumbnail": "https://resize.tripster.ru/vyLU48USnUdFoBzAwgbTOSaiVCE=/fit-in/800x600/filters:no_upscale()/https://cdn.tripster.ru/photos/4fff96a5-0bf5-4ffe-b97e-87586fa73fc9.jpg",
+          "medium": "https://resize.tripster.ru/dCs9nKeBpuUSmNfsPWd1O_B425o=/fit-in/1200x1000/filters:no_upscale()/https://cdn.tripster.ru/photos/4fff96a5-0bf5-4ffe-b97e-87586fa73fc9.jpg",
+          "thumbnail_portrait": "https://resize.tripster.ru/HEcpMqoUZFW7gunjl8eKgH5XhxI=/287x392/filters:no_upscale()/https://cdn.tripster.ru/photos/4fff96a5-0bf5-4ffe-b97e-87586fa73fc9.jpg"
+        },
+        {
+          "type": "experience",
+          "thumbnail": "https://resize.tripster.ru/JBoXC53bc6CqQjWEiQGuIDrCdLM=/fit-in/800x600/filters:no_upscale()/https://cdn.tripster.ru/photos/e7d2871a-6008-488d-aa8f-c8bb76b9e589.jpg",
+          "medium": "https://resize.tripster.ru/q5Hpt7tH-mTkGAgo9VzLRoHSaAc=/fit-in/1200x1000/filters:no_upscale()/https://cdn.tripster.ru/photos/e7d2871a-6008-488d-aa8f-c8bb76b9e589.jpg",
+          "thumbnail_portrait": "https://resize.tripster.ru/RVXAYidnvZK0KYYbXyRRokPpSCE=/287x392/filters:no_upscale()/https://cdn.tripster.ru/photos/e7d2871a-6008-488d-aa8f-c8bb76b9e589.jpg"
+        },
+        {
+          "type": "experience",
+          "thumbnail": "https://resize.tripster.ru/YMrP7Br5aWRUG609eyEdfvVJE7Y=/fit-in/800x600/filters:no_upscale()/https://cdn.tripster.ru/photos/7cf0751a-aacb-4645-ae37-760a349fbdb7.jpg",
+          "medium": "https://resize.tripster.ru/ImMpbnhqC9li7PJzhPy8G3zwR8I=/fit-in/1200x1000/filters:no_upscale()/https://cdn.tripster.ru/photos/7cf0751a-aacb-4645-ae37-760a349fbdb7.jpg",
+          "thumbnail_portrait": "https://resize.tripster.ru/CmhvGa54EyOfru253xjOImRhraw=/287x392/filters:no_upscale()/https://cdn.tripster.ru/photos/7cf0751a-aacb-4645-ae37-760a349fbdb7.jpg"
+        },
+        {
+          "type": "experience",
+          "thumbnail": "https://resize.tripster.ru/YJy0BK7TUUp-cuHANOIqzlArscs=/fit-in/800x600/filters:no_upscale()/https://cdn.tripster.ru/photos/ad9fc687-3042-4680-af59-18c940017888.jpg",
+          "medium": "https://resize.tripster.ru/J-s5mJ1i6xgRwKX0jV4gGIkpT90=/fit-in/1200x1000/filters:no_upscale()/https://cdn.tripster.ru/photos/ad9fc687-3042-4680-af59-18c940017888.jpg",
+          "thumbnail_portrait": "https://resize.tripster.ru/l9rMvaqT9UAI3FJMXVZ5YX5VRBQ=/287x392/filters:no_upscale()/https://cdn.tripster.ru/photos/ad9fc687-3042-4680-af59-18c940017888.jpg"
+        },
+        {
+          "type": "experience",
+          "thumbnail": "https://resize.tripster.ru/3bBXt5zade43X2meoylHsZILLwg=/fit-in/800x600/filters:no_upscale()/https://cdn.tripster.ru/photos/f56f3e8b-1ff2-42f9-b742-776b9401ef6b.jpg",
+          "medium": "https://resize.tripster.ru/2GVp6iZg8OulWpx9DL7qeKqJ6JM=/fit-in/1200x1000/filters:no_upscale()/https://cdn.tripster.ru/photos/f56f3e8b-1ff2-42f9-b742-776b9401ef6b.jpg",
+          "thumbnail_portrait": "https://resize.tripster.ru/GY886d2ds1DiGbtUXr6DLNmkgb0=/287x392/filters:no_upscale()/https://cdn.tripster.ru/photos/f56f3e8b-1ff2-42f9-b742-776b9401ef6b.jpg"
+        },
+        {
+          "type": "experience",
+          "thumbnail": "https://resize.tripster.ru/L_q8O6kMlf_9HJXdFEgIaU3E83c=/fit-in/800x600/filters:no_upscale()/https://cdn.tripster.ru/photos/d651bca0-fe40-4f4b-b30f-95ebbfb9083c.jpg",
+          "medium": "https://resize.tripster.ru/wkJhofItrhzmE_wP3MG2KEYs2P4=/fit-in/1200x1000/filters:no_upscale()/https://cdn.tripster.ru/photos/d651bca0-fe40-4f4b-b30f-95ebbfb9083c.jpg",
+          "thumbnail_portrait": "https://resize.tripster.ru/huZTexKKZ2XW8LdXTXU7Xtp7vvw=/287x392/filters:no_upscale()/https://cdn.tripster.ru/photos/d651bca0-fe40-4f4b-b30f-95ebbfb9083c.jpg"
+        },
+        {
+          "type": "experience",
+          "thumbnail": "https://resize.tripster.ru/4DTBS6hDEOnwVUpGiGRwyPd9jkc=/fit-in/800x600/filters:no_upscale()/https://cdn.tripster.ru/photos/1db389df-1edb-4c5a-9614-d1840dbd83cd.jpg",
+          "medium": "https://resize.tripster.ru/7PyNDeZHMFcibeQcuyFdFXR_1lg=/fit-in/1200x1000/filters:no_upscale()/https://cdn.tripster.ru/photos/1db389df-1edb-4c5a-9614-d1840dbd83cd.jpg",
+          "thumbnail_portrait": "https://resize.tripster.ru/cErJhvb18nOOIJKHIAQod1_mG40=/287x392/filters:no_upscale()/https://cdn.tripster.ru/photos/1db389df-1edb-4c5a-9614-d1840dbd83cd.jpg"
+        },
+        {
+          "type": "experience",
+          "thumbnail": "https://resize.tripster.ru/PRg5wY4QW78LVra4pa8jHccJ_t0=/fit-in/800x600/filters:no_upscale()/https://cdn.tripster.ru/photos/88b27143-6a6b-470c-afc9-2682decef472.jpg",
+          "medium": "https://resize.tripster.ru/w1m29PTGux4w4L8itZPGJ2f0Qc4=/fit-in/1200x1000/filters:no_upscale()/https://cdn.tripster.ru/photos/88b27143-6a6b-470c-afc9-2682decef472.jpg",
+          "thumbnail_portrait": "https://resize.tripster.ru/S4k6b_v6TUz3V6rGIzWcgJvwAmM=/287x392/filters:no_upscale()/https://cdn.tripster.ru/photos/88b27143-6a6b-470c-afc9-2682decef472.jpg"
+        }
+      ],
+      "schedule": {
+        "upcoming_events": [
+          "2025-11-25T08:00:00",
+          "2025-11-28T08:00:00",
+          "2025-12-09T08:00:00",
+          "2025-12-12T08:00:00",
+          "2025-12-16T08:00:00",
+          "2025-12-19T08:00:00",
+          "2025-12-23T08:00:00",
+          "2025-12-26T08:00:00",
+          "2026-01-20T08:00:00",
+          "2026-01-23T08:00:00"
+        ]
+      },
+      "is_paid": false
+    },
+    {
+      "status": "active",
+      "id": 82454,
+      "title": "Вдвое больше впечатлений: прогулки по Сеулу и неделя на острове Себу",
+      "tagline": "Увидеть дворец корейского императора и дома-ханок аристократов и вдоволь насладиться пляжным отдыхом",
+      "annotation": "В этом туре вы посетите 2 максимально контрастные страны — Южную Корею и Филиппины. Недолгая остановка в Сеуле позволит легче перенести долгий перелёт к тропикам и добавит отпуску красок. Вы увидите дворец последнего императора и аутентичные дома-ханок, принадлежавшие аристократам, и полюбуетесь столицей с высоты телебашни. А затем смените стремительный мегаполис на райский Себу — один из лучших островов как для расслабленного, так и для активного отдыха. Всю неделю вы можете никуда не спешить: загорать и купаться в бассейнах или на частном пляже с пальмами, белоснежным песком и бирюзовой водой. Или подобрать любые развлечения по вкусу, от плавания с китовыми акулами до каньонинга у водопада Кавасан (за отдельную плату).",
+      "url": "https://experience.tripster.ru/experience/82454/",
+      "type": "tour",
+      "format": "activity",
+      "grade": null,
+      "movement_type": "other",
+      "schedule_type": "fixed_slots",
+      "exp_status": 3,
+      "is_instant_booking": false,
+      "is_new": false,
+      "max_persons": 10,
+      "duration": 240,
+      "price": {
+        "value": 1750,
+        "currency": "USD",
+        "currency_rate": 85,
+        "price_from": false,
+        "unit_string": "за одного",
+        "value_string": "$1750 за одного"
+      },
+      "rating": 0,
+      "visitors_count": 0,
+      "review_count": 0,
+      "pause_finish_date": null,
+      "pause_reason": null,
+      "cancel_finish_date": null,
+      "cancel_reason": null,
+      "additional_info": "<p><strong>После внесения предоплаты на сайте необходимо перевести напрямую организатору 30% от стоимости тура</strong> (наличными, картой, QR-кодом). Остальное — за 21 день до старта (возможна оплата части тура на месте в день приезда в страну в долларах/евро, в зависимости от тура).</p>",
+      "comfort_level_info": "",
+      "price_included_description": "<ul>\n\t\t<li>Проживание</li>\n\t\t<li>Завтраки</li>\n\t\t<li>Трансферы от/до аэропортов</li>\n\t\t<li>Все трансферы по маршруту (без гида)</li>\n\t\t<li>Экскурсия по Сеулу с русскоговорящим гидом-водителем</li>\n\t</ul>",
+      "price_not_included_description": "<div><ul>\n\t\t<li>Билеты в Сеул и обратно в ваш город</li>\n\t\t<li>Авиаперелёты Сеул — Себу — Сеул</li>\n\t\t<li>Обеды и ужины</li>\n\t\t<li>Экскурсии и развлечения на острове Себу</li>\n\t\t<li>Сбор за электронное разрешение в Южной Корее</li>\n\t\t<li>Сбор в аэропорту при вылете на Себу</li>\n\t\t<li>Медицинская страховка</li>\n\t</ul>\n\n\t<p><strong>Тур проводится ежедневно.</strong></p></div>",
+      "geo_access_level": "all",
+      "geo": {
+        "city": [
+          {
+            "id": 403,
+            "slug": "Seoul",
+            "name": "Сеул",
+            "name_prepositional": "Сеуле",
+            "in_obj_phrase": "в Сеуле",
+            "from_obj_phrase": "из Сеула",
+            "across_obj_phrase": "по Сеулу",
+            "is_main_city": true
+          },
+          {
+            "id": 447,
+            "slug": "Cebu",
+            "name": "Себу",
+            "name_prepositional": "Себу",
+            "in_obj_phrase": "в Себу",
+            "from_obj_phrase": "из Себу",
+            "across_obj_phrase": "по Себу",
+            "is_main_city": false
+          }
+        ],
+        "country": [
+          {
+            "id": 263,
+            "slug": "south-korea",
+            "name": "Южная Корея",
+            "name_prepositional": "Южной Корее",
+            "in_obj_phrase": "в Южной Корее",
+            "from_obj_phrase": "из Южной Кореи",
+            "across_obj_phrase": "по Южной Корее",
+            "is_main_city": false
+          },
+          {
+            "id": 229,
+            "slug": "philippines",
+            "name": "Филиппины",
+            "name_prepositional": "Филиппинах",
+            "in_obj_phrase": "на Филиппинах",
+            "from_obj_phrase": "из Филиппин",
+            "across_obj_phrase": "по Филиппинам",
+            "is_main_city": false
+          }
+        ]
+      },
+      "guide": {
+        "id": 1876882,
+        "first_name": "Elena",
+        "url": "https://experience.tripster.ru/guide/1876882/",
+        "avatar": {
+          "medium": "https://resize.tripster.ru/NRflg7cyvWPQHPLTqIDY3aznu5Y=/150x150/filters:no_upscale()/https://cdn.tripster.ru/avatars/648dbc22-ecda-47af-adc1-1d7a1e803c8b.jpg",
+          "small": "https://resize.tripster.ru/NRflg7cyvWPQHPLTqIDY3aznu5Y=/150x150/filters:no_upscale()/https://cdn.tripster.ru/avatars/648dbc22-ecda-47af-adc1-1d7a1e803c8b.jpg"
+        },
+        "rating": 5,
+        "rate_count": 5,
+        "review_count": 4,
+        "avg_reaction_delay": 207,
+        "avg_reaction_delay_display": {
+          "nominative": "4 часа",
+          "accusative": "4 часа",
+          "genitive": "4 часов"
+        },
+        "type": "agency",
+        "date_start_work": "2024-12-02T06:08:28.146779Z",
+        "date_joined": "2024-08-12T08:38:38.925871Z",
+        "is_licensed": false,
+        "orders_count": 61,
+        "visitors_count": 18,
+        "description": "Наша компания работает с 1996 года и является специалистом в сфере индивидуальных и групповых путешествий в более чем 70 странах мира. Каждый наш тур — это тщательно спланированная поездка, в ходе которой вам лишь останется наслаждаться красотами выбранной страны, ведь все организаторские моменты мы берём на себя. А наш многолетний опыт позволит сделать Ваше приключение незабываемым!",
+        "exp_count_published": 6,
+        "number_of_persons_paid": 18
+      },
+      "guide_can_resume": false,
+      "has_non_refundable_part": false,
+      "photos": [
+        {
+          "type": "experience",
+          "thumbnail": "https://resize.tripster.ru/g-iMkY9jvJs2exoBjHR_mJSMWyA=/fit-in/800x600/filters:no_upscale()/https://cdn.tripster.ru/photos/5c626c60-727a-4537-8e64-bc05392e2484.jpg",
+          "medium": "https://resize.tripster.ru/edLS3G5XwI8vjwMO2vlTwOGsEy8=/fit-in/1200x1000/filters:no_upscale()/https://cdn.tripster.ru/photos/5c626c60-727a-4537-8e64-bc05392e2484.jpg",
+          "thumbnail_portrait": "https://resize.tripster.ru/y4kckVkB4ET5hfpHW_FrrnE8lBE=/287x392/filters:no_upscale()/https://cdn.tripster.ru/photos/5c626c60-727a-4537-8e64-bc05392e2484.jpg"
+        },
+        {
+          "type": "experience",
+          "thumbnail": "https://resize.tripster.ru/pDnL3d8TGJLeWZUmT03fRAbe-zY=/fit-in/800x600/filters:no_upscale()/https://cdn.tripster.ru/photos/eaf4fcbe-74e2-4a95-9152-c982bcf533f7.jpg",
+          "medium": "https://resize.tripster.ru/bzy6xdiqkKr9RsqjYqZYKwBHjmY=/fit-in/1200x1000/filters:no_upscale()/https://cdn.tripster.ru/photos/eaf4fcbe-74e2-4a95-9152-c982bcf533f7.jpg",
+          "thumbnail_portrait": "https://resize.tripster.ru/LKcptNroV8yoq0b-v0OvM6Rh8p0=/287x392/filters:no_upscale()/https://cdn.tripster.ru/photos/eaf4fcbe-74e2-4a95-9152-c982bcf533f7.jpg"
+        },
+        {
+          "type": "experience",
+          "thumbnail": "https://resize.tripster.ru/MVr5N3dv8a1-a_v73czbYFckozg=/fit-in/800x600/filters:no_upscale()/https://cdn.tripster.ru/photos/e607048f-8770-41d0-952c-3091fee8033a.jpg",
+          "medium": "https://resize.tripster.ru/FZWve6rtFR8mL7nh7Lupr-x-wgU=/fit-in/1200x1000/filters:no_upscale()/https://cdn.tripster.ru/photos/e607048f-8770-41d0-952c-3091fee8033a.jpg",
+          "thumbnail_portrait": "https://resize.tripster.ru/4Nzy30-PSmPD1-D-oZ9O9XihLuo=/287x392/filters:no_upscale()/https://cdn.tripster.ru/photos/e607048f-8770-41d0-952c-3091fee8033a.jpg"
+        },
+        {
+          "type": "experience",
+          "thumbnail": "https://resize.tripster.ru/cqpCD8QTUcqVsWvAEgW82hdG34w=/fit-in/800x600/filters:no_upscale()/https://cdn.tripster.ru/photos/571121ae-a8df-4cc8-b85b-fe168195e122.jpg",
+          "medium": "https://resize.tripster.ru/GgmgnkBA7Ez0yLhzbS77lnAXn-w=/fit-in/1200x1000/filters:no_upscale()/https://cdn.tripster.ru/photos/571121ae-a8df-4cc8-b85b-fe168195e122.jpg",
+          "thumbnail_portrait": "https://resize.tripster.ru/150PoAPfZULnIMNRFqctWBi6cNY=/287x392/filters:no_upscale()/https://cdn.tripster.ru/photos/571121ae-a8df-4cc8-b85b-fe168195e122.jpg"
+        },
+        {
+          "type": "experience",
+          "thumbnail": "https://resize.tripster.ru/orMBoxmr4OM5Yc1GF38zWDbmzO0=/fit-in/800x600/filters:no_upscale()/https://cdn.tripster.ru/photos/255d508d-c982-4acf-aa2c-5c84179e9079.jpg",
+          "medium": "https://resize.tripster.ru/wPq_HoYGTisK3xByXxZJuPCe9bA=/fit-in/1200x1000/filters:no_upscale()/https://cdn.tripster.ru/photos/255d508d-c982-4acf-aa2c-5c84179e9079.jpg",
+          "thumbnail_portrait": "https://resize.tripster.ru/a4bc0BDYDf9osBQ0xgSMSKBlPK0=/287x392/filters:no_upscale()/https://cdn.tripster.ru/photos/255d508d-c982-4acf-aa2c-5c84179e9079.jpg"
+        }
+      ],
+      "schedule": {
+        "upcoming_events": [
+          "2025-12-01T10:00:00",
+          "2025-12-08T10:00:00",
+          "2025-12-15T10:00:00",
+          "2025-12-22T10:00:00",
+          "2025-12-29T10:00:00"
+        ]
+      },
+      "is_paid": false
+    },
+    {
+      "status": "active",
+      "id": 78958,
+      "title": "Индивидуальная поездка из Сеула: архитектура Кёнджу и многогранность Пусана",
+      "tagline": "Пройти символичный путь в мир Будды, осмотреть гробницы королей и отдохнуть в любимом парке местных",
+      "annotation": "Ненадолго сменим нынешнюю столицу Южной Кореи на две другие. Сначала отправимся в Кёнджу, который тысячелетия назад был главным городом государства Силла. Тут сохранилось богатое архитектурное наследие: многовековые храмы и дворцы, гробницы королей и аристократов, целые кварталы и деревни с традиционными домиками-ханок. Затем побываем в крупнейшем порте — Пусане, ставшем морской столицей страны. Вы увидите всю его многогранность: подвесные мосты и канатные дороги над проливом, разноцветные жилища беженцев, напоминающие бразильские фавелы, и даже динозавров. Тур проводится только для вашей компании.",
+      "url": "https://experience.tripster.ru/experience/78958/",
+      "type": "tour",
+      "format": "activity",
+      "grade": null,
+      "movement_type": "car",
+      "schedule_type": "fixed_slots",
+      "exp_status": 3,
+      "is_instant_booking": false,
+      "is_new": false,
+      "max_persons": 3,
+      "duration": 24,
+      "price": {
+        "value": 1500,
+        "currency": "USD",
+        "currency_rate": 85,
+        "price_from": false,
+        "unit_string": "",
+        "value_string": "$1500 "
+      },
+      "rating": 0,
+      "visitors_count": 0,
+      "review_count": 0,
+      "pause_finish_date": null,
+      "pause_reason": null,
+      "cancel_finish_date": null,
+      "cancel_reason": null,
+      "additional_info": "<p>Для бронирования тура вы вносите только предоплату на сайте. Остальная часть — напрямую организатору в день встречи (наличными в долларах, евро, вонах, иенах или переводом через систему «Золотая корона» в рублях).</p>",
+      "comfort_level_info": "<div><p><strong>Проживание.</strong> Не входит в стоимость. Порекомендуем и поможем забронировать отель или традиционный дом-ханок на улице Хвангридан–гиль.</p>\n\n\t<p><strong>Питание.</strong> Оплачивается отдельно.</p>\n\n\t<p><strong>Транспорт.</strong> Кроссовер Hyundai Santa Fe 2021 года.</p>\n\n\t<p><strong>Дети.</strong> Возможно участие с детьми любого возраста.</p>\n\n\t<p><strong>Виза.</strong> Гражданам России не требуется, но необходимо оформить электронное разрешение на въезд (только для людей от 18 до 64 лет). Не менее чем за 72 часа до вылета нужно заполнить форму на английском языке на сайте www.k-eta.go.kr. Сбор можно оплатить только картой иностранного банка.</p></div>",
+      "price_included_description": "<ul>\n\t\t<li>Все трансферы по маршруту</li>\n\t\t<li>Сопровождение гидом-переводчиком</li>\n\t\t<li>Все входные билеты и экскурсии по программе</li>\n\t</ul>",
+      "price_not_included_description": "<ul>\n\t\t<li>Билеты в Сеул и обратно в ваш город</li>\n\t\t<li>Трансферы от/до аэропорта</li>\n\t\t<li>Проживание</li>\n\t\t<li>Питание</li>\n\t\t<li>Визовый сбор</li>\n\t\t<li>Медицинская страховка</li>\n\t</ul>",
+      "geo_access_level": "all",
+      "geo": {
+        "city": [
+          {
+            "id": 403,
+            "slug": "Seoul",
+            "name": "Сеул",
+            "name_prepositional": "Сеуле",
+            "in_obj_phrase": "в Сеуле",
+            "from_obj_phrase": "из Сеула",
+            "across_obj_phrase": "по Сеулу",
+            "is_main_city": true
+          }
+        ],
+        "country": [
+          {
+            "id": 263,
+            "slug": "south-korea",
+            "name": "Южная Корея",
+            "name_prepositional": "Южной Корее",
+            "in_obj_phrase": "в Южной Корее",
+            "from_obj_phrase": "из Южной Кореи",
+            "across_obj_phrase": "по Южной Корее",
+            "is_main_city": false
+          }
+        ]
+      },
+      "guide": {
+        "id": 371750,
+        "first_name": "Татьяна",
+        "url": "https://experience.tripster.ru/guide/371750/",
+        "avatar": {
+          "medium": "https://resize.tripster.ru/l33uqbppCeF4i-P_DypXpQ0Ya30=/150x150/filters:no_upscale()/https://cdn.tripster.ru/avatars/2009b137-5b74-459d-938f-d6756fc46934.png",
+          "small": "https://resize.tripster.ru/l33uqbppCeF4i-P_DypXpQ0Ya30=/150x150/filters:no_upscale()/https://cdn.tripster.ru/avatars/2009b137-5b74-459d-938f-d6756fc46934.png"
+        },
+        "rating": 4.89,
+        "rate_count": 76,
+        "review_count": 61,
+        "avg_reaction_delay": 14,
+        "avg_reaction_delay_display": {
+          "nominative": "15 минут",
+          "accusative": "15 минут",
+          "genitive": "15 минут"
+        },
+        "type": "guide",
+        "date_start_work": "2024-03-28T20:02:31.567110Z",
+        "date_joined": "2020-02-06T05:16:04.000000Z",
+        "is_licensed": false,
+        "orders_count": 430,
+        "visitors_count": 470,
+        "description": "Я сертифицированный переводчик, живу в Южной Корее с 2001 года. Постоянно исследую её: путешествую, открываю новые места, изучаю историю страны. Знаю и умею готовить корейскую кухню. На экскурсиях вы получите много полезных рекомендаций, основанных на личном опыте.",
+        "exp_count_published": 8,
+        "number_of_persons_paid": 470
+      },
+      "guide_can_resume": false,
+      "has_non_refundable_part": false,
+      "photos": [
+        {
+          "type": "experience",
+          "thumbnail": "https://resize.tripster.ru/y9kVK4oRkRe4q42C2oVR_XBbToY=/fit-in/800x600/filters:no_upscale()/https://cdn.tripster.ru/photos/b31961c6-2142-44a1-90c4-8f4865ea58b4.jpg",
+          "medium": "https://resize.tripster.ru/Bytwfohl-J79ovFGPK6bhVv-bSo=/fit-in/1200x1000/filters:no_upscale()/https://cdn.tripster.ru/photos/b31961c6-2142-44a1-90c4-8f4865ea58b4.jpg",
+          "thumbnail_portrait": "https://resize.tripster.ru/CtjlAw47lnk-5WLkaUjIuhRHrl0=/287x392/filters:no_upscale()/https://cdn.tripster.ru/photos/b31961c6-2142-44a1-90c4-8f4865ea58b4.jpg"
+        },
+        {
+          "type": "experience",
+          "thumbnail": "https://resize.tripster.ru/c047Nic0b7dQgLeiDUDg-_SlTjQ=/fit-in/800x600/filters:no_upscale()/https://cdn.tripster.ru/photos/5e4ea3dd-053f-419a-a0f2-65a22eec63e1.jpg",
+          "medium": "https://resize.tripster.ru/dKnpd0A0MiVheC4SaN5DFOTp9E4=/fit-in/1200x1000/filters:no_upscale()/https://cdn.tripster.ru/photos/5e4ea3dd-053f-419a-a0f2-65a22eec63e1.jpg",
+          "thumbnail_portrait": "https://resize.tripster.ru/4-mQVxDiRi7584SoIo9BGUlBS3E=/287x392/filters:no_upscale()/https://cdn.tripster.ru/photos/5e4ea3dd-053f-419a-a0f2-65a22eec63e1.jpg"
+        },
+        {
+          "type": "experience",
+          "thumbnail": "https://resize.tripster.ru/cRLLxWWKzX79C-V-8InlgZ9m9zc=/fit-in/800x600/filters:no_upscale()/https://cdn.tripster.ru/photos/b717c51c-0abf-4d57-94c8-5b62e3c4fd56.jpg",
+          "medium": "https://resize.tripster.ru/_9JyKlBcaS4xgxRJztSAxiqzdzM=/fit-in/1200x1000/filters:no_upscale()/https://cdn.tripster.ru/photos/b717c51c-0abf-4d57-94c8-5b62e3c4fd56.jpg",
+          "thumbnail_portrait": "https://resize.tripster.ru/jCXTsSapu0OusvxU9O31CeNgkGk=/287x392/filters:no_upscale()/https://cdn.tripster.ru/photos/b717c51c-0abf-4d57-94c8-5b62e3c4fd56.jpg"
+        },
+        {
+          "type": "experience",
+          "thumbnail": "https://resize.tripster.ru/s8KiPv1ovvOfBb2PJDvawHkMMJ8=/fit-in/800x600/filters:no_upscale()/https://cdn.tripster.ru/photos/c99a8c3f-2e36-406b-9390-69db55d3e42e.jpg",
+          "medium": "https://resize.tripster.ru/88W_rEy1uJ2AaETTeUrXGu6pOFA=/fit-in/1200x1000/filters:no_upscale()/https://cdn.tripster.ru/photos/c99a8c3f-2e36-406b-9390-69db55d3e42e.jpg",
+          "thumbnail_portrait": "https://resize.tripster.ru/0kjNdxsaGfBAlnucY8dhGJk1jhY=/287x392/filters:no_upscale()/https://cdn.tripster.ru/photos/c99a8c3f-2e36-406b-9390-69db55d3e42e.jpg"
+        },
+        {
+          "type": "experience",
+          "thumbnail": "https://resize.tripster.ru/Q8d00DhaGxIOpLPVDA_2OuGqksM=/fit-in/800x600/filters:no_upscale()/https://cdn.tripster.ru/photos/bfcae314-5967-4d5c-ba9b-c44db2cd0f25.jpg",
+          "medium": "https://resize.tripster.ru/02BtmRq12eF80ShScKeAurzFfXg=/fit-in/1200x1000/filters:no_upscale()/https://cdn.tripster.ru/photos/bfcae314-5967-4d5c-ba9b-c44db2cd0f25.jpg",
+          "thumbnail_portrait": "https://resize.tripster.ru/ygnJqnIoTv1ZM6p-vlr22mj7u_c=/287x392/filters:no_upscale()/https://cdn.tripster.ru/photos/bfcae314-5967-4d5c-ba9b-c44db2cd0f25.jpg"
+        },
+        {
+          "type": "experience",
+          "thumbnail": "https://resize.tripster.ru/zd0FcnOhsAHY0NWs10wmwRiVQ9o=/fit-in/800x600/filters:no_upscale()/https://cdn.tripster.ru/photos/c36eae00-1627-4d55-9722-41dd9d15ae85.jpg",
+          "medium": "https://resize.tripster.ru/UdNT-qmcQTfpX9wqbAfz7T6YXtY=/fit-in/1200x1000/filters:no_upscale()/https://cdn.tripster.ru/photos/c36eae00-1627-4d55-9722-41dd9d15ae85.jpg",
+          "thumbnail_portrait": "https://resize.tripster.ru/XK5Ez5zEBBTqRNiWEKuVZ8SUIL8=/287x392/filters:no_upscale()/https://cdn.tripster.ru/photos/c36eae00-1627-4d55-9722-41dd9d15ae85.jpg"
+        },
+        {
+          "type": "experience",
+          "thumbnail": "https://resize.tripster.ru/M-cwH8q6At9FWht3ubqp8dQyA1k=/fit-in/800x600/filters:no_upscale()/https://cdn.tripster.ru/photos/fba9caae-6808-42d2-b63c-84aace8293e9.jpg",
+          "medium": "https://resize.tripster.ru/ZuEOzaElq_zu_RxX1B91JUj5Hyg=/fit-in/1200x1000/filters:no_upscale()/https://cdn.tripster.ru/photos/fba9caae-6808-42d2-b63c-84aace8293e9.jpg",
+          "thumbnail_portrait": "https://resize.tripster.ru/Q9NWIior_OIBiiesZvPwQu2Nvrg=/287x392/filters:no_upscale()/https://cdn.tripster.ru/photos/fba9caae-6808-42d2-b63c-84aace8293e9.jpg"
+        }
+      ],
+      "schedule": {
+        "upcoming_events": [
+          "2025-11-23T08:00:00",
+          "2025-11-26T08:00:00",
+          "2025-11-27T08:00:00",
+          "2025-11-28T08:00:00",
+          "2025-11-29T08:00:00",
+          "2025-11-30T08:00:00",
+          "2025-12-01T08:00:00",
+          "2025-12-02T08:00:00",
+          "2025-12-03T08:00:00",
+          "2025-12-18T08:00:00"
+        ]
+      },
+      "is_paid": false
+    },
+    {
+      "status": "active",
+      "id": 77394,
+      "title": "Три столицы, горы и море: большое путешествие по Южной Корее в мини-группе",
+      "tagline": "Полюбоваться древней и современной архитектурой, переночевать в ханок-доме и отдохнуть в аквапарке",
+      "annotation": "Южная Корея — это страна контрастов. Здесь многовековые храмы и домики в традиционном стиле соседствуют с ультрасовременными небоскрёбами, а бескрайние морские просторы — с горными заповедниками пленительной красоты. В этой поездке вы посетите три столицы: Сеул, бывшее сердце древнего королевства Силла — Кёнджу — и морскую столицу Пусан. Отведаете барбекю по-корейски, сделаете бумажный лотос в монастыре, отдохнёте в аквапарке и SPA на горячих источниках, обойдёте места съёмок дорамы на острове и сделаете ещё множество интересных вещей. Гарантируем, экзотика и яркие впечатления будут на каждом шагу!",
+      "url": "https://experience.tripster.ru/experience/77394/",
+      "type": "tour",
+      "format": "activity",
+      "grade": null,
+      "movement_type": "car",
+      "schedule_type": "fixed_slots",
+      "exp_status": 3,
+      "is_instant_booking": false,
+      "is_new": false,
+      "max_persons": 6,
+      "duration": 264,
+      "price": {
+        "value": 2590,
+        "currency": "USD",
+        "currency_rate": 85,
+        "price_from": false,
+        "unit_string": "за одного",
+        "value_string": "$2590 за одного"
+      },
+      "rating": 0,
+      "visitors_count": 0,
+      "review_count": 0,
+      "pause_finish_date": null,
+      "pause_reason": null,
+      "cancel_finish_date": null,
+      "cancel_reason": null,
+      "additional_info": "<p>Для бронирования тура вы вносите только предоплату на сайте. Остальная часть — напрямую организатору в день встречи (наличными в долларах, евро, вонах, иенах или переводом через систему «Золотая корона» в рублях).</p>",
+      "comfort_level_info": "<div><p><strong>Проживание.</strong> 2-местное размещение в номерах в отелях Fraser Place Namdeamun Seoul, Shilla Stay Yeoksam, Haeundae Seacloud Hotel Residence, а также в традиционном домике (ханок) в гостинице Hanok Stay. За доплату возможно 1-местное проживание.</p>\n\n\t<p><strong>Питание.</strong> Включены завтраки в отелях Сеула и Пусана и приветственный ужин. Остальное питание — за доплату.</p>\n\n\t<p><strong>Транспорт.</strong> Кроссовер Hyundai Santa Fe/минивэн Hyundai Staria.</p>\n\n\t<p><strong>Дети.</strong> Возможно участие с детьми любого возраста.</p>\n\n\t<p><strong>Виза.</strong> Гражданам России не требуется, но необходимо оформить электронное разрешение на въезд (только для людей от 18 до 64 лет). Не менее чем за 72 часа до вылета нужно заполнить форму на английском языке на сайте www.k-eta.go.kr. Сбор можно оплатить только картой иностранного банка.</p></div>",
+      "price_included_description": "<ul>\n\t\t<li>Проживание</li>\n\t\t<li>Завтраки в отелях Сеула и Пусана, 1 ужин</li>\n\t\t<li>Трансферы от/до аэропорта по времени вашего рейса</li>\n\t\t<li>Все трансферы по маршруту</li>\n\t\t<li>Сопровождение русскоговорящим гидом</li>\n\t\t<li>Все входные билеты и экскурсии по программе</li>\n\t</ul>",
+      "price_not_included_description": "<div><ul>\n\t\t<li>Билеты в Сеул и обратно в ваш город</li>\n\t\t<li>Питание вне программы — от $25 за блюдо</li>\n\t\t<li>Доплата за 1-местное размещение — $1100</li>\n\t</ul>\n\n\t<p><strong>Возможна организация тура в индивидуальном формате.</strong> В этом случае стоимость составит:\n\t</p><ul>\n\t\t<li>1 участник — $7730;</li>\n\t\t<li>2 участника — $3980  за человека;</li>\n\t\t<li>3 участника — $3630 за человека;</li>\n\t\t<li>4 участника — $3100 за человека;</li>\n\t\t<li>5 участников — $2900 за человека.</li>\n\t</ul></div>",
+      "geo_access_level": "all",
+      "geo": {
+        "city": [
+          {
+            "id": 403,
+            "slug": "Seoul",
+            "name": "Сеул",
+            "name_prepositional": "Сеуле",
+            "in_obj_phrase": "в Сеуле",
+            "from_obj_phrase": "из Сеула",
+            "across_obj_phrase": "по Сеулу",
+            "is_main_city": true
+          }
+        ],
+        "country": [
+          {
+            "id": 263,
+            "slug": "south-korea",
+            "name": "Южная Корея",
+            "name_prepositional": "Южной Корее",
+            "in_obj_phrase": "в Южной Корее",
+            "from_obj_phrase": "из Южной Кореи",
+            "across_obj_phrase": "по Южной Корее",
+            "is_main_city": false
+          }
+        ]
+      },
+      "guide": {
+        "id": 371750,
+        "first_name": "Татьяна",
+        "url": "https://experience.tripster.ru/guide/371750/",
+        "avatar": {
+          "medium": "https://resize.tripster.ru/l33uqbppCeF4i-P_DypXpQ0Ya30=/150x150/filters:no_upscale()/https://cdn.tripster.ru/avatars/2009b137-5b74-459d-938f-d6756fc46934.png",
+          "small": "https://resize.tripster.ru/l33uqbppCeF4i-P_DypXpQ0Ya30=/150x150/filters:no_upscale()/https://cdn.tripster.ru/avatars/2009b137-5b74-459d-938f-d6756fc46934.png"
+        },
+        "rating": 4.89,
+        "rate_count": 76,
+        "review_count": 61,
+        "avg_reaction_delay": 14,
+        "avg_reaction_delay_display": {
+          "nominative": "15 минут",
+          "accusative": "15 минут",
+          "genitive": "15 минут"
+        },
+        "type": "guide",
+        "date_start_work": "2024-03-28T20:02:31.567110Z",
+        "date_joined": "2020-02-06T05:16:04.000000Z",
+        "is_licensed": false,
+        "orders_count": 430,
+        "visitors_count": 470,
+        "description": "Я сертифицированный переводчик, живу в Южной Корее с 2001 года. Постоянно исследую её: путешествую, открываю новые места, изучаю историю страны. Знаю и умею готовить корейскую кухню. На экскурсиях вы получите много полезных рекомендаций, основанных на личном опыте.",
+        "exp_count_published": 8,
+        "number_of_persons_paid": 470
+      },
+      "guide_can_resume": false,
+      "has_non_refundable_part": false,
+      "photos": [
+        {
+          "type": "experience",
+          "thumbnail": "https://resize.tripster.ru/443Rx9C88sVlkTTZXp6sPTT7Vkc=/fit-in/800x600/filters:no_upscale()/https://cdn.tripster.ru/photos/14b95847-275c-4218-abb5-fcf0a1d6a67f.jpg",
+          "medium": "https://resize.tripster.ru/DMn6Kuv6DE2WYOPUdWz4zfrZn3g=/fit-in/1200x1000/filters:no_upscale()/https://cdn.tripster.ru/photos/14b95847-275c-4218-abb5-fcf0a1d6a67f.jpg",
+          "thumbnail_portrait": "https://resize.tripster.ru/fOd7OdBEwMPev63aRCplUNFjvAI=/287x392/filters:no_upscale()/https://cdn.tripster.ru/photos/14b95847-275c-4218-abb5-fcf0a1d6a67f.jpg"
+        },
+        {
+          "type": "experience",
+          "thumbnail": "https://resize.tripster.ru/YJOjSrGSlbzxL3n8vjicIUODI1Q=/fit-in/800x600/filters:no_upscale()/https://cdn.tripster.ru/photos/c8e6bee0-7591-448a-81b3-6ca0def3aad7.jpg",
+          "medium": "https://resize.tripster.ru/RgnIRKj0yWlw-REl_X2joC3ufQE=/fit-in/1200x1000/filters:no_upscale()/https://cdn.tripster.ru/photos/c8e6bee0-7591-448a-81b3-6ca0def3aad7.jpg",
+          "thumbnail_portrait": "https://resize.tripster.ru/-oUv_s3UrK2UYNqv7o_tzJMTuzg=/287x392/filters:no_upscale()/https://cdn.tripster.ru/photos/c8e6bee0-7591-448a-81b3-6ca0def3aad7.jpg"
+        },
+        {
+          "type": "experience",
+          "thumbnail": "https://resize.tripster.ru/_gY9Jve0McPrOCTypXFIf42dm4A=/fit-in/800x600/filters:no_upscale()/https://cdn.tripster.ru/photos/7115769b-ab2d-42a9-9a13-6e3c8b7395da.jpg",
+          "medium": "https://resize.tripster.ru/MIz1S2jyC-PjMlUiScod1wf5JF4=/fit-in/1200x1000/filters:no_upscale()/https://cdn.tripster.ru/photos/7115769b-ab2d-42a9-9a13-6e3c8b7395da.jpg",
+          "thumbnail_portrait": "https://resize.tripster.ru/J5Q3Mtsup7JWO6rjhSRyLKRGnzk=/287x392/filters:no_upscale()/https://cdn.tripster.ru/photos/7115769b-ab2d-42a9-9a13-6e3c8b7395da.jpg"
+        },
+        {
+          "type": "experience",
+          "thumbnail": "https://resize.tripster.ru/SmosQpBu3V5OVMkpc9ihnHTyHEM=/fit-in/800x600/filters:no_upscale()/https://cdn.tripster.ru/photos/1a61f4f9-1af3-4ce9-a50c-919dd21458b8.jpg",
+          "medium": "https://resize.tripster.ru/LPnVEzLy6_18NbXE1I2t9_1N8kE=/fit-in/1200x1000/filters:no_upscale()/https://cdn.tripster.ru/photos/1a61f4f9-1af3-4ce9-a50c-919dd21458b8.jpg",
+          "thumbnail_portrait": "https://resize.tripster.ru/jHwV_UPbgtYkkg7h3aG9q4oUrj4=/287x392/filters:no_upscale()/https://cdn.tripster.ru/photos/1a61f4f9-1af3-4ce9-a50c-919dd21458b8.jpg"
+        },
+        {
+          "type": "experience",
+          "thumbnail": "https://resize.tripster.ru/qD-pPHxkSkoMdIW_u3aeI6jEd6I=/fit-in/800x600/filters:no_upscale()/https://cdn.tripster.ru/photos/491bf58d-f8e2-4542-8291-b8e2e76b0481.jpg",
+          "medium": "https://resize.tripster.ru/CQUHfWBCM8ToTmeVz7yY9TRh3CI=/fit-in/1200x1000/filters:no_upscale()/https://cdn.tripster.ru/photos/491bf58d-f8e2-4542-8291-b8e2e76b0481.jpg",
+          "thumbnail_portrait": "https://resize.tripster.ru/NSNzRk-tMpC3SdTH61lEvxNWHOI=/287x392/filters:no_upscale()/https://cdn.tripster.ru/photos/491bf58d-f8e2-4542-8291-b8e2e76b0481.jpg"
+        },
+        {
+          "type": "experience",
+          "thumbnail": "https://resize.tripster.ru/OcnNpgbGby8VyobnyH7Sutf5Q4o=/fit-in/800x600/filters:no_upscale()/https://cdn.tripster.ru/photos/7a1f6f31-e070-4f50-a631-b2d6ff2d8f43.jpg",
+          "medium": "https://resize.tripster.ru/CIm9GusJc4wYM1cD5GaYHC5VnUU=/fit-in/1200x1000/filters:no_upscale()/https://cdn.tripster.ru/photos/7a1f6f31-e070-4f50-a631-b2d6ff2d8f43.jpg",
+          "thumbnail_portrait": "https://resize.tripster.ru/uVagIkvZXhwnN6n_EY_ssDTRGcY=/287x392/filters:no_upscale()/https://cdn.tripster.ru/photos/7a1f6f31-e070-4f50-a631-b2d6ff2d8f43.jpg"
+        },
+        {
+          "type": "experience",
+          "thumbnail": "https://resize.tripster.ru/3VkAb7xoKcKRj4akrTXbBdT_5kw=/fit-in/800x600/filters:no_upscale()/https://cdn.tripster.ru/photos/e6581d29-19cc-4604-a821-ec97f3482883.jpg",
+          "medium": "https://resize.tripster.ru/0q9euxfPFRG4iH7SrsJmnCxdcxA=/fit-in/1200x1000/filters:no_upscale()/https://cdn.tripster.ru/photos/e6581d29-19cc-4604-a821-ec97f3482883.jpg",
+          "thumbnail_portrait": "https://resize.tripster.ru/j-1f7r3C4YpJosGIKRzXu9vczxM=/287x392/filters:no_upscale()/https://cdn.tripster.ru/photos/e6581d29-19cc-4604-a821-ec97f3482883.jpg"
+        }
+      ],
+      "schedule": {
+        "upcoming_events": [
+          "2025-12-22T08:00:00",
+          "2025-12-29T08:00:00",
+          "2026-03-02T08:00:00",
+          "2026-03-09T08:00:00",
+          "2026-03-16T08:00:00",
+          "2026-05-04T08:00:00",
+          "2026-05-11T08:00:00",
+          "2026-05-25T08:00:00",
+          "2026-06-01T08:00:00",
+          "2026-06-08T08:00:00"
+        ]
+      },
+      "is_paid": false
+    },
+    {
+      "status": "active",
+      "id": 72424,
+      "title": "Южная Корея только для вас: погружение в культуру в Сеуле и Пусане",
+      "tagline": "Изучить дворцы и гробницы, увидеть церемонию смены караула и прикоснуться к инновациям",
+      "annotation": "Индивидуальное путешествие только для вас в компании местного друга-проводника — полное погружение в культуру обеспечено. Начнём от корней в исторической части Сеула. Продолжим в столице древнего корейского государства и аутентичных деревнях, где сохранилась традиционная архитектура. Дополним тур знакомством с новшествами и передовыми технологиями Южной Кореи: вы узнаете о достижениях в дизайне и автомобильной промышленности, побываете в модных районах и на смотровой небоскрёба. Завершим путешествие-погружение в морском Пусане. Отели подбираются по вашим пожеланиям и оплачиваются отдельно.",
+      "url": "https://experience.tripster.ru/experience/72424/",
+      "type": "tour",
+      "format": "activity",
+      "grade": null,
+      "movement_type": "car",
+      "schedule_type": "fixed_slots",
+      "exp_status": 3,
+      "is_instant_booking": false,
+      "is_new": false,
+      "max_persons": 3,
+      "duration": 72,
+      "price": {
+        "value": 2224,
+        "currency": "USD",
+        "currency_rate": 85,
+        "price_from": false,
+        "unit_string": "",
+        "value_string": "$2224 ",
+        "discount": {
+          "value": 0.1,
+          "expiration_date": "2025-12-31",
+          "expiration_text": "",
+          "original_price": 2471
+        }
+      },
+      "rating": 0,
+      "visitors_count": 0,
+      "review_count": 0,
+      "pause_finish_date": null,
+      "pause_reason": null,
+      "cancel_finish_date": null,
+      "cancel_reason": null,
+      "additional_info": "<p>После внесения предоплаты на сайте оставшуюся часть стоимости тура вы оплачиваете оставшуюся сумму организатору напрямую в день старта наличными долларами (нового образца), евро или корейской воной по актуальному курсу.</p>",
+      "comfort_level_info": "",
+      "price_included_description": "<ul>\n\t\t<li>Все переезды по программе</li>\n\t\t<li>Входные билеты на объекты по программе (музеи, храмы, смотровые)</li>\n\t\t<li>Сопровождение местным русскоговорящим гидом</li>\n\t</ul>",
+      "price_not_included_description": "<div><ul>\n\t\t<li>Билеты до Сеула и обратно из Пусана до вашего города</li>\n\t\t<li>Проживание</li>\n\t\t<li>Питание</li>\n\t\t<li>Аренда национальных костюмов (по желанию)</li>\n\t</ul>\n\n\t<p><strong>Тур проводится только для вашей компании.</strong> Возможно расширить группу, внести изменения в программу и организовать путешествие в другие даты.</p></div>",
+      "geo_access_level": "all",
+      "geo": {
+        "city": [
+          {
+            "id": 403,
+            "slug": "Seoul",
+            "name": "Сеул",
+            "name_prepositional": "Сеуле",
+            "in_obj_phrase": "в Сеуле",
+            "from_obj_phrase": "из Сеула",
+            "across_obj_phrase": "по Сеулу",
+            "is_main_city": true
+          }
+        ],
+        "country": [
+          {
+            "id": 263,
+            "slug": "south-korea",
+            "name": "Южная Корея",
+            "name_prepositional": "Южной Корее",
+            "in_obj_phrase": "в Южной Корее",
+            "from_obj_phrase": "из Южной Кореи",
+            "across_obj_phrase": "по Южной Корее",
+            "is_main_city": false
+          }
+        ]
+      },
+      "guide": {
+        "id": 1208902,
+        "first_name": "Ольга",
+        "url": "https://experience.tripster.ru/guide/1208902/",
+        "avatar": {
+          "medium": "https://resize.tripster.ru/KZFdTCepC7Xl87EMASS8vBw7wi4=/150x150/filters:no_upscale()/https://cdn.tripster.ru/avatars/f5af20c7-b5ad-4d9c-9a5a-10340334e3ce.jpg",
+          "small": "https://resize.tripster.ru/KZFdTCepC7Xl87EMASS8vBw7wi4=/150x150/filters:no_upscale()/https://cdn.tripster.ru/avatars/f5af20c7-b5ad-4d9c-9a5a-10340334e3ce.jpg"
+        },
+        "rating": 5,
+        "rate_count": 70,
+        "review_count": 59,
+        "avg_reaction_delay": 12,
+        "avg_reaction_delay_display": {
+          "nominative": "15 минут",
+          "accusative": "15 минут",
+          "genitive": "15 минут"
+        },
+        "type": "team",
+        "date_start_work": "2023-07-05T18:05:45.818885Z",
+        "date_joined": "2023-06-07T11:57:39.000000Z",
+        "is_licensed": false,
+        "orders_count": 407,
+        "visitors_count": 369,
+        "description": "Наши гиды — это не только профессионалы с многолетним опытом работы, но и увлечённые люди, погружённые в культуру и историю Кореи. Мы покажем вам знаменитые и не очень популярные места, которые помогут вам узнать Южную Корею со всех сторон. Каждое путешествие мы делаем комфортным и интересным. Наша любовь к Корее передается каждому нашему гостю, и мы гордимся тем, что можем делиться знаниями и впечатлениями о стране утренней свежести. Я сама проживаю в Южной Корее с 2015 года — объехала эту страну на своём авто в поисках интересных и аутентичных локаций. Вы откроете места, которые не описаны в туристических брошюрах, попробуете настоящую корейскую кухню и погрузитесь в уникальную атмосферу этой страны.",
+        "exp_count_published": 9,
+        "number_of_persons_paid": 369
+      },
+      "guide_can_resume": false,
+      "has_non_refundable_part": false,
+      "photos": [
+        {
+          "type": "experience",
+          "thumbnail": "https://resize.tripster.ru/IKkvlTwHMmSRWgWU8eio0mOFqTA=/fit-in/800x600/filters:no_upscale()/https://cdn.tripster.ru/photos/2b584239-a092-468f-aa42-1fa18f5d33c5.jpg",
+          "medium": "https://resize.tripster.ru/tNEnGkGSq-8KK_aBSA2WL-6PTxs=/fit-in/1200x1000/filters:no_upscale()/https://cdn.tripster.ru/photos/2b584239-a092-468f-aa42-1fa18f5d33c5.jpg",
+          "thumbnail_portrait": "https://resize.tripster.ru/z0q9e6sRCFVRkQoSayY4ZKGZ4Wc=/287x392/filters:no_upscale()/https://cdn.tripster.ru/photos/2b584239-a092-468f-aa42-1fa18f5d33c5.jpg"
+        },
+        {
+          "type": "experience",
+          "thumbnail": "https://resize.tripster.ru/44gryezHO90NKZEzV1eTbrVCraA=/fit-in/600x800/filters:no_upscale()/https://cdn.tripster.ru/photos/926f0f7e-1a9f-4f41-92a4-9da1e8f892c6.jpg",
+          "medium": "https://resize.tripster.ru/CdMSfArEoQb9uQiElGLauxWik5g=/fit-in/1000x1350/filters:no_upscale()/https://cdn.tripster.ru/photos/926f0f7e-1a9f-4f41-92a4-9da1e8f892c6.jpg",
+          "thumbnail_portrait": "https://resize.tripster.ru/jB9LVBlJMnt5cvMaWsHlwYNuiOA=/287x392/filters:no_upscale()/https://cdn.tripster.ru/photos/926f0f7e-1a9f-4f41-92a4-9da1e8f892c6.jpg"
+        },
+        {
+          "type": "experience",
+          "thumbnail": "https://resize.tripster.ru/xkKyQyGQUlMhrOyO722GILL0-Aw=/fit-in/600x800/filters:no_upscale()/https://cdn.tripster.ru/photos/74cac891-1ae1-4e02-b167-75f4d8b39312.jpg",
+          "medium": "https://resize.tripster.ru/wWqkL3e_Q1fkSnWeAaI6QrrjYhc=/fit-in/1000x1350/filters:no_upscale()/https://cdn.tripster.ru/photos/74cac891-1ae1-4e02-b167-75f4d8b39312.jpg",
+          "thumbnail_portrait": "https://resize.tripster.ru/MSAk8zhI8bjN86KQXPZRX8iBa0s=/287x392/filters:no_upscale()/https://cdn.tripster.ru/photos/74cac891-1ae1-4e02-b167-75f4d8b39312.jpg"
+        },
+        {
+          "type": "experience",
+          "thumbnail": "https://resize.tripster.ru/SPkDGPNuTalH-OJSp2hjIEMZWx8=/fit-in/800x600/filters:no_upscale()/https://cdn.tripster.ru/photos/6ced6933-e735-4d48-b67c-ea2933423e18.jpg",
+          "medium": "https://resize.tripster.ru/LjnFK35N9XkSWYiXaHxm8QbqStc=/fit-in/1200x1000/filters:no_upscale()/https://cdn.tripster.ru/photos/6ced6933-e735-4d48-b67c-ea2933423e18.jpg",
+          "thumbnail_portrait": "https://resize.tripster.ru/effqePzAksGwyUABv5jGBx0bAUc=/287x392/filters:no_upscale()/https://cdn.tripster.ru/photos/6ced6933-e735-4d48-b67c-ea2933423e18.jpg"
+        },
+        {
+          "type": "experience",
+          "thumbnail": "https://resize.tripster.ru/RGvhTpIuHn6sDBAoCUy1VUFEszA=/fit-in/800x600/filters:no_upscale()/https://cdn.tripster.ru/photos/d100932f-8e16-4f4f-bdcf-b8986ad193fc.jpg",
+          "medium": "https://resize.tripster.ru/IY-TPRWW1PcoDFLvtAQCEOCxxfY=/fit-in/1200x1000/filters:no_upscale()/https://cdn.tripster.ru/photos/d100932f-8e16-4f4f-bdcf-b8986ad193fc.jpg",
+          "thumbnail_portrait": "https://resize.tripster.ru/lTv8jLVGHs29xmJj70bUYbocV6U=/287x392/filters:no_upscale()/https://cdn.tripster.ru/photos/d100932f-8e16-4f4f-bdcf-b8986ad193fc.jpg"
+        },
+        {
+          "type": "experience",
+          "thumbnail": "https://resize.tripster.ru/wwDt6db46vvXb_GYUB9cVdH3R90=/fit-in/600x800/filters:no_upscale()/https://cdn.tripster.ru/photos/e348572b-c8e3-435e-8a08-f9284029525a.jpg",
+          "medium": "https://resize.tripster.ru/Ak1sCH-fjbvKBurbNPmSFCw78x0=/fit-in/1000x1350/filters:no_upscale()/https://cdn.tripster.ru/photos/e348572b-c8e3-435e-8a08-f9284029525a.jpg",
+          "thumbnail_portrait": "https://resize.tripster.ru/P4KUxyc0LVxGcCxmJLIJjvWkxPU=/287x392/filters:no_upscale()/https://cdn.tripster.ru/photos/e348572b-c8e3-435e-8a08-f9284029525a.jpg"
+        }
+      ],
+      "schedule": {
+        "upcoming_events": [
+          "2025-11-25T08:00:00",
+          "2025-12-09T08:00:00",
+          "2025-12-16T08:00:00",
+          "2025-12-23T08:00:00",
+          "2025-12-28T08:00:00",
+          "2026-01-20T08:00:00",
+          "2026-01-27T08:00:00",
+          "2026-02-02T08:00:00",
+          "2026-02-05T08:00:00",
+          "2026-02-09T08:00:00"
+        ]
+      },
+      "is_paid": false
+    },
+    {
+      "status": "active",
+      "id": 70725,
+      "title": "История, современность, духовность: весенний отпуск в Южной Корее",
+      "tagline": "Исследовать контрастные мегаполисы и колоритные деревни, обойти святыни и покататься на кораблике",
+      "annotation": "Откройте для себя Южную Корею — одну из самых прогрессивных и контрастных стран мира, где бережно чтят древние традиции и гармонично вписывают современные небоскрёбы в многовековую застройку. Погружение в историю и культуру начнётся в Сеуле: вы исследуете визитные карточки и разные кварталы мегаполиса, отведаете национальных блюд, покатаетесь на лодке и сможете сфотографироваться в ханбоках. Затем посетите бывшую столицу — Кёнджу, где сосредоточено большое количество святынь и самобытных построек. Напоследок изучите Пусан и его окрестности. Вы осмотрите архитектурные шедевры, погуляете по бамбуковому лесу и рыбному рынку, окажетесь в почти заброшенном «умном» городе Сонгдо и при желании расслабитесь в корейской бане, которая сильно отличается от привычных нам парных.",
+      "url": "https://experience.tripster.ru/experience/70725/",
+      "type": "tour",
+      "format": "activity",
+      "grade": null,
+      "movement_type": "bus",
+      "schedule_type": "fixed_slots",
+      "exp_status": 3,
+      "is_instant_booking": false,
+      "is_new": false,
+      "max_persons": 12,
+      "duration": 144,
+      "price": {
+        "value": 2300,
+        "currency": "USD",
+        "currency_rate": 85,
+        "price_from": false,
+        "unit_string": "за одного",
+        "value_string": "$2300 за одного"
+      },
+      "rating": 0,
+      "visitors_count": 0,
+      "review_count": 0,
+      "pause_finish_date": null,
+      "pause_reason": null,
+      "cancel_finish_date": null,
+      "cancel_reason": null,
+      "additional_info": "<p>После внесения предоплаты на сайте необходимо перевести 20% непосредственно организатору, остаток суммы — в день старта.</p>",
+      "comfort_level_info": "<div><p><strong>Проживание.</strong> 2-местное размещение в отелях 3* в центре Сеула и на берегу моря в Пусане, 1-местное — за доплату.</p>\n\n\t<p>*Фото гостиницы предоставлены организатором для примера </p>\n\n\t<p><strong>Питание.</strong> Включены завтраки в отелях и приветственный ужин в 1-й день. Остальное питание — за доплату.</p>\n\n\t<p><strong>Транспорт.</strong> Комфортабельный микроавтобус. Также включён билет на поезд Пусан – Сеул.</p>\n\n\t<p><strong>Дети.</strong> Возможно участие с детьми старше 8 лет.</p>\n\n\t<p><strong>Виза.</strong> Гражданам РФ виза не нужна. Необходимо оформить электронное разрешение на въезд (только для людей от 18 до 64 лет). Не менее чем за 72 часа до вылета нужно заполнить форму на английском языке на сайте www.k-eta.go.kr. Сбор можно оплатить только картой иностранного банка.</p></div>",
+      "price_included_description": "<ul>\n\t\t<li>Проживание</li>\n\t\t<li>Все завтраки и один ужин</li>\n\t\t<li>Трансферы от/до аэропорта</li>\n\t\t<li>Трансферы по маршруту</li>\n\t\t<li>Трансфер до Пусана</li>\n\t\t<li>Билет на поезд Пусан – Сеул</li>\n\t\t<li>Все входные билеты и экскурсии по программе</li>\n\t\t<li>Сопровождение русскоязычным гидом</li>\n\t\t<li>Вечерние посиделки и игры</li>\n\t</ul>",
+      "price_not_included_description": "<ul>\n\t\t<li>Билеты в Сеул и обратно</li>\n\t\t<li>Обеды и ужины</li>\n\t\t<li>Посещение бани</li>\n\t\t<li>Прокат национальных костюмов</li>\n\t\t<li>Доплата за 1-местное размещение — $1100</li>\n\t\t<li>Ранний заезд в отель (до 15:00) — по запросу</li>\n\t\t<li>Сбор за электронное разрешение на въезд</li>\n\t</ul>",
+      "geo_access_level": "all",
+      "geo": {
+        "city": [
+          {
+            "id": 403,
+            "slug": "Seoul",
+            "name": "Сеул",
+            "name_prepositional": "Сеуле",
+            "in_obj_phrase": "в Сеуле",
+            "from_obj_phrase": "из Сеула",
+            "across_obj_phrase": "по Сеулу",
+            "is_main_city": true
+          }
+        ],
+        "country": [
+          {
+            "id": 263,
+            "slug": "south-korea",
+            "name": "Южная Корея",
+            "name_prepositional": "Южной Корее",
+            "in_obj_phrase": "в Южной Корее",
+            "from_obj_phrase": "из Южной Кореи",
+            "across_obj_phrase": "по Южной Корее",
+            "is_main_city": false
+          }
+        ]
+      },
+      "guide": {
+        "id": 967732,
+        "first_name": "Юлия",
+        "url": "https://experience.tripster.ru/guide/967732/",
+        "avatar": {
+          "medium": "https://resize.tripster.ru/xLHGN7LuoAaWMzMM3t7BRlKSCEU=/150x150/filters:no_upscale()/https://cdn.tripster.ru/avatars/4cec6d5b-a16f-42bc-830f-dddd32bf478f.jpg",
+          "small": "https://resize.tripster.ru/xLHGN7LuoAaWMzMM3t7BRlKSCEU=/150x150/filters:no_upscale()/https://cdn.tripster.ru/avatars/4cec6d5b-a16f-42bc-830f-dddd32bf478f.jpg"
+        },
+        "rating": 5,
+        "rate_count": 3,
+        "review_count": 3,
+        "avg_reaction_delay": 97,
+        "avg_reaction_delay_display": {
+          "nominative": "2 часа",
+          "accusative": "2 часа",
+          "genitive": "2 часов"
+        },
+        "type": "guide",
+        "date_start_work": "2022-12-20T12:59:10.442359Z",
+        "date_joined": "2022-11-15T18:17:06.000000Z",
+        "is_licensed": false,
+        "orders_count": 59,
+        "visitors_count": 8,
+        "description": "Привет, я Юля и я фанат путешествий)\r\n\r\nПутешествия для меня не работа, не хобби, а просто жизнь. Я ушла из офисной работы, где 20 лет организовывала мероприятия, пресс-туры и фотосессии, и теперь занимаюсь своим любимым делом — создаю путешествия со смыслом в сложные регионы, где непросто одному (Дагестан, Осетия, Юго-Восточная Азия, Алтай, Байкал). Составляю интересные и разнообразные маршруты, где есть и история, и культура, и местные развлечения, и, конечно, самые эффектные места.\r\n\r\nМой принцип — главное, чтобы тебе понравилось. Мне важно, чтобы ты не просто съездил, а чтобы тур превзошел твои ожидания, чтобы ты не просто посмотрел окрестности, а проникся местом, почувствовал что-то новое.\r\n\r\nЯ не экономлю на отелях, питании, а самое главное — ищу гидов, влюблённых в свой регион, чтобы они смогли влюбить и тебя!\r\n\r\nЯ занимаюсь йогой и медитацией, поэтому если я сама в туре, всегда практикуем с желающими по утрам)\r\n\r\nБуду очень рада лично познакомиться с тобой и ответить на любой вопрос по путешествиям и турам!",
+        "exp_count_published": 6,
+        "number_of_persons_paid": 8
+      },
+      "guide_can_resume": false,
+      "has_non_refundable_part": false,
+      "photos": [
+        {
+          "type": "experience",
+          "thumbnail": "https://resize.tripster.ru/QMUghOSGO8tFtMT9gRMUuU8O8EU=/fit-in/800x600/filters:no_upscale()/https://cdn.tripster.ru/photos/94d71a21-48f7-4250-80ac-dcf510d1c9d7.jpg",
+          "medium": "https://resize.tripster.ru/tQeewC-SMu7v0UjFlt36L_uIlrA=/fit-in/1200x1000/filters:no_upscale()/https://cdn.tripster.ru/photos/94d71a21-48f7-4250-80ac-dcf510d1c9d7.jpg",
+          "thumbnail_portrait": "https://resize.tripster.ru/AaGiAVqcH2JFN6EHbqpCAhVPA08=/287x392/filters:no_upscale()/https://cdn.tripster.ru/photos/94d71a21-48f7-4250-80ac-dcf510d1c9d7.jpg"
+        },
+        {
+          "type": "experience",
+          "thumbnail": "https://resize.tripster.ru/dll4PTjkLPphTpaHxk2KXRS05S4=/fit-in/800x600/filters:no_upscale()/https://cdn.tripster.ru/photos/f748b012-3ee7-426d-a8aa-e3eba5fe213c.jpg",
+          "medium": "https://resize.tripster.ru/HwS7I9872W1KoxjKVFoFmXlgOnI=/fit-in/1200x1000/filters:no_upscale()/https://cdn.tripster.ru/photos/f748b012-3ee7-426d-a8aa-e3eba5fe213c.jpg",
+          "thumbnail_portrait": "https://resize.tripster.ru/7Od-1Vg9WppaBmQ4pbSD5P0omqA=/287x392/filters:no_upscale()/https://cdn.tripster.ru/photos/f748b012-3ee7-426d-a8aa-e3eba5fe213c.jpg"
+        },
+        {
+          "type": "experience",
+          "thumbnail": "https://resize.tripster.ru/Sx8-G7UUzXfqFXhNxkCyqPlx8To=/fit-in/800x600/filters:no_upscale()/https://cdn.tripster.ru/photos/6c1cde3a-ab37-4908-9a18-04681104bf1f.jpg",
+          "medium": "https://resize.tripster.ru/-YkLfdOQcUVV6PL7zoJIvcX3s4c=/fit-in/1200x1000/filters:no_upscale()/https://cdn.tripster.ru/photos/6c1cde3a-ab37-4908-9a18-04681104bf1f.jpg",
+          "thumbnail_portrait": "https://resize.tripster.ru/fmCzBTFVbvm4RnqX5gbFO-cSBq8=/287x392/filters:no_upscale()/https://cdn.tripster.ru/photos/6c1cde3a-ab37-4908-9a18-04681104bf1f.jpg"
+        },
+        {
+          "type": "experience",
+          "thumbnail": "https://resize.tripster.ru/oSJq4U8w6DfUeRPFF6LghYLInNU=/fit-in/600x800/filters:no_upscale()/https://cdn.tripster.ru/photos/8ebfb976-7184-4d56-9a02-3d3d31863886.jpg",
+          "medium": "https://resize.tripster.ru/V25P7V_LRkl8xbNkZ3ZjrTV_fZs=/fit-in/1000x1350/filters:no_upscale()/https://cdn.tripster.ru/photos/8ebfb976-7184-4d56-9a02-3d3d31863886.jpg",
+          "thumbnail_portrait": "https://resize.tripster.ru/aQ9j-_A9Y0FHl0h8X1oDESLtGao=/287x392/filters:no_upscale()/https://cdn.tripster.ru/photos/8ebfb976-7184-4d56-9a02-3d3d31863886.jpg"
+        },
+        {
+          "type": "experience",
+          "thumbnail": "https://resize.tripster.ru/jBhJGnH-c5YyHOIr1yTsxRBzFpI=/fit-in/800x600/filters:no_upscale()/https://cdn.tripster.ru/photos/8691be54-bd67-4f24-ac69-40017b02ed1f.jpg",
+          "medium": "https://resize.tripster.ru/lKYcmtA5znroHpPIKAPH8-nBga4=/fit-in/1200x1000/filters:no_upscale()/https://cdn.tripster.ru/photos/8691be54-bd67-4f24-ac69-40017b02ed1f.jpg",
+          "thumbnail_portrait": "https://resize.tripster.ru/V0d8P5Q5G2W4u8hsU0phG5jQPpg=/287x392/filters:no_upscale()/https://cdn.tripster.ru/photos/8691be54-bd67-4f24-ac69-40017b02ed1f.jpg"
+        },
+        {
+          "type": "experience",
+          "thumbnail": "https://resize.tripster.ru/9JZALpT5NGUMDPbrSAyKHzZQekg=/fit-in/600x800/filters:no_upscale()/https://cdn.tripster.ru/photos/02eadf76-0aed-4a73-8e47-58239b6712a0.jpg",
+          "medium": "https://resize.tripster.ru/Quupx1AX08U5rlh6uo5dPwx883Q=/fit-in/1000x1350/filters:no_upscale()/https://cdn.tripster.ru/photos/02eadf76-0aed-4a73-8e47-58239b6712a0.jpg",
+          "thumbnail_portrait": "https://resize.tripster.ru/SMBA8ZTmiUhXpJqyGthJF6MLsA4=/287x392/filters:no_upscale()/https://cdn.tripster.ru/photos/02eadf76-0aed-4a73-8e47-58239b6712a0.jpg"
+        },
+        {
+          "type": "experience",
+          "thumbnail": "https://resize.tripster.ru/3vri5wUKTYxCA0mZ6aQ5gDHOZRM=/fit-in/600x800/filters:no_upscale()/https://cdn.tripster.ru/photos/b8eaf802-9989-470c-9674-e32dbc5d07b9.jpg",
+          "medium": "https://resize.tripster.ru/58K5QxqO7kFeNXseyDkiwL711KQ=/fit-in/1000x1350/filters:no_upscale()/https://cdn.tripster.ru/photos/b8eaf802-9989-470c-9674-e32dbc5d07b9.jpg",
+          "thumbnail_portrait": "https://resize.tripster.ru/4N-caI00dA6SxPp8ZOLPl1u06Ps=/287x392/filters:no_upscale()/https://cdn.tripster.ru/photos/b8eaf802-9989-470c-9674-e32dbc5d07b9.jpg"
+        },
+        {
+          "type": "experience",
+          "thumbnail": "https://resize.tripster.ru/rvIPlEYm4CQNqIXMb7Aspo8zDEQ=/fit-in/800x600/filters:no_upscale()/https://cdn.tripster.ru/photos/4c42b3fb-8325-4e41-b8a7-d3a5e700e526.jpg",
+          "medium": "https://resize.tripster.ru/v7nDKo2QGzka51vjc7KnxRMPqMo=/fit-in/1200x1000/filters:no_upscale()/https://cdn.tripster.ru/photos/4c42b3fb-8325-4e41-b8a7-d3a5e700e526.jpg",
+          "thumbnail_portrait": "https://resize.tripster.ru/J634dIHW7u-RGOkaJpkGlf3PWSE=/287x392/filters:no_upscale()/https://cdn.tripster.ru/photos/4c42b3fb-8325-4e41-b8a7-d3a5e700e526.jpg"
+        },
+        {
+          "type": "experience",
+          "thumbnail": "https://resize.tripster.ru/AC1_j_hhqVXiKHyYno8R4_LbEIk=/fit-in/800x600/filters:no_upscale()/https://cdn.tripster.ru/photos/22105ec1-5389-4a89-9308-d83d4a1e8142.jpg",
+          "medium": "https://resize.tripster.ru/5RqG7EtEH2qPD7qQfbdR3QSAAL0=/fit-in/1200x1000/filters:no_upscale()/https://cdn.tripster.ru/photos/22105ec1-5389-4a89-9308-d83d4a1e8142.jpg",
+          "thumbnail_portrait": "https://resize.tripster.ru/qwFdHOGw6Hz_xfFF6Go9hblCVj4=/287x392/filters:no_upscale()/https://cdn.tripster.ru/photos/22105ec1-5389-4a89-9308-d83d4a1e8142.jpg"
+        }
+      ],
+      "schedule": {
+        "upcoming_events": [
+          "2026-04-06T08:00:00"
+        ]
+      },
+      "is_paid": false
+    },
+    {
+      "status": "active",
+      "id": 55798,
+      "title": "Азия как на ладони: Корея, Камбоджа и Вьетнам с экскурсиями и пляжным отдыхом",
+      "tagline": "Побывать в «Сумасшедшем доме», изучить храмы, встретить закат на дюнах и погулять по ночному рынку",
+      "annotation": "Приглашаем вас в большое путешествие по Азии. Вы побываете в современном и футуристичном Сеуле, попробуете корейскую еду и посмотрите на столицу Кореи с небоскрёба. В Камбодже будем исследовать древние храмы, обвитые корнями деревьев и лианами. А во Вьетнаме побываем в необычном городке Далат, где французская архитектура смешалась с восточным стилем. Ещё здесь вы посетите самый странный в мире отель «Сумасшедший дом», а в Нячанге вас ждёт настоящий релакс — 5 дней пляжного отдыха под жарким солнцем.",
+      "url": "https://experience.tripster.ru/experience/55798/",
+      "type": "tour",
+      "format": "activity",
+      "grade": null,
+      "movement_type": "car",
+      "schedule_type": "fixed_slots",
+      "exp_status": 3,
+      "is_instant_booking": false,
+      "is_new": false,
+      "max_persons": 8,
+      "duration": 336,
+      "price": {
+        "value": 2589,
+        "currency": "USD",
+        "currency_rate": 85,
+        "price_from": false,
+        "unit_string": "за одного",
+        "value_string": "$2589 за одного"
+      },
+      "rating": 0,
+      "visitors_count": 0,
+      "review_count": 0,
+      "pause_finish_date": null,
+      "pause_reason": null,
+      "cancel_finish_date": null,
+      "cancel_reason": null,
+      "additional_info": "<div><p>После оплаты указанной суммы на сайте необходимо внести предоплату в размере $1300. Оплата в рублях на расчётный счёт по курсу ЦБ на момент оплаты. </p>\n\n\t<p>Условия отмены уточняйте у организатора.</p></div>",
+      "comfort_level_info": "<div><p><strong>Питание.</strong> В программу включены завтраки и ужин с  морепродуктами в Нячанге.</p>\n\n\t<p><strong>Транспорт.</strong> Будем передвигаться по маршруту на такси, общественных автобусах, метро, рикшах. </p>\n\n\t<p><strong>Возраст участников.</strong> От 12 лет.</p>\n\n\t<p><strong>Виза.</strong> Все визы включены в стоимость.</p>\n\n\t<p><strong>Связь и интернет.</strong> В каждой стране вам предоставится сим-карта с интернетом.</p>\n\n\t<p><strong>Уровень сложности.</strong> Лёгкий. Спокойный темп, пешие прогулки до 15 км. Физподготовка не нужна.</p></div>",
+      "price_included_description": "<ul>\n\t\t<li>Проживание</li>\n\t\t<li>Завтраки, ужин с морепродуктами в Нячанге</li>\n\t\t<li>Трансферы по программе, а также 3 перелёта с багажом 20 кг</li>\n\t\t<li>Входные билеты во все достопримечательности</li>\n\t\t<li>Развлечения по программе</li>\n\t\t<li>Массаж</li>\n\t\t<li>Страховка на 15 дней</li>\n\t\t<li>Сим-карта с интернетом в каждой стране</li>\n\t\t<li>Виза в Камбоджу</li>\n\t\t<li>Разрешение на въезд в Корею (K-ETA)</li>\n\t\t<li>Профессиональный русскоговорящий гид</li>\n\t\t<li>Организация путешествия</li>\n\t\t<li>Сопровождение и помощь на всём маршруте</li>\n\t\t<li>Информационная подготовка каждого путешественника до начала путешествия (список необходимых вещей, информация о стране и её нюансах)</li>\n\t</ul>",
+      "price_not_included_description": "<ul>\n\t\t<li>Авиабилеты в Сеул и обратно из Хошимина в ваш город</li>\n\t\t<li>Остальное питание</li>\n\t</ul>",
+      "geo_access_level": "all",
+      "geo": {
+        "city": [
+          {
+            "id": 403,
+            "slug": "Seoul",
+            "name": "Сеул",
+            "name_prepositional": "Сеуле",
+            "in_obj_phrase": "в Сеуле",
+            "from_obj_phrase": "из Сеула",
+            "across_obj_phrase": "по Сеулу",
+            "is_main_city": true
+          },
+          {
+            "id": 43,
+            "slug": "Ho_Chi_Minh",
+            "name": "Хошимин",
+            "name_prepositional": "Хошимине",
+            "in_obj_phrase": "в Хошимине",
+            "from_obj_phrase": "из Хошимина",
+            "across_obj_phrase": "по Хошимину",
+            "is_main_city": false
+          },
+          {
+            "id": 497,
+            "slug": "Dalat",
+            "name": "Далат",
+            "name_prepositional": "Далате",
+            "in_obj_phrase": "в Далате",
+            "from_obj_phrase": "из Далата",
+            "across_obj_phrase": "по Далату",
+            "is_main_city": false
+          },
+          {
+            "id": 296,
+            "slug": "Nha_Trang",
+            "name": "Нячанг",
+            "name_prepositional": "Нячанге",
+            "in_obj_phrase": "в Нячанге",
+            "from_obj_phrase": "из Нячанга",
+            "across_obj_phrase": "по Нячангу",
+            "is_main_city": false
+          },
+          {
+            "id": 258,
+            "slug": "Siemreap",
+            "name": "Сиемреап",
+            "name_prepositional": "Сиемреапе",
+            "in_obj_phrase": "в Сиемреапе",
+            "from_obj_phrase": "из Сиемреапа",
+            "across_obj_phrase": "по Сиемреапу",
+            "is_main_city": false
+          }
+        ],
+        "country": [
+          {
+            "id": 263,
+            "slug": "south-korea",
+            "name": "Южная Корея",
+            "name_prepositional": "Южной Корее",
+            "in_obj_phrase": "в Южной Корее",
+            "from_obj_phrase": "из Южной Кореи",
+            "across_obj_phrase": "по Южной Корее",
+            "is_main_city": false
+          },
+          {
+            "id": 93,
+            "slug": "cambodia",
+            "name": "Камбоджа",
+            "name_prepositional": "Камбодже",
+            "in_obj_phrase": "в Камбодже",
+            "from_obj_phrase": "из Камбоджи",
+            "across_obj_phrase": "по Камбодже",
+            "is_main_city": false
+          },
+          {
+            "id": 299,
+            "slug": "vietnam",
+            "name": "Вьетнам",
+            "name_prepositional": "Вьетнаме",
+            "in_obj_phrase": "во Вьетнаме",
+            "from_obj_phrase": "из Вьетнама",
+            "across_obj_phrase": "по Вьетнаму",
+            "is_main_city": false
+          }
+        ]
+      },
+      "guide": {
+        "id": 1074994,
+        "first_name": "Алексей",
+        "url": "https://experience.tripster.ru/guide/1074994/",
+        "avatar": {
+          "medium": "https://resize.tripster.ru/HH52mRngEKVA1CmJEwBUt0txgjY=/150x150/filters:no_upscale()/https://cdn.tripster.ru/avatars/8d114ea8-4f07-49c2-bff2-47c45fd7558f.jpg",
+          "small": "https://resize.tripster.ru/HH52mRngEKVA1CmJEwBUt0txgjY=/150x150/filters:no_upscale()/https://cdn.tripster.ru/avatars/8d114ea8-4f07-49c2-bff2-47c45fd7558f.jpg"
+        },
+        "rating": 5,
+        "rate_count": 4,
+        "review_count": 4,
+        "avg_reaction_delay": 3,
+        "avg_reaction_delay_display": {
+          "nominative": "5 минут",
+          "accusative": "5 минут",
+          "genitive": "5 минут"
+        },
+        "type": "guide",
+        "date_start_work": "2023-04-26T13:57:35.254963Z",
+        "date_joined": "2023-04-13T06:35:39.000000Z",
+        "is_licensed": false,
+        "orders_count": 59,
+        "visitors_count": 10,
+        "description": "Привет, меня зовут Алексей. Последние 8 лет я занимаюсь тем, что провожу авторские путешествия, которые сам же и создаю. Все мои путешествия насыщенные, увлекательные и доступные. Присоединяйтесь, и я покажу вам каждую страну так, как не покажет больше никто!",
+        "exp_count_published": 3,
+        "number_of_persons_paid": 10
+      },
+      "guide_can_resume": false,
+      "has_non_refundable_part": false,
+      "photos": [
+        {
+          "type": "experience",
+          "thumbnail": "https://resize.tripster.ru/o8u0uOUCp-nhHf2YTEIe7syRRVA=/fit-in/800x600/filters:no_upscale()/https://cdn.tripster.ru/photos/6fa3a1c8-b2ad-4b84-ae37-1e9fdf37f487.jpg",
+          "medium": "https://resize.tripster.ru/TaQu67C4VpnfMCyPtu-Vdj_zUxQ=/fit-in/1200x1000/filters:no_upscale()/https://cdn.tripster.ru/photos/6fa3a1c8-b2ad-4b84-ae37-1e9fdf37f487.jpg",
+          "thumbnail_portrait": "https://resize.tripster.ru/RMRJRJgxa3_4UpEi6YyDrjM0nic=/287x392/filters:no_upscale()/https://cdn.tripster.ru/photos/6fa3a1c8-b2ad-4b84-ae37-1e9fdf37f487.jpg"
+        },
+        {
+          "type": "experience",
+          "thumbnail": "https://resize.tripster.ru/vxbd6SMm0-Ju3DxlrBDKmOHKeUA=/fit-in/800x600/filters:no_upscale()/https://cdn.tripster.ru/photos/5fffb190-b3fa-4128-b621-ecb82e95e21b.jpg",
+          "medium": "https://resize.tripster.ru/aECIuSrk-hXdyV96QtvZgE45qPE=/fit-in/1200x1000/filters:no_upscale()/https://cdn.tripster.ru/photos/5fffb190-b3fa-4128-b621-ecb82e95e21b.jpg",
+          "thumbnail_portrait": "https://resize.tripster.ru/6qYO5YdGAhxB-Ryd8SCyyJBtvfg=/287x392/filters:no_upscale()/https://cdn.tripster.ru/photos/5fffb190-b3fa-4128-b621-ecb82e95e21b.jpg"
+        },
+        {
+          "type": "experience",
+          "thumbnail": "https://resize.tripster.ru/5nPDZCCGwvI4UPnnTDfsVHySau4=/fit-in/800x600/filters:no_upscale()/https://cdn.tripster.ru/photos/7355cd39-89c5-46ff-9436-0b93c282647a.jpg",
+          "medium": "https://resize.tripster.ru/gQbgCCvnf3O3Qa00bZA3zziQ-Z0=/fit-in/1200x1000/filters:no_upscale()/https://cdn.tripster.ru/photos/7355cd39-89c5-46ff-9436-0b93c282647a.jpg",
+          "thumbnail_portrait": "https://resize.tripster.ru/0xR591jzjkveAvYz_ttXI9zs5qo=/287x392/filters:no_upscale()/https://cdn.tripster.ru/photos/7355cd39-89c5-46ff-9436-0b93c282647a.jpg"
+        },
+        {
+          "type": "experience",
+          "thumbnail": "https://resize.tripster.ru/10XMGcoQFl5m2WCZGeSCRTSdo2Q=/fit-in/800x600/filters:no_upscale()/https://cdn.tripster.ru/photos/c25679b3-007e-4603-8724-23558f9061db.jpg",
+          "medium": "https://resize.tripster.ru/MsmxVGRe8ODtSyawVTheSREYB_4=/fit-in/1200x1000/filters:no_upscale()/https://cdn.tripster.ru/photos/c25679b3-007e-4603-8724-23558f9061db.jpg",
+          "thumbnail_portrait": "https://resize.tripster.ru/pEznjyWwMt7jyo7Ja4Fw_Bd4fgo=/287x392/filters:no_upscale()/https://cdn.tripster.ru/photos/c25679b3-007e-4603-8724-23558f9061db.jpg"
+        },
+        {
+          "type": "experience",
+          "thumbnail": "https://resize.tripster.ru/dVY7Lp8AaWpgJAYwH6E5pLZfZJ0=/fit-in/600x800/filters:no_upscale()/https://cdn.tripster.ru/photos/7a95f937-9de0-4bef-9121-3d9b3fcea7dc.jpg",
+          "medium": "https://resize.tripster.ru/cLmVZELUDVK0CESoHI325DjAUb4=/fit-in/1000x1350/filters:no_upscale()/https://cdn.tripster.ru/photos/7a95f937-9de0-4bef-9121-3d9b3fcea7dc.jpg",
+          "thumbnail_portrait": "https://resize.tripster.ru/nwQpB8B2qJo68vm7I_XwOu1HfD0=/287x392/filters:no_upscale()/https://cdn.tripster.ru/photos/7a95f937-9de0-4bef-9121-3d9b3fcea7dc.jpg"
+        },
+        {
+          "type": "experience",
+          "thumbnail": "https://resize.tripster.ru/Y9mFSBj_ojvVNqrFwXet0RVuV_U=/fit-in/800x600/filters:no_upscale()/https://cdn.tripster.ru/photos/f2603ccd-0398-412f-bd27-0f2a56e7a453.jpg",
+          "medium": "https://resize.tripster.ru/YhCC7uh4m8nl81NR5mM7gD5qjh0=/fit-in/1200x1000/filters:no_upscale()/https://cdn.tripster.ru/photos/f2603ccd-0398-412f-bd27-0f2a56e7a453.jpg",
+          "thumbnail_portrait": "https://resize.tripster.ru/pc3OZF5g0ZyWCc1Ixj6WglqEni4=/287x392/filters:no_upscale()/https://cdn.tripster.ru/photos/f2603ccd-0398-412f-bd27-0f2a56e7a453.jpg"
+        },
+        {
+          "type": "experience",
+          "thumbnail": "https://resize.tripster.ru/EVtc-0yCo8SEVk1f5aCngq8vLWo=/fit-in/800x600/filters:no_upscale()/https://cdn.tripster.ru/photos/544525eb-b4bb-47cd-b016-d9dd28178907.jpg",
+          "medium": "https://resize.tripster.ru/U6lOeDUJOe8Z69AkQMsojUZ6seY=/fit-in/1200x1000/filters:no_upscale()/https://cdn.tripster.ru/photos/544525eb-b4bb-47cd-b016-d9dd28178907.jpg",
+          "thumbnail_portrait": "https://resize.tripster.ru/CQ5y1Zft_f6_KzdWb7B0t9x6wgM=/287x392/filters:no_upscale()/https://cdn.tripster.ru/photos/544525eb-b4bb-47cd-b016-d9dd28178907.jpg"
+        },
+        {
+          "type": "experience",
+          "thumbnail": "https://resize.tripster.ru/HRRN7XuUZDqZ14lyKHXbqF67G3g=/fit-in/800x600/filters:no_upscale()/https://cdn.tripster.ru/photos/c7125c88-9fd3-4376-8e32-6728caf7aa53.jpg",
+          "medium": "https://resize.tripster.ru/nmnGrbmJQKTg3BKjhMEKKOawH34=/fit-in/1200x1000/filters:no_upscale()/https://cdn.tripster.ru/photos/c7125c88-9fd3-4376-8e32-6728caf7aa53.jpg",
+          "thumbnail_portrait": "https://resize.tripster.ru/Ik7f_R_z08EzRq8S1JWDJ1HICes=/287x392/filters:no_upscale()/https://cdn.tripster.ru/photos/c7125c88-9fd3-4376-8e32-6728caf7aa53.jpg"
+        },
+        {
+          "type": "experience",
+          "thumbnail": "https://resize.tripster.ru/rNomPvazIJ72DuPFTm_vqPVKXcI=/fit-in/800x600/filters:no_upscale()/https://cdn.tripster.ru/photos/3cb7ecf2-49b5-409c-9fe0-978562e37a60.jpg",
+          "medium": "https://resize.tripster.ru/5ajxhVLemjtpvkvq0kxzscYt3dk=/fit-in/1200x1000/filters:no_upscale()/https://cdn.tripster.ru/photos/3cb7ecf2-49b5-409c-9fe0-978562e37a60.jpg",
+          "thumbnail_portrait": "https://resize.tripster.ru/EhoWOBXxkcRsDPW5lsLRarcHIl0=/287x392/filters:no_upscale()/https://cdn.tripster.ru/photos/3cb7ecf2-49b5-409c-9fe0-978562e37a60.jpg"
+        }
+      ],
+      "schedule": {
+        "upcoming_events": [
+          "2026-04-04T10:00:00",
+          "2026-05-02T10:00:00"
+        ]
+      },
+      "is_paid": false
+    },
+    {
+      "status": "active",
+      "id": 100613,
+      "title": "Языковая школа в Корее с проживанием в кампусе университета Чунан (всё включено)",
+      "tagline": "Позаниматься с носителями, поучиться каллиграфии и тхэквондо, сходить на шоу и в парк аттракционов",
+      "annotation": "Этот тур для тех, кто увлечён культурой Южной Кореи и уже начал изучать язык — совсем без знаний будет сложно. Вы пройдёте интенсивный курс в престижном университете Чунан, где ежедневно будете заниматься с носителями и практиковаться в реальных ситуациях — на парах, со студентами из других стран, во время экскурсий, а по завершении получите официальный сертификат. Поселитесь тут же в общежитии с современными комнатами и в любой момент сможете обратиться к нашим кураторам — каждый живёт здесь более 5 лет и специально обучен. Приобщитесь и к другим традициям — запланированы мастер-классы по каллиграфии, хореографии, тхэквондо, кухне. Отдохнёте как местный: сходите в караоке, развлекательные парки и на комедийное шоу, примерите ханбоки, погуляете по Сеулу и побережью Восточного моря. А также обязательно найдёте новых друзей со всего мира, которые влюблены в Корею, как и вы.",
+      "url": "https://experience.tripster.ru/experience/100613/",
+      "type": "tour",
+      "format": "activity",
+      "grade": null,
+      "movement_type": "bus",
+      "schedule_type": "fixed_slots",
+      "exp_status": 3,
+      "is_instant_booking": false,
+      "is_new": false,
+      "max_persons": 40,
+      "duration": 336,
+      "price": {
+        "value": 280000,
+        "currency": "RUB",
+        "currency_rate": 1,
+        "price_from": false,
+        "unit_string": "за одного",
+        "value_string": "280000 ₽ за одного"
+      },
+      "rating": 0,
+      "visitors_count": 0,
+      "review_count": 0,
+      "pause_finish_date": null,
+      "pause_reason": null,
+      "cancel_finish_date": null,
+      "cancel_reason": null,
+      "additional_info": "<p>После внесения предоплаты на сайте необходимо перевести остаток суммы непосредственно организатору разовым платежом или с разбивкой до 5 частей. Полную оплату необходимо произвести не позднее чем за 45 дней до старта.</p>",
+      "comfort_level_info": "",
+      "price_included_description": "<ul>\n\t\t<li>Проживание</li>\n\t\t<li>Трёхразовое питание</li>\n\t\t<li>Трансферы от/до аэропорта</li>\n\t\t<li>Все трансферы по маршруту</li>\n\t\t<li>Сопровождение кураторами со знанием корейского</li>\n\t\t<li>Все входные билеты, экскурсии, активности по программе</li>\n\t\t<li>Посещение 3 университетов (EWHA, Yonsei, Korea)</li>\n\t\t<li>Сим-карта с безлимитным интернетом</li>\n\t\t<li>Сертификат об окончании языкового курса</li>\n\t\t<li>Оформление К-ЕТА</li>\n\t\t<li>Подарочный набор от команды</li>\n\t\t<li>Встреча-консультация по поступлению в Корею</li>\n\t</ul>",
+      "price_not_included_description": "<ul>\n\t\t<li>Билеты в Сеул и обратно в ваш город</li>\n\t\t<li>Страховка</li>\n\t</ul>",
+      "geo_access_level": "all",
+      "geo": {
+        "city": [
+          {
+            "id": 403,
+            "slug": "Seoul",
+            "name": "Сеул",
+            "name_prepositional": "Сеуле",
+            "in_obj_phrase": "в Сеуле",
+            "from_obj_phrase": "из Сеула",
+            "across_obj_phrase": "по Сеулу",
+            "is_main_city": true
+          }
+        ],
+        "country": [
+          {
+            "id": 263,
+            "slug": "south-korea",
+            "name": "Южная Корея",
+            "name_prepositional": "Южной Корее",
+            "in_obj_phrase": "в Южной Корее",
+            "from_obj_phrase": "из Южной Кореи",
+            "across_obj_phrase": "по Южной Корее",
+            "is_main_city": false
+          }
+        ]
+      },
+      "guide": {
+        "id": 2504386,
+        "first_name": "Владимир",
+        "url": "https://experience.tripster.ru/guide/2504386/",
+        "avatar": {
+          "medium": "https://resize.tripster.ru/s8ipbTq57NjPvwXQKHaxQIHSsr4=/150x150/filters:no_upscale()/https://cdn.tripster.ru/avatars/e993fae0-7940-45c8-9564-21d6ce8a37f8.png",
+          "small": "https://resize.tripster.ru/s8ipbTq57NjPvwXQKHaxQIHSsr4=/150x150/filters:no_upscale()/https://cdn.tripster.ru/avatars/e993fae0-7940-45c8-9564-21d6ce8a37f8.png"
+        },
+        "rating": 0,
+        "rate_count": 0,
+        "review_count": 0,
+        "avg_reaction_delay": 36,
+        "avg_reaction_delay_display": {
+          "nominative": "1 час",
+          "accusative": "1 час",
+          "genitive": "1 часа"
+        },
+        "type": "team",
+        "date_start_work": "2025-09-19T08:57:59.852428Z",
+        "date_joined": "2025-08-01T09:56:25.805381Z",
+        "is_licensed": false,
+        "orders_count": 1,
+        "visitors_count": 0,
+        "description": "Проводим туры в Корею с 2023 года. За это время мы организовали десятки авторских поездок для 300+ человек: от языковых лагерей и турпоездок до бьюти-программ .\n\nМы показываем как столичный К-поп-глянец, так и настоящую повседневную Корею. Нас цепляет контраст: вы можете гулять по древнему дворцу в ханбоке, а через пару часов уже примерять парфюм в поп-апе Tamburins. В этих местах — удивительное сочетание уюта, стиля и культурной глубины.\n\nМы не просто показываем Корею — мы помогаем в неё влюбиться.\n\n— В каждом туре работает профессиональный куратор, проживший в Корее от 5 до 10 лет.\n— Мы снимаем с участников всю организационную головную боль: от транспорта и сим-карт до переводчиков и помощи в аптеке.\n—Мы адаптируем программу под настроение группы, добавляем вечерние активности, помогаем попасть на концерты и в кафе из дорам.\n— В языковых турах у нас плотное партнёрство с университетами и школами, так что это не экскурсия «ради галочки», а реальное погружение.",
+        "exp_count_published": 2,
+        "number_of_persons_paid": 0
+      },
+      "guide_can_resume": false,
+      "has_non_refundable_part": false,
+      "photos": [
+        {
+          "type": "experience",
+          "thumbnail": "https://resize.tripster.ru/TjQQO0MHh839FLZOVAOFROUk1RM=/fit-in/600x800/filters:no_upscale()/https://cdn.tripster.ru/photos/08f5b657-7737-42b6-9db5-d53d23daad25.jpg",
+          "medium": "https://resize.tripster.ru/i23OS7ZpdOWWU5YrS-jZLHOGNAY=/fit-in/1000x1350/filters:no_upscale()/https://cdn.tripster.ru/photos/08f5b657-7737-42b6-9db5-d53d23daad25.jpg",
+          "thumbnail_portrait": "https://resize.tripster.ru/f_F1wvkhNrIBNuzBQonLt0vFyI4=/287x392/filters:no_upscale()/https://cdn.tripster.ru/photos/08f5b657-7737-42b6-9db5-d53d23daad25.jpg"
+        },
+        {
+          "type": "experience",
+          "thumbnail": "https://resize.tripster.ru/z7lQal-EZO-4N2aT3oMTioUr45g=/fit-in/800x600/filters:no_upscale()/https://cdn.tripster.ru/photos/dbf7db22-25c6-48cd-ad52-f0e5985a9010.png",
+          "medium": "https://resize.tripster.ru/7Il3KKoHdoR7mKiWlIuwx2PrblM=/fit-in/1200x1000/filters:no_upscale()/https://cdn.tripster.ru/photos/dbf7db22-25c6-48cd-ad52-f0e5985a9010.png",
+          "thumbnail_portrait": "https://resize.tripster.ru/aDVWkb4Lm_x1_A1QEw0Brdj9968=/287x392/filters:no_upscale()/https://cdn.tripster.ru/photos/dbf7db22-25c6-48cd-ad52-f0e5985a9010.png"
+        },
+        {
+          "type": "experience",
+          "thumbnail": "https://resize.tripster.ru/y9Ksv_gBPt4dq-TOKZhtjCVOEbU=/fit-in/600x800/filters:no_upscale()/https://cdn.tripster.ru/photos/c8283f35-0154-437f-94cf-ce41337767d6.png",
+          "medium": "https://resize.tripster.ru/p3JhFPX-On5mFXHun2eUHHc9MsM=/fit-in/1000x1350/filters:no_upscale()/https://cdn.tripster.ru/photos/c8283f35-0154-437f-94cf-ce41337767d6.png",
+          "thumbnail_portrait": "https://resize.tripster.ru/JKXF3PM8jTlAkWe9DidqucgrNM0=/287x392/filters:no_upscale()/https://cdn.tripster.ru/photos/c8283f35-0154-437f-94cf-ce41337767d6.png"
+        },
+        {
+          "type": "experience",
+          "thumbnail": "https://resize.tripster.ru/6mWp6dV4lmat-6EQ6VhJpssef8U=/fit-in/600x800/filters:no_upscale()/https://cdn.tripster.ru/photos/9b85eb07-058a-4b5c-8a1e-01eb3efdf5b9.jpg",
+          "medium": "https://resize.tripster.ru/v2Oie2X3BuL99lwZGKjrhR8SK6E=/fit-in/1000x1350/filters:no_upscale()/https://cdn.tripster.ru/photos/9b85eb07-058a-4b5c-8a1e-01eb3efdf5b9.jpg",
+          "thumbnail_portrait": "https://resize.tripster.ru/YQuNUuoLcydLTOphFbYw9Rfg5a8=/287x392/filters:no_upscale()/https://cdn.tripster.ru/photos/9b85eb07-058a-4b5c-8a1e-01eb3efdf5b9.jpg"
+        },
+        {
+          "type": "experience",
+          "thumbnail": "https://resize.tripster.ru/3c9vXYK6qrdmA5Di2nICRtGh3JU=/fit-in/800x600/filters:no_upscale()/https://cdn.tripster.ru/photos/c517158b-54a4-46f2-8272-338d9a1f975c.png",
+          "medium": "https://resize.tripster.ru/6OZuIPy0LjBy6zWEymCVxU2vPtA=/fit-in/1200x1000/filters:no_upscale()/https://cdn.tripster.ru/photos/c517158b-54a4-46f2-8272-338d9a1f975c.png",
+          "thumbnail_portrait": "https://resize.tripster.ru/zItDSWZFOIpjnuMC2k0MRtV_vXQ=/287x392/filters:no_upscale()/https://cdn.tripster.ru/photos/c517158b-54a4-46f2-8272-338d9a1f975c.png"
+        },
+        {
+          "type": "experience",
+          "thumbnail": "https://resize.tripster.ru/kGkQwxQjzsLTKnhmSnWnaecvIVA=/fit-in/800x600/filters:no_upscale()/https://cdn.tripster.ru/photos/60bcb343-dae1-4775-8814-b432a852d644.png",
+          "medium": "https://resize.tripster.ru/1keq5bjypJ1V3M6g-FWgKbOopKY=/fit-in/1200x1000/filters:no_upscale()/https://cdn.tripster.ru/photos/60bcb343-dae1-4775-8814-b432a852d644.png",
+          "thumbnail_portrait": "https://resize.tripster.ru/ilfMTJxJKTY0hSHQ3ufo5VMm7_4=/287x392/filters:no_upscale()/https://cdn.tripster.ru/photos/60bcb343-dae1-4775-8814-b432a852d644.png"
+        },
+        {
+          "type": "experience",
+          "thumbnail": "https://resize.tripster.ru/KuLdTItUGPE9rRELTCawCQJbLaU=/fit-in/600x800/filters:no_upscale()/https://cdn.tripster.ru/photos/47ca9c6a-3495-4580-a000-69a52bd1c788.jpg",
+          "medium": "https://resize.tripster.ru/gwSQ7ioImPN11yFrPbzQEQqboc4=/fit-in/1000x1350/filters:no_upscale()/https://cdn.tripster.ru/photos/47ca9c6a-3495-4580-a000-69a52bd1c788.jpg",
+          "thumbnail_portrait": "https://resize.tripster.ru/2n_YTWqN8fGkNsqALJokg1eHp4M=/287x392/filters:no_upscale()/https://cdn.tripster.ru/photos/47ca9c6a-3495-4580-a000-69a52bd1c788.jpg"
+        }
+      ],
+      "schedule": {
+        "upcoming_events": [
+          "2026-01-04T15:00:00"
+        ]
+      },
+      "is_paid": false
+    },
+    {
+      "status": "active",
+      "id": 100554,
+      "title": "Остров Чеджу без суеты: путешествие «всё включено» по главным достопримечательностям",
+      "tagline": "Собрать мандарины, прогуляться по Саду камелий и заглянуть в храм с пещерными залами",
+      "annotation": "Остров Чеджу откроется перед вами как отдельный мир, где вулканические пейзажи соседствуют с зелёными полями и тихими деревнями. Вы отправитесь к чайным плантациям и прогуляетесь среди овечьих пастбищ. Сможете поучаствовать в заездах на картинге и попробовать себя в роли сборщика мандаринов на ферме. Вас ждут каскады водопада Чхончжеон и прогулка по саду камелий. В программе — знакомство с редкой коллекцией в Музее автомобилей и отдых в парке с оленями. Морской круиз подарит виды на живописное побережье и близлежащие острова, а храм Санбанкуса познакомит с традициями буддизма. Также посетим пещеру вулканического происхождения, Музей женщин хэнё и отдохнём на пляже Хамдок с белым песком и прозрачной водой.",
+      "url": "https://experience.tripster.ru/experience/100554/",
+      "type": "tour",
+      "format": "activity",
+      "grade": null,
+      "movement_type": "bus",
+      "schedule_type": "fixed_slots",
+      "exp_status": 3,
+      "is_instant_booking": false,
+      "is_new": false,
+      "max_persons": 20,
+      "duration": 72,
+      "price": {
+        "value": 72500,
+        "currency": "RUB",
+        "currency_rate": 1,
+        "price_from": false,
+        "unit_string": "за одного",
+        "value_string": "72500 ₽ за одного"
+      },
+      "rating": 0,
+      "visitors_count": 0,
+      "review_count": 0,
+      "pause_finish_date": null,
+      "pause_reason": null,
+      "cancel_finish_date": null,
+      "cancel_reason": null,
+      "additional_info": "<p>При бронировании вы вносите предоплату 15%. Полная оплата должна быть внесена не позднее чем за 10 дней до начала тура.</p>",
+      "comfort_level_info": "<div><p><strong>Питание.</strong> Включено трёхразовое питание: завтраки в отеле, обеды и ужины — в аутентичных кафе с местной кухней.</p>\n\n\t<p><strong>Транспорт.</strong> По маршруту предусмотрен автобус с кондиционером. </p>\n\n\t<p><strong>Возраст участников.</strong> 5+.</p>\n\n\t<p><strong>Виза.</strong> Не нужна, но вместо неё необходимо получить электронное разрешение на въезд (K-ETA).</p>\n\n\t<p><strong>Уровень сложности.</strong> Тур включает пешие экскурсии по паркам, побережью и природным объектам. Подходит для любого уровня подготовки.</p></div>",
+      "price_included_description": "<ul>\n\t\t<li>Проживание</li>\n\t\t<li>Трёхразовое питание</li>\n\t\t<li>Трансферы из/до аэропорта</li>\n\t\t<li>Трансферы по маршруту</li>\n\t\t<li>Перелёты Сеул — Чеджу — Сеул</li>\n\t\t<li>Услуги гида</li>\n\t\t<li>Экскурсии и входные билеты</li>\n\t</ul>",
+      "price_not_included_description": "<ul>\n\t\t<li>Перелёты до Сеула и обратно в ваш город</li>\n\t</ul>",
+      "geo_access_level": "all",
+      "geo": {
+        "city": [
+          {
+            "id": 403,
+            "slug": "Seoul",
+            "name": "Сеул",
+            "name_prepositional": "Сеуле",
+            "in_obj_phrase": "в Сеуле",
+            "from_obj_phrase": "из Сеула",
+            "across_obj_phrase": "по Сеулу",
+            "is_main_city": true
+          },
+          {
+            "id": 975,
+            "slug": "Jeju",
+            "name": "Чеджу",
+            "name_prepositional": "Чеджу",
+            "in_obj_phrase": "в Чеджу",
+            "from_obj_phrase": "из Чеджу",
+            "across_obj_phrase": "по Чеджу",
+            "is_main_city": false
+          }
+        ],
+        "country": [
+          {
+            "id": 263,
+            "slug": "south-korea",
+            "name": "Южная Корея",
+            "name_prepositional": "Южной Корее",
+            "in_obj_phrase": "в Южной Корее",
+            "from_obj_phrase": "из Южной Кореи",
+            "across_obj_phrase": "по Южной Корее",
+            "is_main_city": false
+          }
+        ]
+      },
+      "guide": {
+        "id": 2504386,
+        "first_name": "Владимир",
+        "url": "https://experience.tripster.ru/guide/2504386/",
+        "avatar": {
+          "medium": "https://resize.tripster.ru/s8ipbTq57NjPvwXQKHaxQIHSsr4=/150x150/filters:no_upscale()/https://cdn.tripster.ru/avatars/e993fae0-7940-45c8-9564-21d6ce8a37f8.png",
+          "small": "https://resize.tripster.ru/s8ipbTq57NjPvwXQKHaxQIHSsr4=/150x150/filters:no_upscale()/https://cdn.tripster.ru/avatars/e993fae0-7940-45c8-9564-21d6ce8a37f8.png"
+        },
+        "rating": 0,
+        "rate_count": 0,
+        "review_count": 0,
+        "avg_reaction_delay": 36,
+        "avg_reaction_delay_display": {
+          "nominative": "1 час",
+          "accusative": "1 час",
+          "genitive": "1 часа"
+        },
+        "type": "team",
+        "date_start_work": "2025-09-19T08:57:59.852428Z",
+        "date_joined": "2025-08-01T09:56:25.805381Z",
+        "is_licensed": false,
+        "orders_count": 1,
+        "visitors_count": 0,
+        "description": "Проводим туры в Корею с 2023 года. За это время мы организовали десятки авторских поездок для 300+ человек: от языковых лагерей и турпоездок до бьюти-программ .\n\nМы показываем как столичный К-поп-глянец, так и настоящую повседневную Корею. Нас цепляет контраст: вы можете гулять по древнему дворцу в ханбоке, а через пару часов уже примерять парфюм в поп-апе Tamburins. В этих местах — удивительное сочетание уюта, стиля и культурной глубины.\n\nМы не просто показываем Корею — мы помогаем в неё влюбиться.\n\n— В каждом туре работает профессиональный куратор, проживший в Корее от 5 до 10 лет.\n— Мы снимаем с участников всю организационную головную боль: от транспорта и сим-карт до переводчиков и помощи в аптеке.\n—Мы адаптируем программу под настроение группы, добавляем вечерние активности, помогаем попасть на концерты и в кафе из дорам.\n— В языковых турах у нас плотное партнёрство с университетами и школами, так что это не экскурсия «ради галочки», а реальное погружение.",
+        "exp_count_published": 2,
+        "number_of_persons_paid": 0
+      },
+      "guide_can_resume": false,
+      "has_non_refundable_part": false,
+      "photos": [
+        {
+          "type": "experience",
+          "thumbnail": "https://resize.tripster.ru/tqW_XWSO0LO_I_IDQDwFq5F3unU=/fit-in/800x600/filters:no_upscale()/https://cdn.tripster.ru/photos/72e69265-04dd-418a-b6c3-23f87d542ad3.png",
+          "medium": "https://resize.tripster.ru/equHl27MPRtliUFyboBYVq_PA0o=/fit-in/1200x1000/filters:no_upscale()/https://cdn.tripster.ru/photos/72e69265-04dd-418a-b6c3-23f87d542ad3.png",
+          "thumbnail_portrait": "https://resize.tripster.ru/O9SNFOK8zzEvjHP9YFHaRxre-1Y=/287x392/filters:no_upscale()/https://cdn.tripster.ru/photos/72e69265-04dd-418a-b6c3-23f87d542ad3.png"
+        },
+        {
+          "type": "experience",
+          "thumbnail": "https://resize.tripster.ru/llt2Tq_DNVSXgerBaYZ57EA5g38=/fit-in/800x600/filters:no_upscale()/https://cdn.tripster.ru/photos/c4a3a784-46f4-4ee9-9695-b700dc787f9b.png",
+          "medium": "https://resize.tripster.ru/-H63DFZ1RcDXRjt5BEXGEZwVP_Y=/fit-in/1200x1000/filters:no_upscale()/https://cdn.tripster.ru/photos/c4a3a784-46f4-4ee9-9695-b700dc787f9b.png",
+          "thumbnail_portrait": "https://resize.tripster.ru/LIN406FwuAQGpP8_0Og5_yo-Qik=/287x392/filters:no_upscale()/https://cdn.tripster.ru/photos/c4a3a784-46f4-4ee9-9695-b700dc787f9b.png"
+        },
+        {
+          "type": "experience",
+          "thumbnail": "https://resize.tripster.ru/0uXJJVfhbQjbGljaZyLeDTeLU1g=/fit-in/800x600/filters:no_upscale()/https://cdn.tripster.ru/photos/c279f024-70c8-4339-99a4-117a839e586b.png",
+          "medium": "https://resize.tripster.ru/WKag5Mbx_WkCVk-fa7Hvoa5tPj4=/fit-in/1200x1000/filters:no_upscale()/https://cdn.tripster.ru/photos/c279f024-70c8-4339-99a4-117a839e586b.png",
+          "thumbnail_portrait": "https://resize.tripster.ru/JagLoZeaK7YviOtk26YQq0QrCc4=/287x392/filters:no_upscale()/https://cdn.tripster.ru/photos/c279f024-70c8-4339-99a4-117a839e586b.png"
+        },
+        {
+          "type": "experience",
+          "thumbnail": "https://resize.tripster.ru/zDlcGkvaIuDyMRpgu46GxVZjoBQ=/fit-in/800x600/filters:no_upscale()/https://cdn.tripster.ru/photos/de5a603d-4c1e-4361-8d15-c5f2c2eed184.png",
+          "medium": "https://resize.tripster.ru/ndBTUiI2qCmCWJtNdpFiCNrQYQ8=/fit-in/1200x1000/filters:no_upscale()/https://cdn.tripster.ru/photos/de5a603d-4c1e-4361-8d15-c5f2c2eed184.png",
+          "thumbnail_portrait": "https://resize.tripster.ru/6Ox0KCiRhjnIDRCJ3nD2niO8o2w=/287x392/filters:no_upscale()/https://cdn.tripster.ru/photos/de5a603d-4c1e-4361-8d15-c5f2c2eed184.png"
+        },
+        {
+          "type": "experience",
+          "thumbnail": "https://resize.tripster.ru/JDDW3H3L5q04DASJQIyMbqoZ958=/fit-in/800x600/filters:no_upscale()/https://cdn.tripster.ru/photos/d0db4a02-5705-46ee-9c0a-1d24d53a5ec1.png",
+          "medium": "https://resize.tripster.ru/74UZCJQWD7gs9QGfdVbxuR4muWk=/fit-in/1200x1000/filters:no_upscale()/https://cdn.tripster.ru/photos/d0db4a02-5705-46ee-9c0a-1d24d53a5ec1.png",
+          "thumbnail_portrait": "https://resize.tripster.ru/-Z_3qdUAgAHfuvJDxVaELO95oEY=/287x392/filters:no_upscale()/https://cdn.tripster.ru/photos/d0db4a02-5705-46ee-9c0a-1d24d53a5ec1.png"
+        },
+        {
+          "type": "experience",
+          "thumbnail": "https://resize.tripster.ru/vCoyFn47KXfMAI1aR3b6xVko65g=/fit-in/800x600/filters:no_upscale()/https://cdn.tripster.ru/photos/6e6797dd-b0f5-4bf7-9063-7cc0be8f175a.png",
+          "medium": "https://resize.tripster.ru/8VWQzd8881Grdsri8CO_ey-AqGU=/fit-in/1200x1000/filters:no_upscale()/https://cdn.tripster.ru/photos/6e6797dd-b0f5-4bf7-9063-7cc0be8f175a.png",
+          "thumbnail_portrait": "https://resize.tripster.ru/4uudnK5FMWMA5TEauFUL62_DzX0=/287x392/filters:no_upscale()/https://cdn.tripster.ru/photos/6e6797dd-b0f5-4bf7-9063-7cc0be8f175a.png"
+        },
+        {
+          "type": "experience",
+          "thumbnail": "https://resize.tripster.ru/G9XHYwh6uW3pQ0rBvV2SoXZcrF8=/fit-in/800x600/filters:no_upscale()/https://cdn.tripster.ru/photos/8a2aae9e-b5b9-4f49-8414-22c8eec56c10.png",
+          "medium": "https://resize.tripster.ru/-P_q72uRDBi2ba4WhM239TMXnd8=/fit-in/1200x1000/filters:no_upscale()/https://cdn.tripster.ru/photos/8a2aae9e-b5b9-4f49-8414-22c8eec56c10.png",
+          "thumbnail_portrait": "https://resize.tripster.ru/9hCQL4BP97tEJr57iZ_OtpowjCg=/287x392/filters:no_upscale()/https://cdn.tripster.ru/photos/8a2aae9e-b5b9-4f49-8414-22c8eec56c10.png"
+        }
+      ],
+      "schedule": {
+        "upcoming_events": [
+          "2026-03-30T08:00:00",
+          "2026-04-01T23:00:00"
+        ]
+      },
+      "is_paid": false
+    },
+    {
+      "status": "active",
+      "id": 88535,
+      "title": "Большое путешествие по Пусану и Сеулу с изучением корейского",
+      "tagline": "Попрактиковать язык, сходить в спа, посетить мастер-классы, получить фото в ханбоке и бьюти-бокс",
+      "annotation": "Подарите себе незабываемое лето — отправляйтесь в Пусан и Сеул с преподавателем корейского. Ежедневно вы будете учить разговорные фразы и сразу же применять их в жизни, общаясь с местными, заказывая еду или делая покупки, — так вы освоите язык быстрее. Посетите университеты Ёнсэ и Кёнхи — это важно, если хотите поступить в местный вуз. Осмотр знаковых достопримечательностей мы сопроводим всесторонним погружением в традиции. Вы отведаете деликатесов, понаблюдаете за чайной церемонией и научитесь готовить кимчи. Пересечёте морской пролив на яхте, сделаете фото в ханбоке и получите в подарок бьюти-бокс с индивидуально подобранной косметикой. Расслабитесь в спа, антистресс-кафе с животными и аквариуме, повеселитесь в парке аттракционов и сможете сходить в океанариум, аквапарк, зоопарк, парк альпак. А также узнаете всё о халлю — феномене глобальной популярности южнокорейской культуры: пройдёте по местам съёмок дорам, почувствуете себя K-pop-айдолом, примерив роль танцора и телеведущего, и сможете спеть в караоке.",
+      "url": "https://experience.tripster.ru/experience/88535/",
+      "type": "tour",
+      "format": "activity",
+      "grade": null,
+      "movement_type": "car",
+      "schedule_type": "fixed_slots",
+      "exp_status": 3,
+      "is_instant_booking": false,
+      "is_new": false,
+      "max_persons": 8,
+      "duration": 264,
+      "price": {
+        "value": 2205,
+        "currency": "USD",
+        "currency_rate": 85,
+        "price_from": false,
+        "unit_string": "за одного",
+        "value_string": "$2205 за одного"
+      },
+      "rating": 0,
+      "visitors_count": 0,
+      "review_count": 0,
+      "pause_finish_date": null,
+      "pause_reason": null,
+      "cancel_finish_date": null,
+      "cancel_reason": null,
+      "additional_info": "",
+      "comfort_level_info": "<div><p><strong>Питание.</strong> Входят приветственный и прощальный ужины, остальное питание оплачивается отдельно.</p>\n\n\t<p><strong>Транспорт.</strong> Минивэн, общественный (автобусы, поезда).</p>\n\n\t<p><strong>Возраст участников.</strong> Возможно участие с детьми старше 16 лет. Рекомендуемое ограничение — до 45 лет.</p>\n\n\t<p><strong>Виза.</strong> Гражданам России не требуется, но необходимо электронное разрешение на въезд (входит в стоимость, оформляется организатором).</p>\n\n\t<p><strong>Уровень сложности.</strong> Лёгкий. Спокойный темп, пешие прогулки до 15 км. Физподготовка не нужна.</p></div>",
+      "price_included_description": "<ul>\n\t\t<li>Проживание</li>\n\t\t<li>2 ужина</li>\n\t\t<li>Трансферы от/до аэропортов</li>\n\t\t<li>Все трансферы по маршруту</li>\n\t\t<li>Сопровождение гидом</li>\n\t\t<li>Все входные билеты, экскурсии, мастер-классы, активности по программе</li>\n\t\t<li>Фото- и видеосъёмка</li>\n\t\t<li>Ежедневные уроки корейского, уроки чтения от преподавателя и организатора</li>\n\t\t<li>Разрешение на въезд, wowpass (транспортная, платёжная и сим-карта для иностранцев с 20 000 W на балансе), страховка</li>\n\t\t<li>Гайд по прохождению таможни, сборник разговорных фраз</li>\n\t\t<li>Бьюти-бокс в подарок</li>\n\t\t<li>Помощь с покупкой авиабилетов, удалённое сопровождение в свободные дни тура.</li>\n\t</ul>",
+      "price_not_included_description": "<div><ul>\n\t\t<li>Билеты в Пусан и обратно в ваш город из Сеула</li>\n\t\t<li>Питание (кроме 2 ужинов) — около $20 ежедневно</li>\n\t</ul>\n\n\t<p><strong>Минимальное количество участников — 3 человека.</strong></p></div>",
+      "geo_access_level": "all",
+      "geo": {
+        "city": [
+          {
+            "id": 403,
+            "slug": "Seoul",
+            "name": "Сеул",
+            "name_prepositional": "Сеуле",
+            "in_obj_phrase": "в Сеуле",
+            "from_obj_phrase": "из Сеула",
+            "across_obj_phrase": "по Сеулу",
+            "is_main_city": false
+          }
+        ],
+        "country": [
+          {
+            "id": 263,
+            "slug": "south-korea",
+            "name": "Южная Корея",
+            "name_prepositional": "Южной Корее",
+            "in_obj_phrase": "в Южной Корее",
+            "from_obj_phrase": "из Южной Кореи",
+            "across_obj_phrase": "по Южной Корее",
+            "is_main_city": false
+          }
+        ]
+      },
+      "guide": {
+        "id": 2009418,
+        "first_name": "Валерия",
+        "url": "https://experience.tripster.ru/guide/2009418/",
+        "avatar": {
+          "medium": "https://resize.tripster.ru/_TZLd6fe5xQBS43F0K7wlrVzUXI=/150x150/filters:no_upscale()/https://cdn.tripster.ru/avatars/e83173cd-54e8-46ad-89ef-a717b51e3342.jpg",
+          "small": "https://resize.tripster.ru/_TZLd6fe5xQBS43F0K7wlrVzUXI=/150x150/filters:no_upscale()/https://cdn.tripster.ru/avatars/e83173cd-54e8-46ad-89ef-a717b51e3342.jpg"
+        },
+        "rating": 0,
+        "rate_count": 0,
+        "review_count": 0,
+        "avg_reaction_delay": null,
+        "avg_reaction_delay_display": {
+          "nominative": "24 часа",
+          "accusative": "24 часа",
+          "genitive": "24 часов"
+        },
+        "type": "team",
+        "date_start_work": "2025-04-23T04:53:31.250707Z",
+        "date_joined": "2024-10-23T05:57:39.438815Z",
+        "is_licensed": false,
+        "orders_count": 0,
+        "visitors_count": 0,
+        "description": "Привет! Меня зовут Валерия, я преподаватель корейского языка и организатор туров в Южную Корею. Я училась и жила в в этой стране в течении нескольких лет, работала в местных компаниях переводчиком, поэтому имею представление обо всём, что может заинтересовать иностранцев. Работаю в команде с гидами, которые так же любят культуру, историю, язык Кореи, как и я. Вы можете не только узнать много нового, но и начать учить в поездке язык.",
+        "exp_count_published": 1,
+        "number_of_persons_paid": 0
+      },
+      "guide_can_resume": false,
+      "has_non_refundable_part": false,
+      "photos": [
+        {
+          "type": "experience",
+          "thumbnail": "https://resize.tripster.ru/IG7WejQppDBN0qPbkC4eeb_zvCU=/fit-in/800x600/filters:no_upscale()/https://cdn.tripster.ru/photos/a0209870-a9db-4ed6-bfc1-b08e67335328.jpg",
+          "medium": "https://resize.tripster.ru/qHaq9J5bvwLvHlXLe56HQnc-Zg4=/fit-in/1200x1000/filters:no_upscale()/https://cdn.tripster.ru/photos/a0209870-a9db-4ed6-bfc1-b08e67335328.jpg",
+          "thumbnail_portrait": "https://resize.tripster.ru/zxCCYA93_bMb_rLc4NQ-OplVwxA=/287x392/filters:no_upscale()/https://cdn.tripster.ru/photos/a0209870-a9db-4ed6-bfc1-b08e67335328.jpg"
+        },
+        {
+          "type": "experience",
+          "thumbnail": "https://resize.tripster.ru/1FyOHC-v8mK-8Zlx3xq7caaY-Cw=/fit-in/800x600/filters:no_upscale()/https://cdn.tripster.ru/photos/0bb6f926-676b-465d-976e-9145acd8baec.jpg",
+          "medium": "https://resize.tripster.ru/9JR_51pE-HrRcj5i6-pcI1cop3M=/fit-in/1200x1000/filters:no_upscale()/https://cdn.tripster.ru/photos/0bb6f926-676b-465d-976e-9145acd8baec.jpg",
+          "thumbnail_portrait": "https://resize.tripster.ru/1DPYisKzx-kK-Wtbtwd4j2Cf8Kw=/287x392/filters:no_upscale()/https://cdn.tripster.ru/photos/0bb6f926-676b-465d-976e-9145acd8baec.jpg"
+        },
+        {
+          "type": "experience",
+          "thumbnail": "https://resize.tripster.ru/7a9RTBKybVpV0EmI3to_ak7oGMA=/fit-in/600x800/filters:no_upscale()/https://cdn.tripster.ru/photos/172e6d71-d665-40b2-b36b-7ac3d1d38b44.jpg",
+          "medium": "https://resize.tripster.ru/oOssxYuA4JJnCjbAgFP8rIeodrA=/fit-in/1000x1350/filters:no_upscale()/https://cdn.tripster.ru/photos/172e6d71-d665-40b2-b36b-7ac3d1d38b44.jpg",
+          "thumbnail_portrait": "https://resize.tripster.ru/DQeJ-z0v8u3h2TgU8GzFmHhZwzc=/287x392/filters:no_upscale()/https://cdn.tripster.ru/photos/172e6d71-d665-40b2-b36b-7ac3d1d38b44.jpg"
+        },
+        {
+          "type": "experience",
+          "thumbnail": "https://resize.tripster.ru/ju6JqPL6SGo0JHydMvMmVRqJqNs=/fit-in/600x800/filters:no_upscale()/https://cdn.tripster.ru/photos/70387431-4bcc-4f64-b3bb-c0115f1d5f95.jpg",
+          "medium": "https://resize.tripster.ru/HYkZFaHlIu_IIV19wCoktc7ryPU=/fit-in/1000x1350/filters:no_upscale()/https://cdn.tripster.ru/photos/70387431-4bcc-4f64-b3bb-c0115f1d5f95.jpg",
+          "thumbnail_portrait": "https://resize.tripster.ru/D5IrQmEma7vBlxkhiFDJPf3-GNI=/287x392/filters:no_upscale()/https://cdn.tripster.ru/photos/70387431-4bcc-4f64-b3bb-c0115f1d5f95.jpg"
+        },
+        {
+          "type": "experience",
+          "thumbnail": "https://resize.tripster.ru/DzHmisJiMLZGUcTuQDn4pEpkitU=/fit-in/800x600/filters:no_upscale()/https://cdn.tripster.ru/photos/2a7c3758-c580-42ab-a82e-e6a4a63b2d2a.png",
+          "medium": "https://resize.tripster.ru/bGCb9V3D3ZiSh4v5SOTmyIxcNsI=/fit-in/1200x1000/filters:no_upscale()/https://cdn.tripster.ru/photos/2a7c3758-c580-42ab-a82e-e6a4a63b2d2a.png",
+          "thumbnail_portrait": "https://resize.tripster.ru/ASS_YSzbKrD-GGXdEfv2VidG0xU=/287x392/filters:no_upscale()/https://cdn.tripster.ru/photos/2a7c3758-c580-42ab-a82e-e6a4a63b2d2a.png"
+        },
+        {
+          "type": "experience",
+          "thumbnail": "https://resize.tripster.ru/BEkOd2pjXHyqvIKddD601DNR58c=/fit-in/600x800/filters:no_upscale()/https://cdn.tripster.ru/photos/b9af0a4c-b75a-4881-9866-a4227ba1d3f9.jpg",
+          "medium": "https://resize.tripster.ru/cvCZd9D0P6QeToQmz1TR4WrQN5I=/fit-in/1000x1350/filters:no_upscale()/https://cdn.tripster.ru/photos/b9af0a4c-b75a-4881-9866-a4227ba1d3f9.jpg",
+          "thumbnail_portrait": "https://resize.tripster.ru/VVF_oMAehvWXFeScIK-HXk-7-iE=/287x392/filters:no_upscale()/https://cdn.tripster.ru/photos/b9af0a4c-b75a-4881-9866-a4227ba1d3f9.jpg"
+        },
+        {
+          "type": "experience",
+          "thumbnail": "https://resize.tripster.ru/KcxLzKrtRGzo11Yw2mbQIo_RIPs=/fit-in/800x600/filters:no_upscale()/https://cdn.tripster.ru/photos/a51fd5e2-06dd-4796-9935-a92d40bbb561.jpg",
+          "medium": "https://resize.tripster.ru/xFoXhkKfitllUpu0Y9--TdLvXV0=/fit-in/1200x1000/filters:no_upscale()/https://cdn.tripster.ru/photos/a51fd5e2-06dd-4796-9935-a92d40bbb561.jpg",
+          "thumbnail_portrait": "https://resize.tripster.ru/2wwY5S-IlyRV_IhHBntmHI1_WzA=/287x392/filters:no_upscale()/https://cdn.tripster.ru/photos/a51fd5e2-06dd-4796-9935-a92d40bbb561.jpg"
+        },
+        {
+          "type": "experience",
+          "thumbnail": "https://resize.tripster.ru/bWhWHOI8GzvWGiBjApD0mzc53Es=/fit-in/800x600/filters:no_upscale()/https://cdn.tripster.ru/photos/1eb07419-4127-42c6-8e95-cf99f7157abc.jpg",
+          "medium": "https://resize.tripster.ru/tSsx-QryQosM8b3SRH-Qdnw2XJY=/fit-in/1200x1000/filters:no_upscale()/https://cdn.tripster.ru/photos/1eb07419-4127-42c6-8e95-cf99f7157abc.jpg",
+          "thumbnail_portrait": "https://resize.tripster.ru/tKwiqCZ-E6aNN-YWk1a6xF5QjII=/287x392/filters:no_upscale()/https://cdn.tripster.ru/photos/1eb07419-4127-42c6-8e95-cf99f7157abc.jpg"
+        },
+        {
+          "type": "experience",
+          "thumbnail": "https://resize.tripster.ru/i-jAqe1SgTVLv4w76AIxA90LSH8=/fit-in/600x800/filters:no_upscale()/https://cdn.tripster.ru/photos/b2ea9176-cfbf-4630-8815-962f3afa1fdc.jpg",
+          "medium": "https://resize.tripster.ru/1EThNasUBWUOEYCy6IMxDHEoEh0=/fit-in/1000x1350/filters:no_upscale()/https://cdn.tripster.ru/photos/b2ea9176-cfbf-4630-8815-962f3afa1fdc.jpg",
+          "thumbnail_portrait": "https://resize.tripster.ru/IX4oJ_QECnn7TN0o-YN2WZLRO0Y=/287x392/filters:no_upscale()/https://cdn.tripster.ru/photos/b2ea9176-cfbf-4630-8815-962f3afa1fdc.jpg"
+        },
+        {
+          "type": "experience",
+          "thumbnail": "https://resize.tripster.ru/t1bUmd5MYf4qhLpovQubAJnQcvg=/fit-in/800x600/filters:no_upscale()/https://cdn.tripster.ru/photos/c63b2056-7d4d-4e23-84f1-5700f776dbe4.jpg",
+          "medium": "https://resize.tripster.ru/Tv1DGkyqlfQZT5pLNE1vG1d5ngU=/fit-in/1200x1000/filters:no_upscale()/https://cdn.tripster.ru/photos/c63b2056-7d4d-4e23-84f1-5700f776dbe4.jpg",
+          "thumbnail_portrait": "https://resize.tripster.ru/zKQdk3ifp6hQvkVY4fIx5a3dryQ=/287x392/filters:no_upscale()/https://cdn.tripster.ru/photos/c63b2056-7d4d-4e23-84f1-5700f776dbe4.jpg"
+        }
+      ],
+      "schedule": {
+        "upcoming_events": [
+          "2026-06-06T17:00:00",
+          "2026-06-24T17:00:00",
+          "2026-07-11T17:30:00",
+          "2026-09-12T08:00:00"
+        ]
+      },
+      "is_paid": false
+    },
+    {
+      "status": "active",
+      "id": 72283,
+      "title": "В золотых объятиях корейской осени: тренировки в монастыре, прогулки по Сеулу и остров Чеджу",
+      "tagline": "Поучиться боевому искусству санмудо и помедитировать, подняться на вулкан и сделать фото в костюмах",
+      "annotation": "Мы подготовили насыщенную и интересную программу путешествия по удивительной стране, где сочетаются прошлое и настоящее, старинное и современное. Мы приобщимся к аскетичной жизни буддийских монахов: проведём ночь в монастыре и познакомимся с традициями и ритуалами. Будем исследовать остров Чеджу, включённый в список наследия ЮНЕСКО: заглянем в лавовую пещеру, совершим небольшое восхождение к кратеру вулкана и отдохнём на живописных песчаных пляжах. А ещё вы сможете нарядиться в традиционные костюмы и сделать необычные фотографии на фоне дворцов Кенбоккун и Токсугун.",
+      "url": "https://experience.tripster.ru/experience/72283/",
+      "type": "tour",
+      "format": "activity",
+      "grade": null,
+      "movement_type": "other",
+      "schedule_type": "fixed_slots",
+      "exp_status": 3,
+      "is_instant_booking": false,
+      "is_new": false,
+      "max_persons": 8,
+      "duration": 192,
+      "price": {
+        "value": 2600,
+        "currency": "USD",
+        "currency_rate": 85,
+        "price_from": false,
+        "unit_string": "за одного",
+        "value_string": "$2600 за одного"
+      },
+      "rating": 0,
+      "visitors_count": 0,
+      "review_count": 0,
+      "pause_finish_date": null,
+      "pause_reason": null,
+      "cancel_finish_date": null,
+      "cancel_reason": null,
+      "additional_info": "<p><strong>После внесения предоплаты на сайте (15%) заключается договор напрямую с организатором с внесением ещё 30% от стоимости тура</strong> (в рублях; через платёжную систему, поддерживающую российские карты). Остальное — в первый день (в валюте страны).</p>",
+      "comfort_level_info": "<div><p><strong>Питание.</strong> В стоимость включены завтраки в отелях, а также завтрак, обед и ужин в буддийском монастыре (вегетарианская кухня). Остальное питание за доплату. </p>\n\n\t<p><strong>Транспорт.</strong> В Сеуле будем передвигаться на общественном транспорте. На островах — на комфортабельном автомобиле/микроавтобусе.</p>\n\n\t<p><strong>Дети.</strong> 18+.  </p>\n\n\t<p><strong>Сложность.</strong> Средний. Для подъёма на спящий вулкан потребуется средняя физическая подготовка. Набор высоты не более 100 метров, идти будем по оборудованным лестницам. Прогулка по желанию. </p>\n\n\t<p><strong>Виза.</strong> Безвизовый режим для граждан РФ, но для въезда нужно оформить онлайн-разрешение K-ETA. Подтверждаю бронирование тура только после получения К-ЕТA. Для своих участников оформляю К-ЕТA в подарок.</p></div>",
+      "price_included_description": "<ul>\n\t\t<li>Проживание</li>\n\t\t<li>Завтраки</li>\n\t\t<li>Трансферы по маршруту, в том числе из/в аэропорт (общий трансфер к рекомендуемым рейсам)</li>\n\t\t<li>Внутренние перелёты, билеты на поезд и паром</li>\n\t\t<li>Входные билеты в национальные парки</li>\n\t\t<li>Аренда национальных костюмов для фотосессии</li>\n\t\t<li>Экскурсии по программе</li>\n\t\t<li>Фото- и видеосопровождение</li>\n\t\t<li>Сопровождение турлидером</li>\n\t\t<li>Услуги местных и гидов и экскурсоводов</li>\n\t\t<li>Оформление разрешения K-ETA</li>\n\t</ul>",
+      "price_not_included_description": "<ul>\n\t\t<li>Билеты в Сеул и обратно</li>\n\t\t<li>Обеды и ужины</li>\n\t\t<li>Доплата за 1-местное размещение — $450</li>\n\t</ul>",
+      "geo_access_level": "all",
+      "geo": {
+        "city": [
+          {
+            "id": 403,
+            "slug": "Seoul",
+            "name": "Сеул",
+            "name_prepositional": "Сеуле",
+            "in_obj_phrase": "в Сеуле",
+            "from_obj_phrase": "из Сеула",
+            "across_obj_phrase": "по Сеулу",
+            "is_main_city": true
+          },
+          {
+            "id": 975,
+            "slug": "Jeju",
+            "name": "Чеджу",
+            "name_prepositional": "Чеджу",
+            "in_obj_phrase": "в Чеджу",
+            "from_obj_phrase": "из Чеджу",
+            "across_obj_phrase": "по Чеджу",
+            "is_main_city": false
+          }
+        ],
+        "country": [
+          {
+            "id": 263,
+            "slug": "south-korea",
+            "name": "Южная Корея",
+            "name_prepositional": "Южной Корее",
+            "in_obj_phrase": "в Южной Корее",
+            "from_obj_phrase": "из Южной Кореи",
+            "across_obj_phrase": "по Южной Корее",
+            "is_main_city": false
+          }
+        ]
+      },
+      "guide": {
+        "id": 1539067,
+        "first_name": "Варвара",
+        "url": "https://experience.tripster.ru/guide/1539067/",
+        "avatar": {
+          "medium": "https://resize.tripster.ru/CsES5G-WnCip_sRTeYaSlzZJFl0=/150x150/filters:no_upscale()/https://cdn.tripster.ru/avatars/3d7544b0-adcd-4ddf-b9c4-5e1adc0a153a.jpg",
+          "small": "https://resize.tripster.ru/CsES5G-WnCip_sRTeYaSlzZJFl0=/150x150/filters:no_upscale()/https://cdn.tripster.ru/avatars/3d7544b0-adcd-4ddf-b9c4-5e1adc0a153a.jpg"
+        },
+        "rating": 5,
+        "rate_count": 2,
+        "review_count": 2,
+        "avg_reaction_delay": 20,
+        "avg_reaction_delay_display": {
+          "nominative": "20 минут",
+          "accusative": "20 минут",
+          "genitive": "20 минут"
+        },
+        "type": "guide",
+        "date_start_work": "2024-02-16T14:27:22.098166Z",
+        "date_joined": "2024-02-16T09:04:38.000000Z",
+        "is_licensed": false,
+        "orders_count": 14,
+        "visitors_count": 2,
+        "description": "Привет, я Варя, уже больше 9 лет колешу по нашей огромной планете.\r\nПобывала в 61 стране, на 5 континентах, плавала в 3 океанах, видела единственное старое чудо света и 5 новых чудес света.\r\n\r\nОднажды я поняла, что хочу показывать людям мир не только через экраны смартфонов, но и в реальности, и в 2020 году начала организовывать туры в мои самые любимые места нашей необъятной планеты. Сделала чуть более счастливыми уже более 100 человек. \r\nМои туры — это интересные программы, мини-группы, комфорт.",
+        "exp_count_published": 3,
+        "number_of_persons_paid": 2
+      },
+      "guide_can_resume": false,
+      "has_non_refundable_part": false,
+      "photos": [
+        {
+          "type": "experience",
+          "thumbnail": "https://resize.tripster.ru/TctxPHabJSjIL_VbQqffCB89tQM=/fit-in/800x600/filters:no_upscale()/https://cdn.tripster.ru/photos/27d3f4a4-53a7-41cd-a109-a47f6bdcbde3.jpg",
+          "medium": "https://resize.tripster.ru/mOlxRp2PdLj80jk1HEbk6ySmsSg=/fit-in/1200x1000/filters:no_upscale()/https://cdn.tripster.ru/photos/27d3f4a4-53a7-41cd-a109-a47f6bdcbde3.jpg",
+          "thumbnail_portrait": "https://resize.tripster.ru/HjLLfmgoMA5gi6BcadELDKica4A=/287x392/filters:no_upscale()/https://cdn.tripster.ru/photos/27d3f4a4-53a7-41cd-a109-a47f6bdcbde3.jpg"
+        },
+        {
+          "type": "experience",
+          "thumbnail": "https://resize.tripster.ru/U6uCAs13JzljNzXSBupjPQpNTak=/fit-in/600x800/filters:no_upscale()/https://cdn.tripster.ru/photos/06f0c311-13a6-4860-b027-aad83897fb75.jpg",
+          "medium": "https://resize.tripster.ru/iq0ojK6218b2WpNxZDk2n-x3sPg=/fit-in/1000x1350/filters:no_upscale()/https://cdn.tripster.ru/photos/06f0c311-13a6-4860-b027-aad83897fb75.jpg",
+          "thumbnail_portrait": "https://resize.tripster.ru/G-t67E1Tj1wSoV4SOMnwnMFX6Q4=/287x392/filters:no_upscale()/https://cdn.tripster.ru/photos/06f0c311-13a6-4860-b027-aad83897fb75.jpg"
+        },
+        {
+          "type": "experience",
+          "thumbnail": "https://resize.tripster.ru/87dmhoqGQfaaz9QmQrwg49x552o=/fit-in/600x800/filters:no_upscale()/https://cdn.tripster.ru/photos/3bac4630-72f3-415c-8cb6-f21b276d40da.jpg",
+          "medium": "https://resize.tripster.ru/ExHcYwtJt7JpCmuHMH9y2ifTaGo=/fit-in/1000x1350/filters:no_upscale()/https://cdn.tripster.ru/photos/3bac4630-72f3-415c-8cb6-f21b276d40da.jpg",
+          "thumbnail_portrait": "https://resize.tripster.ru/eEV0Q5ne7tPYsxmzGVH_O5uWFzg=/287x392/filters:no_upscale()/https://cdn.tripster.ru/photos/3bac4630-72f3-415c-8cb6-f21b276d40da.jpg"
+        },
+        {
+          "type": "experience",
+          "thumbnail": "https://resize.tripster.ru/lB4CL9QRg2dDIfHEX4d-GUkV2QA=/fit-in/600x800/filters:no_upscale()/https://cdn.tripster.ru/photos/ce521d3f-fbd7-44cd-a104-f1b255a59599.jpg",
+          "medium": "https://resize.tripster.ru/pQ_XNqPes7YfhHJmQ-fFd5o6Cdo=/fit-in/1000x1350/filters:no_upscale()/https://cdn.tripster.ru/photos/ce521d3f-fbd7-44cd-a104-f1b255a59599.jpg",
+          "thumbnail_portrait": "https://resize.tripster.ru/4t0YbNAhuB64SmMFm7wLyXoigzg=/287x392/filters:no_upscale()/https://cdn.tripster.ru/photos/ce521d3f-fbd7-44cd-a104-f1b255a59599.jpg"
+        },
+        {
+          "type": "experience",
+          "thumbnail": "https://resize.tripster.ru/Ul6JYqdtgi46VPaAOwkUnACcZWI=/fit-in/600x800/filters:no_upscale()/https://cdn.tripster.ru/photos/19b1c67d-0238-4fe7-a364-7f2f7def798e.jpg",
+          "medium": "https://resize.tripster.ru/GP3-kp_DgtYuBugiDeGh8PrQYOw=/fit-in/1000x1350/filters:no_upscale()/https://cdn.tripster.ru/photos/19b1c67d-0238-4fe7-a364-7f2f7def798e.jpg",
+          "thumbnail_portrait": "https://resize.tripster.ru/NsQjdJIv8YJLbpPEDLXCbDrkRII=/287x392/filters:no_upscale()/https://cdn.tripster.ru/photos/19b1c67d-0238-4fe7-a364-7f2f7def798e.jpg"
+        },
+        {
+          "type": "experience",
+          "thumbnail": "https://resize.tripster.ru/s1f0XW_KcRzZqcgUwiZ7PD5brK4=/fit-in/600x800/filters:no_upscale()/https://cdn.tripster.ru/photos/c62c8dfb-55b5-4076-8625-6f9f4d50f2c1.jpg",
+          "medium": "https://resize.tripster.ru/ZYBgMi-GT439dO9a1C_HDTk4GNI=/fit-in/1000x1350/filters:no_upscale()/https://cdn.tripster.ru/photos/c62c8dfb-55b5-4076-8625-6f9f4d50f2c1.jpg",
+          "thumbnail_portrait": "https://resize.tripster.ru/x9YMR8WaZgjZAmxHJrwRdRmUIf0=/287x392/filters:no_upscale()/https://cdn.tripster.ru/photos/c62c8dfb-55b5-4076-8625-6f9f4d50f2c1.jpg"
+        },
+        {
+          "type": "experience",
+          "thumbnail": "https://resize.tripster.ru/EoF1keoQ4IW2ZjI0TsJ4jHdp25k=/fit-in/600x800/filters:no_upscale()/https://cdn.tripster.ru/photos/36e4df48-b3ab-4d4b-94df-567621e04b3f.jpg",
+          "medium": "https://resize.tripster.ru/Oc9G55Id7sO9i4c-Sgtdh-1t-eM=/fit-in/1000x1350/filters:no_upscale()/https://cdn.tripster.ru/photos/36e4df48-b3ab-4d4b-94df-567621e04b3f.jpg",
+          "thumbnail_portrait": "https://resize.tripster.ru/5E0PF805ZtX-OW3gOs4M7SCVnKo=/287x392/filters:no_upscale()/https://cdn.tripster.ru/photos/36e4df48-b3ab-4d4b-94df-567621e04b3f.jpg"
+        }
+      ],
+      "schedule": {
+        "upcoming_events": [
+          "2026-10-17T08:00:00"
+        ]
+      },
+      "is_paid": false
+    },
+    {
+      "status": "active",
+      "id": 69839,
+      "title": "Осенью в Корею с гидом-фотографом: Сеул, Пусан и горы",
+      "tagline": "Увидеть королевские дворцы, храмы, скалы и футуристические здания в окружении красных клёнов",
+      "annotation": "Отправимся в Южную Корею в один из самых ярких и живописных сезонов — во время танпхуна, в период красных клёнов. Практически повсеместно фоном для достопримечательностей станет оранжево-алая листва. Сеульская телебашня и королевские дворцы, тропы горного региона, монастырь ордена Чоге в Пусане, традиционные домики в деревне Букчон — всё это смотрится эффектнее с осенними красками. Помимо природных оттенков, поймаем в кадре неоновые огни вечернего Сеула. Прокатимся в разноцветных кабинках вдоль моря в Пусане и отдохнём на побережье.",
+      "url": "https://experience.tripster.ru/experience/69839/",
+      "type": "tour",
+      "format": "activity",
+      "grade": null,
+      "movement_type": "car",
+      "schedule_type": "fixed_slots",
+      "exp_status": 3,
+      "is_instant_booking": false,
+      "is_new": false,
+      "max_persons": 12,
+      "duration": 192,
+      "price": {
+        "value": 2500,
+        "currency": "USD",
+        "currency_rate": 85,
+        "price_from": false,
+        "unit_string": "за одного",
+        "value_string": "$2500 за одного"
+      },
+      "rating": 0,
+      "visitors_count": 0,
+      "review_count": 0,
+      "pause_finish_date": null,
+      "pause_reason": null,
+      "cancel_finish_date": null,
+      "cancel_reason": null,
+      "additional_info": "",
+      "comfort_level_info": "",
+      "price_included_description": "<ul>\n\t\t<li>Проживание</li>\n\t\t<li>Все переезды по программе (заказной микроавтобус, общественный транспорт)</li>\n\t\t<li>Входные билеты на все объекты по программе</li>\n\t\t<li>Экосборы</li>\n\t\t<li>Билеты на канатные дороги</li>\n\t\t<li>Сопровождение русскоязычным гидом-фотографом</li>\n\t\t<li>Работа местных гидов</li>\n\t</ul>",
+      "price_not_included_description": "<ul>\n\t\t<li>Билеты до Сеула и обратно в ваш город</li>\n\t\t<li>Питание</li>\n\t\t<li>Трансфер из/в аэропорт</li>\n\t\t<li>1-местное размещение — по запросу</li>\n\t\t<li>Электронное разрешение на въезд</li>\n\t\t<li>Страховка</li>\n\t</ul>",
+      "geo_access_level": "all",
+      "geo": {
+        "city": [
+          {
+            "id": 403,
+            "slug": "Seoul",
+            "name": "Сеул",
+            "name_prepositional": "Сеуле",
+            "in_obj_phrase": "в Сеуле",
+            "from_obj_phrase": "из Сеула",
+            "across_obj_phrase": "по Сеулу",
+            "is_main_city": true
+          }
+        ],
+        "country": [
+          {
+            "id": 263,
+            "slug": "south-korea",
+            "name": "Южная Корея",
+            "name_prepositional": "Южной Корее",
+            "in_obj_phrase": "в Южной Корее",
+            "from_obj_phrase": "из Южной Кореи",
+            "across_obj_phrase": "по Южной Корее",
+            "is_main_city": false
+          }
+        ]
+      },
+      "guide": {
+        "id": 1524898,
+        "first_name": "Елена",
+        "url": "https://experience.tripster.ru/guide/1524898/",
+        "avatar": {
+          "medium": "https://resize.tripster.ru/Ri3gFCplkiBoSXXlrKky_FSUJbQ=/150x150/filters:no_upscale()/https://cdn.tripster.ru/avatars/58ed5ab0-e333-4316-a3a1-f29d47bdf84b.jpg",
+          "small": "https://resize.tripster.ru/Ri3gFCplkiBoSXXlrKky_FSUJbQ=/150x150/filters:no_upscale()/https://cdn.tripster.ru/avatars/58ed5ab0-e333-4316-a3a1-f29d47bdf84b.jpg"
+        },
+        "rating": 5,
+        "rate_count": 5,
+        "review_count": 3,
+        "avg_reaction_delay": 147,
+        "avg_reaction_delay_display": {
+          "nominative": "3 часа",
+          "accusative": "3 часа",
+          "genitive": "3 часов"
+        },
+        "type": "team",
+        "date_start_work": "2024-02-14T12:31:31.945692Z",
+        "date_joined": "2024-02-01T13:10:37.000000Z",
+        "is_licensed": true,
+        "orders_count": 100,
+        "visitors_count": 14,
+        "description": "С 2016 года создаём путешествия для тех, кому важен комфорт. Туры по самым красивым уголкам России и мира. Фототуры, этнические и арт-туры, путешествия в дикую природу. Необычные маршруты для необычных людей. Мы создаём путешествия для всех, кто ценит эмоции и максимум впечатлений. Большинство туров разработаны профессиональными фотографами. А это значит, что вы увидите всё самое красивое и яркое!",
+        "exp_count_published": 11,
+        "number_of_persons_paid": 14
+      },
+      "guide_can_resume": false,
+      "has_non_refundable_part": false,
+      "photos": [
+        {
+          "type": "experience",
+          "thumbnail": "https://resize.tripster.ru/GvORayt7rGHpXqtxJlG8n2DUkUQ=/fit-in/800x600/filters:no_upscale()/https://cdn.tripster.ru/photos/d98e01d6-40a9-4744-8315-1347eac1eef1.jpg",
+          "medium": "https://resize.tripster.ru/FMUrmzdOTgJUQrJqHIzyTASLjEM=/fit-in/1200x1000/filters:no_upscale()/https://cdn.tripster.ru/photos/d98e01d6-40a9-4744-8315-1347eac1eef1.jpg",
+          "thumbnail_portrait": "https://resize.tripster.ru/Ju3YC5DrJO7sNzKQj97-VVmH6H8=/287x392/filters:no_upscale()/https://cdn.tripster.ru/photos/d98e01d6-40a9-4744-8315-1347eac1eef1.jpg"
+        },
+        {
+          "type": "experience",
+          "thumbnail": "https://resize.tripster.ru/ZC0dX6EQM-x-iqiLOYul9_Y7Klg=/fit-in/800x600/filters:no_upscale()/https://cdn.tripster.ru/photos/5f046b13-1ea9-42b3-a779-fd01a5a22e1b.jpg",
+          "medium": "https://resize.tripster.ru/LXm02DDEDO8KbEcRiqaKsKS_UxM=/fit-in/1200x1000/filters:no_upscale()/https://cdn.tripster.ru/photos/5f046b13-1ea9-42b3-a779-fd01a5a22e1b.jpg",
+          "thumbnail_portrait": "https://resize.tripster.ru/l_9leWiXMIqVPg_Lcb9yvPDoXPY=/287x392/filters:no_upscale()/https://cdn.tripster.ru/photos/5f046b13-1ea9-42b3-a779-fd01a5a22e1b.jpg"
+        },
+        {
+          "type": "experience",
+          "thumbnail": "https://resize.tripster.ru/6zsbC4MS6lGa1Rzaiq5RcipTp4w=/fit-in/800x600/filters:no_upscale()/https://cdn.tripster.ru/photos/33ad47e0-a4dc-4791-825c-e1b5a4b0c1c4.jpg",
+          "medium": "https://resize.tripster.ru/qd3iCCKdvaFtCdTXOFh8izD4SMI=/fit-in/1200x1000/filters:no_upscale()/https://cdn.tripster.ru/photos/33ad47e0-a4dc-4791-825c-e1b5a4b0c1c4.jpg",
+          "thumbnail_portrait": "https://resize.tripster.ru/jMqqJtG-DM35bHHTFht_2Y_3MZQ=/287x392/filters:no_upscale()/https://cdn.tripster.ru/photos/33ad47e0-a4dc-4791-825c-e1b5a4b0c1c4.jpg"
+        },
+        {
+          "type": "experience",
+          "thumbnail": "https://resize.tripster.ru/nN7fIuH7OAqxLiUWms_189XaWYs=/fit-in/800x600/filters:no_upscale()/https://cdn.tripster.ru/photos/04f41f4f-7375-4014-91b8-757c5917f9fe.jpg",
+          "medium": "https://resize.tripster.ru/2gjrQtM1cDvqxn0I5zCM5GWyRAA=/fit-in/1200x1000/filters:no_upscale()/https://cdn.tripster.ru/photos/04f41f4f-7375-4014-91b8-757c5917f9fe.jpg",
+          "thumbnail_portrait": "https://resize.tripster.ru/71_83PZOgm8gklPrMJNxWCku7OU=/287x392/filters:no_upscale()/https://cdn.tripster.ru/photos/04f41f4f-7375-4014-91b8-757c5917f9fe.jpg"
+        },
+        {
+          "type": "experience",
+          "thumbnail": "https://resize.tripster.ru/NBrsuqVhecC9RV5b2oQmHbPFYqc=/fit-in/800x600/filters:no_upscale()/https://cdn.tripster.ru/photos/c42ae3f8-4640-4654-9638-7dbbb84548a5.jpg",
+          "medium": "https://resize.tripster.ru/ea-sW3lsAW7FSr1amnkPJ3TjTQ8=/fit-in/1200x1000/filters:no_upscale()/https://cdn.tripster.ru/photos/c42ae3f8-4640-4654-9638-7dbbb84548a5.jpg",
+          "thumbnail_portrait": "https://resize.tripster.ru/xxXZwkMdg-yY0N6F28M4Jsh5ZDA=/287x392/filters:no_upscale()/https://cdn.tripster.ru/photos/c42ae3f8-4640-4654-9638-7dbbb84548a5.jpg"
+        },
+        {
+          "type": "experience",
+          "thumbnail": "https://resize.tripster.ru/Ls5JU4soBT-NJgwboeYtUMf-AoU=/fit-in/800x600/filters:no_upscale()/https://cdn.tripster.ru/photos/10d353ab-6eb5-4e18-9529-38fedc2a820b.jpg",
+          "medium": "https://resize.tripster.ru/Jia_hV7xLeqCdUxVSywHFF6t4wM=/fit-in/1200x1000/filters:no_upscale()/https://cdn.tripster.ru/photos/10d353ab-6eb5-4e18-9529-38fedc2a820b.jpg",
+          "thumbnail_portrait": "https://resize.tripster.ru/oA3SsJKLw-tRKjcX1Ho3kNB3RYQ=/287x392/filters:no_upscale()/https://cdn.tripster.ru/photos/10d353ab-6eb5-4e18-9529-38fedc2a820b.jpg"
+        },
+        {
+          "type": "experience",
+          "thumbnail": "https://resize.tripster.ru/DLQjGa_PaLjVGTAeu0dsVbF1tp8=/fit-in/800x600/filters:no_upscale()/https://cdn.tripster.ru/photos/775139da-715e-4db2-bfc4-766e217f3beb.jpg",
+          "medium": "https://resize.tripster.ru/mHCGA1fpT03N8Ae3JeCYZ8YgsGc=/fit-in/1200x1000/filters:no_upscale()/https://cdn.tripster.ru/photos/775139da-715e-4db2-bfc4-766e217f3beb.jpg",
+          "thumbnail_portrait": "https://resize.tripster.ru/FvX6btOSHHIkw5cxXUUSP1NvxBY=/287x392/filters:no_upscale()/https://cdn.tripster.ru/photos/775139da-715e-4db2-bfc4-766e217f3beb.jpg"
+        }
+      ],
+      "schedule": {
+        "upcoming_events": [
+          "2026-11-12T16:00:00"
+        ]
+      },
+      "is_paid": false
+    }
+  ]
+}
+
+Code:
+```javascript
+await page.evaluate(async () => {
+  const response = await fetch('https://experience.tripster.ru/api/web/v2/experiences/?country__slug=south-korea&type=tour&limit=100&extended_movement_types=true');
+  const data = await response.json();
+  return data;
+});
+```
+
+
+### Page state
+- Page URL: https://experience.tripster.ru/tours/south-korea/
+- Page Title: Авторские туры по Южной Корее в 2025 году: цены в ноябре–декабре, отзывы – Tripster.ru
+- Page Snapshot: Large snapshot (119929 bytes, 1630 lines) written to file
+- Snapshot File: [C:\Users\Sharp\.cursor\browser-logs\snapshot-2025-11-21T10-45-04-793Z.log](file://C:\Users\Sharp\.cursor\browser-logs\snapshot-2025-11-21T10-45-04-793Z.log)
+- Preview (first 50 lines):
+```yaml
+- generic [ref=e4]:
+  - generic [ref=e6] [cursor=pointer]:
+    - button [ref=e7]:
+      - img [ref=e9]
+    - img "Tripster" [ref=e12]
+    - generic [ref=e14]: Экскурсии, отзывы и чаты с гидами — в приложении Трипстера
+    - button "Скачать" [ref=e15]:
+      - generic [ref=e17]: Скачать
+  - generic [ref=e18]:
+    - generic [ref=e23]:
+      - link "Перейти на главную страницу" [ref=e25] [cursor=pointer]:
+        - /url: /
+        - img [ref=e26]
+      - generic [ref=e39]:
+        - generic [ref=e42]:
+          - textbox "Куда вы собираетесь?" [ref=e43]
+          - img [ref=e46] [cursor=pointer]
+        - navigation [ref=e50]:
+          - generic [ref=e53] [cursor=pointer]: Помощь
+          - generic "Избранное" [ref=e54]:
+            - link [ref=e55] [cursor=pointer]:
+              - /url: /favorites/
+              - img [ref=e56]
+          - button "Войти" [ref=e60] [cursor=pointer]:
+            - generic [ref=e61]: Войти
+    - generic [ref=e63]:
+      - generic [ref=e64]:
+        - generic [ref=e65]:
+          - generic [ref=e66]:
+            - navigation "breadcrumb" [ref=e68]:
+              - list [ref=e69]:
+                - listitem [ref=e70]:
+                  - link "Главная" [ref=e71] [cursor=pointer]:
+                    - /url: /
+                  - img [ref=e72]
+                - listitem [ref=e74]:
+                  - link "Все туры" [ref=e75] [cursor=pointer]:
+                    - /url: /tours
+            - generic [ref=e76]:
+              - heading "Авторские туры по Южной Корее" [level=1] [ref=e77]
+              - heading "Необычные туры от местных жителей" [level=2] [ref=e78]
+          - generic [ref=e81]:
+            - generic [ref=e82]:
+              - button "Любые даты" [ref=e84] [cursor=pointer]:
+                - generic [ref=e86]: Любые даты
+                - img [ref=e88]
+              - button "Тип" [ref=e91] [cursor=pointer]:
+                - generic [ref=e93]: Тип
+                - img [ref=e95]
+              - button "Длительность" [ref=e98] [cursor=pointer]:
+```
+
+... (1580 more lines in file)

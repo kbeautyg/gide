@@ -1,0 +1,1658 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tour Rewriter Pro + Article Generator</title>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-primary: #0d1117;
+            --bg-secondary: #161b22;
+            --bg-tertiary: #21262d;
+            --border: #30363d;
+            --text-primary: #e6edf3;
+            --text-secondary: #8b949e;
+            --accent-green: #3fb950;
+            --accent-blue: #58a6ff;
+            --accent-purple: #a371f7;
+            --accent-orange: #d29922;
+            --accent-red: #f85149;
+            --accent-cyan: #39c5cf;
+            --accent-pink: #ff6b9d;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1900px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+            border-bottom: 1px solid var(--border);
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        h1 span { color: var(--accent-purple); }
+        h1 .pink { color: var(--accent-pink); }
+
+        /* Tabs */
+        .main-tabs {
+            display: flex;
+            gap: 5px;
+            margin-bottom: 20px;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 10px;
+        }
+
+        .main-tab {
+            padding: 12px 24px;
+            background: var(--bg-tertiary);
+            border: none;
+            border-radius: 8px 8px 0 0;
+            color: var(--text-secondary);
+            cursor: pointer;
+            font-size: 0.95rem;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+
+        .main-tab:hover {
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+        }
+
+        .main-tab.active {
+            background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple));
+            color: white;
+        }
+
+        .main-tab.articles.active {
+            background: linear-gradient(135deg, var(--accent-pink), var(--accent-purple));
+        }
+
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+
+        /* Settings Panel */
+        .settings-panel {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .settings-row {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            align-items: flex-end;
+        }
+
+        .setting-group {
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .setting-group label {
+            display: block;
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+            margin-bottom: 5px;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 10px 12px;
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text-primary);
+            font-size: 0.9rem;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: var(--accent-blue);
+        }
+
+        /* Buttons */
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--accent-blue), #4393e6);
+            color: white;
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, var(--accent-green), #2ea043);
+            color: white;
+        }
+
+        .btn-warning {
+            background: linear-gradient(135deg, var(--accent-orange), #bf8a10);
+            color: white;
+        }
+
+        .btn-danger {
+            background: linear-gradient(135deg, var(--accent-red), #da3633);
+            color: white;
+        }
+
+        .btn-secondary {
+            background: var(--bg-tertiary);
+            color: var(--text-primary);
+            border: 1px solid var(--border);
+        }
+
+        .btn-pink {
+            background: linear-gradient(135deg, var(--accent-pink), var(--accent-purple));
+            color: white;
+        }
+
+        .btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* Actions Row */
+        .actions-row {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        /* Stats Bar */
+        .stats-bar {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .stat-card {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 15px;
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .stat-label {
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+            margin-top: 5px;
+        }
+
+        .stat-card.green .stat-value { color: var(--accent-green); }
+        .stat-card.blue .stat-value { color: var(--accent-blue); }
+        .stat-card.purple .stat-value { color: var(--accent-purple); }
+        .stat-card.orange .stat-value { color: var(--accent-orange); }
+        .stat-card.pink .stat-value { color: var(--accent-pink); }
+
+        /* Main Grid */
+        .main-grid {
+            display: grid;
+            grid-template-columns: 350px 1fr 1fr;
+            gap: 20px;
+        }
+
+        .main-grid-2col {
+            display: grid;
+            grid-template-columns: 350px 1fr;
+            gap: 20px;
+        }
+
+        /* Tour List */
+        .tour-list {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .tour-list-header {
+            padding: 15px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: linear-gradient(135deg, var(--bg-tertiary), var(--bg-secondary));
+        }
+
+        .tour-list-content {
+            max-height: 700px;
+            overflow-y: auto;
+        }
+
+        .tour-item {
+            padding: 12px 15px;
+            border-bottom: 1px solid var(--border);
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .tour-item:hover { background: var(--bg-tertiary); }
+
+        .tour-item.selected {
+            background: var(--bg-tertiary);
+            border-left: 3px solid var(--accent-pink);
+        }
+
+        .tour-item-title {
+            font-weight: 500;
+            font-size: 0.9rem;
+            margin-bottom: 4px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .tour-item-meta {
+            display: flex;
+            gap: 10px;
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+        }
+
+        .tour-item-status {
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 0.7rem;
+            font-weight: 600;
+        }
+
+        .status-pending { background: var(--bg-tertiary); }
+        .status-has-articles { background: rgba(255, 107, 157, 0.2); color: var(--accent-pink); }
+
+        /* Panel */
+        .panel {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .panel-header {
+            padding: 15px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: linear-gradient(135deg, var(--bg-tertiary), var(--bg-secondary));
+            flex-shrink: 0;
+        }
+
+        .panel-header h3 {
+            font-size: 1rem;
+        }
+
+        .panel-content {
+            padding: 15px;
+            overflow-y: auto;
+            flex: 1;
+        }
+
+        .panel-content.scrollable {
+            max-height: 600px;
+        }
+
+        /* Code/Prompt Display */
+        pre {
+            background: var(--bg-primary);
+            padding: 15px;
+            border-radius: 8px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.8rem;
+            overflow-x: auto;
+            white-space: pre-wrap;
+            word-break: break-word;
+            line-height: 1.5;
+        }
+
+        /* Article Preview */
+        .article-preview {
+            background: var(--bg-primary);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .article-preview-header {
+            background: linear-gradient(135deg, var(--accent-pink), var(--accent-purple));
+            padding: 20px;
+            color: white;
+        }
+
+        .article-preview-header h2 {
+            font-size: 1.3rem;
+            margin-bottom: 10px;
+        }
+
+        .article-preview-meta {
+            display: flex;
+            gap: 15px;
+            font-size: 0.85rem;
+            opacity: 0.9;
+        }
+
+        .article-preview-content {
+            padding: 20px;
+            max-height: 500px;
+            overflow-y: auto;
+        }
+
+        .article-preview-content h2 {
+            color: var(--accent-pink);
+            font-size: 1.2rem;
+            margin: 20px 0 10px 0;
+            padding-bottom: 5px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .article-preview-content h3 {
+            color: var(--accent-cyan);
+            font-size: 1rem;
+            margin: 15px 0 8px 0;
+        }
+
+        .article-preview-content p {
+            margin-bottom: 12px;
+            color: var(--text-secondary);
+        }
+
+        .article-preview-content ul, .article-preview-content ol {
+            margin: 10px 0 10px 20px;
+            color: var(--text-secondary);
+        }
+
+        .article-preview-content li {
+            margin-bottom: 5px;
+        }
+
+        /* Log */
+        .log-panel {
+            background: var(--bg-primary);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 10px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            max-height: 200px;
+            overflow-y: auto;
+            margin-top: 20px;
+        }
+
+        .log-entry {
+            padding: 3px 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .log-entry.success { color: var(--accent-green); }
+        .log-entry.error { color: var(--accent-red); }
+        .log-entry.info { color: var(--accent-blue); }
+        .log-entry.warning { color: var(--accent-orange); }
+
+        /* Progress */
+        .progress-bar {
+            height: 6px;
+            background: var(--bg-tertiary);
+            border-radius: 3px;
+            overflow: hidden;
+            margin-top: 10px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--accent-pink), var(--accent-purple));
+            transition: width 0.3s;
+        }
+
+        /* Status */
+        .status-indicator {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 15px;
+            background: var(--bg-tertiary);
+            border-radius: 20px;
+            font-size: 0.85rem;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--accent-green);
+        }
+
+        .status-dot.running {
+            animation: pulse 1s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+
+        /* Article Cards */
+        .articles-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .article-card {
+            background: var(--bg-tertiary);
+            border-radius: 10px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .article-card:hover {
+            transform: translateX(5px);
+        }
+
+        .article-card.selected {
+            border: 2px solid var(--accent-pink);
+        }
+
+        .article-card-header {
+            background: linear-gradient(135deg, rgba(255,107,157,0.3), rgba(163,113,247,0.3));
+            padding: 12px 15px;
+        }
+
+        .article-card-header h4 {
+            font-size: 0.95rem;
+            margin-bottom: 5px;
+        }
+
+        .article-card-header .type {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            background: rgba(255,255,255,0.1);
+            padding: 2px 8px;
+            border-radius: 10px;
+            display: inline-block;
+        }
+
+        .article-card-body {
+            padding: 12px 15px;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+
+        /* Tabs inside panel */
+        .inner-tabs {
+            display: flex;
+            gap: 5px;
+            margin-bottom: 15px;
+        }
+
+        .inner-tab {
+            padding: 8px 16px;
+            background: var(--bg-tertiary);
+            border: none;
+            border-radius: 6px;
+            color: var(--text-secondary);
+            cursor: pointer;
+            font-size: 0.85rem;
+        }
+
+        .inner-tab.active {
+            background: var(--accent-pink);
+            color: white;
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: var(--bg-tertiary); }
+        ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--text-secondary); }
+
+        /* Responsive */
+        @media (max-width: 1400px) {
+            .main-grid { grid-template-columns: 300px 1fr; }
+            .main-grid-2col { grid-template-columns: 300px 1fr; }
+        }
+
+        @media (max-width: 900px) {
+            .main-grid, .main-grid-2col { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🔄 Tour Rewriter <span>Pro</span> + <span class="pink">Article Generator</span></h1>
+            <div class="status-indicator">
+                <div class="status-dot" id="statusDot"></div>
+                <span id="statusText">Готов</span>
+            </div>
+        </header>
+
+        <!-- Tabs -->
+        <div class="main-tabs">
+            <button class="main-tab active" onclick="switchTab('rewriter')">🔄 Рерайт туров</button>
+            <button class="main-tab articles" onclick="switchTab('articles')">📝 Генератор статей</button>
+        </div>
+
+        <!-- ============== REWRITER TAB ============== -->
+        <div class="tab-content active" id="rewriter-tab">
+            <div class="stats-bar">
+                <div class="stat-card">
+                    <div class="stat-value" id="statTotal">0</div>
+                    <div class="stat-label">📋 Всего туров</div>
+                </div>
+                <div class="stat-card orange">
+                    <div class="stat-value" id="statPending">0</div>
+                    <div class="stat-label">⏳ Ожидают</div>
+                </div>
+                <div class="stat-card green">
+                    <div class="stat-value" id="statProcessed">0</div>
+                    <div class="stat-label">✅ Обработано</div>
+                </div>
+                <div class="stat-card purple">
+                    <div class="stat-value" id="statUploaded">0</div>
+                    <div class="stat-label">🚀 На Turex</div>
+                </div>
+                <button class="btn btn-small btn-secondary" onclick="resetStats()" title="Сбросить статус загрузки">🔄 Сброс</button>
+            </div>
+
+            <div class="settings-panel">
+                <div class="settings-row">
+                    <div class="setting-group" style="flex: 2;">
+                        <label>🔑 OpenAI API Key</label>
+                        <input type="password" id="apiKey" placeholder="sk-...">
+                    </div>
+                    <div class="setting-group">
+                        <label>🤖 Модель ChatGPT</label>
+                        <select id="modelSelect">
+                            <option value="">Сначала сохраните ключ</option>
+                        </select>
+                    </div>
+                    <div class="setting-group">
+                        <button class="btn btn-primary" onclick="saveSettings()">💾 Сохранить</button>
+                    </div>
+                    <div class="setting-group">
+                        <button class="btn btn-secondary" onclick="turexLogin()">🔑 Turex Login</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="actions-row">
+                <button class="btn btn-primary" onclick="loadTours()">📂 Загрузить туры</button>
+                <button class="btn btn-success" onclick="processSelected()">⚡ Обработать выбранный</button>
+                <button class="btn btn-warning" onclick="startBatch()">🚀 Пакетная обработка</button>
+                <button class="btn btn-danger" onclick="stopBatch()">⏹ Стоп</button>
+                <button class="btn btn-secondary" onclick="uploadSelected()">📤 Загрузить на Turex</button>
+                <button class="btn btn-secondary" onclick="uploadAll()">📦 Загрузить все</button>
+            </div>
+
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressBar" style="width: 0%"></div>
+            </div>
+
+            <div class="main-grid" style="margin-top: 20px;">
+                <div class="tour-list">
+                    <div class="tour-list-header">
+                        <h3>📋 Список туров</h3>
+                        <span id="tourCount">0 / 0</span>
+                    </div>
+                    <div class="tour-list-content" id="tourList">
+                        <div style="padding: 20px; text-align: center; color: var(--text-secondary);">
+                            Нажмите "Загрузить туры"
+                        </div>
+                    </div>
+                </div>
+
+                <div class="panel">
+                    <div class="panel-header">
+                        <h3>📄 Исходные данные</h3>
+                    </div>
+                    <div class="panel-content scrollable">
+                        <pre id="originalData">Выберите тур из списка</pre>
+                    </div>
+                </div>
+
+                <div class="panel">
+                    <div class="panel-header">
+                        <h3>✨ Результат рерайта</h3>
+                    </div>
+                    <div class="panel-content scrollable">
+                        <pre id="rewrittenData">После обработки здесь появится результат</pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ============== ARTICLES TAB ============== -->
+        <div class="tab-content" id="articles-tab">
+            <div class="stats-bar">
+                <div class="stat-card pink">
+                    <div class="stat-value" id="statArticlesTotal">0</div>
+                    <div class="stat-label">📝 Статей создано</div>
+                </div>
+                <div class="stat-card green">
+                    <div class="stat-value" id="statArticlesUploaded">0</div>
+                    <div class="stat-label">🚀 Загружено</div>
+                </div>
+                <div class="stat-card purple">
+                    <div class="stat-value" id="statToursWithArticles">0</div>
+                    <div class="stat-label">📚 Туров со статьями</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="statArticlesTours">0</div>
+                    <div class="stat-label">📋 Всего туров</div>
+                </div>
+            </div>
+
+            <!-- Настройки -->
+            <div class="settings-panel">
+                <div class="settings-row">
+                    <div class="setting-group" style="flex: 2;">
+                        <label>🔑 OpenAI API Key</label>
+                        <input type="password" id="apiKey2" placeholder="sk-...">
+                    </div>
+                    <div class="setting-group">
+                        <label>🤖 Модель ChatGPT</label>
+                        <select id="modelSelect2">
+                            <option value="">Сначала сохраните ключ</option>
+                        </select>
+                    </div>
+                    <div class="setting-group">
+                        <label>📝 Статей на тур</label>
+                        <select id="articlesCount">
+                            <option value="1">1 статья</option>
+                            <option value="2" selected>2 статьи</option>
+                            <option value="3">3 статьи</option>
+                        </select>
+                    </div>
+                    <div class="setting-group">
+                        <button class="btn btn-primary" onclick="saveSettings()">💾 Сохранить</button>
+                    </div>
+                    <div class="setting-group">
+                        <button class="btn btn-secondary" onclick="turexLogin()">🔑 Turex Login</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="actions-row">
+                <button class="btn btn-primary" onclick="loadToursForArticles()">📂 Загрузить туры</button>
+                <button class="btn btn-pink" onclick="generateArticlesForSelected()">✨ Генерировать статьи</button>
+                <button class="btn btn-warning" onclick="startBatchArticles()">🚀 Пакетная генерация</button>
+                <button class="btn btn-success" onclick="uploadArticlesForSelected()">📤 Загрузить статьи</button>
+                <button class="btn btn-secondary" onclick="uploadAllArticles()">📦 Загрузить все</button>
+                <button class="btn btn-danger" onclick="deleteAllArticlesFromServer()">🗑️ Очистить сервер</button>
+                <button class="btn btn-danger" onclick="stopBatch()">⏹ Стоп</button>
+            </div>
+
+            <div class="progress-bar">
+                <div class="progress-fill" id="articlesProgressBar" style="width: 0%"></div>
+            </div>
+
+            <div class="main-grid-2col" style="margin-top: 20px;">
+                <!-- Левая колонка: список туров -->
+                <div class="tour-list">
+                    <div class="tour-list-header" style="background: linear-gradient(135deg, rgba(255,107,157,0.2), var(--bg-secondary));">
+                        <h3>📋 Туры</h3>
+                        <span id="articlesTourCount">0</span>
+                    </div>
+                    <div class="tour-list-content" id="articlesTourList">
+                        <div style="padding: 20px; text-align: center; color: var(--text-secondary);">
+                            Нажмите "Загрузить туры"
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Правая колонка: контент -->
+                <div style="display: flex; flex-direction: column; gap: 20px;">
+                    <div class="panel" style="flex: 1;">
+                        <div class="panel-header" style="background: linear-gradient(135deg, rgba(255,107,157,0.2), var(--bg-secondary));">
+                            <h3 id="selectedTourTitle">📝 Выберите тур</h3>
+                            <div class="inner-tabs">
+                                <button class="inner-tab active" onclick="showArticleTab('articles', this)">📚 Статьи</button>
+                                <button class="inner-tab" onclick="showArticleTab('prompt', this)">📋 Промпт</button>
+                                <button class="inner-tab" onclick="showArticleTab('full', this)">📄 Полная статья</button>
+                            </div>
+                        </div>
+                        <div class="panel-content" style="min-height: 500px;">
+                            <!-- Вкладка: Список статей -->
+                            <div id="articlesTabContent" class="article-tab-content">
+                                <div id="articlesListContainer">
+                                    <div style="text-align: center; padding: 40px; color: var(--text-secondary);">
+                                        <p style="font-size: 3rem; margin-bottom: 10px;">📝</p>
+                                        <p>Выберите тур слева и нажмите "Генерировать статьи"</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Вкладка: Промпт -->
+                            <div id="promptTabContent" class="article-tab-content" style="display: none;">
+                                <div style="margin-bottom: 15px;">
+                                    <label style="color: var(--text-secondary); font-size: 0.85rem;">Тип статьи:</label>
+                                    <select id="promptTypeSelect" onchange="showPromptForType()" style="width: 200px; margin-left: 10px;">
+                                        <option value="guide">📖 Путеводитель</option>
+                                        <option value="tips">💡 Советы</option>
+                                        <option value="culture">🏛️ Культура</option>
+                                        <option value="food">🍜 Гастрономия</option>
+                                        <option value="top_places">🏆 Топ мест</option>
+                                    </select>
+                                </div>
+                                <pre id="promptContent" style="max-height: 500px; overflow-y: auto; font-size: 0.75rem;">Выберите тур для просмотра промпта</pre>
+                            </div>
+
+                            <!-- Вкладка: Полная статья -->
+                            <div id="fullTabContent" class="article-tab-content" style="display: none;">
+                                <div id="fullArticleContainer">
+                                    <div style="text-align: center; padding: 40px; color: var(--text-secondary);">
+                                        <p style="font-size: 3rem; margin-bottom: 10px;">📄</p>
+                                        <p>Сначала сгенерируйте статьи</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Типы статей (информация) -->
+            <div class="panel" style="margin-top: 20px;">
+                <div class="panel-header">
+                    <h3>📚 Типы генерируемых статей</h3>
+                </div>
+                <div class="panel-content">
+                    <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 15px;">
+                        <div style="background: var(--bg-tertiary); padding: 15px; border-radius: 8px;">
+                            <strong style="color: var(--accent-pink);">📖 Путеводитель</strong>
+                            <p style="font-size: 0.8rem; color: var(--text-secondary); margin-top: 5px;">Подробный гайд по локации</p>
+                        </div>
+                        <div style="background: var(--bg-tertiary); padding: 15px; border-radius: 8px;">
+                            <strong style="color: var(--accent-cyan);">💡 Советы</strong>
+                            <p style="font-size: 0.8rem; color: var(--text-secondary); margin-top: 5px;">Практические лайфхаки</p>
+                        </div>
+                        <div style="background: var(--bg-tertiary); padding: 15px; border-radius: 8px;">
+                            <strong style="color: var(--accent-purple);">🏛️ Культура</strong>
+                            <p style="font-size: 0.8rem; color: var(--text-secondary); margin-top: 5px;">История и традиции</p>
+                        </div>
+                        <div style="background: var(--bg-tertiary); padding: 15px; border-radius: 8px;">
+                            <strong style="color: var(--accent-orange);">🍜 Гастрономия</strong>
+                            <p style="font-size: 0.8rem; color: var(--text-secondary); margin-top: 5px;">Местная кухня</p>
+                        </div>
+                        <div style="background: var(--bg-tertiary); padding: 15px; border-radius: 8px;">
+                            <strong style="color: var(--accent-green);">🏆 Топ мест</strong>
+                            <p style="font-size: 0.8rem; color: var(--text-secondary); margin-top: 5px;">Лучшие места</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Лог -->
+        <div class="log-panel" id="logPanel">
+            <div class="log-entry info">[--:--:--] Добро пожаловать в Tour Rewriter Pro + Article Generator!</div>
+        </div>
+    </div>
+
+    <script>
+        // ============ ГЛОБАЛЬНЫЕ ПЕРЕМЕННЫЕ ============
+        let tours = [];
+        let selectedTourIndex = -1;
+        let selectedArticleIndex = -1;
+        let currentTourArticles = [];
+        let isRunning = false;
+        let articlePrompts = {};  // Промпты загружаются с сервера
+
+        // ============ БАЗОВЫЕ ФУНКЦИИ ============
+
+        function log(message, type = 'info') {
+            const panel = document.getElementById('logPanel');
+            const time = new Date().toLocaleTimeString();
+            panel.innerHTML = '<div class="log-entry ' + type + '">[' + time + '] ' + message + '</div>' + panel.innerHTML;
+            while (panel.children.length > 100) {
+                panel.removeChild(panel.lastChild);
+            }
+        }
+
+        function switchTab(tab) {
+            document.querySelectorAll('.main-tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+            
+            if (tab === 'articles') {
+                document.querySelector('.main-tab.articles').classList.add('active');
+            } else {
+                document.querySelector('.main-tab:not(.articles)').classList.add('active');
+            }
+            document.getElementById(tab + '-tab').classList.add('active');
+            
+            syncFields();
+            
+            if (tab === 'articles') {
+                updateArticlesStats();
+            }
+        }
+
+        function showArticleTab(tab, btn) {
+            document.querySelectorAll('.inner-tab').forEach(t => t.classList.remove('active'));
+            if (btn) btn.classList.add('active');
+            
+            document.querySelectorAll('.article-tab-content').forEach(c => c.style.display = 'none');
+            document.getElementById(tab + 'TabContent').style.display = 'block';
+        }
+
+        function syncFields() {
+            document.getElementById('apiKey2').value = document.getElementById('apiKey').value;
+            var select1 = document.getElementById('modelSelect');
+            var select2 = document.getElementById('modelSelect2');
+            select2.innerHTML = select1.innerHTML;
+            select2.value = select1.value;
+        }
+
+        // ============ ЗАГРУЗКА ПРОМПТОВ С СЕРВЕРА ============
+
+        async function loadArticleTypes() {
+            try {
+                var resp = await fetch('/api/articles/types');
+                var data = await resp.json();
+                if (data.success) {
+                    data.types.forEach(function(t) {
+                        articlePrompts[t.id] = t.prompt;
+                    });
+                    log('Загружено ' + data.types.length + ' типов статей', 'success');
+                }
+            } catch (e) {
+                log('Ошибка загрузки типов статей: ' + e.message, 'error');
+            }
+        }
+
+        // ============ НАСТРОЙКИ ============
+
+        async function loadSettings() {
+            try {
+                var resp = await fetch('/api/get-settings');
+                var data = await resp.json();
+                if (data.api_key) {
+                    document.getElementById('apiKey').value = data.api_key;
+                    document.getElementById('apiKey2').value = data.api_key;
+                    await loadModels();
+                }
+                if (data.turex_logged_in) {
+                    log('Turex: залогинены', 'success');
+                }
+            } catch (e) {
+                log('Ошибка загрузки настроек: ' + e.message, 'error');
+            }
+        }
+
+        async function loadModels() {
+            var modelSelect = document.getElementById('modelSelect');
+            modelSelect.innerHTML = '<option value="">Загрузка...</option>';
+            modelSelect.disabled = true;
+            
+            log('Загрузка списка моделей...', 'info');
+            
+            try {
+                var resp = await fetch('/api/get-models', {method: 'POST'});
+                var data = await resp.json();
+                
+                modelSelect.disabled = false;
+                
+                if (data.success) {
+                    modelSelect.innerHTML = '';
+                    data.models.forEach(function(model) {
+                        var option = document.createElement('option');
+                        option.value = model.id;
+                        option.textContent = model.id;
+                        modelSelect.appendChild(option);
+                    });
+                    
+                    if (data.current_model) {
+                        modelSelect.value = data.current_model;
+                    }
+                    
+                    syncFields();
+                    log('Загружено ' + data.models.length + ' моделей', 'success');
+                } else {
+                    modelSelect.innerHTML = '<option value="gpt-4o-mini">gpt-4o-mini</option>';
+                    syncFields();
+                    log('Ошибка загрузки моделей: ' + data.error, 'error');
+                }
+            } catch (e) {
+                modelSelect.innerHTML = '<option value="gpt-4o-mini">gpt-4o-mini</option>';
+                syncFields();
+                log('Ошибка: ' + e.message, 'error');
+            }
+        }
+
+        async function saveSettings() {
+            var apiKey = document.getElementById('apiKey').value || document.getElementById('apiKey2').value;
+            var model = document.getElementById('modelSelect').value || document.getElementById('modelSelect2').value;
+            
+            document.getElementById('apiKey').value = apiKey;
+            document.getElementById('apiKey2').value = apiKey;
+            
+            try {
+                var resp = await fetch('/api/set-api-key', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({api_key: apiKey, model: model})
+                });
+                
+                if (resp.ok) {
+                    log('Настройки сохранены', 'success');
+                    await loadModels();
+                }
+            } catch (e) {
+                log('Ошибка сохранения: ' + e.message, 'error');
+            }
+        }
+
+        async function turexLogin() {
+            log('Логин в Turex...', 'info');
+            try {
+                var resp = await fetch('/api/turex-login', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({phone: '79177445182', password: 'admin123'})
+                });
+                var data = await resp.json();
+                if (data.success) {
+                    log('Turex: успешный логин', 'success');
+                } else {
+                    log('Turex: ошибка - ' + data.error, 'error');
+                }
+            } catch (e) {
+                log('Ошибка: ' + e.message, 'error');
+            }
+        }
+
+        // ============ СБРОС СТАТИСТИКИ ============
+        
+        async function resetStats() {
+            if (!confirm('Сбросить статистику загрузки? Все туры со статусом "uploaded" станут "processed" и их можно будет загрузить повторно.')) {
+                return;
+            }
+            
+            log('Сброс статистики...', 'info');
+            try {
+                var resp = await fetch('/api/reset-stats', {method: 'POST'});
+                var data = await resp.json();
+                
+                if (data.success) {
+                    log('Статистика сброшена. Сброшено ' + data.reset_count + ' туров.', 'success');
+                    await updateStats();
+                    await renderTourList();
+                }
+            } catch(e) {
+                log('Ошибка: ' + e.message, 'error');
+            }
+        }
+
+        // ============ ТУРЫ ============
+
+        async function loadTours() {
+            log('Загрузка туров...', 'info');
+            try {
+                var resp = await fetch('/api/load-tours', {method: 'POST'});
+                var data = await resp.json();
+                
+                if (data.success) {
+                    log('Загружено ' + data.total + ' туров', 'success');
+                    await updateStats();
+                    await renderTourList();
+                }
+            } catch (e) {
+                log('Ошибка: ' + e.message, 'error');
+            }
+        }
+
+        async function loadToursForArticles() {
+            log('Загрузка туров для статей...', 'info');
+            try {
+                var resp = await fetch('/api/load-tours', {method: 'POST'});
+                var data = await resp.json();
+                
+                if (data.success) {
+                    log('Загружено ' + data.total + ' туров', 'success');
+                    await updateArticlesStats();
+                    await renderArticlesTourList();
+                }
+            } catch (e) {
+                log('Ошибка: ' + e.message, 'error');
+            }
+        }
+
+        async function updateStats() {
+            try {
+                var resp = await fetch('/api/get-stats');
+                var data = await resp.json();
+                
+                document.getElementById('statTotal').textContent = data.total_tours;
+                document.getElementById('statProcessed').textContent = data.processed;
+                document.getElementById('statUploaded').textContent = data.uploaded;
+                
+                var pending = data.total_tours - data.processed - data.uploaded;
+                document.getElementById('statPending').textContent = Math.max(0, pending);
+                
+                isRunning = data.is_running;
+                document.getElementById('statusDot').className = 'status-dot' + (isRunning ? ' running' : '');
+                document.getElementById('statusText').textContent = isRunning ? 'Обработка #' + data.current_index + '...' : 'Готов';
+                
+                if (data.total_tours > 0) {
+                    var progress = ((data.processed + data.uploaded) / data.total_tours * 100).toFixed(1);
+                    document.getElementById('progressBar').style.width = progress + '%';
+                }
+            } catch (e) {
+                console.error('Error updating stats:', e);
+            }
+        }
+
+        async function updateArticlesStats() {
+            try {
+                var articlesResp = await fetch('/api/articles/stats');
+                var statsResp = await fetch('/api/get-stats');
+                
+                var articlesData = await articlesResp.json();
+                var statsData = await statsResp.json();
+                
+                if (articlesData.success) {
+                    document.getElementById('statArticlesTotal').textContent = articlesData.total_articles;
+                    document.getElementById('statArticlesUploaded').textContent = articlesData.uploaded_articles;
+                    document.getElementById('statToursWithArticles').textContent = articlesData.tours_with_articles;
+                    
+                    if (articlesData.total_articles > 0) {
+                        var progress = (articlesData.uploaded_articles / articlesData.total_articles * 100).toFixed(1);
+                        document.getElementById('articlesProgressBar').style.width = progress + '%';
+                    }
+                }
+                
+                document.getElementById('statArticlesTours').textContent = statsData.total_tours || 0;
+            } catch (e) {
+                console.error('Error updating articles stats:', e);
+            }
+        }
+
+        async function renderTourList() {
+            var listEl = document.getElementById('tourList');
+            listEl.innerHTML = '<div style="padding: 20px; text-align: center;">Загрузка...</div>';
+            
+            try {
+                var resp = await fetch('/api/get-tours-list');
+                var data = await resp.json();
+                
+                if (!data.success) {
+                    listEl.innerHTML = '<div style="padding: 20px; text-align: center; color: var(--accent-red);">Ошибка</div>';
+                    return;
+                }
+                
+                tours = data.tours;
+                var processed = tours.filter(function(t) { return t.status === 'processed'; }).length;
+                var uploaded = tours.filter(function(t) { return t.status === 'uploaded'; }).length;
+                
+                document.getElementById('tourCount').textContent = (processed + uploaded) + ' / ' + tours.length;
+                
+                listEl.innerHTML = tours.map(function(tour) {
+                    return '<div class="tour-item ' + (selectedTourIndex === tour.index ? 'selected' : '') + '" onclick="selectTour(' + tour.index + ')">' +
+                        '<div class="tour-item-title">' + (tour.index + 1) + '. ' + tour.title + '</div>' +
+                        '<div class="tour-item-meta">' +
+                            '<span>' + tour.country + '</span>' +
+                            '<span>' + (tour.city || '-') + '</span>' +
+                            '<span class="tour-item-status status-' + tour.status + '">' + (tour.status === 'pending' ? '⏳' : tour.status === 'processed' ? '✅' : '🚀') + '</span>' +
+                        '</div>' +
+                    '</div>';
+                }).join('') || '<div style="padding: 20px; text-align: center;">Нет туров</div>';
+            } catch (e) {
+                listEl.innerHTML = '<div style="padding: 20px; text-align: center; color: var(--accent-red);">Ошибка загрузки</div>';
+            }
+        }
+
+        async function renderArticlesTourList() {
+            var listEl = document.getElementById('articlesTourList');
+            listEl.innerHTML = '<div style="padding: 20px; text-align: center;">Загрузка...</div>';
+            
+            try {
+                var resp = await fetch('/api/get-tours-list');
+                var data = await resp.json();
+                
+                if (!data.success) {
+                    listEl.innerHTML = '<div style="padding: 20px; text-align: center; color: var(--accent-red);">Ошибка</div>';
+                    return;
+                }
+                
+                tours = data.tours;
+                document.getElementById('articlesTourCount').textContent = tours.length;
+                
+                listEl.innerHTML = tours.map(function(tour) {
+                    return '<div class="tour-item ' + (selectedTourIndex === tour.index ? 'selected' : '') + '" onclick="selectTourForArticles(' + tour.index + ')" data-index="' + tour.index + '">' +
+                        '<div class="tour-item-title">' + (tour.index + 1) + '. ' + tour.title + '</div>' +
+                        '<div class="tour-item-meta">' +
+                            '<span>' + tour.country + '</span>' +
+                            '<span>' + (tour.city || '-') + '</span>' +
+                        '</div>' +
+                    '</div>';
+                }).join('') || '<div style="padding: 20px; text-align: center;">Нажмите "Загрузить туры"</div>';
+            } catch (e) {
+                listEl.innerHTML = '<div style="padding: 20px; text-align: center; color: var(--accent-red);">Ошибка</div>';
+            }
+        }
+
+        async function selectTour(index) {
+            selectedTourIndex = index;
+            
+            try {
+                var resp = await fetch('/api/get-tour/' + index);
+                var data = await resp.json();
+                
+                if (data.success) {
+                    var displayData = Object.assign({}, data.tour);
+                    delete displayData.photo_urls;
+                    
+                    document.getElementById('originalData').textContent = JSON.stringify(displayData, null, 2);
+                    
+                    if (data.saved_data && data.saved_data.rewritten) {
+                        document.getElementById('rewrittenData').textContent = JSON.stringify(data.saved_data.rewritten, null, 2);
+                    } else {
+                        document.getElementById('rewrittenData').textContent = 'Не обработан';
+                    }
+                }
+            } catch (e) {
+                log('Ошибка: ' + e.message, 'error');
+            }
+            
+            document.querySelectorAll('#tourList .tour-item').forEach(function(el, i) {
+                el.classList.toggle('selected', i === index);
+            });
+        }
+
+        async function selectTourForArticles(index) {
+            selectedTourIndex = index;
+            selectedArticleIndex = -1;
+            
+            // Обновляем выделение
+            document.querySelectorAll('#articlesTourList .tour-item').forEach(function(el) {
+                el.classList.toggle('selected', parseInt(el.dataset.index) === index);
+            });
+            
+            try {
+                // Получаем данные тура
+                var tourResp = await fetch('/api/get-tour/' + index);
+                var tourData = await tourResp.json();
+                
+                if (tourData.success) {
+                    var title = tourData.tour.title;
+                    document.getElementById('selectedTourTitle').textContent = '📝 ' + (title.length > 60 ? title.substring(0, 60) + '...' : title);
+                    
+                    // Показываем промпт для выбранного типа
+                    showPromptForType();
+                }
+                
+                // Загружаем статьи
+                var articlesResp = await fetch('/api/articles/get/' + index);
+                var articlesData = await articlesResp.json();
+                
+                if (articlesData.success && articlesData.articles.length > 0) {
+                    currentTourArticles = articlesData.articles;
+                    renderArticlesList(articlesData.articles);
+                    // Автоматически выбираем первую статью для отображения
+                    selectArticle(0);
+                } else {
+                    currentTourArticles = [];
+                    document.getElementById('articlesListContainer').innerHTML =
+                        '<div style="text-align: center; padding: 40px; color: var(--text-secondary);">' +
+                            '<p style="font-size: 3rem; margin-bottom: 10px;">📝</p>' +
+                            '<p>Для этого тура ещё нет статей</p>' +
+                            '<button class="btn btn-pink" style="margin-top: 15px;" onclick="generateArticlesForSelected()">' +
+                                '✨ Сгенерировать статьи' +
+                            '</button>' +
+                        '</div>';
+                    document.getElementById('fullArticleContainer').innerHTML =
+                        '<div style="text-align: center; padding: 40px; color: var(--text-secondary);">' +
+                            '<p style="font-size: 3rem; margin-bottom: 10px;">📄</p>' +
+                            '<p>Сначала сгенерируйте статьи</p>' +
+                        '</div>';
+                }
+            } catch (e) {
+                log('Ошибка: ' + e.message, 'error');
+            }
+        }
+
+        async function showPromptForType() {
+            var type = document.getElementById('promptTypeSelect').value;
+            var prompt = articlePrompts[type] || 'Промпт не загружен. Обновите страницу.';
+            
+            if (selectedTourIndex >= 0) {
+                try {
+                    var resp = await fetch('/api/get-tour/' + selectedTourIndex);
+                    var data = await resp.json();
+                    
+                    if (data.success) {
+                        var tourForGpt = {
+                            title: data.tour.title,
+                            location: data.tour.location,
+                            country: data.tour.country,
+                            city: data.tour.city,
+                            description: (data.saved_data && data.saved_data.rewritten) ? data.saved_data.rewritten.description : (data.tour.annotation || ''),
+                            what_to_expect: (data.saved_data && data.saved_data.rewritten) ? data.saved_data.rewritten.what_to_expect : '',
+                            landmarks: (data.saved_data && data.saved_data.rewritten) ? data.saved_data.rewritten.landmarks : [],
+                            tags: (data.saved_data && data.saved_data.rewritten) ? data.saved_data.rewritten.tags : [],
+                            themes: (data.saved_data && data.saved_data.rewritten) ? data.saved_data.rewritten.themes : []
+                        };
+                        
+                        var tourJson = JSON.stringify(tourForGpt, null, 2);
+                        var filledPrompt = prompt.replace('{tour_data}', tourJson);
+                        
+                        document.getElementById('promptContent').textContent = filledPrompt;
+                    }
+                } catch (e) {
+                    document.getElementById('promptContent').textContent = 'Ошибка загрузки данных тура: ' + e.message;
+                }
+            } else {
+                document.getElementById('promptContent').textContent = prompt.replace('{tour_data}', '{ "title": "...", ... }');
+            }
+        }
+
+        function renderArticlesList(articles) {
+            var html = articles.map(function(article, i) {
+                return '<div class="article-card ' + (selectedArticleIndex === i ? 'selected' : '') + '" onclick="selectArticle(' + i + ')">' +
+                    '<div class="article-card-header">' +
+                        '<h4>' + article.title + '</h4>' +
+                        '<span class="type">' + (article.category || article.article_type) + '</span>' +
+                    '</div>' +
+                    '<div class="article-card-body">' +
+                        '<p>' + article.preview_text + '</p>' +
+                        '<div style="display: flex; justify-content: space-between; margin-top: 10px; font-size: 0.75rem;">' +
+                            '<span>⏱️ ' + article.read_time + ' мин</span>' +
+                            '<span style="color: ' + (article.turex_id ? 'var(--accent-green)' : 'var(--accent-orange)') + '">' +
+                                (article.turex_id ? '🚀 #' + article.turex_id : '⏳ Не загружено') +
+                            '</span>' +
+                        '</div>' +
+                    '</div>' +
+                '</div>';
+            }).join('');
+            
+            document.getElementById('articlesListContainer').innerHTML = '<div class="articles-list">' + html + '</div>';
+            
+            // Показываем первую статью по умолчанию
+            if (articles.length > 0 && selectedArticleIndex < 0) {
+                selectArticle(0);
+            }
+        }
+
+        function selectArticle(index) {
+            selectedArticleIndex = index;
+            
+            // Обновляем выделение
+            document.querySelectorAll('.article-card').forEach(function(el, i) {
+                el.classList.toggle('selected', i === index);
+            });
+            
+            // Показываем полную статью
+            var article = currentTourArticles[index];
+            if (article) {
+                renderFullArticle(article);
+            }
+        }
+
+        function renderFullArticle(article) {
+            // Конвертируем markdown в HTML
+            var content = article.content || '';
+            
+            // Заголовки
+            content = content.replace(/^### (.+)$/gm, '<h3>$1</h3>');
+            content = content.replace(/^## (.+)$/gm, '<h2>$1</h2>');
+            content = content.replace(/^# (.+)$/gm, '<h1>$1</h1>');
+            
+            // Списки
+            content = content.replace(/^\* (.+)$/gm, '<li>$1</li>');
+            content = content.replace(/^- (.+)$/gm, '<li>$1</li>');
+            content = content.replace(/(<li>.*<\/li>\n?)+/g, '<ul>$&</ul>');
+            
+            // Жирный и курсив
+            content = content.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+            content = content.replace(/\*(.+?)\*/g, '<em>$1</em>');
+            
+            // Абзацы
+            content = content.split('\n\n').map(function(p) {
+                p = p.trim();
+                if (!p) return '';
+                if (p.startsWith('<h') || p.startsWith('<ul') || p.startsWith('<ol')) return p;
+                return '<p>' + p + '</p>';
+            }).join('\n');
+            
+            document.getElementById('fullArticleContainer').innerHTML =
+                '<div class="article-preview">' +
+                    '<div class="article-preview-header">' +
+                        '<h2>' + article.title + '</h2>' +
+                        '<div class="article-preview-meta">' +
+                            '<span>📚 ' + (article.category || article.article_type) + '</span>' +
+                            '<span>⏱️ ' + article.read_time + ' мин чтения</span>' +
+                            '<span>🏷️ ' + (article.country_tag || '') + '</span>' +
+                        '</div>' +
+                    '</div>' +
+                    '<div class="article-preview-content">' +
+                        '<p style="font-style: italic; color: var(--accent-cyan); margin-bottom: 20px;">' +
+                            article.preview_text +
+                        '</p>' +
+                        content +
+                    '</div>' +
+                '</div>';
+        }
+
+        // ============ ГЕНЕРАЦИЯ СТАТЕЙ ============
+
+        async function generateArticlesForSelected() {
+            if (selectedTourIndex < 0) {
+                log('Выберите тур из списка', 'error');
+                return;
+            }
+            
+            var count = parseInt(document.getElementById('articlesCount').value);
+            
+            log('Генерация ' + count + ' статей для тура #' + selectedTourIndex + '...', 'info');
+            
+            try {
+                var resp = await fetch('/api/articles/generate/' + selectedTourIndex, {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({count: count})
+                });
+                
+                var data = await resp.json();
+                
+                if (data.success) {
+                    log('Сгенерировано ' + data.count + ' статей!', 'success');
+                    currentTourArticles = data.articles;
+                    renderArticlesList(data.articles);
+                    // Автоматически выбираем первую статью для отображения
+                    if (data.articles.length > 0) {
+                        selectArticle(0);
+                    }
+                    await updateArticlesStats();
+                } else {
+                    log('Ошибка: ' + data.error, 'error');
+                }
+            } catch (e) {
+                log('Ошибка: ' + e.message, 'error');
+            }
+        }
+
+        async function startBatchArticles() {
+            var start = prompt('Начать с индекса:', '0');
+            var count = prompt('Количество туров:', '10');
+            var articlesPerTour = document.getElementById('articlesCount').value;
+            
+            if (start === null || count === null) return;
+            
+            log('Пакетная генерация статей: туры ' + start + ' - ' + (parseInt(start) + parseInt(count)), 'info');
+            
+            try {
+                var resp = await fetch('/api/articles/batch-generate', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({
+                        start: parseInt(start), 
+                        count: parseInt(count),
+                        articles_per_tour: parseInt(articlesPerTour)
+                    })
+                });
+                
+                var data = await resp.json();
+                if (data.success) {
+                    log(data.message, 'success');
+                    startPolling();
+                }
+            } catch (e) {
+                log('Ошибка: ' + e.message, 'error');
+            }
+        }
+
+        async function uploadArticlesForSelected() {
+            if (selectedTourIndex < 0) {
+                log('Выберите тур', 'error');
+                return;
+            }
+            
+            log('Загрузка статей для тура #' + selectedTourIndex + '...', 'info');
+            
+            try {
+                var resp = await fetch('/api/articles/upload/' + selectedTourIndex, {method: 'POST'});
+                var data = await resp.json();
+                
+                if (data.success) {
+                    log('Загружено ' + data.uploaded + ' статей', 'success');
+                    await selectTourForArticles(selectedTourIndex);
+                    await updateArticlesStats();
+                } else {
+                    log('Ошибка: ' + (data.errors ? data.errors.join(', ') : data.error), 'error');
+                }
+            } catch (e) {
+                log('Ошибка: ' + e.message, 'error');
+            }
+        }
+
+        async function uploadAllArticles() {
+            if (!confirm('Загрузить ВСЕ статьи на сервер?')) return;
+            
+            log('Запуск загрузки всех статей...', 'info');
+            
+            try {
+                var resp = await fetch('/api/articles/batch-upload', {method: 'POST'});
+                var data = await resp.json();
+                
+                if (data.success) {
+                    log(data.message, 'success');
+                    startPolling();
+                } else {
+                    log('Ошибка: ' + data.error, 'error');
+                }
+            } catch (e) {
+                log('Ошибка: ' + e.message, 'error');
+            }
+        }
+
+        async function deleteAllArticlesFromServer() {
+            if (!confirm('ВНИМАНИЕ! Удалить ВСЕ статьи с сервера Turex?')) return;
+            
+            log('Удаление всех статей с сервера...', 'warning');
+            
+            try {
+                var resp = await fetch('/api/articles/delete-all', {method: 'POST'});
+                var data = await resp.json();
+                
+                if (data.success) {
+                    log('Удалено ' + data.deleted + ' статей с сервера', 'success');
+                    await updateArticlesStats();
+                } else {
+                    log('Ошибка: ' + data.error, 'error');
+                }
+            } catch (e) {
+                log('Ошибка: ' + e.message, 'error');
+            }
+        }
+
+        // ============ РЕРАЙТ ТУРОВ ============
+
+        async function processSelected() {
+            if (selectedTourIndex < 0) {
+                log('Выберите тур из списка', 'error');
+                return;
+            }
+            
+            log('Обработка тура #' + selectedTourIndex + '...', 'info');
+            
+            try {
+                var resp = await fetch('/api/process-tour/' + selectedTourIndex, {method: 'POST'});
+                var data = await resp.json();
+                
+                if (data.success) {
+                    log('Успешно! Фото: ' + data.images_downloaded, 'success');
+                    await selectTour(selectedTourIndex);
+                    await updateStats();
+                } else {
+                    log('Ошибка: ' + data.error, 'error');
+                }
+            } catch (e) {
+                log('Ошибка: ' + e.message, 'error');
+            }
+        }
+
+        async function startBatch() {
+            var start = prompt('Начать с индекса:', '0');
+            var count = prompt('Количество туров:', '10');
+            
+            if (start === null || count === null) return;
+            
+            log('Пакетная обработка: ' + start + ' - ' + (parseInt(start) + parseInt(count)), 'info');
+            
+            try {
+                var resp = await fetch('/api/batch-process', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({start: parseInt(start), count: parseInt(count)})
+                });
+                
+                var data = await resp.json();
+                if (data.success) {
+                    log('Пакетная обработка запущена', 'success');
+                    startPolling();
+                }
+            } catch (e) {
+                log('Ошибка: ' + e.message, 'error');
+            }
+        }
+
+        async function stopBatch() {
+            await fetch('/api/stop', {method: 'POST'});
+            log('Остановка...', 'info');
+        }
+
+        async function uploadSelected() {
+            if (selectedTourIndex < 0) {
+                log('Выберите тур', 'error');
+                return;
+            }
+            
+            log('Загрузка тура #' + selectedTourIndex + ' на Turex...', 'info');
+            
+            try {
+                var resp = await fetch('/api/upload-tour/' + selectedTourIndex, {method: 'POST'});
+                var data = await resp.json();
+                
+                if (data.success) {
+                    log('Загружен! Turex ID: ' + data.tour_id, 'success');
+                    await selectTour(selectedTourIndex);
+                    await updateStats();
+                } else {
+                    log('Ошибка: ' + data.error, 'error');
+                }
+            } catch (e) {
+                log('Ошибка: ' + e.message, 'error');
+            }
+        }
+
+        async function uploadAll() {
+            if (!confirm('Загрузить ВСЕ обработанные туры на Turex?')) return;
+            
+            log('Запуск загрузки всех туров...', 'info');
+            
+            try {
+                var resp = await fetch('/api/batch-upload', {method: 'POST'});
+                var data = await resp.json();
+                
+                if (data.success) {
+                    log(data.message, 'success');
+                    startPolling();
+                } else {
+                    log('Ошибка: ' + data.error, 'error');
+                }
+            } catch (e) {
+                log('Ошибка: ' + e.message, 'error');
+            }
+        }
+
+        // ============ POLLING ============
+
+        var pollInterval = null;
+        
+        function startPolling() {
+            if (pollInterval) return;
+            
+            pollInterval = setInterval(async function() {
+                await updateStats();
+                await updateArticlesStats();
+                
+                try {
+                    var resp = await fetch('/api/get-logs');
+                    var data = await resp.json();
+                    
+                    if (!data.is_running) {
+                        clearInterval(pollInterval);
+                        pollInterval = null;
+                        log('Операция завершена', 'success');
+                        await renderTourList();
+                        await renderArticlesTourList();
+                    }
+                } catch (e) {
+                    console.error('Polling error:', e);
+                }
+            }, 2000);
+        }
+
+        // ============ INIT ============
+
+        loadSettings();
+        loadArticleTypes();
+        updateStats();
+        updateArticlesStats();
+    </script>
+</body>
+</html>

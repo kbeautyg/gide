@@ -1,0 +1,28 @@
+# Turex - Экскурсии по Азии
+# https://thaiguide-frontend-production.up.railway.app/
+
+User-agent: *
+Allow: /
+
+# Закрытые разделы
+Disallow: /dashboard/
+Disallow: /admin/
+Disallow: /login
+Disallow: /register
+Disallow: /api/
+
+# Sitemap - динамический (с турами) и статический (fallback)
+Sitemap: https://gide-production.up.railway.app/api/v1/seo/sitemap.xml
+Sitemap: https://thaiguide-frontend-production.up.railway.app/sitemap.xml
+
+# Crawl-delay для вежливости
+Crawl-delay: 1
+
+# Yandex
+User-agent: Yandex
+Allow: /
+Disallow: /dashboard/
+Disallow: /admin/
+Disallow: /login
+Disallow: /register
+Host: https://thaiguide-frontend-production.up.railway.app

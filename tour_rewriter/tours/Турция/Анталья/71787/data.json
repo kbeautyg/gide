@@ -1,0 +1,113 @@
+{
+  "status": "uploaded",
+  "original": {
+    "tripster_id": 71787,
+    "title": "Тур-погружение в колорит Турции: Анталия, Памуккале, Каппадокия и Конья с комфортом",
+    "tagline": "Исследовать руины Иераполя, погулять по долинам Каппадокии и древней Конье",
+    "annotation": "Путешествие 4 в 1: в этом туре мы посетим самые известные локации Турции, а также покажем вам удивительный город Конья. Погуляем по улицам Антальи и осмотрим Старый город, водопад Дюден, Ворота Адриана. В Памуккале полюбуемся белоснежными травертинами и увидим руины Иераполя. Насладимся пейзажами долин Каппадокии, а желающие смогут полетать на воздушном шаре. В Конье познакомимся с архитектурой эпохи сельджуков, погружаясь в местную атмосферу.",
+    "additional_info": "",
+    "comfort_level_info": "",
+    "price_included": "<ul>\n\t\t<li>Проживание</li>\n\t\t<li>Трёхразовое питание</li>\n\t\t<li>Трансфер по маршруту</li>\n\t\t<li>Страховка</li>\n\t\t<li>Услуги гида-историка</li>\n\t\t<li>Экскурсии (обзорная экскурсия по Анталье, Памуккале, Иераполис, травертины, обзорная экскурсия, смотровая площадка, посещение подземного города в Каппадокии, мавзолей Мевланы в Конье)</li>\n\t\t<li>Шопинг и дегустации</li>\n\t</ul>",
+    "price_not_included": "<ul>\n\t\t<li>Перелёт до Антальи и обратно</li>\n\t\t<li>Трансфер из/до аэропорта — $25</li>\n\t\t<li>Полёт на воздушном шаре</li>\n\t\t<li>Посещение бассейна Клеопатры</li>\n\t</ul>",
+    "original_price": "750 USD",
+    "location": "Турция, Анталья",
+    "country": "Турция",
+    "country_code": "turkey",
+    "city": "Анталья",
+    "duration_hours": 144,
+    "max_persons": 36,
+    "rating": 5,
+    "photo_urls": [
+      "https://resize.tripster.ru/4PWnHdwvttQ3auuSQ9KkXNg8UCs=/fit-in/1200x1000/filters:no_upscale()/https://cdn.tripster.ru/photos/3976a254-bb46-431f-89db-51ad6f58ad87.jpg",
+      "https://resize.tripster.ru/29E7DGbJPTHyXeSZMjavEKDyriE=/fit-in/1200x1000/filters:no_upscale()/https://cdn.tripster.ru/photos/6019d21c-c257-4d09-939f-6236d13d2ed5.jpg",
+      "https://resize.tripster.ru/1dATW1tK2HYxb9mCaHzoSmqYaTY=/fit-in/1200x1000/filters:no_upscale()/https://cdn.tripster.ru/photos/de96ecbc-d9a4-40fb-a1e3-88ba4d2910ae.jpg",
+      "https://resize.tripster.ru/H3eJT_zKnJk8JoXzjbl0mDc5htA=/fit-in/1200x1000/filters:no_upscale()/https://cdn.tripster.ru/photos/2f3adc30-09ca-4451-885a-7e135f80d920.jpg",
+      "https://resize.tripster.ru/bu_5jzj6k3Chq7FKR1w4Ot-e0uo=/fit-in/1200x1000/filters:no_upscale()/https://cdn.tripster.ru/photos/21aba406-51a4-4ca5-bec8-6cd036e60eca.jpg",
+      "https://resize.tripster.ru/UP0yAisKhdnp7SVygf0JMl_aRF8=/fit-in/1200x1000/filters:no_upscale()/https://cdn.tripster.ru/photos/57c10d52-17ec-4896-b473-a753f86e4b2a.jpg",
+      "https://resize.tripster.ru/c1axgWgomRtLtUHA_hZKdocJmfE=/fit-in/1200x1000/filters:no_upscale()/https://cdn.tripster.ru/photos/922679ac-67db-4802-98ae-8f3db9245e69.jpg"
+    ]
+  },
+  "rewritten": {
+    "title": "Экскурсия по Турции: Анталия, Памуккале и Каппадокия",
+    "location": "Анталья, Турция",
+    "description": "Погрузитесь в уникальный тур по Турции, где вы сможете исследовать впечатляющие локации, такие как Анталия, Памуккале и Каппадокия. Этот тур предлагает вам не просто экскурсию, а целое приключение, полное ярких впечатлений и исторических открытий. Вас ждёт увлекательное путешествие с русским гидом, который раскроет все тайны древних руин и природных чудес Турции.",
+    "what_to_expect": "Вы увидите белоснежные травертины Памуккале, прогуляетесь по ярким улицам Антальи и насладитесь величественными пейзажами Каппадокии. Вас ждёт также возможность полетать на воздушном шаре и познакомиться с архитектурой Коньи.",
+    "organizational_details": "Тур включает комфортный транспорт и услуги опытного гида. Физическая подготовка не требуется, но рекомендуем взять с собой удобную обувь для прогулок. Подходит для семейных групп и любителей истории.",
+    "price": 12500,
+    "price_note": "Цена за группу / за человека",
+    "included": [
+      "Проживание",
+      "Трёхразовое питание",
+      "Трансфер по маршруту",
+      "Страховка",
+      "Услуги гида-историка",
+      "Экскурсии"
+    ],
+    "not_included": [
+      "Перелёт до Антальи и обратно",
+      "Трансфер из/до аэропорта",
+      "Полёт на воздушном шаре",
+      "Посещение бассейна Клеопатры"
+    ],
+    "meeting_point": null,
+    "tags": [
+      "История",
+      "Культура",
+      "Природа"
+    ],
+    "themes": [
+      "История и Культура",
+      "Природа и Пейзажи",
+      "Приключения"
+    ],
+    "landmarks": [
+      "Древний город Иераполис",
+      "Травертины Памуккале",
+      "Долины Каппадокии"
+    ],
+    "reviews": [
+      {
+        "name": "Марина",
+        "rating": 5,
+        "text": "Супер экскурсия! Гид всё подробно рассказал и показал"
+      },
+      {
+        "name": "Игорь",
+        "rating": 5,
+        "text": "Тур отличный, много интересного увидели, особенно Памуккале"
+      },
+      {
+        "name": "Юля",
+        "rating": 4,
+        "text": "Нормально, но хотелось бы больше времени в Каппадокии"
+      },
+      {
+        "name": "Дмитрий",
+        "rating": 5,
+        "text": "Восторг! Полет на шаре - незабываемо, спасибо гиду за эмоции"
+      },
+      {
+        "name": "Света",
+        "rating": 4,
+        "text": "Классная поездка, но жарко было, берите воду с собой"
+      },
+      {
+        "name": "Андрей",
+        "rating": 5,
+        "text": "Удивительные места! Очень понравился гид, всё доступно объяснил"
+      }
+    ]
+  },
+  "images": [
+    "C:\\Users\\Sharp\\Desktop\\gide\\tour_rewriter\\tours\\Турция\\Анталья\\71787\\images\\photo_1.jpg",
+    "C:\\Users\\Sharp\\Desktop\\gide\\tour_rewriter\\tours\\Турция\\Анталья\\71787\\images\\photo_2.jpg",
+    "C:\\Users\\Sharp\\Desktop\\gide\\tour_rewriter\\tours\\Турция\\Анталья\\71787\\images\\photo_3.jpg",
+    "C:\\Users\\Sharp\\Desktop\\gide\\tour_rewriter\\tours\\Турция\\Анталья\\71787\\images\\photo_4.jpg",
+    "C:\\Users\\Sharp\\Desktop\\gide\\tour_rewriter\\tours\\Турция\\Анталья\\71787\\images\\photo_5.jpg",
+    "C:\\Users\\Sharp\\Desktop\\gide\\tour_rewriter\\tours\\Турция\\Анталья\\71787\\images\\photo_6.jpg",
+    "C:\\Users\\Sharp\\Desktop\\gide\\tour_rewriter\\tours\\Турция\\Анталья\\71787\\images\\photo_7.jpg"
+  ],
+  "turex_id": 611,
+  "created_at": "2025-11-29T21:54:25.596994",
+  "updated_at": "2025-11-29T21:54:25.596994"
+}

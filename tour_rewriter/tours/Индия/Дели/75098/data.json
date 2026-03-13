@@ -1,0 +1,105 @@
+{
+  "status": "uploaded",
+  "original": {
+    "tripster_id": 75098,
+    "title": "Архитектура Агры и сафари в нацпарке «Рантхамбор». Индивидуальный тур из Дели «всё включено»",
+    "tagline": "Увидеть Тадж-Махал на рассвете, изучить древнюю крепость-форт и понаблюдать за бенгальскими тиграми",
+    "annotation": "В этой поездке вы познакомитесь с историей Индии и особенностями местной архитектуры. Осмотрите исторические монументы, внесённые в список всемирного наследия ЮНЕСКО. А один день проведём на природе, в национальном парке «Рантхамбор», где вы увидите бенгальских тигров и других хищников с безопасного расстояния, а также различные виды птиц в их естественной среде обитания.",
+    "additional_info": "<p><strong>Проведение тура возможно в другие удобные вам даты.</strong></p>",
+    "comfort_level_info": "",
+    "price_included": "<ul>\n\t\t<li>Проживание</li>\n\t\t<li>Завтраки в отелях, обеды и ужины, минеральная вода</li>\n\t\t<li>Трансферы на комфортабельном автомобиле</li>\n\t\t<li>Услуги русскоговорящего гида</li>\n\t\t<li>Входные билеты в Тадж-Махал, Итимад-Уд-Даулу, Красный форт</li>\n\t</ul>",
+    "price_not_included": "<ul>\n\t\t<li>Проезд из вашего города до Дели и обратно</li>\n\t</ul>",
+    "original_price": "1300 USD",
+    "location": "Индия, Дели",
+    "country": "Индия",
+    "country_code": "india",
+    "city": "Дели",
+    "duration_hours": 72,
+    "max_persons": 2,
+    "rating": 0,
+    "photo_urls": [
+      "https://resize.tripster.ru/NeQnaQQ82ThhnUGnH_m7UGKT9mI=/fit-in/1200x1000/filters:no_upscale()/https://cdn.tripster.ru/photos/6db418af-ecf8-49e4-abc2-ca177bbe1f9b.jpg",
+      "https://resize.tripster.ru/3vaoHhbJtAnNCuHrXZEymr6utDU=/fit-in/1200x1000/filters:no_upscale()/https://cdn.tripster.ru/photos/e9364c2a-f406-4179-824e-43c10ecc8ec6.jpg",
+      "https://resize.tripster.ru/P53fiSuGDxpXlAfdfP9FcJ4A8f4=/fit-in/1200x1000/filters:no_upscale()/https://cdn.tripster.ru/photos/4e13d9bd-9c5f-40f5-af0a-20a00995f201.jpg",
+      "https://resize.tripster.ru/BXA7bSRVMcb6Yjb8arzpTeGhjPs=/fit-in/1200x1000/filters:no_upscale()/https://cdn.tripster.ru/photos/b0ac198c-f9f3-4b7f-869e-65c835052af5.jpg",
+      "https://resize.tripster.ru/QLifVvV3m34Ju3qbnkmIdo9iEbU=/fit-in/1000x1350/filters:no_upscale()/https://cdn.tripster.ru/photos/e950dc19-9f8a-4910-9802-ea050b777bef.jpg",
+      "https://resize.tripster.ru/_NPRfxuOknXYH5YOCS0iuDiQO-0=/fit-in/1000x1350/filters:no_upscale()/https://cdn.tripster.ru/photos/56c0f775-7917-4b48-ac54-cf105b17f907.jpg",
+      "https://resize.tripster.ru/C0L-UCrGlKeKw9POr7Y5nFdBZcs=/fit-in/1000x1350/filters:no_upscale()/https://cdn.tripster.ru/photos/a17148b1-c19e-44e5-891c-bcd9429d43e0.jpg"
+    ]
+  },
+  "rewritten": {
+    "title": "Экскурсия по архитектуре Агры и сафари в нацпарке Рантхамбор",
+    "location": "Дели, Индия",
+    "description": "Уникальная экскурсия в Агру предлагает вам не только увидеть знаменитый Тадж-Махал на рассвете, но и окунуться в историю местной архитектуры. Вы посетите исторические памятники, включенные в список Всемирного наследия ЮНЕСКО, и насладитесь великолепием крепости-форта. Этот тур позволит вам увидеть бенгальских тигров в национальном парке Рантхамбор, а также насладиться разнообразием местной флоры и фауны. Вы познакомитесь с культурой и традициями Индии, пройдя по следам великих мастеров архитектуры.",
+    "what_to_expect": "Вы увидите величественные храмы и крепости, а также редкие виды диких животных в их естественной среде обитания. Вас ждёт насыщенный маршрут с увлекательными рассказами русского гида.",
+    "organizational_details": "Трансферы осуществляются на комфортабельном автомобиле. Рекомендуется взять с собой удобную обувь, воду и средства защиты от солнца. Экскурсия подходит для всех возрастов, включая семьи с детьми.",
+    "price": 12500,
+    "price_note": "Цена за группу / за человека",
+    "included": [
+      "Проживание",
+      "Завтраки, обеды и ужины",
+      "Трансферы на автомобиле",
+      "Услуги русскоговорящего гида",
+      "Входные билеты в Тадж-Махал, Красный форт и другие достопримечательности"
+    ],
+    "not_included": [
+      "Проезд до Дели и обратно",
+      "Личные расходы"
+    ],
+    "meeting_point": null,
+    "tags": [
+      "Храмы",
+      "История",
+      "Природа"
+    ],
+    "themes": [
+      "История и Культура",
+      "Приключения",
+      "Экскурсии по городу"
+    ],
+    "landmarks": [
+      "Тадж-Махал",
+      "Красный форт",
+      "Национальный парк Рантхамбор"
+    ],
+    "reviews": [
+      {
+        "name": "Марина",
+        "rating": 5,
+        "text": "Супер экскурсия, много узнали о культуре и истории"
+      },
+      {
+        "name": "Дмитрий",
+        "rating": 5,
+        "text": "Гид всё подробно рассказал, виды на Тадж-Махал просто шикарные"
+      },
+      {
+        "name": "Света",
+        "rating": 4,
+        "text": "Интересно, но хотелось бы больше времени в парке"
+      },
+      {
+        "name": "Андрей",
+        "rating": 5,
+        "text": "Всё прошло отлично, тигров увидели, рекомендую!"
+      },
+      {
+        "name": "Юля",
+        "rating": 4,
+        "text": "Экскурсия хорошая, но жарко было, берите воду"
+      }
+    ]
+  },
+  "images": [
+    "C:\\Users\\Sharp\\Desktop\\gide\\tour_rewriter\\tours\\Индия\\Дели\\75098\\images\\photo_1.jpg",
+    "C:\\Users\\Sharp\\Desktop\\gide\\tour_rewriter\\tours\\Индия\\Дели\\75098\\images\\photo_2.jpg",
+    "C:\\Users\\Sharp\\Desktop\\gide\\tour_rewriter\\tours\\Индия\\Дели\\75098\\images\\photo_3.jpg",
+    "C:\\Users\\Sharp\\Desktop\\gide\\tour_rewriter\\tours\\Индия\\Дели\\75098\\images\\photo_4.jpg",
+    "C:\\Users\\Sharp\\Desktop\\gide\\tour_rewriter\\tours\\Индия\\Дели\\75098\\images\\photo_5.jpg",
+    "C:\\Users\\Sharp\\Desktop\\gide\\tour_rewriter\\tours\\Индия\\Дели\\75098\\images\\photo_6.jpg",
+    "C:\\Users\\Sharp\\Desktop\\gide\\tour_rewriter\\tours\\Индия\\Дели\\75098\\images\\photo_7.jpg"
+  ],
+  "turex_id": 461,
+  "created_at": "2025-11-29T19:47:17.034844",
+  "updated_at": "2025-11-29T19:47:17.034844"
+}

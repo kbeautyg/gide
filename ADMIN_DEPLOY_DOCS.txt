@@ -1,0 +1,114 @@
+Документация по развертыванию проекта Gide
+
+Общие сведения
+Проект представляет собой веб-приложение, состоящее из:
+1.  Frontend: React (SPA), раздается через Nginx.
+2.  Backend: Python FastAPI.
+3.  Автоматизация: Сервис вебхуков для автодеплоя.
+
+Все компоненты упакованы в Docker-контейнеры. Для запуска используется docker-compose.
+
+---
+
+Инструкция для администратора
+
+1. Требования к серверу
+*   Установленный docker и docker-compose.
+*   Свободные порты: 8080 (для приложения) и 9000 (для вебхука) на локальном интерфейсе.
+*   Настроенный Nginx на хосте (для проксирования домена).
+
+2. Установка
+
+1.  Создайте директорию и клонируйте репозиторий:
+
+    mkdir -p /var/www/gide
+    cd /var/www/gide
+    git clone https://github.com/kbeautyg/gide.git .
+
+
+2.  Создайте файл .env:
+    Скопируйте содержимое ниже в файл /var/www/gide/.env:
+
+    # --- Backend ---
+    DATABASE_URL=postgresql://supabase_admin:kkgw0gaylup95bsdlkjtlh90j1rj7kuaatzy22jgyv5tgogghvo9cmf7zpmwrxkx@yamabiko.proxy.rlwy.net:36914/postgres
+    
+    SECRET_KEY_BASE=a1b2c3d4e5f6g7h8i9j0k1l2m3n4o5p6q7r8s9t0u1v2w3x4y5z6a7b8c9d0e1f2g3h4i5j6k7l8m9n0o1p2q3r4s5t6u7v8w9x0y1z2
+    SUPABASE_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoic2VydmljZV9yb2xlIiwiaXNzIjoic3VwYWJhc2UiLCJpYXQiOjE3NDYxMzMyMDAsImV4cCI6MTkwMzg5OTYwMH0.LRUaNwqp5qFamFjI81ibwPZn75UtMK-odWFkRMAYyt0
+    
+    GUIDE_PHONE=+79932890755
+    SUPER_ADMIN_PHONE=+79177445182
+    TELEGRAM_BOT_TOKEN=8409730364:AAF1NGhtiQaKkh_5QLi9DjFhgBUnVOosvUA
+    WEBHOOK_SECRET=my_webhook_secret
+    
+    # ВАЖНО: Замените gide.ваш-домен.ru на реальный домен
+    BACKEND_CORS_ORIGINS=["https://gide.ваш-домен.ru"]
+    APP_BACKEND_URL=https://gide.ваш-домен.ru/api
+    
+    # --- Frontend ---
+    VITE_API_URL=https://gide.ваш-домен.ru/api/v1
+
+
+3.  Дайте права на выполнение скрипту деплоя:
+
+    chmod +x deploy.sh
+
+
+4.  Запустите проект:
+
+    docker-compose -f docker-compose.prod.yml up --build -d
+
+    (Эта команда скачает образы, соберет проект и запустит 4 контейнера: frontend, backend, nginx, webhook)
+
+3. Настройка Nginx (на хосте)
+
+Чтобы сайт открывался по домену и работал автодеплой, настройте проксирование в системном Nginx.
+
+Конфиг /etc/nginx/sites-available/gide.conf:
+
+
+server {
+    listen 80;
+    server_name gide.ваш-домен.ru; # УКАЖИТЕ РЕАЛЬНЫЙ ДОМЕН
+
+    # Основное приложение (Frontend + API)
+    # Проксируем на внутренний Nginx в Docker (порт 8080)
+    location / {
+        proxy_pass http://127.0.0.1:8080;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+    
+    # Автодеплой (Webhooks)
+    # Проксируем на сервис вебхуков (порт 9000)
+    location /webhook {
+        proxy_pass http://127.0.0.1:9000/webhook;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+    }
+}
+
+
+После создания конфига выполните:
+
+ln -s /etc/nginx/sites-available/gide.conf /etc/nginx/sites-enabled/
+nginx -t
+systemctl reload nginx
+certbot --nginx -d gide.ваш-домен.ru
+
+
+---
+
+Как работает Автодеплой (Информация для разработчика)
+
+В сборку включен контейнер gide_webhook, который слушает порт 9000.
+При получении POST-запроса на /webhook он запускает скрипт deploy.sh внутри сервера.
+
+Скрипт deploy.sh:
+1.  Делает git pull.
+2.  Пересобирает контейнеры: docker-compose -f docker-compose.prod.yml up --build -d.
+
+Вам (Администратору) настраивать Git-хуки НЕ НУЖНО.
+Вам нужно только обеспечить, чтобы запрос на https://gide.ваш-домен.ru/webhook доходил до порта 9000 (это делает конфиг Nginx выше).
+
