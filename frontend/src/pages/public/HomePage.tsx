@@ -286,7 +286,7 @@ export default function HomePage() {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.3, duration: 0.8 }}
-                className="text-6xl sm:text-7xl font-bold text-white mb-8 leading-none mt-8"
+                className="text-4xl sm:text-6xl md:text-7xl font-bold text-white mb-8 leading-none mt-8"
             style={{
                   textShadow: '0 10px 40px rgba(0,0,0,0.5), 0 2px 8px rgba(0,0,0,0.3)'
             }}

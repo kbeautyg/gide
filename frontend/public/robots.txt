@@ -1,5 +1,5 @@
-# Turex - Экскурсии по Азии
-# https://thaiguide-frontend-production.up.railway.app/
+# InTurex Pro — Экскурсии по Азии
+# https://inturex.pro/
 
 User-agent: *
 Allow: /
@@ -11,9 +11,9 @@ Disallow: /login
 Disallow: /register
 Disallow: /api/
 
-# Sitemap - динамический (с турами) и статический (fallback)
+# Sitemap — динамический (с турами) и статический (fallback)
 Sitemap: https://gide-production.up.railway.app/api/v1/seo/sitemap.xml
-Sitemap: https://thaiguide-frontend-production.up.railway.app/sitemap.xml
+Sitemap: https://inturex.pro/sitemap.xml
 
 # Crawl-delay для вежливости
 Crawl-delay: 1
@@ -25,4 +25,4 @@ Disallow: /dashboard/
 Disallow: /admin/
 Disallow: /login
 Disallow: /register
-Host: https://thaiguide-frontend-production.up.railway.app
+Host: https://inturex.pro

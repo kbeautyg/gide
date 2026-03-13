@@ -1,3 +1,4 @@
+import React from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Link, useLocation } from 'react-router-dom'
 import { X, Home, Compass, BookOpen, Info, HelpCircle, Briefcase, Phone } from 'lucide-react'
@@ -22,6 +23,18 @@ const menuItems = [
 export function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
   const location = useLocation()
   const { isAuthenticated, user } = useAuthStore()
+
+  // Блокируем скролл body при открытом меню
+  React.useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = 'hidden'
+    } else {
+      document.body.style.overflow = ''
+    }
+    return () => {
+      document.body.style.overflow = ''
+    }
+  }, [isOpen])
 
   return (
     <AnimatePresence>

@@ -100,7 +100,7 @@ export default function RegisterPage() {
         <form onSubmit={handleSubmit}>
           <CardContent className="space-y-4">
             {registerError && (
-              <div className="bg-red-50 border border-red-200 text-red-800 px-4 py-3 rounded-md text-sm">
+              <div role="alert" className="bg-red-50 border border-red-200 text-red-800 px-4 py-3 rounded-md text-sm">
                 <strong>Ошибка:</strong> {registerError}
               </div>
             )}
@@ -110,6 +110,7 @@ export default function RegisterPage() {
                 id="name"
                 type="text"
                 placeholder="Ваше имя"
+                autoComplete="name"
                 className="mt-1"
                 value={formData.name}
                 onChange={(e) => setFormData({ ...formData, name: e.target.value })}
@@ -121,6 +122,7 @@ export default function RegisterPage() {
                 id="phone"
                 type="tel"
                 placeholder="+7 (999) 999-99-99"
+                autoComplete="tel"
                 className="mt-1"
                 value={formData.phone}
                 onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
@@ -133,6 +135,7 @@ export default function RegisterPage() {
                 id="email"
                 type="email"
                 placeholder="your@email.com"
+                autoComplete="email"
                 className="mt-1"
                 value={formData.email}
                 onChange={(e) => setFormData({ ...formData, email: e.target.value })}
@@ -144,6 +147,7 @@ export default function RegisterPage() {
                 id="password"
                 type="password"
                 placeholder="Минимум 6 символов"
+                autoComplete="new-password"
                 className="mt-1"
                 value={formData.password}
                 onChange={(e) => setFormData({ ...formData, password: e.target.value })}
@@ -156,6 +160,7 @@ export default function RegisterPage() {
                 id="password-confirm"
                 type="password"
                 placeholder="Повторите пароль"
+                autoComplete="new-password"
                 className="mt-1"
                 value={formData.passwordConfirm}
                 onChange={(e) => setFormData({ ...formData, passwordConfirm: e.target.value })}

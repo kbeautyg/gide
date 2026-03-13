@@ -84,9 +84,12 @@ export default function LoginPage() {
           
           <div className="grid md:grid-cols-2 gap-6">
             {/* Карточка Клиента */}
-            <div 
+            <div
+              role="button"
+              tabIndex={0}
               onClick={() => handleSelection('client')}
-              className="group bg-white rounded-2xl p-8 shadow-sm hover:shadow-md border border-gray-200 cursor-pointer transition-all flex flex-col items-center text-center hover:border-tropical-ocean/50"
+              onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); handleSelection('client') } }}
+              className="group bg-white rounded-2xl p-8 shadow-sm hover:shadow-md border border-gray-200 cursor-pointer transition-all flex flex-col items-center text-center hover:border-tropical-ocean/50 focus:outline-none focus:ring-2 focus:ring-[#FF385C] focus:ring-offset-2"
             >
               <div className="w-20 h-20 bg-blue-50 rounded-full flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
                 <User size={40} className="text-blue-600" />
@@ -101,9 +104,12 @@ export default function LoginPage() {
             </div>
 
             {/* Карточка Гида */}
-            <div 
+            <div
+              role="button"
+              tabIndex={0}
               onClick={() => handleSelection('guide')}
-              className="group bg-white rounded-2xl p-8 shadow-sm hover:shadow-md border border-gray-200 cursor-pointer transition-all flex flex-col items-center text-center hover:border-tropical-ocean/50"
+              onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); handleSelection('guide') } }}
+              className="group bg-white rounded-2xl p-8 shadow-sm hover:shadow-md border border-gray-200 cursor-pointer transition-all flex flex-col items-center text-center hover:border-tropical-ocean/50 focus:outline-none focus:ring-2 focus:ring-[#FF385C] focus:ring-offset-2"
             >
               <div className="w-20 h-20 bg-orange-50 rounded-full flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
                 <MapPin size={40} className="text-orange-600" />
@@ -127,8 +133,9 @@ export default function LoginPage() {
       ) : (
         <Card className="w-full max-w-md">
           <CardHeader className="text-center relative">
-            <button 
+            <button
               onClick={handleBack}
+              aria-label="Назад к выбору роли"
               className="absolute left-6 top-6 text-gray-400 hover:text-gray-900 transition-colors"
             >
               <ArrowLeft size={20} />
@@ -164,7 +171,7 @@ export default function LoginPage() {
           <form onSubmit={handleSubmit}>
             <CardContent className="space-y-4">
               {loginError && (
-                <div className="bg-red-50 border border-red-200 text-red-800 px-4 py-3 rounded-md text-sm">
+                <div role="alert" className="bg-red-50 border border-red-200 text-red-800 px-4 py-3 rounded-md text-sm">
                   <strong>Ошибка входа:</strong> Неверный телефон или пароль
                 </div>
               )}
@@ -174,6 +181,7 @@ export default function LoginPage() {
                   id="phone"
                   type="tel"
                   placeholder="79991234567"
+                  autoComplete="tel"
                   className="mt-1"
                   value={phone}
                   onChange={(e) => setPhone(e.target.value)}
@@ -186,6 +194,7 @@ export default function LoginPage() {
                   id="password"
                   type="password"
                   placeholder="Введите пароль"
+                  autoComplete="current-password"
                   className="mt-1"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}

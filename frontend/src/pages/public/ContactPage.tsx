@@ -147,6 +147,7 @@ export default function ContactPage() {
                         id="message"
                         placeholder="Расскажите нам, чем можем помочь..."
                         rows={5}
+                        className="resize-none"
                         required
                       />
                     </div>
