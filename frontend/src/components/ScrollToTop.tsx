@@ -33,6 +33,7 @@ export function ScrollToTop() {
           animate={{ opacity: 1, scale: 1 }}
           exit={{ opacity: 0, scale: 0.8 }}
           onClick={scrollToTop}
+          aria-label="Прокрутить наверх"
           className="fixed bottom-6 right-6 z-50 w-12 h-12 bg-airbnb-rausch text-white rounded-full shadow-2xl flex items-center justify-center hover:bg-airbnb-rausch/90 hover:scale-110 transition-all"
           whileHover={{ y: -4 }}
         >

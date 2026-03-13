@@ -41,7 +41,7 @@ export const ImageWithFallback: React.FC<ImageWithFallbackProps> = ({
       setIsLoading(false)
     }
     img.onerror = () => {
-      console.error(`Failed to load image: ${processedSrc}`)
+      if (import.meta.env.DEV) console.warn(`Failed to load image: ${processedSrc}`)
       setHasError(true)
       setImgSrc(fallbackSrc)
       setIsLoading(false)

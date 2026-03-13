@@ -11,7 +11,7 @@ export function RequestFloatingButton() {
   const location = useLocation()
   const [visible, setVisible] = useState(false)
   const [dismissed, setDismissed] = useState(() => {
-    return localStorage.getItem('request-btn-dismissed') === 'true'
+    try { return localStorage.getItem('request-btn-dismissed') === 'true' } catch { return false }
   })
 
   useEffect(() => {
@@ -33,7 +33,7 @@ export function RequestFloatingButton() {
   const handleClose = () => {
     setVisible(false)
     setDismissed(true)
-    localStorage.setItem('request-btn-dismissed', 'true')
+    try { localStorage.setItem('request-btn-dismissed', 'true') } catch {}
   }
 
   return (

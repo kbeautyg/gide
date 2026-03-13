@@ -71,7 +71,7 @@ export function MobileSearchModal({ isOpen, onClose }: MobileSearchModalProps) {
           {/* Header */}
           <div className="sticky top-0 z-10 bg-white border-b">
             <div className="flex items-center justify-between p-4">
-              <button onClick={onClose} className="p-2 hover:bg-gray-100 rounded-full">
+              <button onClick={onClose} aria-label="Закрыть поиск" className="p-2 hover:bg-gray-100 rounded-full">
                 <X size={24} />
               </button>
               <h2 className="text-lg font-semibold">Поиск экскурсий</h2>
@@ -110,6 +110,7 @@ export function MobileSearchModal({ isOpen, onClose }: MobileSearchModalProps) {
                 >
                   <Input
                     placeholder="Введите город или страну"
+                    aria-label="Поиск по городу или стране"
                     value={searchData.where}
                     onChange={(e) => setSearchData({ ...searchData, where: e.target.value })}
                     className="mb-3"

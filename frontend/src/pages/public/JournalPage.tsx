@@ -221,6 +221,7 @@ export default function JournalPage() {
                 <input
                   type="text"
                   placeholder="Поиск статей..."
+                  aria-label="Поиск статей"
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   className="w-full pl-12 pr-4 py-4 rounded-full bg-white/95 backdrop-blur-sm text-gray-900 placeholder-gray-500 shadow-lg focus:outline-none focus:ring-2 focus:ring-white/50"

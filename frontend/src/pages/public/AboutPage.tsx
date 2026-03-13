@@ -625,12 +625,18 @@ export default function AboutPage() {
                 transition={{ delay: index * 0.1 }}
                 className="flex gap-6 items-start bg-gray-50 p-6 rounded-2xl hover:shadow-lg transition-all"
               >
-                <div className={`flex-shrink-0 w-16 h-16 rounded-full bg-${item.color}-100 flex items-center justify-center`}>
-                  <item.icon size={28} className={`text-${item.color}-600`} />
+                <div className={`flex-shrink-0 w-16 h-16 rounded-full flex items-center justify-center ${
+                  item.color === 'blue' ? 'bg-blue-100' : item.color === 'green' ? 'bg-green-100' : 'bg-purple-100'
+                }`}>
+                  <item.icon size={28} className={
+                    item.color === 'blue' ? 'text-blue-600' : item.color === 'green' ? 'text-green-600' : 'text-purple-600'
+                  } />
                 </div>
                 <div className="flex-1">
                   <div className="flex items-center gap-3 mb-3">
-                    <span className={`text-3xl font-black text-${item.color}-600`}>{item.step}</span>
+                    <span className={`text-3xl font-black ${
+                      item.color === 'blue' ? 'text-blue-600' : item.color === 'green' ? 'text-green-600' : 'text-purple-600'
+                    }`}>{item.step}</span>
                     <h3 className="text-2xl font-bold text-gray-900">{item.title}</h3>
                   </div>
                   <p className="text-gray-600 leading-relaxed">{item.description}</p>

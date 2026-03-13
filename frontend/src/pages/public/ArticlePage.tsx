@@ -56,7 +56,7 @@ export default function ArticlePage() {
           setRelatedArticles(filtered)
         }
       } catch (err) {
-        console.error('Error fetching article:', err)
+        if (import.meta.env.DEV) console.error('Error fetching article:', err)
         setError(true)
       } finally {
         setLoading(false)

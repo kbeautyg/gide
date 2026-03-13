@@ -511,16 +511,16 @@ export default function TourDetailPage() {
                 <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors" />
                 </div>
               <div className="cursor-pointer relative group overflow-hidden" onClick={() => openGallery(1)}>
-                 <ImageWithFallback src={photos[1]} className="w-full h-full object-cover" alt="" />
+                 <ImageWithFallback src={photos[1]} className="w-full h-full object-cover" alt={`${tour.title} — фото 2`} />
               </div>
               <div className="cursor-pointer relative group overflow-hidden" onClick={() => openGallery(2)}>
-                 <ImageWithFallback src={photos[2]} className="w-full h-full object-cover" alt="" />
+                 <ImageWithFallback src={photos[2]} className="w-full h-full object-cover" alt={`${tour.title} — фото 3`} />
             </div>
               <div className="cursor-pointer relative group overflow-hidden" onClick={() => openGallery(3)}>
-                 <ImageWithFallback src={photos[3]} className="w-full h-full object-cover" alt="" />
+                 <ImageWithFallback src={photos[3]} className="w-full h-full object-cover" alt={`${tour.title} — фото 4`} />
                     </div>
               <div className="cursor-pointer relative group overflow-hidden" onClick={() => openGallery(4)}>
-                 <ImageWithFallback src={photos[4]} className="w-full h-full object-cover" alt="" />
+                 <ImageWithFallback src={photos[4]} className="w-full h-full object-cover" alt={`${tour.title} — фото 5`} />
                  {photos.length > 5 && (
                     <div className="absolute inset-0 bg-black/50 flex items-center justify-center text-white font-medium text-sm">
                         +{photos.length - 5} фото

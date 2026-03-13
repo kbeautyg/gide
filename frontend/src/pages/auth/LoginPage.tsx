@@ -66,7 +66,7 @@ export default function LoginPage() {
         }
       }
     } catch (error) {
-      console.error("Login failed", error)
+      if (import.meta.env.DEV) console.error("Login failed", error)
     }
   }
 

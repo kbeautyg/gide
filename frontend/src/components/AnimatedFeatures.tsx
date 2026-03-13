@@ -9,6 +9,7 @@ export function AnimatedFeatures() {
       description: 'Все гиды проверены и застрахованы',
       color: 'text-blue-500',
       bgColor: 'bg-blue-50',
+      barColor: 'bg-blue-500',
     },
     {
       icon: Clock,
@@ -16,6 +17,7 @@ export function AnimatedFeatures() {
       description: 'Выбирайте удобное время начала',
       color: 'text-green-500',
       bgColor: 'bg-green-50',
+      barColor: 'bg-green-500',
     },
     {
       icon: HeartHandshake,
@@ -23,6 +25,7 @@ export function AnimatedFeatures() {
       description: 'Персональные маршруты под вас',
       color: 'text-airbnb-rausch',
       bgColor: 'bg-red-50',
+      barColor: 'bg-airbnb-rausch',
     },
     {
       icon: Award,
@@ -30,6 +33,7 @@ export function AnimatedFeatures() {
       description: 'Рейтинг 4.9+ от тысяч туристов',
       color: 'text-yellow-500',
       bgColor: 'bg-yellow-50',
+      barColor: 'bg-yellow-500',
     },
     {
       icon: MapPin,
@@ -37,6 +41,7 @@ export function AnimatedFeatures() {
       description: '50+ городов в 12 странах',
       color: 'text-purple-500',
       bgColor: 'bg-purple-50',
+      barColor: 'bg-purple-500',
     },
     {
       icon: Sparkles,
@@ -44,6 +49,7 @@ export function AnimatedFeatures() {
       description: 'Отобранные впечатления',
       color: 'text-pink-500',
       bgColor: 'bg-pink-50',
+      barColor: 'bg-pink-500',
     },
   ]
 
@@ -131,7 +137,7 @@ export function AnimatedFeatures() {
                 whileInView={{ width: '100%' }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.6, delay: index * 0.1 }}
-                className={`absolute bottom-0 left-0 h-1 ${feature.color.replace('text', 'bg')}`}
+                className={`absolute bottom-0 left-0 h-1 ${feature.barColor}`}
               />
             </motion.div>
           ))}

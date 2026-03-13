@@ -73,7 +73,7 @@ export function SecretDiscount({ isOpen, onClose }: SecretDiscountProps) {
                 </p>
 
                 <div className="bg-white text-purple-600 px-6 py-3 rounded-full font-mono text-xl font-bold tracking-wider">
-                  KONAMI2025
+                  KONAMI2026
                 </div>
 
                 <p className="text-xs opacity-75 mt-4">
