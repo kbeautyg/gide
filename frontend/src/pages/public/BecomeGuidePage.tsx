@@ -1042,16 +1042,16 @@ export default function BecomeGuidePage() {
         </div>
 
         {/* CTA */}
-        <div className="text-center bg-airbnb-rausch text-white rounded-3xl p-12 max-w-5xl mx-auto">
-          <h2 className="text-4xl font-bold mb-4">Готовы начать зарабатывать?</h2>
-          <p className="text-xl mb-8 opacity-90">
+        <div className="text-center bg-airbnb-rausch text-white rounded-3xl p-6 sm:p-12 max-w-5xl mx-auto">
+          <h2 className="text-2xl sm:text-4xl font-bold mb-4">Готовы начать зарабатывать?</h2>
+          <p className="text-base sm:text-xl mb-6 sm:mb-8 opacity-90">
             Присоединяйтесь к 500+ гидам, которые уже работают с In Turex Pro
           </p>
-          <div className="flex justify-center gap-4 flex-wrap">
-            <Button asChild size="lg" className="bg-[#111827] text-white hover:bg-[#1f2937] text-lg px-8 py-6">
+          <div className="flex flex-col sm:flex-row justify-center gap-3 sm:gap-4">
+            <Button asChild size="lg" className="bg-[#111827] text-white hover:bg-[#1f2937] text-base sm:text-lg px-6 sm:px-8 py-4 sm:py-6 w-full sm:w-auto">
               <a href="#application-form">Заполнить заявку</a>
             </Button>
-            <Button asChild size="lg" className="bg-[#111827] text-white hover:bg-[#1f2937] text-lg px-8 py-6">
+            <Button asChild size="lg" className="bg-[#111827] text-white hover:bg-[#1f2937] text-base sm:text-lg px-6 sm:px-8 py-4 sm:py-6 w-full sm:w-auto">
               <a href="https://t.me/turexpro" target="_blank" rel="noopener noreferrer">Написать в Telegram</a>
             </Button>
           </div>

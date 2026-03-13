@@ -43,9 +43,9 @@ export function PublicFooter() {
           <div>
             <h4 className="font-semibold mb-4">Время работы</h4>
             <ul className="space-y-2 text-gray-300 text-sm">
-              <li>🇹🇭 10:00—19:00 <span className="text-gray-400">(GMT+7)</span></li>
-              <li>🇰🇬 9:00—19:00 <span className="text-gray-400">(GMT+6)</span></li>
-              <li>🇷🇺 9:00—19:00 <span className="text-gray-400">(МСК)</span></li>
+              <li>🇹🇭 Пхукет — 10:00—19:00 <span className="text-gray-400">(GMT+7)</span></li>
+              <li>🇰🇬 Бишкек — 9:00—19:00 <span className="text-gray-400">(GMT+6)</span></li>
+              <li>🇷🇺 Москва — 9:00—19:00 <span className="text-gray-400">(МСК)</span></li>
               <li className="pt-1 text-white/70">📧 Поддержка 24/7</li>
             </ul>
           </div>

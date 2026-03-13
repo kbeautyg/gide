@@ -377,11 +377,11 @@ export default function TourDetailPage() {
 
       <div className="bg-white border-b">
         <div className="container mx-auto px-4 py-2">
-          <div className="text-sm text-gray-500 flex items-center gap-1.5">
-            <Link to="/" className="hover:text-gray-900 transition-colors">Главная</Link>
-            <ChevronRight size={14} />
-            <Link to="/tours" className="hover:text-gray-900 transition-colors">Все туры</Link>
-            <ChevronRight size={14} />
+          <div className="text-sm text-gray-500 flex items-center gap-1.5 overflow-hidden">
+            <Link to="/" className="hover:text-gray-900 transition-colors whitespace-nowrap">Главная</Link>
+            <ChevronRight size={14} className="flex-shrink-0" />
+            <Link to="/tours" className="hover:text-gray-900 transition-colors whitespace-nowrap">Все туры</Link>
+            <ChevronRight size={14} className="flex-shrink-0" />
             <span className="text-gray-900 font-medium truncate">{tour.title}</span>
           </div>
         </div>
