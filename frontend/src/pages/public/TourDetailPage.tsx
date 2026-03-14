@@ -662,8 +662,8 @@ export default function TourDetailPage() {
             </div>
           </div>
 
-          <div className="lg:sticky lg:top-24 mt-8 lg:mt-0">
-             <Card className="shadow-lg border-0 overflow-hidden relative">
+          <div className="lg:sticky lg:top-24 mt-8 lg:mt-0 w-full">
+             <Card className="shadow-lg border-0 overflow-hidden relative w-full">
                 {/* Success Overlay */}
                 <AnimatePresence>
                   {showSuccess && (
@@ -687,24 +687,24 @@ export default function TourDetailPage() {
                   )}
                 </AnimatePresence>
 
-                <div className="p-5 bg-white">
-                  <div className="flex items-baseline justify-between mb-6">
+                <div className="p-4 sm:p-5 bg-white">
+                  <div className="flex items-baseline justify-between mb-4 sm:mb-6">
                     <div>
-                      <span className="text-base text-gray-500 block mb-1">Стоимость тура</span>
+                      <span className="text-sm sm:text-base text-gray-500 block mb-1">Стоимость тура</span>
                       <div className="flex items-baseline gap-2">
-                        <span className="text-3xl font-bold text-gray-900">{formatRUB(tour.price)}</span>
-                        <span className="text-base text-gray-500">/ чел.</span>
+                        <span className="text-2xl sm:text-3xl font-bold text-gray-900">{formatRUB(tour.price)}</span>
+                        <span className="text-sm sm:text-base text-gray-500">/ чел.</span>
                       </div>
                     </div>
                   </div>
 
-                  <div className="space-y-4">
-                    <div className="grid grid-cols-2 gap-3">
+                  <div className="space-y-3 sm:space-y-4">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                       <div className="space-y-1.5">
-                        <Label className="text-base font-medium text-gray-700">Примерная дата</Label>
+                        <Label className="text-sm sm:text-base font-medium text-gray-700">Примерная дата</Label>
                         <Input
                           type="date"
-                          className="h-11 text-base"
+                          className="h-11 text-base w-full"
                           value={bookingData.date}
                           onChange={(e) => setBookingData({ ...bookingData, date: e.target.value })}
                         />
@@ -713,11 +713,11 @@ export default function TourDetailPage() {
                         </span>
                       </div>
                       <div className="space-y-1.5">
-                        <Label className="text-base font-medium text-gray-700">Участники</Label>
+                        <Label className="text-sm sm:text-base font-medium text-gray-700">Участники</Label>
                         <Input
                           type="number"
                           min="1"
-                          className="h-11 text-base"
+                          className="h-11 text-base w-full"
                           value={bookingData.participants}
                           onChange={(e) => setBookingData({ ...bookingData, participants: parseInt(e.target.value) })}
                         />
@@ -725,11 +725,11 @@ export default function TourDetailPage() {
                     </div>
 
                     {!isAuthenticated ? (
-                      <div className="pt-4 text-center">
-                        <p className="text-base text-gray-600 mb-3">Войдите, чтобы отправить запрос</p>
+                      <div className="pt-3 sm:pt-4 text-center">
+                        <p className="text-sm sm:text-base text-gray-600 mb-3">Войдите, чтобы отправить запрос</p>
                         <Button
                           onClick={() => navigate('/login', { state: { from: `/tours/${id}` } })}
-                          className="w-full bg-airbnb-rausch hover:bg-airbnb-rausch/90 text-white"
+                          className="w-full h-11 sm:h-auto bg-airbnb-rausch hover:bg-airbnb-rausch/90 text-white text-base"
                         >
                           Войти
                         </Button>
@@ -739,14 +739,14 @@ export default function TourDetailPage() {
                         <div className="space-y-3 pt-2">
                           <Input
                             placeholder="Ваше имя"
-                            className="h-11 text-base"
+                            className="h-11 text-base w-full"
                             autoComplete="name"
                             value={bookingData.clientName}
                             onChange={(e) => setBookingData({ ...bookingData, clientName: e.target.value })}
                           />
                           <Input
                             placeholder="Телефон"
-                            className="h-11 text-base"
+                            className="h-11 text-base w-full"
                             autoComplete="tel"
                             value={bookingData.clientPhone}
                             onChange={(e) => setBookingData({ ...bookingData, clientPhone: e.target.value })}
@@ -754,9 +754,9 @@ export default function TourDetailPage() {
                         </div>
 
                         <div className="pt-2">
-                          <div className="flex justify-between items-center mb-4 text-base">
+                          <div className="flex justify-between items-center mb-3 sm:mb-4 text-sm sm:text-base">
                             <span className="text-gray-600">Итого к оплате:</span>
-                            <span className="font-bold text-lg text-gray-900">{formatRUB(totalPrice)}</span>
+                            <span className="font-bold text-base sm:text-lg text-gray-900">{formatRUB(totalPrice)}</span>
                           </div>
                           <Button
                             onClick={handleBooking}

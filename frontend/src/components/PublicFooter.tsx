@@ -35,8 +35,11 @@ export function PublicFooter() {
               <li>🇰🇬 Бишкек, Кыргызстан</li>
               <li>🇷🇺 Москва, Россия</li>
             </ul>
-            <div className="mt-4 space-y-1 text-gray-300 text-sm">
-              <a href="mailto:help@inturex.pro" className="block hover:text-white transition-colors">help@inturex.pro</a>
+            <div className="mt-4 space-y-1.5 text-gray-300 text-sm">
+              <a href="mailto:hello@inturex.pro" className="block hover:text-white transition-colors">hello@inturex.pro <span className="text-gray-500">— общие</span></a>
+              <a href="mailto:help@inturex.pro" className="block hover:text-white transition-colors">help@inturex.pro <span className="text-gray-500">— поддержка</span></a>
+              <a href="mailto:partners@inturex.pro" className="block hover:text-white transition-colors">partners@inturex.pro <span className="text-gray-500">— партнёрам</span></a>
+              <a href="mailto:orders@inturex.pro" className="block hover:text-white transition-colors">orders@inturex.pro <span className="text-gray-500">— заказы</span></a>
             </div>
           </div>
 

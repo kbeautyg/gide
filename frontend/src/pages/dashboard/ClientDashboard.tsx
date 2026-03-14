@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
-import { MapPin, Clock, ArrowRight, User, Star, Search, Heart, Sparkles, Trophy } from 'lucide-react'
+import { MapPin, Clock, ArrowRight, User, Star, Search, Heart, Sparkles, Trophy, MessageCircle } from 'lucide-react'
 import { formatRUB, getImageUrl } from '@/lib/utils'
 import { api, toursApi } from '@/lib/api'
 import { useAuthStore } from '@/lib/store'
@@ -41,12 +41,16 @@ export default function ClientDashboard() {
   })
 
   // Фильтруем бронирования на клиенте (временное решение)
-  const bookings = bookingsData?.bookings?.filter((b: any) => 
+  const bookings = bookingsData?.bookings?.filter((b: any) =>
     b.client_id === user?.id || b.client_phone === user?.phone
   ) || []
-  
-  const upcomingBookings = bookings.filter((b: any) => new Date(b.date) >= new Date())
-  const pastBookings = bookings.filter((b: any) => new Date(b.date) < new Date())
+
+  // Статус-ориентированная фильтрация (не по дате!)
+  const pendingBookings = bookings.filter((b: any) => b.status === 'pending')
+  const confirmedBookings = bookings.filter((b: any) => b.status === 'confirmed')
+  const completedBookings = bookings.filter((b: any) => b.status === 'completed')
+  // Активные = pending + confirmed (для списка «Ближайшие поездки»)
+  const activeBookings = bookings.filter((b: any) => b.status === 'pending' || b.status === 'confirmed')
 
   // Получаем туры из ответа (AxiosResponse или данные напрямую)
   const recommendedTours = recommendedData?.data?.tours || []
@@ -109,20 +113,55 @@ export default function ClientDashboard() {
         </div>
       </div>
 
+      {/* Баннер «Ждём ответа гида» для pending бронирований */}
+      {pendingBookings.length > 0 && (
+        <div className="bg-orange-50 border border-orange-200 rounded-xl p-4 flex items-center gap-4">
+          <div className="w-10 h-10 bg-orange-100 rounded-full flex items-center justify-center flex-shrink-0">
+            <Clock className="w-5 h-5 text-orange-600" />
+          </div>
+          <div className="flex-1 min-w-0">
+            <p className="text-sm font-medium text-orange-900">
+              Ждём ответа гида по {pendingBookings.length === 1 ? 'вашему бронированию' : `${pendingBookings.length} бронированиям`}
+            </p>
+            <p className="text-xs text-orange-600 mt-0.5">
+              Перейдите во вкладку «Сообщения», чтобы связаться с гидом
+            </p>
+          </div>
+          <Link to="/dashboard/messages">
+            <Button size="sm" variant="outline" className="border-orange-300 text-orange-700 hover:bg-orange-100 gap-1.5 flex-shrink-0">
+              <MessageCircle size={14} />
+              Сообщения
+            </Button>
+          </Link>
+        </div>
+      )}
+
       {/* Stats Overview */}
-      <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-        <Card className="bg-white border-blue-100 shadow-sm hover:shadow-md transition-all">
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <Card className="bg-white border-orange-100 shadow-sm hover:shadow-md transition-all">
           <CardHeader className="pb-2">
             <CardTitle className="text-xs font-medium text-gray-500 uppercase tracking-wider">
-              В ожидании
+              Ожидание
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-blue-600">{upcomingBookings.length}</div>
+            <div className="text-2xl font-bold text-orange-500">{pendingBookings.length}</div>
             <p className="text-xs text-gray-400">поездок</p>
           </CardContent>
         </Card>
-        
+
+        <Card className="bg-white border-blue-100 shadow-sm hover:shadow-md transition-all">
+          <CardHeader className="pb-2">
+            <CardTitle className="text-xs font-medium text-gray-500 uppercase tracking-wider">
+              Подтверждено
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold text-blue-600">{confirmedBookings.length}</div>
+            <p className="text-xs text-gray-400">поездок</p>
+          </CardContent>
+        </Card>
+
         <Card className="bg-white border-green-100 shadow-sm hover:shadow-md transition-all">
           <CardHeader className="pb-2">
             <CardTitle className="text-xs font-medium text-gray-500 uppercase tracking-wider">
@@ -130,7 +169,7 @@ export default function ClientDashboard() {
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-green-600">{pastBookings.length}</div>
+            <div className="text-2xl font-bold text-green-600">{completedBookings.length}</div>
             <p className="text-xs text-gray-400">поездок</p>
           </CardContent>
         </Card>
@@ -161,16 +200,16 @@ export default function ClientDashboard() {
                     <Clock size={24} className="text-blue-600" />
                     Ближайшие поездки
                 </h2>
-                {upcomingBookings.length > 0 && (
+                {activeBookings.length > 0 && (
                     <Link to="/dashboard/bookings" className="text-sm text-blue-600 font-medium hover:underline">
                         Все поездки
                     </Link>
                 )}
             </div>
             
-            {upcomingBookings.length > 0 ? (
+            {activeBookings.length > 0 ? (
                 <div className="space-y-4">
-                {upcomingBookings.map((booking: any) => (
+                {activeBookings.map((booking: any) => (
                     <Link to={`/tours/${booking.tour_id}`} key={booking.id} className="block group">
                     <Card className="overflow-hidden hover:shadow-md transition-shadow border-l-4 border-l-blue-500">
                     <div className="flex flex-col sm:flex-row">
@@ -196,9 +235,15 @@ export default function ClientDashboard() {
                             <div className="flex justify-between items-start">
                                 <h3 className="font-bold text-lg text-gray-900 group-hover:text-blue-600 transition-colors">{booking.tour_title || 'Экскурсия'}</h3>
                                 <span className={`px-2 py-0.5 rounded text-xs font-bold ${
-                                    booking.status === 'confirmed' ? 'bg-green-100 text-green-700' : 'bg-yellow-100 text-yellow-700'
+                                    booking.status === 'confirmed' ? 'bg-green-100 text-green-700' :
+                                    booking.status === 'completed' ? 'bg-gray-100 text-gray-700' :
+                                    booking.status === 'cancelled' ? 'bg-red-100 text-red-700' :
+                                    'bg-orange-100 text-orange-700'
                                 }`}>
-                                    {booking.status === 'confirmed' ? 'Подтверждено' : 'Обработка'}
+                                    {booking.status === 'confirmed' ? 'Подтверждено' :
+                                     booking.status === 'completed' ? 'Завершено' :
+                                     booking.status === 'cancelled' ? 'Отменено' :
+                                     'Ожидание'}
                                 </span>
                             </div>
                             <div className="text-sm text-gray-500 mt-2 flex items-center gap-4">

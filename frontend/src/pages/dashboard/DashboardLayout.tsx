@@ -25,6 +25,7 @@ import {
 } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { api, toursApi } from '@/lib/api'
+import { useChats } from '@/hooks/useChats'
 
 interface MenuItem {
   icon: any;
@@ -75,6 +76,19 @@ export default function DashboardLayout() {
     enabled: !!user
   })
 
+  // Загружаем чаты для подсчёта непрочитанных сообщений
+  const { data: chatsData } = useChats()
+  const unreadMessagesCount = (chatsData || []).reduce((total, folder) => {
+    return total + folder.chats.reduce((sum, chat) => sum + chat.unread_count, 0)
+  }, 0)
+  // Для клиентов: pending бронирования тоже показываем как «требующие внимания»
+  const pendingBookingsCount = isClient
+    ? (bookingsData?.bookings || []).filter((b: any) =>
+        (b.client_id === user?.id || b.client_phone === user?.phone) && b.status === 'pending'
+      ).length
+    : 0
+  const messagesBadgeCount = unreadMessagesCount + pendingBookingsCount
+
   const requestsCount = requestsData?.total || 0
   const toursCount = toursData?.data?.tours?.length || 0
   const bookingsCount = bookingsData?.total || 0
@@ -94,7 +108,7 @@ export default function DashboardLayout() {
         { icon: FileText, label: 'Заявки', path: '/dashboard/requests', badge: requestsCount > 0 ? String(requestsCount) : undefined },
         { icon: Calendar, label: 'Календарь', path: '/dashboard/calendar' },
         { icon: CreditCard, label: 'Заказы', path: '/dashboard/bookings', badge: bookingsCount > 0 ? String(bookingsCount) : undefined },
-        { icon: MessageCircle, label: 'Сообщения', path: '/dashboard/messages' },
+        { icon: MessageCircle, label: 'Сообщения', path: '/dashboard/messages', badge: unreadMessagesCount > 0 ? String(unreadMessagesCount) : undefined },
         { icon: Settings, label: 'Настройки', path: '/dashboard/settings' },
       ]
     }
@@ -106,7 +120,7 @@ export default function DashboardLayout() {
         { icon: FileText, label: 'Заявки', path: '/dashboard/requests', badge: requestsCount > 0 ? String(requestsCount) : undefined },
         { icon: Calendar, label: 'Календарь', path: '/dashboard/calendar' },
         { icon: CreditCard, label: 'Заказы', path: '/dashboard/bookings' },
-        { icon: MessageCircle, label: 'Сообщения', path: '/dashboard/messages' },
+        { icon: MessageCircle, label: 'Сообщения', path: '/dashboard/messages', badge: unreadMessagesCount > 0 ? String(unreadMessagesCount) : undefined },
         { icon: Settings, label: 'Настройки', path: '/dashboard/settings' },
       ]
     }
@@ -116,7 +130,7 @@ export default function DashboardLayout() {
       ...baseItems,
       { icon: CreditCard, label: 'Мои поездки', path: '/dashboard/bookings' },
       { icon: Heart, label: 'Избранное', path: '/dashboard/favorites' },
-      { icon: MessageCircle, label: 'Сообщения', path: '/dashboard/messages' },
+      { icon: MessageCircle, label: 'Сообщения', path: '/dashboard/messages', badge: messagesBadgeCount > 0 ? String(messagesBadgeCount) : undefined },
       { icon: Settings, label: 'Настройки', path: '/dashboard/settings' },
     ]
   }
