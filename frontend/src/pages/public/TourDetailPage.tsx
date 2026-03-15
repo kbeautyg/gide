@@ -461,7 +461,7 @@ export default function TourDetailPage() {
         )}
       </AnimatePresence>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 overflow-x-hidden">
         <div ref={galleryRef} className="mb-6 lg:mb-8">
            <div className="block lg:hidden">
             <div 
@@ -662,8 +662,9 @@ export default function TourDetailPage() {
             </div>
           </div>
 
-          <div className="lg:sticky lg:top-24 mt-8 lg:mt-0 w-full">
-             <Card className="shadow-lg border-0 overflow-hidden relative w-full">
+          {/* Форма бронирования — мобильная + десктоп */}
+          <div className="lg:sticky lg:top-24 mt-10 lg:mt-0 max-w-[440px] mx-auto lg:max-w-none lg:mx-0 w-full">
+             <Card className="shadow-lg border border-gray-100 rounded-2xl overflow-hidden relative">
                 {/* Success Overlay */}
                 <AnimatePresence>
                   {showSuccess && (
@@ -673,99 +674,101 @@ export default function TourDetailPage() {
                       exit={{ opacity: 0 }}
                       className="absolute inset-0 bg-white/95 backdrop-blur-sm z-20 flex flex-col items-center justify-center p-6 text-center"
                     >
-                      <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mb-4 text-green-600">
-                        <Check size={32} />
+                      <div className="w-14 h-14 bg-green-100 rounded-full flex items-center justify-center mb-3 text-green-600">
+                        <Check size={28} />
                       </div>
-                      <h3 className="text-xl font-bold text-gray-900 mb-2">Запрос отправлен!</h3>
-                      <p className="text-gray-600 mb-6">
-                        Гид скоро свяжется с вами для согласования точной даты и деталей.
+                      <h3 className="text-lg font-bold text-gray-900 mb-2">Запрос отправлен!</h3>
+                      <p className="text-sm text-gray-600 mb-5">
+                        Гид скоро свяжется с вами для согласования деталей.
                       </p>
-                      <Button onClick={() => setShowSuccess(false)} variant="outline">
+                      <Button onClick={() => setShowSuccess(false)} variant="outline" size="sm">
                         Отлично
                       </Button>
                     </motion.div>
                   )}
                 </AnimatePresence>
 
-                <div className="p-4 sm:p-5 bg-white">
-                  <div className="flex items-baseline justify-between mb-4 sm:mb-6">
-                    <div>
-                      <span className="text-sm sm:text-base text-gray-500 block mb-1">Стоимость тура</span>
-                      <div className="flex items-baseline gap-2">
-                        <span className="text-2xl sm:text-3xl font-bold text-gray-900">{formatRUB(tour.price)}</span>
-                        <span className="text-sm sm:text-base text-gray-500">/ чел.</span>
-                      </div>
+                <div className="p-5 sm:p-6 bg-white">
+                  {/* Цена */}
+                  <div className="mb-5">
+                    <span className="text-sm text-gray-500 block mb-1">Стоимость</span>
+                    <div className="flex items-baseline gap-1.5">
+                      <span className="text-2xl font-bold text-gray-900">{formatRUB(tour.price)}</span>
+                      <span className="text-sm text-gray-400">/ чел.</span>
                     </div>
                   </div>
 
-                  <div className="space-y-3 sm:space-y-4">
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                      <div className="space-y-1.5">
-                        <Label className="text-sm sm:text-base font-medium text-gray-700">Примерная дата</Label>
-                        <Input
-                          type="date"
-                          className="h-11 text-base w-full"
-                          value={bookingData.date}
-                          onChange={(e) => setBookingData({ ...bookingData, date: e.target.value })}
-                        />
-                        <span className="text-xs text-gray-400 leading-tight block">
-                          Точную дату согласует гид
-                        </span>
-                      </div>
-                      <div className="space-y-1.5">
-                        <Label className="text-sm sm:text-base font-medium text-gray-700">Участники</Label>
-                        <Input
-                          type="number"
-                          min="1"
-                          className="h-11 text-base w-full"
-                          value={bookingData.participants}
-                          onChange={(e) => setBookingData({ ...bookingData, participants: parseInt(e.target.value) })}
-                        />
-                      </div>
+                  {/* Дата */}
+                  <div className="space-y-4">
+                    <div className="space-y-1.5">
+                      <Label className="text-sm font-medium text-gray-700">Примерная дата</Label>
+                      <Input
+                        type="date"
+                        className="h-12 text-[16px] w-full rounded-xl border-gray-200 focus:border-[#FF385C] focus:ring-[#FF385C]"
+                        value={bookingData.date}
+                        onChange={(e) => setBookingData({ ...bookingData, date: e.target.value })}
+                      />
+                      <span className="text-xs text-gray-400 leading-tight block">
+                        Точную дату согласует гид
+                      </span>
+                    </div>
+
+                    {/* Участники */}
+                    <div className="space-y-1.5">
+                      <Label className="text-sm font-medium text-gray-700">Участники</Label>
+                      <Input
+                        type="number"
+                        min="1"
+                        className="h-12 text-[16px] w-full rounded-xl border-gray-200 focus:border-[#FF385C] focus:ring-[#FF385C]"
+                        value={bookingData.participants}
+                        onChange={(e) => setBookingData({ ...bookingData, participants: parseInt(e.target.value) })}
+                      />
                     </div>
 
                     {!isAuthenticated ? (
-                      <div className="pt-3 sm:pt-4 text-center">
-                        <p className="text-sm sm:text-base text-gray-600 mb-3">Войдите, чтобы отправить запрос</p>
+                      <div className="pt-2 text-center">
+                        <p className="text-sm text-gray-500 mb-3">Войдите, чтобы отправить запрос</p>
                         <Button
                           onClick={() => navigate('/login', { state: { from: `/tours/${id}` } })}
-                          className="w-full h-11 sm:h-auto bg-airbnb-rausch hover:bg-airbnb-rausch/90 text-white text-base"
+                          className="w-full h-12 rounded-xl bg-[#FF385C] hover:bg-[#FF385C]/90 text-white text-[16px] font-semibold"
                         >
                           Войти
                         </Button>
                       </div>
                     ) : (
                       <>
-                        <div className="space-y-3 pt-2">
+                        {/* Имя и телефон */}
+                        <div className="space-y-3">
                           <Input
                             placeholder="Ваше имя"
-                            className="h-11 text-base w-full"
+                            className="h-12 text-[16px] w-full rounded-xl border-gray-200 focus:border-[#FF385C] focus:ring-[#FF385C]"
                             autoComplete="name"
                             value={bookingData.clientName}
                             onChange={(e) => setBookingData({ ...bookingData, clientName: e.target.value })}
                           />
                           <Input
                             placeholder="Телефон"
-                            className="h-11 text-base w-full"
+                            className="h-12 text-[16px] w-full rounded-xl border-gray-200 focus:border-[#FF385C] focus:ring-[#FF385C]"
                             autoComplete="tel"
                             value={bookingData.clientPhone}
                             onChange={(e) => setBookingData({ ...bookingData, clientPhone: e.target.value })}
                           />
                         </div>
 
-                        <div className="pt-2">
-                          <div className="flex justify-between items-center mb-3 sm:mb-4 text-sm sm:text-base">
-                            <span className="text-gray-600">Итого к оплате:</span>
-                            <span className="font-bold text-base sm:text-lg text-gray-900">{formatRUB(totalPrice)}</span>
+                        {/* Разделитель */}
+                        <div className="border-t border-gray-100 pt-4 mt-1">
+                          <div className="flex justify-between items-center mb-4">
+                            <span className="text-sm text-gray-600">Итого:</span>
+                            <span className="font-bold text-lg text-gray-900">{formatRUB(totalPrice)}</span>
                           </div>
                           <Button
                             onClick={handleBooking}
                             disabled={!bookingData.date || !bookingData.clientPhone || bookingMutation.isPending || isSubmitted}
-                            className="w-full h-12 bg-airbnb-rausch hover:bg-airbnb-rausch/90 text-white font-semibold text-base shadow-md transition-transform active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed"
+                            className="w-full h-12 rounded-xl bg-[#FF385C] hover:bg-[#FF385C]/90 text-white font-semibold text-[16px] shadow-md active:scale-[0.98] transition-transform disabled:opacity-50"
                           >
                             {bookingMutation.isPending ? 'Отправка...' : isSubmitted ? 'Запрос отправлен' : 'Отправить запрос'}
                           </Button>
-                          <p className="text-center text-sm text-gray-400 mt-3">
+                          <p className="text-center text-xs text-gray-400 mt-3">
                             Бесплатная отмена за 48 часов
                           </p>
                         </div>
