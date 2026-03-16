@@ -93,7 +93,7 @@ export function translateStatus(status: string): string {
 export function getImageUrl(url: string | null | undefined): string {
   if (!url) return ''
 
-  const CDN = 'http://91.230.94.240'
+  const CDN = 'https://cdn.inturex.pro'
 
   // Заменяем Railway URL на CDN
   if (url.includes('gide-production.up.railway.app/static/')) {
