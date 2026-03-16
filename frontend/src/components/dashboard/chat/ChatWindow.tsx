@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { format } from 'date-fns'
 import { ru } from 'date-fns/locale'
-import { cn } from '@/lib/utils'
+import { cn, getImageUrl } from '@/lib/utils'
 
 interface Message {
   id: string
@@ -65,7 +65,7 @@ export function ChatWindow({ contact, messages, onSendMessage, onBack }: ChatWin
           )}
           <div className="w-9 h-9 rounded-full bg-gray-200 flex items-center justify-center overflow-hidden cursor-pointer hover:opacity-90 transition-opacity">
             {contact.avatar ? (
-              <img src={contact.avatar} alt={contact.name} className="w-full h-full object-cover" />
+              <img src={getImageUrl(contact.avatar)} alt={contact.name} className="w-full h-full object-cover" />
             ) : (
               <span className="font-bold text-gray-500 text-sm">{contact.name[0]}</span>
             )}

@@ -2,7 +2,7 @@ import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet'
 import 'leaflet/dist/leaflet.css'
 import L from 'leaflet'
 import { Link } from 'react-router-dom'
-import { formatRUB } from '@/lib/utils'
+import { formatRUB, getImageUrl } from '@/lib/utils'
 
 // Fix default icon issue
 import icon from 'leaflet/dist/images/marker-icon.png'
@@ -77,7 +77,7 @@ export function SearchMap({ tours }: SearchMapProps) {
               <Popup>
                 <div className="w-48">
                     <img 
-                        src={tour.photos[0]} 
+                        src={getImageUrl(tour.photos[0])}
                         alt={tour.title} 
                         className="w-full h-24 object-cover rounded-t-md mb-2"
                     />

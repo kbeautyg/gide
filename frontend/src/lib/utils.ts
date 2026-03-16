@@ -93,14 +93,21 @@ export function translateStatus(status: string): string {
 export function getImageUrl(url: string | null | undefined): string {
   if (!url) return ''
 
-  // Уже полный URL (после миграции на CDN или внешние ссылки)
+  const CDN = 'http://91.230.94.240'
+
+  // Заменяем Railway URL на CDN
+  if (url.includes('gide-production.up.railway.app/static/')) {
+    return url.replace(/https?:\/\/gide-production\.up\.railway\.app\/static\//, `${CDN}/static/`)
+  }
+
+  // Уже CDN или внешняя ссылка — как есть
   if (url.startsWith('http://') || url.startsWith('https://')) {
     return url
   }
 
   // Относительный путь /static/... — берём с CDN
   if (url.startsWith('/static/')) {
-    return `http://91.230.94.240${url}`
+    return `${CDN}${url}`
   }
 
   return url

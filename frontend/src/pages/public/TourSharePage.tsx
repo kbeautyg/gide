@@ -13,7 +13,7 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { api } from '@/lib/api'
-import { formatRUB } from '@/lib/utils'
+import { formatRUB, getImageUrl } from '@/lib/utils'
 import { toast } from '@/lib/toast'
 import { useAutoRefresh } from '@/hooks/useAutoRefresh'
 import { useFavorites } from '@/lib/favorites'
@@ -271,7 +271,7 @@ export default function TourSharePage() {
           className="relative h-[60vh] overflow-hidden"
         >
           <img
-            src={tour.photos[0] || 'https://images.unsplash.com/photo-1589394815804-964ed0be2eb5?w=1200'}
+            src={getImageUrl(tour.photos[0]) || 'https://images.unsplash.com/photo-1589394815804-964ed0be2eb5?w=1200'}
             alt={tour.title}
             className="w-full h-full object-cover"
             loading="eager"
@@ -558,7 +558,7 @@ export default function TourSharePage() {
                           animate={{ scale: 1, opacity: 1 }}
                           transition={{ delay: 0.7 + i * 0.1 }}
                           whileHover={{ scale: 1.05 }}
-                      src={photo}
+                      src={getImageUrl(photo)}
                       alt={`${tour.title} - фото ${i + 2}`}
                           className="w-full h-48 object-cover rounded-xl shadow-lg cursor-pointer"
                     />

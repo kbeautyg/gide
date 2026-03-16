@@ -2,7 +2,7 @@ import { format } from 'date-fns'
 import { ru } from 'date-fns/locale'
 import { Search, Circle } from 'lucide-react'
 import { Input } from '@/components/ui/input'
-import { cn } from '@/lib/utils'
+import { cn, getImageUrl } from '@/lib/utils'
 
 interface Contact {
   id: string
@@ -55,7 +55,7 @@ export function ChatList({ contacts, selectedId, onSelect, onSearch }: ChatListP
                 <div className="relative flex-shrink-0">
                 <div className="w-12 h-12 rounded-full bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center text-gray-600 font-bold text-lg overflow-hidden border border-gray-100">
                     {contact.avatar ? (
-                    <img src={contact.avatar} alt={contact.name} className="w-full h-full object-cover" />
+                    <img src={getImageUrl(contact.avatar)} alt={contact.name} className="w-full h-full object-cover" />
                     ) : (
                     contact.name[0]
                     )}
