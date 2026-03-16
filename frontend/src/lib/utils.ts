@@ -98,16 +98,9 @@ export function getImageUrl(url: string | null | undefined): string {
     return url
   }
 
-  // Относительный путь /static/... — добавляем базовый URL
+  // Относительный путь /static/... — берём с CDN
   if (url.startsWith('/static/')) {
-    const CDN_BASE = import.meta.env.VITE_CDN_URL
-    if (CDN_BASE) {
-      return `${CDN_BASE.replace(/\/$/, '')}${url}`
-    }
-    // Фолбэк на API сервер
-    const API_BASE = import.meta.env.VITE_API_URL || 'https://gide-production.up.railway.app'
-    const baseUrl = API_BASE.replace(/\/api\/v1\/?$/, '')
-    return `${baseUrl}${url}`
+    return `http://91.230.94.240${url}`
   }
 
   return url
