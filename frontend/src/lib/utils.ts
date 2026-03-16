@@ -86,18 +86,29 @@ export function translateStatus(status: string): string {
 
 /**
  * Преобразование URL изображения
- * Если URL начинается с /static/ - добавляет API URL
- * Иначе возвращает как есть
+ * 1. Если URL начинается с /static/ — добавляет CDN или API URL
+ * 2. Если URL уже абсолютный (http/https) — возвращает как есть
+ * 3. CDN_BASE можно переключить через VITE_CDN_URL
  */
 export function getImageUrl(url: string | null | undefined): string {
   if (!url) return ''
-  
+
+  // Уже полный URL (после миграции на CDN или внешние ссылки)
+  if (url.startsWith('http://') || url.startsWith('https://')) {
+    return url
+  }
+
+  // Относительный путь /static/... — добавляем базовый URL
   if (url.startsWith('/static/')) {
+    const CDN_BASE = import.meta.env.VITE_CDN_URL
+    if (CDN_BASE) {
+      return `${CDN_BASE.replace(/\/$/, '')}${url}`
+    }
+    // Фолбэк на API сервер
     const API_BASE = import.meta.env.VITE_API_URL || 'https://gide-production.up.railway.app'
-    // Удаляем /api/v1 из конца, если есть, чтобы получить корень
     const baseUrl = API_BASE.replace(/\/api\/v1\/?$/, '')
     return `${baseUrl}${url}`
   }
-  
+
   return url
 }
