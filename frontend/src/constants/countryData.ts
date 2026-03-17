@@ -270,3 +270,40 @@ export function getCountryImage(countryName: string): string {
   if (!slug) return COUNTRY_CDN['thailand']
   return COUNTRY_CDN[slug] || `${BACKEND_STATIC}/${slug}.jpg`
 }
+
+// Красивые фото городов для ротации фона на главной (каждые 3 часа)
+export const HERO_BACKGROUNDS = [
+  C('bangkok'),
+  C('dubai'),
+  C('istanbul'),
+  C('tokyo'),
+  C('bali'),
+  C('singapore'),
+  C('beijing'),
+  C('agra'),
+  C('cappadocia'),
+  C('hong-kong'),
+  C('seoul'),
+  C('hanoi'),
+  C('kuala-lumpur'),
+  C('kyoto'),
+  C('phuket'),
+  C('shanghai'),
+  C('jaipur'),
+  C('osaka'),
+  C('goa'),
+  C('udaipur'),
+  C('varanasi'),
+  C('guilin'),
+  C('busan'),
+  C('antalya'),
+]
+
+// Выбор фона по текущему 3-часовому интервалу
+export function getHeroBackground(): string {
+  const hours = new Date().getHours()
+  const interval = Math.floor(hours / 3) // 0-7 за сутки
+  const dayOfYear = Math.floor((Date.now() - new Date(new Date().getFullYear(), 0, 0).getTime()) / 86400000)
+  const index = (dayOfYear * 8 + interval) % HERO_BACKGROUNDS.length
+  return HERO_BACKGROUNDS[index]
+}

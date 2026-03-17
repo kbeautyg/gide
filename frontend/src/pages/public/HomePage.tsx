@@ -13,7 +13,7 @@ import { AnimatedFeatures } from '@/components/AnimatedFeatures'
 import { DynamicNavigation } from '@/components/DynamicNavigation'
 import { SmartRecommendations } from '@/components/SmartRecommendations'
 import { buildToursLink } from '@/lib/navigationUtils'
-import { COUNTRY_SLUG_MAP, getCountryImage } from '@/constants/countryData'
+import { COUNTRY_SLUG_MAP, getCountryImage, getHeroBackground } from '@/constants/countryData'
 
 import { ImageWithFallback } from '@/components/ImageWithFallback'
 
@@ -259,7 +259,7 @@ export default function HomePage() {
           <div 
             className="absolute inset-0 top-0 left-0 right-0 bottom-0 w-full h-full bg-cover bg-center"
             style={{
-              backgroundImage: `url('${getCountryImage('Таиланд')}')`
+              backgroundImage: `url('${getHeroBackground()}')`
             }}
           />
           
