@@ -1,15 +1,16 @@
 /**
  * Данные стран и городов для отображения карточек
- * Страны — Unsplash + бэкенд fallback, города — Unsplash (стабильные URL с конкретными photo-ID)
+ * Все фото раздаются через CDN (cdn.inturex.pro)
  */
 
 // Относительный путь бэкенда для статики стран (резолвится через getImageUrl)
 const BACKEND_STATIC = '/static/countries'
 
-// Хелпер для Unsplash — стабильные ссылки по ID фото
-const U = (photoId: string) => `https://images.unsplash.com/photo-${photoId}?w=800&h=600&fit=crop&q=80`
+// Хелпер — все фото городов/стран через CDN
+const CDN = 'https://cdn.inturex.pro'
+const U = (photoId: string) => `${CDN}/static/cities/photo-${photoId}.jpg`
 
-// Unsplash фото для стран — надёжный CDN, не зависит от бэкенда
+// Фото для стран через CDN
 const COUNTRY_UNSPLASH: Record<string, string> = {
   'thailand':     U('1508009603885-50cf7c579365'),   // Golden temples Bangkok
   'uae':          U('1512453913616-7b1a5e3d22db'),   // Dubai Burj Khalifa
