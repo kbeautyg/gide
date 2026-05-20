@@ -20,6 +20,7 @@ import CreateRequestPage from './pages/public/CreateRequestPage'
 import FAQPage from './pages/public/FAQPage'
 import TermsPage from './pages/public/TermsPage'
 import PrivacyPage from './pages/public/PrivacyPage'
+import OfferPage from './pages/public/OfferPage'
 import BecomeGuidePage from './pages/public/BecomeGuidePage'
 import JournalPage from './pages/public/JournalPage'
 import ArticlePage from './pages/public/ArticlePage'
@@ -80,6 +81,7 @@ function App() {
           <Route path="/faq" element={<FAQPage />} />
           <Route path="/terms" element={<TermsPage />} />
           <Route path="/privacy" element={<PrivacyPage />} />
+          <Route path="/offer" element={<OfferPage />} />
           <Route path="/become-guide" element={<BecomeGuidePage />} />
 
           {/* Аутентификация */}

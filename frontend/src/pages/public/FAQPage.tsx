@@ -95,12 +95,12 @@ const faqData: FAQItem[] = [
   {
     category: 'Контакты',
     question: 'Как с вами связаться?',
-    answer: 'Свяжитесь с нами по email help@inturex.pro. Время работы: 🇹🇭 Пхукет 10-19, 🇰🇬 Бишкек 9-19, 🇷🇺 Москва 9-19. Поддержка доступна 24/7.',
+    answer: 'Свяжитесь с нами по email help@inturex.pro. Время работы: 🇹🇭 Пхукет 10-19, 🇰🇬 Бишкек 9-19. Поддержка доступна 24/7.',
   },
   {
     category: 'Контакты',
     question: 'Где вы находитесь?',
-    answer: 'У нас есть офисы в трёх странах: 🇹🇭 Пхукет, Таиланд; 🇰🇬 Бишкек, Кыргызстан; 🇷🇺 Москва, Россия.',
+    answer: 'У нас есть офисы в двух странах: 🇹🇭 Пхукет, Таиланд; 🇰🇬 Бишкек, Кыргызстан.',
   },
 ]
 
@@ -237,14 +237,14 @@ export default function FAQPage() {
                 <MapPin className="text-white mt-1 flex-shrink-0" size={20} />
                 <div>
                   <p className="font-semibold mb-1">Офисы</p>
-                  <p className="text-white/90 text-sm">🇹🇭 Пхукет · 🇰🇬 Бишкек · 🇷🇺 Москва</p>
+                  <p className="text-white/90 text-sm">🇹🇭 Пхукет · 🇰🇬 Бишкек</p>
                 </div>
               </div>
               <div className="flex items-start gap-3">
                 <Clock className="text-white mt-1 flex-shrink-0" size={20} />
                 <div>
                   <p className="font-semibold mb-1">Время работы</p>
-                  <p className="text-white/90 text-sm">🇹🇭 10–19 · 🇰🇬 9–19 · 🇷🇺 9–19</p>
+                  <p className="text-white/90 text-sm">🇹🇭 10–19 · 🇰🇬 9–19</p>
                   <p className="text-white/90 text-sm mt-1">📧 24/7</p>
                 </div>
               </div>

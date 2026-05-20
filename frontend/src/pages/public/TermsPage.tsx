@@ -290,8 +290,7 @@ export default function TermsPage() {
               <p>
                 <strong>Офисы:</strong><br />
                 🇹🇭 Пхукет, Таиланд<br />
-                🇰🇬 Бишкек, Кыргызстан<br />
-                🇷🇺 Москва, Россия
+                🇰🇬 Бишкек, Кыргызстан
               </p>
               <p>
                 <strong>Контакты:</strong><br />
@@ -302,7 +301,6 @@ export default function TermsPage() {
                 <strong>Часы работы:</strong><br />
                 🇹🇭 Пхукет: 10:00—19:00 (GMT+7)<br />
                 🇰🇬 Бишкек: 9:00—19:00 (GMT+6)<br />
-                🇷🇺 Москва: 9:00—19:00 (МСК)<br />
                 📧 Поддержка 24/7: help@inturex.pro
               </p>
             </CardContent>

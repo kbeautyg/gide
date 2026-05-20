@@ -4,8 +4,10 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
+import { Checkbox } from '@/components/ui/checkbox'
 import { useAuth } from '@/hooks/useAuth'
 import { toast } from '@/lib/toast'
+import { OFFER_VERSION } from '@/pages/public/OfferPage'
 
 type RegisterRole = 'client' | 'guide'
 
@@ -21,6 +23,7 @@ export default function RegisterPage() {
     password: '',
     passwordConfirm: '',
   })
+  const [acceptedOffer, setAcceptedOffer] = useState(false)
   const { registerAsync, isRegistering } = useAuth()
   const navigate = useNavigate()
   const [registerError, setRegisterError] = useState('')
@@ -28,25 +31,46 @@ export default function RegisterPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setRegisterError('')
-    
+
+    if (!acceptedOffer) {
+      setRegisterError(
+        role === 'guide'
+          ? 'Чтобы продолжить, необходимо принять условия публичной оферты для гидов.'
+          : 'Чтобы продолжить, необходимо принять условия использования и политику конфиденциальности.'
+      )
+      return
+    }
+
     if (formData.password !== formData.passwordConfirm) {
       setRegisterError('Пароли не совпадают')
       return
     }
-    
+
     if (formData.password.length < 6) {
       setRegisterError('Пароль должен быть минимум 6 символов')
       return
     }
-    
+
     try {
+      // Сохраняем факт акцепта оферты локально (юр. след до бэкенд-поддержки)
+      try {
+        localStorage.setItem(
+          'inturex:offer-accepted',
+          JSON.stringify({
+            version: OFFER_VERSION,
+            role,
+            acceptedAt: new Date().toISOString(),
+          })
+        )
+      } catch {}
+
       await registerAsync({
         phone: formData.phone,
         email: formData.email || null,
         password: formData.password,
         name: formData.name || null,
       })
-      
+
       // Если регистрировался как гид, перенаправляем на страницу подачи заявки
       if (role === 'guide') {
         navigate('/become-guide')
@@ -167,12 +191,89 @@ export default function RegisterPage() {
                 required
               />
             </div>
-            <Button 
+            <div className="flex items-start gap-2 pt-1">
+              <Checkbox
+                id="accept-offer"
+                checked={acceptedOffer}
+                onCheckedChange={(v) => setAcceptedOffer(v === true)}
+                className="mt-0.5"
+                aria-required="true"
+              />
+              <Label
+                htmlFor="accept-offer"
+                className="text-xs leading-snug text-gray-600 font-normal cursor-pointer"
+              >
+                {role === 'guide' ? (
+                  <>
+                    Я принимаю условия{' '}
+                    <Link
+                      to="/offer"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-airbnb-rausch hover:underline font-medium"
+                    >
+                      Публичной оферты для гидов
+                    </Link>
+                    ,{' '}
+                    <Link
+                      to="/terms"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-airbnb-rausch hover:underline"
+                    >
+                      Условий использования
+                    </Link>{' '}
+                    и{' '}
+                    <Link
+                      to="/privacy"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-airbnb-rausch hover:underline"
+                    >
+                      Политики конфиденциальности
+                    </Link>
+                    .
+                  </>
+                ) : (
+                  <>
+                    Я принимаю{' '}
+                    <Link
+                      to="/terms"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-airbnb-rausch hover:underline"
+                    >
+                      Условия использования
+                    </Link>
+                    ,{' '}
+                    <Link
+                      to="/privacy"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-airbnb-rausch hover:underline"
+                    >
+                      Политику конфиденциальности
+                    </Link>{' '}
+                    и{' '}
+                    <Link
+                      to="/offer"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-airbnb-rausch hover:underline"
+                    >
+                      Публичную оферту
+                    </Link>
+                    .
+                  </>
+                )}
+              </Label>
+            </div>
+            <Button
               type="submit"
-              variant="tropical" 
-              className="w-full" 
+              variant="tropical"
+              className="w-full"
               size="lg"
-              disabled={isRegistering}
+              disabled={isRegistering || !acceptedOffer}
             >
               {isRegistering ? 'Регистрация...' : role === 'guide' ? 'Продолжить как Гид' : 'Зарегистрироваться'}
             </Button>

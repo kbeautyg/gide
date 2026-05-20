@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(ls \"C:\\\\Users\\\\Sharp\\\\Downloads\\\\Inturex_Dogovor-Oferta_Gid_v3_2026-05-20.docx\")",
+      "Skill(anthropic-skills:docx)",
+      "Skill(anthropic-skills:docx:*)",
+      "Bash(extract-text \"C:\\\\Users\\\\Sharp\\\\Downloads\\\\Inturex_Dogovor-Oferta_Gid_v3_2026-05-20.docx\")",
+      "Bash(where pandoc *)",
+      "Bash(where python *)"
+    ]
+  }
+}

@@ -33,7 +33,6 @@ export function PublicFooter() {
             <ul className="space-y-2 text-gray-300 text-sm">
               <li>🇹🇭 Пхукет, Таиланд</li>
               <li>🇰🇬 Бишкек, Кыргызстан</li>
-              <li>🇷🇺 Москва, Россия</li>
             </ul>
             <div className="mt-4 space-y-1.5 text-gray-300 text-sm">
               <a href="mailto:hello@inturex.pro" className="block hover:text-white transition-colors">hello@inturex.pro <span className="text-gray-500">— общие</span></a>
@@ -48,7 +47,6 @@ export function PublicFooter() {
             <ul className="space-y-2 text-gray-300 text-sm">
               <li>🇹🇭 Пхукет — 10:00—19:00 <span className="text-gray-400">(GMT+7)</span></li>
               <li>🇰🇬 Бишкек — 9:00—19:00 <span className="text-gray-400">(GMT+6)</span></li>
-              <li>🇷🇺 Москва — 9:00—19:00 <span className="text-gray-400">(МСК)</span></li>
               <li className="pt-1 text-white/70">📧 Поддержка 24/7</li>
             </ul>
           </div>
@@ -59,6 +57,7 @@ export function PublicFooter() {
             <div className="flex gap-4 text-gray-500 text-xs">
               <Link to="/terms" className="hover:text-white transition-colors">Условия</Link>
               <Link to="/privacy" className="hover:text-white transition-colors">Конфиденциальность</Link>
+              <Link to="/offer" className="hover:text-white transition-colors">Оферта для гидов</Link>
             </div>
           </div>
         </div>

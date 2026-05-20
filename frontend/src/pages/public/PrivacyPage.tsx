@@ -383,7 +383,7 @@ export default function PrivacyPage() {
                 <p><strong>Ответственный за защиту данных:</strong></p>
                 <p>Email: help@inturex.pro</p>
                 <p className="mt-2"><strong>Офисы:</strong></p>
-                <p>🇹🇭 Пхукет, Таиланд · 🇰🇬 Бишкек, Кыргызстан · 🇷🇺 Москва, Россия</p>
+                <p>🇹🇭 Пхукет, Таиланд · 🇰🇬 Бишкек, Кыргызстан</p>
               </div>
               <p className="text-base text-gray-600 mt-4">
                 Вы также имеете право подать жалобу в надзорный орган по защите данных, если считаете, 

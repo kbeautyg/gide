@@ -13,11 +13,11 @@ export default function ContactPage() {
     <div className="min-h-screen bg-gray-100">
       <Helmet>
         <title>Контакты Inturex — Связаться с нами | Экскурсии по Азии</title>
-        <meta name="description" content="Свяжитесь с Inturex: email help@inturex.pro. Офисы в Пхукете, Бишкеке и Москве. Поддержка 24/7." />
+        <meta name="description" content="Свяжитесь с Inturex: email help@inturex.pro. Офисы в Пхукете и Бишкеке. Поддержка 24/7." />
         <meta name="keywords" content="контакты Inturex, связаться с турагентством, email туры Таиланд, экскурсии Азия" />
         <link rel="canonical" href="https://inturex.pro/contact" />
         <meta property="og:title" content="Контакты Inturex — Связаться с нами" />
-        <meta property="og:description" content="Email help@inturex.pro. Офисы в Пхукете, Бишкеке и Москве. Поддержка 24/7." />
+        <meta property="og:description" content="Email help@inturex.pro. Офисы в Пхукете и Бишкеке. Поддержка 24/7." />
         <meta property="og:type" content="website" />
         <meta property="og:image" content="https://inturex.pro/og-image.jpg" />
         <meta property="og:url" content="https://inturex.pro/contact" />
@@ -38,7 +38,7 @@ export default function ContactPage() {
                 "email": "help@inturex.pro",
                 "contactType": "customer service",
                 "availableLanguage": ["Russian", "English"],
-                "areaServed": ["KG", "RU", "TH"]
+                "areaServed": ["KG", "TH"]
               },
               "email": "help@inturex.pro"
             }
@@ -91,7 +91,6 @@ export default function ContactPage() {
                   <h3 className="font-semibold text-gray-900 mb-1">Офисы</h3>
                   <p className="text-gray-600 text-sm">🇹🇭 Пхукет, Таиланд</p>
                   <p className="text-gray-600 text-sm">🇰🇬 Бишкек, Кыргызстан</p>
-                  <p className="text-gray-600 text-sm">🇷🇺 Москва, Россия</p>
                 </div>
               </div>
 
@@ -105,7 +104,6 @@ export default function ContactPage() {
                   <div className="space-y-1 text-sm">
                     <p className="text-gray-600">🇹🇭 Пхукет — 10:00 — 19:00 <span className="text-gray-400">(GMT+7)</span></p>
                     <p className="text-gray-600">🇰🇬 Бишкек — 9:00 — 19:00 <span className="text-gray-400">(GMT+6)</span></p>
-                    <p className="text-gray-600">🇷🇺 Москва — 9:00 — 19:00 <span className="text-gray-400">(МСК)</span></p>
                   </div>
                   <p className="text-gray-800 font-medium text-sm mt-2">📧 Поддержка 24/7 — <a href="mailto:help@inturex.pro" className="text-airbnb-rausch">help@inturex.pro</a></p>
                 </div>
