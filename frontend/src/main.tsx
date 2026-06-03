@@ -6,7 +6,10 @@ import { HelmetProvider } from 'react-helmet-async'
 import { Toaster } from 'sonner'
 import App from './App.tsx'
 import { ErrorBoundary } from './components/ErrorBoundary.tsx'
+import { installGlobalErrorHandlers } from './lib/globalErrors'
 import './index.css'
+
+installGlobalErrorHandlers()
 
 // Создаем QueryClient для React Query
 const queryClient = new QueryClient({
