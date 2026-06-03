@@ -272,10 +272,10 @@ export default function TermsPage() {
                 данных, а также на отзыв согласия на их обработку. Для этого свяжитесь с нами по
                 адресу{' '}
                 <a
-                  href="mailto:compliance@inturex.pro"
+                  href="mailto:help@inturex.pro"
                   className="text-airbnb-rausch hover:underline font-medium"
                 >
-                  compliance@inturex.pro
+                  help@inturex.pro
                 </a>
                 .
               </p>
@@ -314,10 +314,10 @@ export default function TermsPage() {
                 (технические сбои, ошибки при оплате, недостоверная информация на Сайте)
                 направляются по адресу{' '}
                 <a
-                  href="mailto:compliance@inturex.pro"
+                  href="mailto:help@inturex.pro"
                   className="text-airbnb-rausch hover:underline font-medium"
                 >
-                  compliance@inturex.pro
+                  help@inturex.pro
                 </a>{' '}
                 и рассматриваются в течение 30 дней.
               </p>
@@ -350,9 +350,7 @@ export default function TermsPage() {
                 Кыргызская Республика
               </p>
               <p>
-                Email общий: help@inturex.pro
-                <br />
-                Email по защите данных и претензиям: compliance@inturex.pro
+                Email: help@inturex.pro
                 <br />
                 Сайт: inturex.pro
               </p>
