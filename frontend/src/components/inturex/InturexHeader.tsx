@@ -20,9 +20,7 @@ export function InturexHeader() {
     <header className={`site-header${scrolled ? ' scrolled' : ''}`}>
       <div className="wrap header-row">
         <Link className="brand" to="/" aria-label="Inturex — на главную">
-          <span className="brand-mark" aria-hidden="true" style={{ background: 'linear-gradient(135deg,#FF385C,#FC642D)', display: 'grid', placeItems: 'center' }}>
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 21s-7-5.2-9.3-9.6C1 8 3 4 6.5 4 9 4 10.5 5.6 12 7.6 13.5 5.6 15 4 17.5 4 21 4 23 8 21.3 11.4 19 15.8 12 21 12 21z" /></svg>
-          </span>
+          <span className="brand-mark" aria-hidden="true"><img src="/inturex-logo.png" alt="" /></span>
           <span style={{ color: 'var(--ink)' }}>Intur<span>e</span>x</span>
         </Link>
         <nav className="nav-main">

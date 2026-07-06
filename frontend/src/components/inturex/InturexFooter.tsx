@@ -60,6 +60,7 @@ export function InturexFooter() {
         <div className="footer-cols">
           <div className="footer-brand">
             <Link className="brand" to="/">
+              <span className="brand-mark" aria-hidden="true"><img src="/inturex-logo.png" alt="" /></span>
               <span style={{ color: 'var(--ink)' }}>Intur<span>e</span>x</span>
             </Link>
             <p>Маркетплейс авторских экскурсий по Азии с русскоязычными гидами. Честные цены в рублях, безопасное бронирование.</p>
