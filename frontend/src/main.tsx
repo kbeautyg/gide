@@ -8,6 +8,7 @@ import App from './App.tsx'
 import { ErrorBoundary } from './components/ErrorBoundary.tsx'
 import { installGlobalErrorHandlers } from './lib/globalErrors'
 import './index.css'
+import './styles/inturex.css'
 
 installGlobalErrorHandlers()
 
