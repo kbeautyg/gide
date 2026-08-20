@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Image as ImageIcon } from 'lucide-react'
-import { getImageUrl } from '@/lib/utils'
+import { getImageUrl, getImageFallbackUrl } from '@/lib/utils'
 
 interface ImageWithFallbackProps {
   src: string
@@ -41,12 +41,30 @@ export const ImageWithFallback: React.FC<ImageWithFallbackProps> = ({
       setIsLoading(false)
     }
     img.onerror = () => {
+      // Пробуем российское зеркало, прежде чем показывать заглушку
+      const mirrorSrc = getImageFallbackUrl(src)
+      if (mirrorSrc && mirrorSrc !== processedSrc) {
+        const mirror = new Image()
+        mirror.src = mirrorSrc
+        mirror.onload = () => {
+          setImgSrc(mirrorSrc)
+          setIsLoading(false)
+        }
+        mirror.onerror = () => {
+          if (import.meta.env.DEV) console.warn(`Failed to load image: ${processedSrc}`)
+          setHasError(true)
+          setImgSrc(fallbackSrc)
+          setIsLoading(false)
+        }
+        return
+      }
+
       if (import.meta.env.DEV) console.warn(`Failed to load image: ${processedSrc}`)
       setHasError(true)
       setImgSrc(fallbackSrc)
       setIsLoading(false)
     }
-  }, [processedSrc, fallbackSrc])
+  }, [processedSrc, src, fallbackSrc])
 
   return (
     <div className={`relative overflow-hidden ${className}`}>

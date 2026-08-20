@@ -90,25 +90,43 @@ export function translateStatus(status: string): string {
  * 2. Если URL уже абсолютный (http/https) — возвращает как есть
  * 3. CDN_BASE можно переключить через VITE_CDN_URL
  */
+const ORIGIN_STATIC = 'https://gide-production.up.railway.app'
+
 export function getImageUrl(url: string | null | undefined): string {
   if (!url) return ''
 
-  const CDN = 'https://cdn.inturex.pro'
-
-  // Заменяем Railway URL на CDN
+  // Статика отдаётся бэкендом: там лежат снимки всех туров.
+  // Российское зеркало (cdn.inturex.pro) содержит только часть каталога,
+  // поэтому оно подключается как запасной источник — см. getImageFallbackUrl.
   if (url.includes('gide-production.up.railway.app/static/')) {
-    return url.replace(/https?:\/\/gide-production\.up\.railway\.app\/static\//, `${CDN}/static/`)
+    return url
   }
 
-  // Уже CDN или внешняя ссылка — как есть
+  // Уже абсолютная ссылка — как есть
   if (url.startsWith('http://') || url.startsWith('https://')) {
     return url
   }
 
-  // Относительный путь /static/... — берём с CDN
   if (url.startsWith('/static/')) {
-    return `${CDN}${url}`
+    return `${ORIGIN_STATIC}${url}`
   }
 
   return url
+}
+
+/**
+ * Запасной адрес картинки: российское зеркало.
+ * Используется, если снимок не отдался с основного источника.
+ */
+export function getImageFallbackUrl(url: string | null | undefined): string {
+  if (!url) return ''
+
+  const CDN = 'https://cdn.inturex.pro'
+  const path = url.startsWith('/static/')
+    ? url
+    : url.includes('/static/')
+      ? url.slice(url.indexOf('/static/'))
+      : ''
+
+  return path ? `${CDN}${path}` : ''
 }
